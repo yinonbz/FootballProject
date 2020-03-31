@@ -3,6 +3,9 @@ import java.util.List;
 public class Guest {
     private int guestId;
 
+    public Guest(int guestId) {
+        this.guestId = guestId;
+    }
 
     public Boolean register(){
         return true;
@@ -18,5 +21,13 @@ public class Guest {
 
     public void openPage(){
 
+    }
+
+    public int getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(int guestId) {
+        this.guestId = guestId;
     }
 }
