@@ -6,8 +6,7 @@ public class Team {
     private TeamManager teamManager;
     private List<TeamOwner> teamOwners;
     private FinancialMonitoring financialMonitoring;
-    private List<Match> hostMatches;
-    private List<Match> guestMatches;
+    private List<Match> matches;
     private List<Season> seasons;
     private Stadium stadium;
     private String teamName;
@@ -21,8 +20,7 @@ public class Team {
      * @param teamManager
      * @param teamOwners
      * @param financialMonitoring
-     * @param hostMatches
-     * @param guestMatches
+     * @param matches
      * @param seasons
      * @param stadium
      * @param teamName
@@ -30,14 +28,13 @@ public class Team {
      * @param establishedYear
      * @param isActive
      */
-    public Team(List<Player> players, List<Coach> coaches, TeamManager teamManager, List<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> hostMatches, List<Match> guestMatches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive) {
+    public Team(List<Player> players, List<Coach> coaches, TeamManager teamManager, List<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> matches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive) {
         this.players = players;
         this.coaches = coaches;
         this.teamManager = teamManager;
         this.teamOwners = teamOwners;
         this.financialMonitoring = financialMonitoring;
-        this.hostMatches = hostMatches;
-        this.guestMatches = guestMatches;
+        this.matches = matches;
         this.seasons = seasons;
         this.stadium = stadium;
         this.teamName = teamName;
@@ -81,19 +78,6 @@ public class Team {
         return financialMonitoring;
     }
 
-    /**
-     * @return
-     */
-    public List<Match> getHostMatches() {
-        return hostMatches;
-    }
-
-    /**
-     * @return
-     */
-    public List<Match> getGuestMatches() {
-        return guestMatches;
-    }
 
     /**
      * @return
@@ -172,19 +156,6 @@ public class Team {
         this.financialMonitoring = financialMonitoring;
     }
 
-    /**
-     * @param hostMatches
-     */
-    public void setHostMatches(List<Match> hostMatches) {
-        this.hostMatches = hostMatches;
-    }
-
-    /**
-     * @param guestMatches
-     */
-    public void setGuestMatches(List<Match> guestMatches) {
-        this.guestMatches = guestMatches;
-    }
 
     /**
      * @param seasons
@@ -226,5 +197,19 @@ public class Team {
      */
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    /**
+     * @return
+     */
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    /**
+     * @param matches
+     */
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
     }
 }
