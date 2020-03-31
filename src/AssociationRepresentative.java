@@ -84,4 +84,18 @@ public class AssociationRepresentative extends Subscriber{
     public void setFinancialMonitoring(FinancialMonitoring financialMonitoring) {
         this.financialMonitoring = financialMonitoring;
     }
+
+    /**
+     * @return
+     */
+    public LeaguesController getLeaguesController() {
+        return leaguesController;
+    }
+
+    /**
+     * @param leaguesController
+     */
+    public void setLeaguesController(LeaguesController leaguesController) {
+        this.leaguesController = leaguesController;
+    }
 }
