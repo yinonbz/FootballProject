@@ -1,7 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player extends Subscriber{
     private String name;
     private String birthDate;
     private String fieldJob;
+    private List<Team> teams;
 
     /**
      * @param username
@@ -9,12 +13,14 @@ public class Player extends Subscriber{
      * @param name
      * @param birthDate
      * @param fieldJob
+     * @param teams
      */
-    public Player(String username, String password, String name, String birthDate, String fieldJob) {
+    public Player(String username, String password, String name, String birthDate, String fieldJob, List<Team> teams) {
         super(username, password);
         this.name = name;
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
+        this.teams = teams;
     }
 
     /**
@@ -57,5 +63,12 @@ public class Player extends Subscriber{
      */
     public String getFieldJob() {
         return fieldJob;
+    }
+
+    /**
+     * @return
+     */
+    public List<Team> getTeams() {
+        return teams;
     }
 }
