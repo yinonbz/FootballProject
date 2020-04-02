@@ -15,6 +15,21 @@ public class Fan extends Subscriber {
     }
 
     /**
+     *
+     */
+    public void logout(){
+
+    }
+
+    public Boolean follow(){
+        return true;
+    }
+
+    public Boolean getNotifications(){
+        return true;
+    }
+
+    /**
      * @return
      */
     public String getName() {

@@ -30,11 +30,11 @@ public class AssociationRepresentative extends Subscriber{
     }
 
     /**
-     * @param s1
-     * @param s2
+     * @param leagueName
+     * @param year
      * @return
      */
-    public Boolean createSeason(String s1, String s2){
+    public Boolean createSeason(String leagueName, String year){
         return true;
     }
 

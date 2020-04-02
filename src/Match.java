@@ -6,7 +6,7 @@ abstract public class Match {
     private Season season;
     private Team homeTeam;
     private Team awayTeam;
-    private Referee referee;
+    private List<Referee> referees;
     private String score;
     private String time;
     private Date date;
@@ -17,18 +17,18 @@ abstract public class Match {
      * @param season
      * @param homeTeam
      * @param awayTeam
-     * @param referee
+     * @param referees
      * @param score
      * @param time
      * @param date
      * @param isFinished
      */
-    public Match(League league, Season season, Team homeTeam, Team awayTeam, Referee referee, String score, String time, Date date, Boolean isFinished) {
+    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished) {
         this.league = league;
         this.season = season;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
-        this.referee = referee;
+        this.referees = referees;
         this.score = score;
         this.time = time;
         this.date = date;
@@ -73,8 +73,8 @@ abstract public class Match {
     /**
      * @return
      */
-    public Referee getReferee() {
-        return referee;
+    public List<Referee> getReferee() {
+        return referees;
     }
 
     /**
@@ -103,5 +103,68 @@ abstract public class Match {
      */
     public Boolean getFinished() {
         return isFinished;
+    }
+
+    /**
+     * @param league
+     */
+    public void setLeague(League league) {
+        this.league = league;
+    }
+
+    /**
+     * @param season
+     */
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    /**
+     * @param homeTeam
+     */
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    /**
+     * @param awayTeam
+     */
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    /**
+     * @param referees
+     */
+    public void setReferees(List<Referee> referees) {
+        this.referees = referees;
+    }
+
+    /**
+     * @param score
+     */
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    /**
+     * @param time
+     */
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    /**
+     * @param date
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    /**
+     * @param finished
+     */
+    public void setFinished(Boolean finished) {
+        isFinished = finished;
     }
 }

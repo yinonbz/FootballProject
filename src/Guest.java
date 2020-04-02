@@ -2,6 +2,7 @@ import java.util.List;
 
 public class Guest {
     private int guestId;
+    private SystemController systemController;
 
     /**
      * @param guestId
@@ -51,5 +52,19 @@ public class Guest {
      */
     public void setGuestId(int guestId) {
         this.guestId = guestId;
+    }
+
+    /**
+     * @return
+     */
+    public SystemController getSystemController() {
+        return systemController;
+    }
+
+    /**
+     * @param systemController
+     */
+    public void setSystemController(SystemController systemController) {
+        this.systemController = systemController;
     }
 }
