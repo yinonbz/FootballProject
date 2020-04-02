@@ -1,2 +1,103 @@
-public class AssociationRepresentative {
+import java.util.Map;
+
+public class AssociationRepresentative extends Subscriber{
+    private String name;
+    private FinancialMonitoring financialMonitoring;
+    private LeaguesController leaguesController;
+
+    /**
+     * @param username
+     * @param password
+     * @param systemController
+     * @param alertSystem
+     * @param name
+     * @param financialMonitoring
+     * @param leaguesController
+     */
+    public AssociationRepresentative(String username, String password, SystemController systemController, AlertSystem alertSystem, String name, FinancialMonitoring financialMonitoring, LeaguesController leaguesController) {
+        super(username, password, systemController, alertSystem);
+        this.name = name;
+        this.financialMonitoring = financialMonitoring;
+        this.leaguesController = leaguesController;
+    }
+
+    /**
+     * @param leagueInfo
+     * @return
+     */
+    public Boolean createLeague(String leagueInfo){
+        return true;
+    }
+
+    /**
+     * @param leagueName
+     * @param year
+     * @return
+     */
+    public Boolean createSeason(String leagueName, String year){
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    public Boolean editReferees(){
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    public Boolean assignMatchProperties(){
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    public Boolean definePolicies(){
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return
+     */
+    public FinancialMonitoring getFinancialMonitoring() {
+        return financialMonitoring;
+    }
+
+    /**
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @param financialMonitoring
+     */
+    public void setFinancialMonitoring(FinancialMonitoring financialMonitoring) {
+        this.financialMonitoring = financialMonitoring;
+    }
+
+    /**
+     * @return
+     */
+    public LeaguesController getLeaguesController() {
+        return leaguesController;
+    }
+
+    /**
+     * @param leaguesController
+     */
+    public void setLeaguesController(LeaguesController leaguesController) {
+        this.leaguesController = leaguesController;
+    }
 }

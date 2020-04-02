@@ -1,0 +1,2 @@
+public class LeaguesController {
+}
