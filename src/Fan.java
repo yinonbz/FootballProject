@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Fan extends Subscriber {
     private String name;
 
@@ -19,12 +21,33 @@ public class Fan extends Subscriber {
 
     }
 
+    /**
+     * @return
+     */
     public Boolean follow(){
         return true;
     }
 
+    /**
+     * @return
+     */
     public Boolean getNotifications(){
         return true;
+    }
+
+    /**
+     *
+     */
+    public void openPage(){
+
+    }
+
+    /**
+     * @param searchInput
+     * @return
+     */
+    public List<Object> search(String searchInput){
+        return null;
     }
 
     /**
@@ -40,6 +63,8 @@ public class Fan extends Subscriber {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
     @Override
     public Boolean editDetails() {
