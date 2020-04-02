@@ -38,7 +38,9 @@ abstract public class Match {
     /**
      * @return
      */
-    abstract public Event notifyEvent();
+    public Event notifyEvent(){
+        return null;
+    }
 
     /**
      * @return
