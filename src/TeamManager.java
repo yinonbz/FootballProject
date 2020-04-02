@@ -7,13 +7,11 @@ public class TeamManager extends Subscriber{
     /**
      * @param username
      * @param password
-     * @param systemController
-     * @param alertSystem
      * @param name
      * @param teams
      */
-    public TeamManager(String username, String password, SystemController systemController, AlertSystem alertSystem, String name, List<Team> teams) {
-        super(username, password, systemController, alertSystem);
+    public TeamManager(String username, String password, String name, List<Team> teams) {
+        super(username, password);
         this.name = name;
         this.teams = teams;
     }
@@ -47,4 +45,8 @@ public class TeamManager extends Subscriber{
     }
 
 
+    @Override
+    public Boolean editDetails() {
+        return null;
+    }
 }

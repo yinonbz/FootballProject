@@ -101,4 +101,9 @@ public class Coach extends Subscriber{
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    @Override
+    public Boolean editDetails() {
+        return null;
+    }
 }
