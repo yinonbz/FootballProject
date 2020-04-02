@@ -10,13 +10,15 @@ public class Player extends Subscriber{
     /**
      * @param username
      * @param password
+     * @param systemController
+     * @param alertSystem
      * @param name
      * @param birthDate
      * @param fieldJob
      * @param teams
      */
-    public Player(String username, String password, String name, String birthDate, String fieldJob, List<Team> teams) {
-        super(username, password);
+    public Player(String username, String password, SystemController systemController, AlertSystem alertSystem, String name, String birthDate, String fieldJob, List<Team> teams) {
+        super(username, password, systemController, alertSystem);
         this.name = name;
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;

@@ -2,10 +2,14 @@ public class Admin extends Subscriber {
     private String name;
 
     /**
+     * @param username
+     * @param password
+     * @param systemController
+     * @param alertSystem
      * @param name
      */
-    public Admin(String name,String username, String password) {
-        super(username,password);
+    public Admin(String username, String password, SystemController systemController, AlertSystem alertSystem, String name) {
+        super(username, password, systemController, alertSystem);
         this.name = name;
     }
 

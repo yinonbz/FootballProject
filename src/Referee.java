@@ -6,12 +6,14 @@ public class Referee extends Subscriber{
     /**
      * @param username
      * @param password
+     * @param systemController
+     * @param alertSystem
      * @param name
      * @param training
      * @param leaguesController
      */
-    public Referee(String username, String password, String name, String training, LeaguesController leaguesController) {
-        super(username, password);
+    public Referee(String username, String password, SystemController systemController, AlertSystem alertSystem, String name, String training, LeaguesController leaguesController) {
+        super(username, password, systemController, alertSystem);
         this.name = name;
         this.training = training;
         this.leaguesController = leaguesController;

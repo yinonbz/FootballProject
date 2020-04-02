@@ -8,12 +8,14 @@ public class AssociationRepresentative extends Subscriber{
     /**
      * @param username
      * @param password
+     * @param systemController
+     * @param alertSystem
      * @param name
      * @param financialMonitoring
      * @param leaguesController
      */
-    public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeaguesController leaguesController) {
-        super(username, password);
+    public AssociationRepresentative(String username, String password, SystemController systemController, AlertSystem alertSystem, String name, FinancialMonitoring financialMonitoring, LeaguesController leaguesController) {
+        super(username, password, systemController, alertSystem);
         this.name = name;
         this.financialMonitoring = financialMonitoring;
         this.leaguesController = leaguesController;
