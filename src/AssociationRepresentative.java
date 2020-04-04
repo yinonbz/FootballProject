@@ -3,22 +3,20 @@ import java.util.Map;
 public class AssociationRepresentative extends Subscriber{
     private String name;
     private FinancialMonitoring financialMonitoring;
-    private LeaguesController leaguesController;
+    private LeagueController leagueController;
 
     /**
      * @param username
      * @param password
-     * @param systemController
-     * @param alertSystem
      * @param name
      * @param financialMonitoring
      * @param leaguesController
      */
-    public AssociationRepresentative(String username, String password, SystemController systemController, AlertSystem alertSystem, String name, FinancialMonitoring financialMonitoring, LeaguesController leaguesController) {
-        super(username, password, systemController, alertSystem);
+    public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeagueController leaguesController) {
+        super(username, password);
         this.name = name;
         this.financialMonitoring = financialMonitoring;
-        this.leaguesController = leaguesController;
+        this.leagueController = leagueController;
     }
 
     /**
@@ -90,14 +88,19 @@ public class AssociationRepresentative extends Subscriber{
     /**
      * @return
      */
-    public LeaguesController getLeaguesController() {
-        return leaguesController;
+    public LeagueController getLeaguesController() {
+        return leagueController;
     }
 
     /**
      * @param leaguesController
      */
-    public void setLeaguesController(LeaguesController leaguesController) {
-        this.leaguesController = leaguesController;
+    public void setLeaguesController(LeagueController leaguesController) {
+        this.leagueController = leaguesController;
+    }
+
+    @Override
+    public Boolean editDetails() {
+        return null;
     }
 }

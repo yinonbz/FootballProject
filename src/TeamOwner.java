@@ -83,4 +83,9 @@ public class TeamOwner extends Subscriber {
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
+
+    @Override
+    public Boolean editDetails() {
+        return null;
+    }
 }

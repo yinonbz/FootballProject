@@ -1,22 +1,20 @@
 public class Referee extends Subscriber{
     private String name;
     private String training;
-    private LeaguesController leaguesController;
+    private LeagueController leagueController;
 
     /**
      * @param username
      * @param password
-     * @param systemController
-     * @param alertSystem
      * @param name
      * @param training
      * @param leaguesController
      */
-    public Referee(String username, String password, SystemController systemController, AlertSystem alertSystem, String name, String training, LeaguesController leaguesController) {
-        super(username, password, systemController, alertSystem);
+    public Referee(String username, String password, String name, String training, LeagueController leaguesController) {
+        super(username, password);
         this.name = name;
         this.training = training;
-        this.leaguesController = leaguesController;
+        this.leagueController = leaguesController;
     }
 
     /**
@@ -50,8 +48,8 @@ public class Referee extends Subscriber{
     /**
      * @return
      */
-    public LeaguesController getLeaguesController() {
-        return leaguesController;
+    public LeagueController getLeaguesController() {
+        return leagueController;
     }
 
     /**
@@ -71,7 +69,12 @@ public class Referee extends Subscriber{
     /**
      * @param leaguesController
      */
-    public void setLeaguesController(LeaguesController leaguesController) {
-        this.leaguesController = leaguesController;
+    public void setLeaguesController(LeagueController leaguesController) {
+        this.leagueController = leaguesController;
+    }
+
+    @Override
+    public Boolean editDetails() {
+        return null;
     }
 }

@@ -7,23 +7,17 @@ public abstract class Subscriber {
     /**
      * @param username
      * @param password
-     * @param systemController
-     * @param alertSystem
      */
-    public Subscriber(String username, String password, SystemController systemController, AlertSystem alertSystem) {
+    public Subscriber(String username, String password) {
         this.username = username;
         this.password = password;
-        this.systemController = systemController;
-        this.alertSystem = alertSystem;
     }
 
 
     /**
      * @return
      */
-    private Boolean editDetails(){
-        return true;
-    }
+    abstract public Boolean editDetails();
 
     /**
      * @return

@@ -4,12 +4,10 @@ public class Admin extends Subscriber {
     /**
      * @param username
      * @param password
-     * @param systemController
-     * @param alertSystem
      * @param name
      */
-    public Admin(String username, String password, SystemController systemController, AlertSystem alertSystem, String name) {
-        super(username, password, systemController, alertSystem);
+    public Admin(String username, String password, String name) {
+        super(username, password);
         this.name = name;
     }
 
@@ -55,5 +53,10 @@ public class Admin extends Subscriber {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Boolean editDetails() {
+        return null;
     }
 }
