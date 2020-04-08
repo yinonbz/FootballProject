@@ -1,9 +1,10 @@
-package businessLayer.Tournament;
+package serviceLayer;
 
+import businessLayer.Tournament.League;
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import businessLayer.Utilities.logSystem.LoggingSystem;
-import serviceLayer.userTypes.Administration.AssociationRepresentative;
-import serviceLayer.userTypes.Administration.Referee;
+import businessLayer.userTypes.Administration.AssociationRepresentative;
+import businessLayer.userTypes.Administration.Referee;
 
 import java.util.List;
 

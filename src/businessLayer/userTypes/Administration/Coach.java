@@ -1,7 +1,7 @@
-package serviceLayer.userTypes.Administration;
+package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
-import serviceLayer.userTypes.Subscriber;
+import businessLayer.userTypes.Subscriber;
 
 public class Coach extends Subscriber {
 

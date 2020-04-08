@@ -1,48 +1,57 @@
-package serviceLayer.userTypes.Administration;
+package businessLayer.userTypes.viewers;
 
-import serviceLayer.userTypes.Subscriber;
+import businessLayer.userTypes.Subscriber;
 
-public class Admin extends Subscriber {
+import java.util.List;
+
+public class Fan extends Subscriber {
     private String name;
+
 
     /**
      * @param username
      * @param password
      * @param name
      */
-    public Admin(String username, String password, String name) {
+    public Fan(String username, String password, String name) {
         super(username, password);
         this.name = name;
     }
 
     /**
-     * @param subscriberId
+     *
+     */
+    public void logout(){
+
+    }
+
+    /**
      * @return
      */
-    public Boolean deleteSubscriber(String subscriberId){
+    public Boolean follow(){
         return true;
     }
 
     /**
-     * @param teamId
      * @return
      */
-    public  Boolean closeTeam(int teamId){
+    public Boolean getNotifications(){
         return true;
     }
 
     /**
      *
      */
-    public void observeLogs(){
+    public void openPage(){
 
     }
 
     /**
+     * @param searchInput
      * @return
      */
-    public Boolean executeRecommendation(){
-        return true;
+    public List<Object> search(String searchInput){
+        return null;
     }
 
     /**
@@ -58,6 +67,8 @@ public class Admin extends Subscriber {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
     @Override
     public Boolean editDetails() {

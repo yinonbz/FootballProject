@@ -1,7 +1,7 @@
 package businessLayer.Utilities.Financial;
 
 import businessLayer.Team.Team;
-import serviceLayer.userTypes.Administration.AssociationRepresentative;
+import businessLayer.userTypes.Administration.AssociationRepresentative;
 
 import java.util.List;
 

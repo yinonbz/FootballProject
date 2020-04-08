@@ -1,4 +1,4 @@
-package serviceLayer.userTypes.viewers;
+package businessLayer.userTypes.viewers;
 
 import serviceLayer.SystemController;
 

@@ -1,7 +1,7 @@
-package serviceLayer.userTypes.Administration;
+package businessLayer.userTypes.Administration;
 
-import businessLayer.Tournament.LeagueController;
-import serviceLayer.userTypes.Subscriber;
+import serviceLayer.LeagueController;
+import businessLayer.userTypes.Subscriber;
 
 public class Referee extends Subscriber {
     private String name;

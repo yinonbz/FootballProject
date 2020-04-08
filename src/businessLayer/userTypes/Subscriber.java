@@ -1,4 +1,4 @@
-package serviceLayer.userTypes;
+package businessLayer.userTypes;
 
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import serviceLayer.SystemController;

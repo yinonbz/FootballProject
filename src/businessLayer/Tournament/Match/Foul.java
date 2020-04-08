@@ -1,6 +1,6 @@
 package businessLayer.Tournament.Match;
 
-import serviceLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.Player;
 
 public class Foul extends Event {
     Player against;

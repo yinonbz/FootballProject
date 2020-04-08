@@ -1,4 +1,4 @@
-package serviceLayer.userTypes.Administration;
+package businessLayer.userTypes.Administration;
 
 import org.junit.Test;
 

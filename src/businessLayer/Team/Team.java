@@ -4,10 +4,10 @@ import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
-import serviceLayer.userTypes.Administration.Coach;
-import serviceLayer.userTypes.Administration.Player;
-import serviceLayer.userTypes.Administration.TeamManager;
-import serviceLayer.userTypes.Administration.TeamOwner;
+import businessLayer.userTypes.Administration.Coach;
+import businessLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.TeamManager;
+import businessLayer.userTypes.Administration.TeamOwner;
 
 import java.util.List;
 

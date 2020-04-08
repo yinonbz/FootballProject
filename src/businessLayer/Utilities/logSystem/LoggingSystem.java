@@ -1,6 +1,6 @@
 package businessLayer.Utilities.logSystem;
 
-import businessLayer.Tournament.LeagueController;
+import serviceLayer.LeagueController;
 import serviceLayer.SystemController;
 
 import java.util.HashMap;

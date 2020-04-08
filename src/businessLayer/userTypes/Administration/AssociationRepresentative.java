@@ -1,8 +1,8 @@
-package serviceLayer.userTypes.Administration;
+package businessLayer.userTypes.Administration;
 
-import businessLayer.Tournament.LeagueController;
+import serviceLayer.LeagueController;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
-import serviceLayer.userTypes.Subscriber;
+import businessLayer.userTypes.Subscriber;
 
 public class AssociationRepresentative extends Subscriber {
     private String name;

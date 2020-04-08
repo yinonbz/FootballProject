@@ -1,5 +1,7 @@
 package businessLayer.Tournament;
 
+import serviceLayer.LeagueController;
+
 public interface RankingPolicy {
     String name = null;
     Season season = null;

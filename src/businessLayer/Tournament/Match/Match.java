@@ -3,7 +3,7 @@ package businessLayer.Tournament.Match;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
 import businessLayer.Tournament.Season;
-import serviceLayer.userTypes.Administration.Referee;
+import businessLayer.userTypes.Administration.Referee;
 
 import java.util.Date;
 import java.util.List;

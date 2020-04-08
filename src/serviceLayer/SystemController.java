@@ -4,9 +4,9 @@ import businessLayer.Tournament.League;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
-import serviceLayer.userTypes.*;
-import serviceLayer.userTypes.Administration.*;
-import serviceLayer.userTypes.viewers.*;
+import businessLayer.userTypes.*;
+import businessLayer.userTypes.Administration.*;
+import businessLayer.userTypes.viewers.*;
 
 import java.util.List;
 import java.util.Map;
