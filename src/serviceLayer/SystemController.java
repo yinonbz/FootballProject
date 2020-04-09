@@ -8,15 +8,13 @@ import businessLayer.userTypes.*;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class SystemController {
 
-    private static SystemController single_instance=null; //singleton instance
+    private static SystemController single_instance = null; //singleton instance
 
-    private Map<Subscriber,List<String>> userNotifications;
+    private Map<Subscriber, List<String>> userNotifications;
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private List<Guest> onlineGuests;
@@ -30,45 +28,40 @@ public class SystemController {
 
     }
 
-    public static SystemController SystemController()
-    {
-        if (single_instance == null)
-        {
+    public static SystemController SystemController() {
+        if (single_instance == null) {
             single_instance = new SystemController();
         }
         return single_instance;
     }
 
     /**
-     *
      * @param subscriber
      * @param notification
      * @return
      */
-    public boolean sendNotification(Subscriber subscriber, String notification){
+    public boolean sendNotification(Subscriber subscriber, String notification) {
 
         return true;
     }
 
     /**
-     *
      * @param logs
      * @return
      */
 
-    public boolean sendLogs(List<String> logs){
+    public boolean sendLogs(List<String> logs) {
 
         return true;
     }
 
     /**
-     *
      * @param followers
      * @param Alerts
      * @return
      */
 
-    public boolean sendAlert(List<Subscriber> followers, List<String> Alerts){
+    public boolean sendAlert(List<Subscriber> followers, List<String> Alerts) {
 
         return true;
     }
@@ -78,17 +71,17 @@ public class SystemController {
      * @param password The password of the default temporary admin, as mentioned in the Readme file.
      * @return true: if the temporary admin user was created successfully by the system. | false: The userName or password didn't match to the default temporary admin details.
      */
-    public Boolean insertInfo(String userName, String password){
-        if(userName.equals("admin") && password.equals("admin")) {
-            temporaryAdmin = new Admin(userName,password,"tempAdmin");
+    public Boolean insertInfo(String userName, String password) {
+        if (userName.equals("admin") && password.equals("admin")) {
+            temporaryAdmin = new Admin(userName, password, "tempAdmin");
             System.out.println("The temporary admin has been created successfully.");
             return true;
         }
         return false;
     }
 
-    public Boolean initializeSystem(String password,String userName){
-        if(password.equals("admin")){
+    public Boolean initializeSystem(String password, String userName) {
+        if (password.equals("admin")) {
             System.out.println("Please enter a new password while following the guidelines below:");
             System.out.println("* The password must be 6 to 32 characters long.");
             System.out.println("* The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.");
@@ -97,11 +90,23 @@ public class SystemController {
             System.out.println("* The password cannot be the same as your User Name name and should not contain any part of your user name.");
             String s = "* Do not post or share your password or send your password to others by email.";
             System.out.println(s.toUpperCase());
-            while(!checkPasswordStrength(password,userName)){
+            while (!checkPasswordStrength(password, userName)) {
                 Scanner myObj = new Scanner(System.in);
                 password = myObj.nextLine();
             }
+            temporaryAdmin.setPassword(password);
             System.out.println("Password has been reset successfully.");
+            System.out.println("Initializing system:");
+
+            userNotifications = new HashMap<>();
+            alertSystem = new AlertSystem();
+            recommendationSystem = new RecommendationSystem(this);
+            onlineGuests = new ArrayList<>();
+            systemSubscribers = new ArrayList<>();
+            admins = new ArrayList<>();
+            loggingSystem = new LoggingSystem(null, this, null);
+            leagues = new ArrayList<>();
+
             return true;
         }
         return false;
@@ -110,29 +115,28 @@ public class SystemController {
     /**
      * @param password the password from the user's input
      * @param userName the userName from the user's input (to check that the password does not contain the user name)
-     * @return
-     * true if:
-     *     * The password must be 6 to 32 characters long.
-     *     * The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.
-     *     * The password is case-sensitive.
-     *     * Single quotes, double quotes, ampersands ( ‘  \"  & ), and spaces are not allowed.
-     *     * The password cannot be the same as your User Name name and should not contain any part of your user name.
+     * @return true if:
+     * * The password  is 6 to 32 characters long.
+     * * The password contains a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.
+     * * The password is case-sensitive.
+     * * Password doesn't contain single quotes, double quotes, ampersands ( ‘  \"  & ). Spaces are not allowed either.
+     * * The password doesn't contain the user name.
      * false else.
      */
     public boolean checkPasswordStrength(String password, String userName) {
-        if(password.length() < 6 || password.length() > 32){
+        if (password.length() < 6 || password.length() > 32) {
             System.out.println("The password must be 6 to 32 characters long.");
             return false;
         }
-        if(!password.matches(".*\\d.*") || !password.matches(".*[a-z].*")){
+        if (!password.matches(".*\\d.*") || !password.matches(".*[a-z].*")) {
             System.out.println("The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.");
             return false;
         }
-        if(password.contains("'") || password.contains("\"") || password.contains("&")){
+        if (password.contains("'") || password.contains("\"") || password.contains("&") || password.contains(" ")) {
             System.out.println("Single quotes, double quotes, ampersands ( ‘  \"  & ), and spaces are not allowed.");
             return false;
         }
-        if(password.contains(userName)){
+        if (password.contains(userName)) {
             System.out.println("The password cannot be the same as your User Name name and should not contain any part of your user name.");
             return false;
         }
@@ -140,7 +144,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
     public Map<Subscriber, String> getUserNotifications() {
@@ -148,7 +151,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param userNotifications
      */
 
@@ -157,7 +159,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -166,7 +167,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param alertSystem
      */
 
@@ -175,7 +175,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -184,7 +183,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param recommendationSystem
      */
 
@@ -193,7 +191,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -202,7 +199,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param onlineGuests
      */
 
@@ -211,7 +207,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -220,7 +215,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param systemSubscribers
      */
 
@@ -229,7 +223,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -238,7 +231,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param admins
      */
 
@@ -247,7 +239,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
     public LoggingSystem getLoggingSystem() {
@@ -255,7 +246,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param loggingSystem
      */
     public void setLoggingSystem(LoggingSystem loggingSystem) {
@@ -263,7 +253,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -272,7 +261,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param leagues
      */
 

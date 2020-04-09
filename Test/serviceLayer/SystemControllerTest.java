@@ -43,6 +43,7 @@ public class SystemControllerTest {
         assertFalse(systemController.checkPasswordStrength("123456abcde&","admin")); //include &,' or "
         assertFalse(systemController.checkPasswordStrength("123456abcde\"","admin"));
         assertFalse(systemController.checkPasswordStrength("123456abcde'","admin"));
-        assertFalse(systemController.checkPasswordStrength("123456admin","admin"));
+        assertFalse(systemController.checkPasswordStrength("123456 abcde'","admin")); //include space
+        assertFalse(systemController.checkPasswordStrength("123456admin","admin")); //include the user name
     }
 }
