@@ -7,7 +7,6 @@ import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.*;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.List;
 import java.util.Map;
@@ -98,10 +97,12 @@ public class SystemController {
             System.out.println("* The password cannot be the same as your User Name name and should not contain any part of your user name.");
             String s = "* Do not post or share your password or send your password to others by email.";
             System.out.println(s.toUpperCase());
-            while(!checkPasswordStrengh(password,userName)){
+            while(!checkPasswordStrength(password,userName)){
                 Scanner myObj = new Scanner(System.in);
                 password = myObj.nextLine();
             }
+            System.out.println("Password has been reset successfully.");
+            return true;
         }
         return false;
     }
@@ -118,12 +119,12 @@ public class SystemController {
      *     * The password cannot be the same as your User Name name and should not contain any part of your user name.
      * false else.
      */
-    private boolean checkPasswordStrengh(String password,String userName) {
+    public boolean checkPasswordStrength(String password, String userName) {
         if(password.length() < 6 || password.length() > 32){
             System.out.println("The password must be 6 to 32 characters long.");
             return false;
         }
-        if(!password.matches("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$")){
+        if(!password.matches(".*\\d.*") || !password.matches(".*[a-z].*")){
             System.out.println("The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.");
             return false;
         }
