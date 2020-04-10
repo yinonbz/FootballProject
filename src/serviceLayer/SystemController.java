@@ -1,13 +1,15 @@
 package serviceLayer;
 
+import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.*;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +19,13 @@ public class SystemController {
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private List<Guest> onlineGuests;
-    private List<Subscriber> systemSubscribers;
+    private HashMap<String,Subscriber> systemSubscribers;
     private List<Admin> admins;
     private LoggingSystem loggingSystem;
     private List<League> leagues;
+    private HashMap<String, Team> teams;
+    private HashMap <Integer, Complaint> systemComplaints;
+
 
     public SystemController() {
 
@@ -137,7 +142,7 @@ public class SystemController {
      * @return
      */
 
-    public List<Subscriber> getSystemSubscribers() {
+    public HashMap<String, Subscriber> getSystemSubscribers() {
         return systemSubscribers;
     }
 
@@ -146,7 +151,7 @@ public class SystemController {
      * @param systemSubscribers
      */
 
-    public void setSystemSubscribers(List<Subscriber> systemSubscribers) {
+    public void setSystemSubscribers(HashMap<String, Subscriber> systemSubscribers) {
         this.systemSubscribers = systemSubscribers;
     }
 
@@ -201,5 +206,140 @@ public class SystemController {
     public void setLeagues(List<League> leagues) {
         this.leagues = leagues;
     }
+
+    //-------------------TEAM--------------------//
+
+    /**
+     * the function gets a team and put it into the data structure that holds all of the teams in the system
+     * @param team the team we want to add into the system
+     */
+    public void addTeam(Team team){
+        if(team!=null){
+            if(!teams.containsKey(team)){
+                teams.put(team.getTeamName(),team);
+            }
+        }
+    }
+
+
+    /**
+     * the function closes a team Permanently by the admin
+     * @param teamName the team the user wants to close
+     * @param userType the user type of the user that requested to close the team
+     * @return true if the status was changed to close
+     * UC 8.1
+     */
+    public boolean closeTeamByAdmin(String teamName, Subscriber userType){
+        if (userType instanceof Admin){
+            if(teams.containsKey(teamName)){
+                Team chosenTeam = teams.get(teamName);
+                //checks what is the status of the team
+                if(chosenTeam.closeTeamPermanently()) {
+                    teams.replace(teamName, chosenTeam);
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
+    }
+
+    //-------------------Subscriber--------------------//
+
+    /**
+     * the function lets the subscriber to upload a complaint
+     * @param content the content of the complaint
+     * @param subscriber the subscriber who wants to complain
+     * UC 3.4
+     */
+    public void addComplaint (String content, Subscriber subscriber){
+        Complaint complaint = subscriber.createComplaint(content);
+        if(complaint!=null){
+            complaint.setId(systemComplaints.size());
+            systemComplaints.put(systemComplaints.size(),complaint);
+            subscriber.addComplaint(complaint);
+        }
+    }
+
+    //-------------------Admin--------------------//
+
+    /**
+     * the function removes a user from the system by the admin
+     * @param subscriberName the name of the user we want to delete
+     * @param userType the type of the user that tries to delete
+     * @return a string that explains what was the result
+     * 8.2
+     */
+    public String removeSubscriber (String subscriberName, Subscriber userType){
+        if(subscriberName!=null && !(userType instanceof Admin)) {
+            if(systemSubscribers.containsKey(subscriberName)){
+                Subscriber tempSubscriber = systemSubscribers.get(subscriberName);
+                if(tempSubscriber instanceof Admin){
+                    if(userType.getUsername().equals(subscriberName)){
+                        return "Admin can't remove his own user";
+                    }
+                }
+                else if (tempSubscriber instanceof TeamOwner){
+                        if (((TeamOwner) tempSubscriber).isEclusiveTeamOwner()){
+                            return "Can't remove an exclusive team owner";
+                        }
+                }
+                systemSubscribers.remove(subscriberName);
+                //remove from notifications
+                if(userNotifications.containsKey(tempSubscriber)){
+                    userNotifications.remove(tempSubscriber);
+                }
+            }
+            return "The User " + subscriberName + " was removed";
+        }
+        return "User doesn't exist in the system";
+    }
+
+    /**
+     * the function displays the complaints in the system to the admin
+     * @param subscriber the user who wants to see the complaints
+     * @return the complaints in the system
+     * UC 8.3.1
+     */
+    public HashMap<Integer, Complaint> displayComplaints(Subscriber subscriber){
+        if(subscriber instanceof Admin){
+            return systemComplaints;
+        }
+        else{
+            return null;
+        }
+    }
+
+    /**
+     * the function lets the admin to respond the the comments in the system
+     * @param complaintID the complain's id the admin wants to respond to
+     * @param subscriber the user that wants to respond - has to be an admin
+     * @param comment - the comment of the admin
+     * @return true is he responded successfully
+     */
+    public boolean replyComplaints(int complaintID,Subscriber subscriber, String comment){
+        if(subscriber instanceof Admin){
+            if(systemComplaints.containsKey(complaintID)){
+                Complaint complaint = systemComplaints.get(complaintID);
+                Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
+                if(editedComplaint!=null){
+                    systemComplaints.remove(complaintID);
+                    systemComplaints.put(complaintID,editedComplaint);
+                    //sets the new complaint in the user's data structure
+                    subscriber.setComplaint(editedComplaint);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    
 
 }

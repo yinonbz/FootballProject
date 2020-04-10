@@ -3,12 +3,13 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class TeamOwner extends Subscriber {
 
     private String name;
-    private List<Team> teams;
+    private LinkedList<Team> teams;
     /**
      *
      * @param username
@@ -18,7 +19,22 @@ public class TeamOwner extends Subscriber {
     public TeamOwner(String username, String password, String name) {
         super(username, password);
         this.name= name;
+        teams = new LinkedList<>();
+    }
 
+    /**
+     * the function checks if the team owner has a team that nobody but him ows, so he can't be deleted as a user
+     * @return true if he owns one of the teams elusively
+     */
+    public boolean isEclusiveTeamOwner(){
+        if (teams.size()>0){
+            for(Team team : teams){
+                if(team.getTeamOwners().size()==1){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -85,7 +101,7 @@ public class TeamOwner extends Subscriber {
      * @param teams
      */
 
-    public void setTeams(List<Team> teams) {
+    public void setTeams(LinkedList<Team> teams) {
         this.teams = teams;
     }
 

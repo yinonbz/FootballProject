@@ -1,5 +1,6 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
 
 public class Admin extends Subscriber {
@@ -13,6 +14,25 @@ public class Admin extends Subscriber {
     public Admin(String username, String password, String name) {
         super(username, password);
         this.name = name;
+    }
+
+    /**
+     * the function adds the comment to the complaint
+     * @param complaint the complaint the admin wants to answer
+     * @param comment the comment of the admin
+     * @return the complaint
+     * UC 8.3.2
+     */
+    public Complaint replyComplaints(Complaint complaint, String comment){
+        if (complaint!=null && !comment.isEmpty()){
+            complaint.setAnswered(true);
+            complaint.setComment(comment);
+            complaint.setHandler(this.getUsername());
+            return complaint;
+        }
+        else{
+            return null;
+        }
     }
 
     /**

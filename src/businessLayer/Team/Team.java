@@ -24,6 +24,7 @@ public class Team {
     private int teamId;
     private int establishedYear;
     private Boolean isActive;
+    private Boolean closedByAdmin; //refers to UC 8.1
 
     /**
      * @param players
@@ -39,7 +40,7 @@ public class Team {
      * @param establishedYear
      * @param isActive
      */
-    public Team(List<Player> players, List<Coach> coaches, TeamManager teamManager, List<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> matches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive) {
+    public Team(List<Player> players, List<Coach> coaches, TeamManager teamManager, List<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> matches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
         this.players = players;
         this.coaches = coaches;
         this.teamManager = teamManager;
@@ -52,6 +53,22 @@ public class Team {
         this.teamId = teamId;
         this.establishedYear = establishedYear;
         this.isActive = isActive;
+        this.closedByAdmin=closedByAdmin;
+    }
+
+    /**
+     * the function closes a team permanently by the admin. once it done, it can't be changed
+     * @return true is the status has been changed
+     */
+    public boolean closeTeamPermanently(){
+        if(!closedByAdmin){
+            return false;
+        }
+        else{
+            setActive(false);
+            closedByAdmin=false;
+        }
+        return true;
     }
 
     /**
@@ -223,4 +240,14 @@ public class Team {
     public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
+
+    /**
+     *
+     * @return
+     */
+    public Boolean getClosedByAdmin() {
+        return closedByAdmin;
+    }
+
+
 }
