@@ -14,15 +14,15 @@ public class SystemController {
 
     private static SystemController single_instance = null; //singleton instance
 
-    private Map<Subscriber, List<String>> userNotifications;
-    private AlertSystem alertSystem;
-    private RecommendationSystem recommendationSystem;
-    private List<Guest> onlineGuests;
-    private List<Subscriber> systemSubscribers;
-    private List<Admin> admins;
-    private LoggingSystem loggingSystem;
-    private List<League> leagues;
-    private Admin temporaryAdmin;
+    private Map<Subscriber, List<String>> userNotifications; //map of subscribers against thier notification list (strings)
+    private AlertSystem alertSystem; //instance of the alert system
+    private RecommendationSystem recommendationSystem; //instance of the recommendation system
+    private List<Guest> onlineGuests; //list of the current online guests
+    private List<Subscriber> systemSubscribers; //list of the overall system subscribers
+    private List<Admin> admins; //list of the overall admins in the system
+    private LoggingSystem loggingSystem; //instance of the logging system
+    private List<League> leagues; //list of the overall leagues in the system
+    private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
 
     private SystemController() {
 
@@ -60,7 +60,6 @@ public class SystemController {
      * @param Alerts
      * @return
      */
-
     public boolean sendAlert(List<Subscriber> followers, List<String> Alerts) {
 
         return true;
@@ -80,36 +79,29 @@ public class SystemController {
         return false;
     }
 
-    public Boolean initializeSystem(String password, String userName) {
+    /**
+     * @param password temporary admin password.
+     * @return true if the temporary admin entered the sufficient password to initialize the system.
+     * false else.
+     */
+    public Boolean initializeSystem(String password) {
         if (password.equals("admin")) {
-            System.out.println("Please enter a new password while following the guidelines below:");
-            System.out.println("* The password must be 6 to 32 characters long.");
-            System.out.println("* The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.");
-            System.out.println("* The password is case-sensitive.");
-            System.out.println("* Single quotes, double quotes, ampersands ( ‘  \"  & ), and spaces are not allowed.");
-            System.out.println("* The password cannot be the same as your User Name name and should not contain any part of your user name.");
-            String s = "* Do not post or share your password or send your password to others by email.";
-            System.out.println(s.toUpperCase());
-            while (!checkPasswordStrength(password, userName)) {
-                Scanner myObj = new Scanner(System.in);
-                password = myObj.nextLine();
-            }
-            temporaryAdmin.setPassword(password);
-            System.out.println("Password has been reset successfully.");
-            System.out.println("Initializing system:");
-
-            userNotifications = new HashMap<>();
-            alertSystem = new AlertSystem();
-            recommendationSystem = new RecommendationSystem(this);
-            onlineGuests = new ArrayList<>();
-            systemSubscribers = new ArrayList<>();
-            admins = new ArrayList<>();
-            loggingSystem = new LoggingSystem(null, this, null);
-            leagues = new ArrayList<>();
-
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param newPassword the user's new password.
+     * @param userName    the user name.
+     * @return true if the password has changed.
+     * false else.
+     */
+    public Boolean changePassword(String newPassword, String userName) {
+        if (checkPasswordStrength(newPassword, userName) == false)
+            return false;
+        temporaryAdmin.setPassword(newPassword);
+        return true;
     }
 
     /**
@@ -144,14 +136,14 @@ public class SystemController {
     }
 
     /**
-     * @return
+     * @return map of subscribers against notification
      */
     public Map<Subscriber, String> getUserNotifications() {
         return null;
     }
 
     /**
-     * @param userNotifications
+     * @param userNotifications //new map of subscribers against the notifications
      */
 
     public void setUserNotifications(Map<Subscriber, List<String>> userNotifications) {
@@ -159,7 +151,7 @@ public class SystemController {
     }
 
     /**
-     * @return
+     * @return alert system instance
      */
 
     public AlertSystem getAlertSystem() {
@@ -167,7 +159,7 @@ public class SystemController {
     }
 
     /**
-     * @param alertSystem
+     * @param alertSystem new system alert instance
      */
 
     public void setAlertSystem(AlertSystem alertSystem) {
@@ -175,7 +167,7 @@ public class SystemController {
     }
 
     /**
-     * @return
+     * @return recommended system instance
      */
 
     public RecommendationSystem getRecommendationSystem() {
@@ -183,23 +175,21 @@ public class SystemController {
     }
 
     /**
-     * @param recommendationSystem
+     * @param recommendationSystem new recommended system instance
      */
-
     public void setRecommendationSystem(RecommendationSystem recommendationSystem) {
         this.recommendationSystem = recommendationSystem;
     }
 
     /**
-     * @return
+     * @return list of the current online guests
      */
-
     public List<Guest> getOnlineGuests() {
         return onlineGuests;
     }
 
     /**
-     * @param onlineGuests
+     * @param onlineGuests new list of current online guests
      */
 
     public void setOnlineGuests(List<Guest> onlineGuests) {
@@ -207,7 +197,7 @@ public class SystemController {
     }
 
     /**
-     * @return
+     * @returnlist list of the overall system subscribers
      */
 
     public List<Subscriber> getSystemSubscribers() {
@@ -215,7 +205,7 @@ public class SystemController {
     }
 
     /**
-     * @param systemSubscribers
+     * @param systemSubscribers new list of the overall system subscribers
      */
 
     public void setSystemSubscribers(List<Subscriber> systemSubscribers) {
@@ -223,7 +213,7 @@ public class SystemController {
     }
 
     /**
-     * @return
+     * @return list of the overall admins in the system
      */
 
     public List<Admin> getAdmins() {
@@ -231,7 +221,7 @@ public class SystemController {
     }
 
     /**
-     * @param admins
+     * @param admins new list of the overall admins in the system
      */
 
     public void setAdmins(List<Admin> admins) {
@@ -239,21 +229,21 @@ public class SystemController {
     }
 
     /**
-     * @return
+     * @return logging system instance
      */
     public LoggingSystem getLoggingSystem() {
         return loggingSystem;
     }
 
     /**
-     * @param loggingSystem
+     * @param loggingSystem new logging system instance
      */
     public void setLoggingSystem(LoggingSystem loggingSystem) {
         this.loggingSystem = loggingSystem;
     }
 
     /**
-     * @return
+     * @return list of the overall leagues in the system
      */
 
     public List<League> getLeagues() {
@@ -261,7 +251,7 @@ public class SystemController {
     }
 
     /**
-     * @param leagues
+     * @param leagues new list of the overall leagues in the system
      */
 
     public void setLeagues(List<League> leagues) {
