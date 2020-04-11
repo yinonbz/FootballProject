@@ -24,7 +24,6 @@ public class TestSystemController {
     private Fan fan;
 
 
-
     @Before
     public void createTestValues(){
         systemController = new SystemController();
@@ -124,5 +123,5 @@ public class TestSystemController {
         assertFalse(admin.replyComplaints(3,admin, ""));
 
     }
-    
+
 }
