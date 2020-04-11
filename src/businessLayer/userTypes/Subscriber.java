@@ -31,7 +31,7 @@ public abstract class Subscriber {
     public Complaint createComplaint(String content){
         if(content!=null) {
             if(!content.isEmpty()) {
-                Complaint complaint = new Complaint(this.username, content);
+                Complaint complaint = new Complaint(content,this.username);
                 return complaint;
             }
         }

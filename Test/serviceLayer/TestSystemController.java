@@ -1,5 +1,6 @@
 package serviceLayer;
 import businessLayer.Team.Team;
+import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
@@ -47,8 +48,10 @@ public class TestSystemController {
         Glazers.getTeams().add(ManchesterUnited);
         systemController.addTeam(ManchesterUnited);
         systemController.addTeam(BeerSheva);
-        fan.createComplaint("My system doesn't work");
-        fan.createComplaint("I don't like this team");
+        systemController.addComplaint("My system doesn't work",fan);
+        systemController.addComplaint("I don't like this team",fan);
+        systemController.addComplaint("",fan);
+
 
 
     }
@@ -98,7 +101,28 @@ public class TestSystemController {
     @Test
     public void UC8_3_1(){
 
+        //1
+        //check if the complaints are displayed
+        assertEquals(2,admin.displayComplaints().size());
 
     }
 
+    @Test
+    public void UC8_3_2(){
+
+        //1
+        //regular test add a comment
+        assertTrue(admin.replyComplaints(0,admin, "Solved"));
+ //       System.out.println(systemController.getSystemComplaints().get(0).toString());
+
+        //2
+        //can't add an empty comment
+        assertFalse(admin.replyComplaints(0,admin, ""));
+
+        //3
+        //can't add a comment to invalid complaint id
+        assertFalse(admin.replyComplaints(3,admin, ""));
+
+    }
+    
 }
