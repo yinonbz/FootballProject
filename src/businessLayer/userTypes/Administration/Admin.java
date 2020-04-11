@@ -1,19 +1,31 @@
 package businessLayer.userTypes.Administration;
-
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
+import serviceLayer.SystemController;
+
+import java.util.HashMap;
 
 public class Admin extends Subscriber {
     private String name;
+    private SystemController systemController;
 
     /**
      * @param username
      * @param password
      * @param name
      */
-    public Admin(String username, String password, String name) {
+    public Admin(String username, String password, String name, SystemController systemController) {
         super(username, password);
         this.name = name;
+        this.systemController=systemController;
+    }
+
+    /**
+     * displays the complaints in the system
+     * @return a hash map of the complaints
+     */
+    public HashMap<Integer, Complaint> displayComplaints(){
+        return systemController.displayComplaints(this);
     }
 
     /**
@@ -36,19 +48,21 @@ public class Admin extends Subscriber {
     }
 
     /**
-     * @param subscriberId
-     * @return
+     * the function delete a user from the system
+     * @param subscriberUserName the user name we want to delete
+     * @return the string of the result
      */
-    public Boolean deleteSubscriber(String subscriberId){
-        return true;
+    public String deleteSubscriber(String subscriberUserName){
+        return systemController.removeSubscriber(subscriberUserName, this);
     }
 
     /**
-     * @param teamId
-     * @return
+     * the function closes teams permanently
+     * @param teamName the team the admin wants to close
+     * @return true if it done successfully
      */
-    public  Boolean closeTeam(int teamId){
-        return true;
+    public Boolean closeTeam(String teamName){
+        return systemController.closeTeamByAdmin(teamName, this);
     }
 
     /**

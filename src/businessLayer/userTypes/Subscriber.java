@@ -5,7 +5,6 @@ import businessLayer.Utilities.alertSystem.AlertSystem;
 import serviceLayer.SystemController;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public abstract class Subscriber {
     private String username;
@@ -18,9 +17,10 @@ public abstract class Subscriber {
      * @param username
      * @param password
      */
-    public Subscriber(String username, String password) {
+    public Subscriber(String username, String password, SystemController systemController) {
         this.username = username;
         this.password = password;
+        this.systemController=systemController;
         complaints = new HashMap<>();
     }
 

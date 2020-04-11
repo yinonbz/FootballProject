@@ -19,15 +19,20 @@ public class SystemController {
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private List<Guest> onlineGuests;
-    private HashMap<String,Subscriber> systemSubscribers;
-    private List<Admin> admins;
+    private HashMap<String,Subscriber> systemSubscribers; //name of the username, subscriber
+    private List<Admin> admins; //todo check why we need this field tomer
     private LoggingSystem loggingSystem;
     private List<League> leagues;
-    private HashMap<String, Team> teams;
-    private HashMap <Integer, Complaint> systemComplaints;
+    private HashMap <String, Team> teams; //name of the team, the team object
+    private HashMap <Integer, Complaint> systemComplaints; //complaint id, complaint object
 
 
     public SystemController() {
+        this.teams = new HashMap<>();
+        systemSubscribers = new HashMap<>();
+        this.systemComplaints = new HashMap<>();
+        userNotifications = new HashMap<>();
+        systemComplaints = new HashMap<>();
 
     }
 
@@ -238,14 +243,17 @@ public class SystemController {
                     teams.replace(teamName, chosenTeam);
                     return true;
                 }
+                //team is already closed by admin
                 else{
                     return false;
                 }
             }
+            //team doesn't exist
             else{
                 return false;
             }
         }
+        //not an admin
         return false;
     }
 
@@ -275,8 +283,9 @@ public class SystemController {
      * @return a string that explains what was the result
      * 8.2
      */
+
     public String removeSubscriber (String subscriberName, Subscriber userType){
-        if(subscriberName!=null && !(userType instanceof Admin)) {
+        if(subscriberName!=null && (userType instanceof Admin)) {
             if(systemSubscribers.containsKey(subscriberName)){
                 Subscriber tempSubscriber = systemSubscribers.get(subscriberName);
                 if(tempSubscriber instanceof Admin){
@@ -285,7 +294,7 @@ public class SystemController {
                     }
                 }
                 else if (tempSubscriber instanceof TeamOwner){
-                        if (((TeamOwner) tempSubscriber).isEclusiveTeamOwner()){
+                        if (((TeamOwner) tempSubscriber).isExclusiveTeamOwner()){
                             return "Can't remove an exclusive team owner";
                         }
                 }
@@ -294,8 +303,8 @@ public class SystemController {
                 if(userNotifications.containsKey(tempSubscriber)){
                     userNotifications.remove(tempSubscriber);
                 }
+                return "The User " + subscriberName + " was removed";
             }
-            return "The User " + subscriberName + " was removed";
         }
         return "User doesn't exist in the system";
     }
@@ -321,6 +330,7 @@ public class SystemController {
      * @param subscriber the user that wants to respond - has to be an admin
      * @param comment - the comment of the admin
      * @return true is he responded successfully
+     * UC 8.3.2
      */
     public boolean replyComplaints(int complaintID,Subscriber subscriber, String comment){
         if(subscriber instanceof Admin){
@@ -340,6 +350,6 @@ public class SystemController {
     }
 
 
-    
+
 
 }
