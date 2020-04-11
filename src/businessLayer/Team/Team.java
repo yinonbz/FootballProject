@@ -9,13 +9,15 @@ import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Team {
-    private List<Player> players;
-    private List<Coach> coaches;
+    private HashSet<Player> players;
+    private HashSet<Coach> coaches;
     private TeamManager teamManager;
-    private List<TeamOwner> teamOwners;
+    private HashSet<TeamOwner> teamOwners;
     private FinancialMonitoring financialMonitoring;
     private List<Match> matches;
     private List<Season> seasons;
@@ -24,6 +26,7 @@ public class Team {
     private int teamId;
     private int establishedYear;
     private Boolean isActive;
+    private Boolean closedByAdmin; //refers to UC 8.1 - can be changed only once
 
     /**a
      * @param players
@@ -39,7 +42,7 @@ public class Team {
      * @param establishedYear
      * @param isActive
      */
-    public Team(List<Player> players, List<Coach> coaches, TeamManager teamManager, List<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> matches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive) {
+    public Team(HashSet<Player> players, HashSet coaches, TeamManager teamManager, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> matches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
         this.players = players;
         this.coaches = coaches;
         this.teamManager = teamManager;
@@ -49,22 +52,52 @@ public class Team {
         this.seasons = seasons;
         this.stadium = stadium;
         this.teamName = teamName;
-        this.teamId = teamId;
+        this.teamId = teamId; //todo need to check if we still need this id
         this.establishedYear = establishedYear;
         this.isActive = isActive;
+        this.closedByAdmin=closedByAdmin;
+    }
+    //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited
+    /**
+     * constructor - opening a new team in the system - will be send to approval to the association representative
+     * @param teamName the name of the team
+     * @param teamOwner the owner of the team
+     */
+    public Team (String teamName, TeamOwner teamOwner, int establishedYear){
+        this.teamName=teamName;
+        teamOwners= new HashSet<>();
+        teamOwners.add(teamOwner);
+        this.establishedYear=establishedYear;
+        isActive=true;
+        closedByAdmin=false;
+    }
+
+    /**
+     * the function closes a team permanently by the admin. once it done, it can't be changed
+     * @return true is the status has been changed
+     */
+    public boolean closeTeamPermanently(){
+        if(closedByAdmin){
+            return false;
+        }
+        else{
+            setActive(false);
+            closedByAdmin=true;
+        }
+        return true;
     }
 
     /**
      * @return
      */
-    public List<Player> getPlayers() {
+    public HashSet<Player> getPlayers() {
         return players;
     }
 
     /**
      * @return
      */
-    public List<Coach> getCoaches() {
+    public HashSet<Coach> getCoaches() {
         return coaches;
     }
 
@@ -78,7 +111,7 @@ public class Team {
     /**
      * @return
      */
-    public List<TeamOwner> getTeamOwners() {
+    public HashSet<TeamOwner> getTeamOwners() {
         return teamOwners;
     }
 
@@ -135,14 +168,14 @@ public class Team {
     /**
      * @param players
      */
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(HashSet<Player> players) {
         this.players = players;
     }
 
     /**
      * @param coaches
      */
-    public void setCoaches(List<Coach> coaches) {
+    public void setCoaches(HashSet<Coach> coaches) {
         this.coaches = coaches;
     }
 
@@ -156,7 +189,7 @@ public class Team {
     /**
      * @param teamOwners
      */
-    public void setTeamOwners(List<TeamOwner> teamOwners) {
+    public void setTeamOwners(HashSet<TeamOwner> teamOwners) {
         this.teamOwners = teamOwners;
     }
 
@@ -223,4 +256,14 @@ public class Team {
     public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
+
+    /**
+     *
+     * @return
+     */
+    public Boolean getClosedByAdmin() {
+        return closedByAdmin;
+    }
+
+
 }
