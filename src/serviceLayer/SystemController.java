@@ -75,7 +75,7 @@ public class SystemController {
      */
     public Boolean insertInfo(String userName, String password) {
         if (userName.equals("admin") && password.equals("admin")) {
-            temporaryAdmin = new Admin(userName, password, "tempAdmin");
+            temporaryAdmin = new Admin(userName, password, "tempAdmin",this);
             System.out.println("The temporary admin has been created successfully.");
             return true;
         }
