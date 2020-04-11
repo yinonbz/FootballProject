@@ -1,5 +1,5 @@
-package businessLayer.userTypes.Administration;
 import businessLayer.Team.Team;
+import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
 import org.junit.Test;
 
