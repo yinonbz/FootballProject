@@ -9,29 +9,23 @@ import static org.junit.Assert.*;
 
 public class SystemControllerTest {
 
-    //T1 - Check singleton functionality
-    //T2 - Test insertInfo(userName,password)
-    //T3 - Test checkPasswordStrengh(String password,String userName)
-
-/*    System.out.println("Welcome user. you are about to initialize the system.");
-        System.out.println("Please enter the default username and the password for the temporary admin user:");*/
-
-
-    /**
-     * Test wrong pass in the initialize system process
-     */
-    @org.junit.Test
-    public void initializeSystemTest() {
-
-        SystemController systemController = SystemController.SystemController();
-        //System.out.println("Hello temporary admin, please enter you password:");
-        assertTrue(systemController.initializeSystem("admin"));
-        assertFalse(systemController.initializeSystem("wrongPass"));
-
+    //T1.1_1 - Check singleton functionality
+    @Test
+    public void singletonTest () {
+        SystemController systemController1 = SystemController.SystemController();
+        SystemController systemController2 = SystemController.SystemController();
+        assertEquals(systemController1,systemController2);
     }
 
+    //T1.1_2 - Test insertInfo(String userName, String password)
+    @Test
+    public void insertInfo() {
+        SystemController systemController = SystemController.SystemController();
+        assertTrue(systemController.insertInfo("admin","admin"));
+        assertFalse(systemController.insertInfo("admin","wrongPass"));
+    }
 
-
+    //T1.1_3 - Test changePassword(String password,String userName)
     /**
      * Check the password guidelines
      */
@@ -59,4 +53,23 @@ public class SystemControllerTest {
         assertFalse(systemController.changePassword("123456 abcde'","admin")); //include space
         assertFalse(systemController.changePassword("123456admin","admin")); //include the user name
     }
+
+    //T1.1_4
+    /**
+     * Test wrong/right password in the initialize system process
+     */
+    @Test
+    public void initializeSystemTest() {
+
+        SystemController systemController = SystemController.SystemController();
+        assertTrue(systemController.initializeSystem("admin"));
+        assertFalse(systemController.initializeSystem("wrongPass"));
+
+    }
+
+
+
+
+
+
 }

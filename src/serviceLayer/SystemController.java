@@ -28,6 +28,9 @@ public class SystemController {
 
     }
 
+    /**
+     * @return single instance of System control for Singleton purposes.
+     */
     public static SystemController SystemController() {
         if (single_instance == null) {
             single_instance = new SystemController();
