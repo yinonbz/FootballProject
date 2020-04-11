@@ -33,6 +33,7 @@ public class SystemController {
         this.systemComplaints = new HashMap<>();
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
+        System.out.println("Tomer");
 
     }
 
