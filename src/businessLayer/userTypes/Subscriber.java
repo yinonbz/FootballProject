@@ -17,10 +17,11 @@ public abstract class Subscriber {
      * @param username
      * @param password
      */
-    public Subscriber(String username, String password) {
+    public Subscriber(String username, String password, SystemController systemController) {
         this.username = username;
         this.password = password;
         complaints = new HashMap<>();
+        this.systemController=systemController;
     }
 
     /**

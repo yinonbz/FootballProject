@@ -11,8 +11,9 @@ public class Guest {
     /**
      * @param guestId
      */
-    public Guest(int guestId) {
+    public Guest(int guestId, SystemController systemController) {
         this.guestId = guestId;
+        this.systemController=systemController;
     }
 
     /**

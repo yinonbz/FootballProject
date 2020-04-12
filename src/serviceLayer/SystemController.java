@@ -35,7 +35,6 @@ public class SystemController {
         this.systemComplaints = new HashMap<>();
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
-        System.out.println("Tomer");
     }
     /**
      * @return single instance of System control for Singleton purposes.
@@ -291,6 +290,14 @@ public class SystemController {
         this.leagues = leagues;
     }
 
+    /**
+     * getter of system complaints
+     * @return the system complaints
+     */
+    public HashMap <Integer, Complaint> getSystemComplaints(){
+        return systemComplaints;
+    }
+
     //-------------------TEAM--------------------//
 
     /**
@@ -385,10 +392,8 @@ public class SystemController {
                 return "The User " + subscriberName + " was removed";
             }
         }
-        System.out.println("a");
         return "User doesn't exist in the system";
     }
-
 
     /**
      * the function displays the complaints in the system to the admin
@@ -414,23 +419,18 @@ public class SystemController {
      * UC 8.3.2
      */
     public boolean replyComplaints(int complaintID,Subscriber subscriber, String comment){
-        if(subscriber instanceof Admin){
+        if(subscriber instanceof Admin && !comment.isEmpty()){
             if(systemComplaints.containsKey(complaintID)){
                 Complaint complaint = systemComplaints.get(complaintID);
-                Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
-                if(editedComplaint!=null){
+                //Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
+                    complaint.setAnswered(true);
+                    complaint.setComment(comment);
+                    complaint.setHandler(subscriber.getUsername());
                     systemComplaints.remove(complaintID);
-                    systemComplaints.put(complaintID,editedComplaint);
-                    //sets the new complaint in the user's data structure
-                    subscriber.setComplaint(editedComplaint);
+                    systemComplaints.put(complaintID,complaint);
                     return true;
                 }
             }
-        }
         return false;
+        }
     }
-
-
-
-
-}

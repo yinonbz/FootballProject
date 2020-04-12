@@ -1,9 +1,9 @@
-//package businessLayer.userTypes.Administration;
+package businessLayer.userTypes.Administration;
 
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
-//import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AdminTest {
 

@@ -2,6 +2,7 @@ import businessLayer.Team.Team;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
 import org.junit.Test;
+import serviceLayer.SystemController;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,13 +14,14 @@ public class TestTeamOwner {
     private TeamOwner Nissanov;
     private Team BeerSheva;
     private Team ManchesterUnited;
+    private SystemController systemController;
 
 
     @Before
     public void createTestValues(){
-        Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona");
-        Glazers = new TeamOwner("Glazers", "manchesterU","glazer");
-        Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov");
+        Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
+        Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
+        Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
         BeerSheva = new Team("Beer Sheva", Barkat,1973);
         ManchesterUnited = new Team("Manchester United",Barkat,1899);
         Barkat.getTeams().add(BeerSheva); //todo change it later to a normal function UC 6.1

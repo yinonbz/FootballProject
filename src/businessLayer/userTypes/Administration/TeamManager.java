@@ -2,6 +2,7 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
+import serviceLayer.SystemController;
 
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class TeamManager extends Subscriber {
      * @param name
      * @param teams
      */
-    public TeamManager(String username, String password, String name, List<Team> teams) {
-        super(username, password);
+    public TeamManager(String username, String password, String name, List<Team> teams, SystemController systemController) {
+        super(username, password, systemController);
         this.name = name;
         this.teams = teams;
     }

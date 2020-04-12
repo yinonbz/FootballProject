@@ -2,6 +2,7 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
+import serviceLayer.SystemController;
 
 public class Coach extends Subscriber {
 
@@ -18,8 +19,8 @@ public class Coach extends Subscriber {
      * @param training
      * @param teamJob
      */
-    public Coach(String username, String password, String name,String training, String teamJob) {
-        super(username, password);
+    public Coach(String username, String password, String name,String training, String teamJob, SystemController systemController) {
+        super(username, password, systemController);
         this.name=name;
         this.training=training;
         this.teamJob=teamJob;

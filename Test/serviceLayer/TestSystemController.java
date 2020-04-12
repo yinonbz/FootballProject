@@ -1,4 +1,5 @@
 import businessLayer.Team.Team;
+import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
@@ -26,16 +27,15 @@ public class TestSystemController {
     private Fan fan;
 
 
-
     @Before
-    public void createTestValues(){
+    public void createTestValuesForSystemController(){
         systemController = SystemController.SystemController();
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
         admin2 = new Admin ("ItaiKatz", "helloWorld", "itai",systemController);
-        Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona");
-        Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov");
-        Glazers = new TeamOwner("Glazers", "manchesterU","glazer");
-        fan = new Fan ("Gate13","aviNimni","avi");
+        Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
+        Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
+        Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
+        fan = new Fan ("Gate13","aviNimni","avi",systemController);
         systemController.getSystemSubscribers().put("AlonaBarkat",Barkat);
         systemController.getSystemSubscribers().put("Nissanov",Nissanov);
         systemController.getSystemSubscribers().put("Glazers",Glazers);
@@ -50,8 +50,10 @@ public class TestSystemController {
         Glazers.getTeams().add(ManchesterUnited);
         systemController.addTeam(ManchesterUnited);
         systemController.addTeam(BeerSheva);
-        fan.createComplaint("My system doesn't work");
-        fan.createComplaint("I don't like this team");
+        systemController.addComplaint("My system doesn't work",fan);
+        systemController.addComplaint("I don't like this team",fan);
+        systemController.addComplaint("",fan);
+
 
 
     }
@@ -101,9 +103,30 @@ public class TestSystemController {
     @Test
     public void UC8_3_1(){
 
+        //1
+        //check if the complaints are displayed
+        assertEquals(2,admin.displayComplaints().size());
 
     }
 
+
+    @Test
+    public void UC8_3_2(){
+
+        //1
+        //regular test add a comment
+        assertTrue(admin.replyComplaints(0,admin, "Solved"));
+ //       System.out.println(systemController.getSystemComplaints().get(0).toString());
+
+        //2
+        //can't add an empty comment
+        assertFalse(admin.replyComplaints(0,admin, ""));
+
+        //3
+        //can't add a comment to invalid complaint id
+        assertFalse(admin.replyComplaints(3,admin, ""));
+
+    }
 
     //T1.1_1 - Check singleton functionality
     @Test
@@ -129,15 +152,18 @@ public class TestSystemController {
     public void changePasswordTest() {
         SystemController systemController = SystemController.SystemController();
 
+        /*
         System.out.println("Please enter a new password while following the guidelines below:");
         System.out.println("* The password must be 6 to 32 characters long.");
         System.out.println("* The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.");
         System.out.println("* The password is case-sensitive.");
         System.out.println("* Single quotes, double quotes, ampersands ( ‘  \"  & ), and spaces are not allowed.");
         System.out.println("* The password cannot be the same as your User Name name and should not contain any part of your user name.");
+        */
         String s = "* Do not post or share your password or send your password to others by email.";
+        /*
         System.out.println(s.toUpperCase());
-
+        */
         assertFalse(systemController.changePassword("a2","admin")); //too short
         assertFalse(systemController.changePassword("abcdefghijklmnopqrstuvwxyz1234567890","admin")); //too short
         assertFalse(systemController.changePassword("abcdefg","admin")); //include only letters
@@ -168,4 +194,21 @@ public class TestSystemController {
 
 
 
+    @Test
+    public void UC8_3_2(){
+
+        //1
+        //regular test add a comment
+        assertTrue(admin.replyComplaints(0,admin, "Solved"));
+ //       System.out.println(systemController.getSystemComplaints().get(0).toString());
+
+        //2
+        //can't add an empty comment
+        assertFalse(admin.replyComplaints(0,admin, ""));
+
+        //3
+        //can't add a comment to invalid complaint id
+        assertFalse(admin.replyComplaints(3,admin, ""));
+
+    }
 }
