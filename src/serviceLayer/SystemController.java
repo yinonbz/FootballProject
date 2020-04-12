@@ -433,4 +433,20 @@ public class SystemController {
             }
         return false;
         }
+
+    /**
+     * @return Map of the overall team in the system
+     */
+    public HashMap<String, Team> getTeams() {
+        return teams;
     }
+
+    /**
+     * @param teams new Map of the overall team in the system
+     */
+    public void setTeams(HashMap<String, Team> teams) {
+        this.teams = teams;
+    }
+}
+
+
