@@ -135,8 +135,8 @@ public class TestSystemController {
     }
 
     //T1.1_2 - Test insertInfo(String userName, String password)
-    @Before
-    public void insertInfo() {
+    @BeforeClass
+    public static void insertInfo() {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.insertInfo("admin","admin"));
         assertFalse(systemController.insertInfo("admin","wrongPass"));

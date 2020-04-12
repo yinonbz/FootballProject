@@ -88,7 +88,7 @@ public class SystemController {
     public Boolean insertInfo(String userName, String password) {
         if (userName.equals("admin") && password.equals("admin")) {
             temporaryAdmin = new Admin(userName, password, "tempAdmin",this);
-            System.out.println("The temporary admin has been created successfully.");
+            //System.out.println("The temporary admin has been created successfully.");
             return true;
         }
         return false;
@@ -132,19 +132,19 @@ public class SystemController {
      */
     public boolean checkPasswordStrength(String password, String userName) {
         if (password.length() < 6 || password.length() > 32) {
-            System.out.println("The password must be 6 to 32 characters long.");
+            //System.out.println("The password must be 6 to 32 characters long.");
             return false;
         }
         if (!password.matches(".*\\d.*") || !password.matches(".*[a-z].*")) {
-            System.out.println("The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.");
+            //System.out.println("The password must contain a mix of letters, numbers, and/or special characters. Passwords containing only letters or only numbers are not accepted.");
             return false;
         }
         if (password.contains("'") || password.contains("\"") || password.contains("&") || password.contains(" ")) {
-            System.out.println("Single quotes, double quotes, ampersands ( ‘  \"  & ), and spaces are not allowed.");
+            //System.out.println("Single quotes, double quotes, ampersands ( ‘  \"  & ), and spaces are not allowed.");
             return false;
         }
         if (password.contains(userName)) {
-            System.out.println("The password cannot be the same as your User Name name and should not contain any part of your user name.");
+            //System.out.println("The password cannot be the same as your User Name name and should not contain any part of your user name.");
             return false;
         }
         return true;
