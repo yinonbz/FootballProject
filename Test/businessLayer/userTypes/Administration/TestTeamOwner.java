@@ -68,9 +68,11 @@ public class TestTeamOwner {
         assertEquals(teamOwner.getTeam("HTA"),team2);
         assertNotEquals(teamOwner.getTeam("HTA"),team1);
 
-        //2 - test changeStatus
+        //2 - test changeStatus - enabled to disabled
         teamOwner.changeStatus(team1);
         assertFalse(team1.getActive());
+
+        //3 - test changeStatus - disabled to enabled
         teamOwner.changeStatus(team1);
         assertTrue(team1.getActive());
     }
