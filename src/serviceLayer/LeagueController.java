@@ -1,11 +1,13 @@
 package serviceLayer;
 
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class LeagueController {
@@ -17,12 +19,13 @@ public class LeagueController {
     private List<AssociationRepresentative> associationRepresentatives;
     private List<Referee> referees;
     private AlertSystem alertSystem;
+    private HashMap <Integer, Stadium> stadiums;
 
     /**
      *
      */
     public LeagueController() {
-
+        stadiums = new HashMap<>();
     }
 
     /**
@@ -166,4 +169,9 @@ public class LeagueController {
     public void setAlertSystem(AlertSystem alertSystem) {
         this.alertSystem = alertSystem;
     }
+
+    public HashMap<Integer, Stadium> getStadiums() {
+        return stadiums;
+    }
+
 }

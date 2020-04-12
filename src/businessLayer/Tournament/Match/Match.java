@@ -8,7 +8,7 @@ import businessLayer.userTypes.Administration.Referee;
 import java.util.Date;
 import java.util.List;
 
-abstract public class Match {
+public class Match {
     private League league;
     private Season season;
     private Team homeTeam;
@@ -18,7 +18,9 @@ abstract public class Match {
     private String time;
     private Date date;
     private Boolean isFinished;
-
+    private int matchId;
+    private Stadium stadium;
+    private static int index=1;
     /**
      * @param league
      * @param season
@@ -30,7 +32,7 @@ abstract public class Match {
      * @param date
      * @param isFinished
      */
-    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished) {
+    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium) {
         this.league = league;
         this.season = season;
         this.homeTeam = homeTeam;
@@ -40,6 +42,22 @@ abstract public class Match {
         this.time = time;
         this.date = date;
         this.isFinished = isFinished;
+        this.matchId=index;
+        this.stadium=stadium;
+        index++;
+
+    }
+
+    /**
+     * constructor for match policy
+     * @param home the home team
+     * @param away the away team
+     * @param stadium the stadium
+     */
+    public Match (Team home, Team away, Stadium stadium){
+        this.homeTeam=home;
+        this.awayTeam=away;
+        this.stadium=stadium;
     }
 
     /**
@@ -173,5 +191,29 @@ abstract public class Match {
      */
     public void setFinished(Boolean finished) {
         isFinished = finished;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getMatchId() {
+        return matchId;
+    }
+
+    /**
+     *
+     * @param matchId
+     */
+    public void setMatchId(int matchId) {
+        this.matchId = matchId;
+    }
+
+    public Stadium getStadium() {
+        return stadium;
+    }
+
+    public void setStadium(Stadium stadium) {
+        this.stadium = stadium;
     }
 }
