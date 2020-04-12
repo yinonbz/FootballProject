@@ -66,11 +66,11 @@ public class TeamOwner extends Subscriber {
     public void changeStatus(Team team) {
         if (!team.getActive()) {
             team.setActive(true);
-            System.out.println("The team '" + team + "' has been enabled and is now active.");
+            //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
         }
         else{
             team.setActive(false);
-            System.out.println("The team '" + team + "' has been disabled and is now not active.");
+            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not active.");
         }
     }
 
