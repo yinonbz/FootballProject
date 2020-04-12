@@ -51,16 +51,10 @@ public class TeamOwner extends Subscriber {
     public Team getTeam(String teamName) {
         Iterator<Team> it = teams.iterator();
         while (it.hasNext()) {
-            Team teamCheck = ((Team) it);
+            Team teamCheck = it.next();
             if (teamCheck.getTeamName().equals(teamName)) {
-/*                if(!teamCheck.getActive()) {
-                    teamCheck.setActive(true);
-                    System.out.println("The team '" + teamName + "' has been enabled and is not active.");*/
                 return teamCheck;
             }
-/*                else{
-                    System.out.println("The team '" + teamName + "' has already been enabled and is already active.");
-                }*/
         }
         //System.out.println("There is no team with the name '" + teamName + "' in the system.");
         return null;
@@ -69,8 +63,15 @@ public class TeamOwner extends Subscriber {
     /**
      * @param team team to be enabled/disabled.
      */
-    public void changeStatus(Team team){
-
+    public void changeStatus(Team team) {
+        if (!team.getActive()) {
+            team.setActive(true);
+            System.out.println("The team '" + team + "' has been enabled and is now active.");
+        }
+        else{
+            team.setActive(false);
+            System.out.println("The team '" + team + "' has been disabled and is now not active.");
+        }
     }
 
     /**

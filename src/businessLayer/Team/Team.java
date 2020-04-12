@@ -67,6 +67,7 @@ public class Team {
         this.teamName=teamName;
         teamOwners= new HashSet<>();
         teamOwners.add(teamOwner);
+        teamOwner.getTeams().add(this);
         this.establishedYear=establishedYear;
         isActive=true;
         closedByAdmin=false;
