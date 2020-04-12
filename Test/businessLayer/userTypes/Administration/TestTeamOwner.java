@@ -4,8 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import serviceLayer.SystemController;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTeamOwner {
 
@@ -55,5 +56,23 @@ public class TestTeamOwner {
         assertFalse(Nissanov.isExclusiveTeamOwner());
     }
 
+    @Test
+    public void UC6_6() {
+        TeamOwner teamOwner = new TeamOwner("teamOwner1","to123456","Alon",SystemController.SystemController());
+        Team team1 = new Team("Beer Sheva", teamOwner,1993);
+        Team team2 = new Team("HTA", teamOwner,1990);
+
+        //1 - test getTeam
+        assertEquals(teamOwner.getTeam("Beer Sheva"),team1);
+        assertNull(teamOwner.getTeam("NAS"));
+        assertEquals(teamOwner.getTeam("HTA"),team2);
+        assertNotEquals(teamOwner.getTeam("HTA"),team1);
+
+        //2 - test changeStatus
+        teamOwner.changeStatus(team1);
+        assertFalse(team1.getActive());
+        teamOwner.changeStatus(team1);
+        assertTrue(team1.getActive());
+    }
 
 }
