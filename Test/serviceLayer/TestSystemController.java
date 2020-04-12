@@ -1,32 +1,37 @@
-package serviceLayer;
-
 import businessLayer.Team.Team;
+import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import serviceLayer.SystemController;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Scanner;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
 
 public class TestSystemController {
 
-    private SystemController systemController;
-    private Team ManchesterUnited;
-    private Team BeerSheva;
-    private TeamOwner Glazers;
-    private TeamOwner Nissanov;
-    private TeamOwner Barkat;
-    private Admin admin;
-    private Admin admin2;
-    private Fan fan;
+    public static SystemController systemController;
+    public static Team ManchesterUnited;
+    public static Team BeerSheva;
+    public static TeamOwner Glazers;
+    public static TeamOwner Nissanov;
+    public static TeamOwner Barkat;
+    public static Admin admin;
+    public static Admin admin2;
+    public static Fan fan;
 
 
-    @Before
-    public void createTestValuesForSystemController(){
+    @BeforeClass
+    public static void createTestValuesForSystemController(){
         systemController = SystemController.SystemController();
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
         admin2 = new Admin ("ItaiKatz", "helloWorld", "itai",systemController);
@@ -105,6 +110,7 @@ public class TestSystemController {
 
     }
 
+
     @Test
     public void UC8_3_2(){
 
@@ -122,7 +128,6 @@ public class TestSystemController {
         assertFalse(admin.replyComplaints(3,admin, ""));
 
     }
-
 
     //T1.1_1 - Check singleton functionality
     @Test
@@ -184,6 +189,4 @@ public class TestSystemController {
         assertFalse(systemController.initializeSystem("wrongPass"));
 
     }
-
-
 }

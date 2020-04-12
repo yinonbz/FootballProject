@@ -137,11 +137,4 @@ public class Complaint {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    public String toString(){
-        return "Complaint ID: "+ id + "\n" + "Writer: " + writer + "\n" +
-                "Content: " + complaintContent + "\n" + "Handler: " + handler + "\n" +
-                "Comment: " + comment + "\n" + "Solved: " + isAnswered;
-    }
 }
