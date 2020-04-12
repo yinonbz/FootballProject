@@ -1,18 +1,15 @@
+package serviceLayer;
+
 import businessLayer.Team.Team;
-import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
 import org.junit.Before;
 import org.junit.BeforeClass;
+
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import serviceLayer.SystemController;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Scanner;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
