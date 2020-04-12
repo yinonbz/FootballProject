@@ -10,6 +10,7 @@ import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,7 +47,13 @@ public class Team {
         this.players = players;
         this.coaches = coaches;
         this.teamManager = teamManager;
+        teamManager.getTeams().add(this);
         this.teamOwners = teamOwners;
+        Iterator<TeamOwner> it = teamOwners.iterator();
+        while (it.hasNext()) {
+            TeamOwner teamOwner = it.next();
+            teamOwner.getTeams().add(this);
+        }
         this.financialMonitoring = financialMonitoring;
         this.matches = matches;
         this.seasons = seasons;
