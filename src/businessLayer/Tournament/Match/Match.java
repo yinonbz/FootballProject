@@ -20,6 +20,7 @@ public class Match {
     private Boolean isFinished;
     private int matchId;
     private Stadium stadium;
+    private int numerOfFans;
     private static int index=1;
     /**
      * @param league
@@ -31,8 +32,9 @@ public class Match {
      * @param time
      * @param date
      * @param isFinished
+     * @param numerOfFans
      */
-    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium) {
+    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium, int numerOfFans) {
         this.league = league;
         this.season = season;
         this.homeTeam = homeTeam;
@@ -44,6 +46,7 @@ public class Match {
         this.isFinished = isFinished;
         this.matchId=index;
         this.stadium=stadium;
+        this.numerOfFans=numerOfFans;
         index++;
 
     }
@@ -215,5 +218,13 @@ public class Match {
 
     public void setStadium(Stadium stadium) {
         this.stadium = stadium;
+    }
+
+    public int getNumerOfFans() {
+        return numerOfFans;
+    }
+
+    public void setNumerOfFans(int numerOfFans) {
+        this.numerOfFans = numerOfFans;
     }
 }
