@@ -28,7 +28,7 @@ public class Team {
     private Boolean isActive;
     private Boolean closedByAdmin; //refers to UC 8.1 - can be changed only once
 
-    /**
+    /**a
      * @param players
      * @param coaches
      * @param teamManager

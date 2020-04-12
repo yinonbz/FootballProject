@@ -15,7 +15,7 @@ public class Admin extends Subscriber {
      * @param name
      */
     public Admin(String username, String password, String name, SystemController systemController) {
-        super(username, password);
+        super(username, password,systemController);
         this.name = name;
         this.systemController=systemController;
     }

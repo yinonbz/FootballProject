@@ -2,6 +2,7 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
+import serviceLayer.SystemController;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class Player extends Subscriber {
      * @param fieldJob
      * @param teams
      */
-    public Player(String username, String password, String name, String birthDate, String fieldJob, List<Team> teams) {
-        super(username, password);
+    public Player(String username, String password, String name, String birthDate, String fieldJob, List<Team> teams, SystemController systemController) {
+        super(username, password,systemController);
         this.name = name;
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;

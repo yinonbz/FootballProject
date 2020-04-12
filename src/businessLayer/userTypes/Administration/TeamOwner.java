@@ -19,8 +19,8 @@ public class TeamOwner extends Subscriber {
      * @param password
      * @param name
      */
-    public TeamOwner(String username, String password, String name) {
-        super(username, password);
+    public TeamOwner(String username, String password, String name, SystemController systemController) {
+        super(username, password, systemController);
         this.name= name;
         teams = new HashSet<>();
     }

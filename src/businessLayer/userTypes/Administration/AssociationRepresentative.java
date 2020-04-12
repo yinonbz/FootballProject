@@ -3,6 +3,7 @@ package businessLayer.userTypes.Administration;
 import serviceLayer.LeagueController;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Subscriber;
+import serviceLayer.SystemController;
 
 public class AssociationRepresentative extends Subscriber {
     private String name;
@@ -16,8 +17,8 @@ public class AssociationRepresentative extends Subscriber {
      * @param financialMonitoring
      * @param leaguesController
      */
-    public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeagueController leaguesController) {
-        super(username, password);
+    public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeagueController leaguesController, SystemController systemController) {
+        super(username, password,systemController);
         this.name = name;
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leagueController;

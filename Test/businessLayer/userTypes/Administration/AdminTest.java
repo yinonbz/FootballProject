@@ -12,10 +12,10 @@ public class AdminTest {
     public void UC8_1(){
         //1
         //checks if the function works
-        assertTrue(true);
+        //assertTrue(true);
         //2
         //checks the admin can't delete a user that doesn't exist
-        assertFalse(false);
+        //assertFalse(false);
     }
 
 }
