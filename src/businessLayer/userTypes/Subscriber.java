@@ -22,7 +22,6 @@ public abstract class Subscriber {
         this.password = password;
         complaints = new HashMap<>();
         this.systemController=systemController;
-        System.out.println("Tomer");
     }
 
     /**

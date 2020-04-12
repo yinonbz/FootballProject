@@ -6,6 +6,7 @@ import serviceLayer.SystemController;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,26 +14,27 @@ public class TeamOwner extends Subscriber {
 
     private String name;
     private HashSet<Team> teams;
+
     /**
-     *
      * @param username
      * @param password
      * @param name
      */
     public TeamOwner(String username, String password, String name, SystemController systemController) {
         super(username, password, systemController);
-        this.name= name;
+        this.name = name;
         teams = new HashSet<>();
     }
 
     /**
      * the function checks if the team owner has a team that nobody but him ows, so he can't be deleted as a user
+     *
      * @return true if he owns one of the teams elusively
      */
-    public boolean isExclusiveTeamOwner(){
-        if (teams.size()>0){
-            for(Team team : teams){
-                if(team.getTeamOwners().size()==1){
+    public boolean isExclusiveTeamOwner() {
+        if (teams.size() > 0) {
+            for (Team team : teams) {
+                if (team.getTeamOwners().size() == 1) {
                     return true;
                 }
             }
@@ -41,42 +43,68 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
+     * UC 6.6
+     * @param teamName the name of the team to be returned.
+     * @return instance of the team with the name of 'teamName'.
+     * null if there is no such team in the system.
+     */
+    public Team getTeam(String teamName) {
+        Iterator<Team> it = teams.iterator();
+        while (it.hasNext()) {
+            Team teamCheck = ((Team) it);
+            if (teamCheck.getTeamName().equals(teamName)) {
+/*                if(!teamCheck.getActive()) {
+                    teamCheck.setActive(true);
+                    System.out.println("The team '" + teamName + "' has been enabled and is not active.");*/
+                return teamCheck;
+            }
+/*                else{
+                    System.out.println("The team '" + teamName + "' has already been enabled and is already active.");
+                }*/
+        }
+        //System.out.println("There is no team with the name '" + teamName + "' in the system.");
+        return null;
+    }
+
+    /**
+     * @param team team to be enabled/disabled.
+     */
+    public void changeStatus(Team team){
+
+    }
+
+    /**
      * @return
      */
-    public boolean editProperties(){
+    public boolean editProperties() {
         return true;
     }
 
     /**
-     *
      * @return
      */
-    public boolean editOwners(){
+    public boolean editOwners() {
 
         return true;
     }
 
     /**
-     *
      * @return
      */
 
-    public boolean editManagers(){
+    public boolean editManagers() {
         return true;
     }
 
     /**
-     *
      * @return
      */
-    public boolean editTeams(){
+    public boolean editTeams() {
 
         return true;
     }
 
     /**
-     *
      * @return
      */
     public String getName() {
@@ -84,7 +112,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @param name
      */
     public void setName(String name) {
@@ -92,7 +119,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @return
      */
     public HashSet<Team> getTeams() {
@@ -100,7 +126,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @param teams
      */
 

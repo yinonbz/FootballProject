@@ -29,13 +29,26 @@ public class Admin extends Subscriber {
     }
 
     /**
+     * the public function that the admin can reply on comments
+     * @param complaintID the complaint ID the admin is choosing
+     * @param subscriber the subscriber type
+     * @param comment the comment of the admin
+     * @return true if the complaint was added
+     * UC 8.3.2
+     */
+    public boolean replyComplaints(int complaintID,Subscriber subscriber, String comment){
+        return systemController.replyComplaints(complaintID, subscriber, comment);
+    }
+
+    /**
      * the function adds the comment to the complaint
      * @param complaint the complaint the admin wants to answer
      * @param comment the comment of the admin
      * @return the complaint
      * UC 8.3.2
      */
-    public Complaint replyComplaints(Complaint complaint, String comment){
+    /*
+    private Complaint replyComplaints(Complaint complaint, String comment){
         if (complaint!=null && !comment.isEmpty()){
             complaint.setAnswered(true);
             complaint.setComment(comment);
@@ -46,6 +59,7 @@ public class Admin extends Subscriber {
             return null;
         }
     }
+    */
 
     /**
      * the function delete a user from the system
