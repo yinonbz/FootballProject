@@ -4,7 +4,10 @@ import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import serviceLayer.SystemController;
 
 import java.io.ByteArrayInputStream;
@@ -16,19 +19,19 @@ import static org.junit.Assert.*;
 
 public class TestSystemController {
 
-    private SystemController systemController;
-    private Team ManchesterUnited;
-    private Team BeerSheva;
-    private TeamOwner Glazers;
-    private TeamOwner Nissanov;
-    private TeamOwner Barkat;
-    private Admin admin;
-    private Admin admin2;
-    private Fan fan;
+    public static SystemController systemController;
+    public static Team ManchesterUnited;
+    public static Team BeerSheva;
+    public static TeamOwner Glazers;
+    public static TeamOwner Nissanov;
+    public static TeamOwner Barkat;
+    public static Admin admin;
+    public static Admin admin2;
+    public static Fan fan;
 
 
-    @Before
-    public void createTestValuesForSystemController(){
+    @BeforeClass
+    public static void createTestValuesForSystemController(){
         systemController = SystemController.SystemController();
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
         admin2 = new Admin ("ItaiKatz", "helloWorld", "itai",systemController);
@@ -53,8 +56,6 @@ public class TestSystemController {
         systemController.addComplaint("My system doesn't work",fan);
         systemController.addComplaint("I don't like this team",fan);
         systemController.addComplaint("",fan);
-
-
 
     }
 
@@ -186,29 +187,6 @@ public class TestSystemController {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.initializeSystem("admin"));
         assertFalse(systemController.initializeSystem("wrongPass"));
-
-    }
-
-
-
-
-
-
-    @Test
-    public void UC8_3_2(){
-
-        //1
-        //regular test add a comment
-        assertTrue(admin.replyComplaints(0,admin, "Solved"));
- //       System.out.println(systemController.getSystemComplaints().get(0).toString());
-
-        //2
-        //can't add an empty comment
-        assertFalse(admin.replyComplaints(0,admin, ""));
-
-        //3
-        //can't add a comment to invalid complaint id
-        assertFalse(admin.replyComplaints(3,admin, ""));
 
     }
 }
