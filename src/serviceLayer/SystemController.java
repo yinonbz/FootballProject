@@ -385,8 +385,10 @@ public class SystemController {
                 return "The User " + subscriberName + " was removed";
             }
         }
+        System.out.println("a");
         return "User doesn't exist in the system";
     }
+
 
     /**
      * the function displays the complaints in the system to the admin
