@@ -11,7 +11,6 @@ public class TestTeam {
     private SystemController systemController;
 
     @Before
-
     public void createTestValues(){
         BeerSheva = new Team("Beer Sheva", Barkat,1973);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
