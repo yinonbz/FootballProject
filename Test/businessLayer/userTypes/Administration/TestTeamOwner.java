@@ -93,6 +93,4 @@ public class TestTeamOwner {
         assertFalse(Barkat.sendRequestForTeam("","2004"));
 
     }
-
-
 }

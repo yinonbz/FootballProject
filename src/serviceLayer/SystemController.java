@@ -476,4 +476,26 @@ public class SystemController {
         return false;
     }
 
+    /**
+     * This function will create variables for the user to enter for the login procedure, and will send them (via enterUserDetails(userNameInput, passwordInput) to be filled by the guest in the UI/GUI.
+     * @param guest The guest which started the login procedure.
+     * @return the instance of Subscriber from systemSubscribers, if the login details were correct.
+     * NULL if the login form wasn't filled properly, or one of the user details wasn't correct.
+     */
+    public Subscriber createLoginForm(Guest guest) {
+        String userNameInput = null;
+        String passwordInput = null;
+        guest.enterUserDetails(userNameInput, passwordInput);
+        if(userNameInput == null || userNameInput.length() == 0 || passwordInput == null || passwordInput.length() == 0){
+            System.out.println("Not all fields were filled by the user.");
+            return null;
+        }
+        if(systemSubscribers.containsKey(userNameInput)){
+            if(systemSubscribers.get(userNameInput).getPassword().equals(passwordInput)){
+                return systemSubscribers.get(userNameInput);
+            }
+        }
+        System.out.println("Wrong Password or User Name.");
+        return null;
+    }
 }
