@@ -1,12 +1,12 @@
-package businessLayer.userTypes.Administration;
-
 import businessLayer.Team.Team;
+import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.SystemController;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTeamOwner {
 
