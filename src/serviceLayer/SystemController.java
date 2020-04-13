@@ -2,6 +2,7 @@ package serviceLayer;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -16,17 +17,19 @@ public class SystemController {
 
     private static SystemController single_instance = null; //singleton instance
 
-    private Map<Subscriber,List<String>> userNotifications;
+    private Map<Subscriber, List<String>> userNotifications;
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private List<Guest> onlineGuests;
-    private HashMap<String,Subscriber> systemSubscribers; //name of the username, subscriber
+    private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
     private List<Admin> admins; //todo check why we need this field tomer
     private LoggingSystem loggingSystem;
     private List<League> leagues;
-    private HashMap <String, Team> teams; //name of the team, the team object
-    private HashMap <Integer, Complaint> systemComplaints; //complaint id, complaint object
+    private HashMap<String, Team> teams; //name of the team, the team object
+    private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
+    private HashMap <String, LinkedList<String>> unconfirmedTeams;
+    private HashMap <Integer, Stadium> stadiums;
 
 
     private SystemController() {
@@ -35,7 +38,10 @@ public class SystemController {
         this.systemComplaints = new HashMap<>();
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
+        unconfirmedTeams = new HashMap<>();
+        stadiums = new HashMap<>();
     }
+
     /**
      * @return single instance of System control for Singleton purposes.
      */
@@ -47,35 +53,32 @@ public class SystemController {
     }
 
     /**
-     *
      * @param subscriber
      * @param notification
      * @return
      */
-    public boolean sendNotification(Subscriber subscriber, String notification){
+    public boolean sendNotification(Subscriber subscriber, String notification) {
 
         return true;
     }
 
     /**
-     *
      * @param logs
      * @return
      */
 
-    public boolean sendLogs(List<String> logs){
+    public boolean sendLogs(List<String> logs) {
 
         return true;
     }
 
     /**
-     *
      * @param followers
      * @param Alerts
      * @return
      */
 
-    public boolean sendAlert(List<Subscriber> followers, List<String> Alerts){
+    public boolean sendAlert(List<Subscriber> followers, List<String> Alerts) {
 
         return true;
     }
@@ -87,7 +90,7 @@ public class SystemController {
      */
     public Boolean insertInfo(String userName, String password) {
         if (userName.equals("admin") && password.equals("admin")) {
-            temporaryAdmin = new Admin(userName, password, "tempAdmin",this);
+            temporaryAdmin = new Admin(userName, password, "tempAdmin", this);
             //System.out.println("The temporary admin has been created successfully.");
             return true;
         }
@@ -158,7 +161,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param userNotifications
      */
 
@@ -167,7 +169,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -176,7 +177,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param alertSystem
      */
 
@@ -185,7 +185,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -194,7 +193,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param recommendationSystem
      */
 
@@ -203,7 +201,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -212,7 +209,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param onlineGuests
      */
 
@@ -221,7 +217,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -230,7 +225,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param systemSubscribers
      */
 
@@ -239,7 +233,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -248,7 +241,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param admins
      */
 
@@ -257,7 +249,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
     public LoggingSystem getLoggingSystem() {
@@ -265,7 +256,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param loggingSystem
      */
     public void setLoggingSystem(LoggingSystem loggingSystem) {
@@ -273,7 +263,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -282,7 +271,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param leagues
      */
 
@@ -292,9 +280,10 @@ public class SystemController {
 
     /**
      * getter of system complaints
+     *
      * @return the system complaints
      */
-    public HashMap <Integer, Complaint> getSystemComplaints(){
+    public HashMap<Integer, Complaint> getSystemComplaints() {
         return systemComplaints;
     }
 
@@ -302,12 +291,13 @@ public class SystemController {
 
     /**
      * the function gets a team and put it into the data structure that holds all of the teams in the system
+     *
      * @param team the team we want to add into the system
      */
-    public void addTeam(Team team){
-        if(team!=null){
-            if(!teams.containsKey(team)){
-                teams.put(team.getTeamName(),team);
+    public void addTeam(Team team) {
+        if (team != null) {
+            if (!teams.containsKey(team)) {
+                teams.put(team.getTeamName(), team);
             }
         }
     }
@@ -315,27 +305,28 @@ public class SystemController {
 
     /**
      * the function closes a team Permanently by the admin
+     *
      * @param teamName the team the user wants to close
      * @param userType the user type of the user that requested to close the team
      * @return true if the status was changed to close
      * UC 8.1
      */
-    public boolean closeTeamByAdmin(String teamName, Subscriber userType){
-        if (userType instanceof Admin){
-            if(teams.containsKey(teamName)){
+    public boolean closeTeamByAdmin(String teamName, Subscriber userType) {
+        if (userType instanceof Admin) {
+            if (teams.containsKey(teamName)) {
                 Team chosenTeam = teams.get(teamName);
                 //checks what is the status of the team
-                if(chosenTeam.closeTeamPermanently()) {
+                if (chosenTeam.closeTeamPermanently()) {
                     teams.replace(teamName, chosenTeam);
                     return true;
                 }
                 //team is already closed by admin
-                else{
+                else {
                     return false;
                 }
             }
             //team doesn't exist
-            else{
+            else {
                 return false;
             }
         }
@@ -347,15 +338,16 @@ public class SystemController {
 
     /**
      * the function lets the subscriber to upload a complaint
-     * @param content the content of the complaint
+     *
+     * @param content    the content of the complaint
      * @param subscriber the subscriber who wants to complain
-     * UC 3.4
+     *                   UC 3.4
      */
-    public void addComplaint (String content, Subscriber subscriber){
+    public void addComplaint(String content, Subscriber subscriber) {
         Complaint complaint = subscriber.createComplaint(content);
-        if(complaint!=null){
+        if (complaint != null) {
             complaint.setId(systemComplaints.size());
-            systemComplaints.put(systemComplaints.size(),complaint);
+            systemComplaints.put(systemComplaints.size(), complaint);
             subscriber.addComplaint(complaint);
         }
     }
@@ -364,29 +356,29 @@ public class SystemController {
 
     /**
      * the function removes a user from the system by the admin
+     *
      * @param subscriberName the name of the user we want to delete
-     * @param userType the type of the user that tries to delete
+     * @param userType       the type of the user that tries to delete
      * @return a string that explains what was the result
      * 8.2
      */
 
-    public String removeSubscriber (String subscriberName, Subscriber userType){
-        if(subscriberName!=null && (userType instanceof Admin)) {
-            if(systemSubscribers.containsKey(subscriberName)){
+    public String removeSubscriber(String subscriberName, Subscriber userType) {
+        if (subscriberName != null && (userType instanceof Admin)) {
+            if (systemSubscribers.containsKey(subscriberName)) {
                 Subscriber tempSubscriber = systemSubscribers.get(subscriberName);
-                if(tempSubscriber instanceof Admin){
-                    if(userType.getUsername().equals(subscriberName)){
+                if (tempSubscriber instanceof Admin) {
+                    if (userType.getUsername().equals(subscriberName)) {
                         return "Admin can't remove his own user";
                     }
-                }
-                else if (tempSubscriber instanceof TeamOwner){
-                        if (((TeamOwner) tempSubscriber).isExclusiveTeamOwner()){
-                            return "Can't remove an exclusive team owner";
-                        }
+                } else if (tempSubscriber instanceof TeamOwner) {
+                    if (((TeamOwner) tempSubscriber).isExclusiveTeamOwner()) {
+                        return "Can't remove an exclusive team owner";
+                    }
                 }
                 systemSubscribers.remove(subscriberName);
                 //remove from notifications
-                if(userNotifications.containsKey(tempSubscriber)){
+                if (userNotifications.containsKey(tempSubscriber)) {
                     userNotifications.remove(tempSubscriber);
                 }
                 return "The User " + subscriberName + " was removed";
@@ -397,43 +389,101 @@ public class SystemController {
 
     /**
      * the function displays the complaints in the system to the admin
+     *
      * @param subscriber the user who wants to see the complaints
      * @return the complaints in the system
      * UC 8.3.1
      */
-    public HashMap<Integer, Complaint> displayComplaints(Subscriber subscriber){
-        if(subscriber instanceof Admin){
+    public HashMap<Integer, Complaint> displayComplaints(Subscriber subscriber) {
+        if (subscriber instanceof Admin) {
             return systemComplaints;
-        }
-        else{
+        } else {
             return null;
         }
     }
 
     /**
      * the function lets the admin to respond the the comments in the system
+     *
      * @param complaintID the complain's id the admin wants to respond to
-     * @param subscriber the user that wants to respond - has to be an admin
-     * @param comment - the comment of the admin
+     * @param subscriber  the user that wants to respond - has to be an admin
+     * @param comment     - the comment of the admin
      * @return true is he responded successfully
      * UC 8.3.2
      */
-    public boolean replyComplaints(int complaintID,Subscriber subscriber, String comment){
-        if(subscriber instanceof Admin && !comment.isEmpty()){
-            if(systemComplaints.containsKey(complaintID)){
+    public boolean replyComplaints(int complaintID, Subscriber subscriber, String comment) {
+        if (subscriber instanceof Admin && !comment.isEmpty()) {
+            if (systemComplaints.containsKey(complaintID)) {
                 Complaint complaint = systemComplaints.get(complaintID);
                 //Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
-                    complaint.setAnswered(true);
-                    complaint.setComment(comment);
-                    complaint.setHandler(subscriber.getUsername());
-                    systemComplaints.remove(complaintID);
-                    systemComplaints.put(complaintID,complaint);
-                    return true;
+                complaint.setAnswered(true);
+                complaint.setComment(comment);
+                complaint.setHandler(subscriber.getUsername());
+                systemComplaints.remove(complaintID);
+                systemComplaints.put(complaintID, complaint);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //-------------------TeamOwner--------------------//
+
+    /**
+     * the function takes a request for opening a new team and puts it in the data structure
+     * @param details of the new team
+     */
+    public boolean addToTeamConfirmList (LinkedList<String> details, Subscriber subscriber){
+        if(subscriber instanceof TeamOwner) {
+            unconfirmedTeams.put(details.getFirst(), details);
+            return true;
+        }
+        return false;
+    }
+
+    //-------------------TeamOwner--------------------//
+
+    /**
+     * the function approves the request by the AR and updates the new team in the system and in the team owner
+     * @param teamName the name of the team
+     * @param subscriber the subscriber who tries to confirm the request
+     * @return true if it done successfully
+     */
+    public boolean confirmTeamByAssociationRepresntative (String teamName, Subscriber subscriber){
+        if(subscriber instanceof AssociationRepresentative){
+            if(unconfirmedTeams.containsKey(teamName)){
+                //check that a team with a same name doesn't exist
+                if(!teams.containsKey(teamName)){
+                    LinkedList <String> request = unconfirmedTeams.get(teamName);
+                    //checks that the user who wrote the request exists
+                    if (systemSubscribers.containsKey(request.get(2))){
+                        Subscriber teamOwner = systemSubscribers.get(request.get(2));
+                        //checks that the user is a team owner
+                        if(teamOwner instanceof TeamOwner) {
+                            int year = Integer.parseInt(request.get(1));
+                            Team team = new Team(teamName, (TeamOwner) teamOwner, year);
+                            teams.put(teamName,team);
+                            unconfirmedTeams.remove(teamName);
+                            ((TeamOwner) teamOwner).getTeams().add(team);
+                            //updates the structure of the updated subscriber with the team
+                            systemSubscribers.remove(teamOwner.getUsername());
+                            systemSubscribers.put(teamOwner.getUsername(),teamOwner);
+                            return true;
+                        }
+                    }
                 }
             }
-        return false;
         }
+        return false;
+    }
 
+    public HashMap<Integer, Stadium> getStadiums() {
+        return stadiums;
+    }
+
+    public void setStadiums(HashMap<Integer, Stadium> stadiums) {
+        this.stadiums = stadiums;
+    }
     /**
      * this function find the player according to is user name and return it if the player exist in the system
      * @param username the user name of the player
@@ -441,14 +491,14 @@ public class SystemController {
      */
     //todo add to player method isAssociated()
     public Player findPlayer(String username) {
-       Subscriber sub = systemSubscribers.get(username);
-       if(sub instanceof Player){
-           Player p = (Player) sub;
-           //if(p.isAssociated())
-               return p;
-           } else{
-           return null;
-       }
+        Subscriber sub = systemSubscribers.get(username);
+        if(sub instanceof Player){
+            Player p = (Player) sub;
+            //if(p.isAssociated())
+            return p;
+        } else{
+            return null;
+        }
     }
 
     /**
@@ -474,11 +524,11 @@ public class SystemController {
      */
     public Coach findCoach(String assetUserName) {
         Subscriber sub = systemSubscribers.get(assetUserName);
-        if(sub instanceof Coach){
+        if (sub instanceof Coach) {
             Coach coach = (Coach) sub;
             //if(p.isAssociated())
             return coach;
-        } else{
+        } else {
             return null;
         }
     }
