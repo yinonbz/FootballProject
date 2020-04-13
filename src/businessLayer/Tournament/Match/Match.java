@@ -226,13 +226,14 @@ public class Match {
         return numberOfFans;
     }
 
-    public void setNumerOfFans(int numerOfFans) {
-        this.numberOfFans = numerOfFans;
+    public void setNumerOfFans(int numberOfFans) {
+        this.numberOfFans = numberOfFans;
     }
 
     @Override
     public String toString(){
-        return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: " + awayTeam.getTeamName() + "\n" +
-                "Stadium: " + stadium.getName() + "\n" + "Date: " + date;
+        return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
+                + awayTeam.getTeamName() + "\n" +
+                "Stadium: " + stadium.getName() + "\n" + "Date: " + date +"\n";
     }
 }

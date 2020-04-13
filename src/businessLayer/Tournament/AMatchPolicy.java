@@ -14,6 +14,7 @@ abstract public class AMatchPolicy implements MatchingPolicy{
     protected HashMap <Integer,Team> teams;
     protected League league;
     protected Season season;
+    private HashMap<Integer,Match> matchTable;
 
     /**
      * the constructor of the policy
@@ -28,6 +29,7 @@ abstract public class AMatchPolicy implements MatchingPolicy{
         //simpleDateFormat = new SimpleDateFormat("dd/M/yyyy");
     }
 
+
     /**
      * schedule the dates to the matches in the season
      * @param matches the matches in array list
@@ -35,15 +37,27 @@ abstract public class AMatchPolicy implements MatchingPolicy{
      */
     protected HashMap<Integer, Match> scheduleDates (ArrayList<Match> matches, HashMap<Integer,Match> tablesMatch){
         int week = 0;
+        int counter=0;
+        int howManyGamesLeftForTeam=1;
         Calendar cal = Calendar.getInstance();
         cal.setTime(season.getStartDate());
         for (Match match : matches){
             cal.add(Calendar.DATE,week);
             Date date = cal.getTime();
             match.setDate(date);
-            week=week+7;
+            if(counter<teams.size()-howManyGamesLeftForTeam){
+                week=week+7;
+                counter++;
+            }
+            else{
+                week=0;
+                howManyGamesLeftForTeam++;
+                counter=0;
+                cal.setTime(season.getStartDate());
+            }
             tablesMatch.put(match.getMatchId(),match);
         }
+        this.matchTable=tablesMatch;
         return tablesMatch;
     }
 
@@ -55,12 +69,17 @@ abstract public class AMatchPolicy implements MatchingPolicy{
      */
     public abstract HashMap <Integer, Match> activatePolicy (HashMap <Integer,Team> teams, LeagueController leagueController);
 
-    /*
+
     @Override
-    public toString(){
-       String tableMatch = "";
-       for()
+    public String toString(){
+       StringBuilder stringBuilder = new StringBuilder();
+        if(matchTable!=null){
+            for(Match match : matchTable.values()){
+                stringBuilder.append(match.toString()+"\n");
+            }
+        }
+        return stringBuilder.toString();
     }
-    */
+
 
 }
