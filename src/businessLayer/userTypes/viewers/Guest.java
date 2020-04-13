@@ -80,8 +80,9 @@ public class Guest {
     }
 
     /**
-     * @param userNameInput the input as the
-     * @param passwordInput
+     * This function will mediate between the UI login form and the System controller. it will get the user's input from the GUI lofin form and will place the input in the parameters (String userNameInput, String passwordInput).
+     * @param userNameInput the userName input as entered at the GUI
+     * @param passwordInput the password input as entered at the GUI
      */
     public void enterUserDetails(String userNameInput, String passwordInput) {
         //Send to UI to fill the userNameInput and passwordInput to create a new Subscriber with GUI
