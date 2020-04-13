@@ -125,11 +125,11 @@ public class TeamOwner extends Subscriber {
         return true;
     }
 
-    protected OwnerEligible getOriginalObject() {
+    public OwnerEligible getOriginalObject() {
         return originalObject;
     }
 
-    protected void setOriginalObject(OwnerEligible originalObject) {
+    public void setOriginalObject(OwnerEligible originalObject) {
         this.originalObject = originalObject;
     }
 }

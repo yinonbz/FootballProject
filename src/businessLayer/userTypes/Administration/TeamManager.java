@@ -72,11 +72,11 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         return true;
     }
 
-    protected TeamOwner getTeamOwner() {
+    public TeamOwner getTeamOwner() {
         return teamOwner;
     }
 
-    protected void setTeamOwner(TeamOwner teamOwner) {
+    public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
     }
 }
