@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /*
 *********************FOR IDO**********************************
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class TeamOwner extends Subscriber {
 
+    private OwnerEligible originalObject;
+    private Set<TeamOwner> assignedByMe;
     private String name;
     private HashSet<Team> teams;
     /**
@@ -27,6 +30,8 @@ public class TeamOwner extends Subscriber {
         super(username, password, systemController);
         this.name= name;
         teams = new HashSet<>();
+        assignedByMe = new HashSet<>();
+        originalObject = null;
     }
 
     /**
@@ -166,5 +171,20 @@ public class TeamOwner extends Subscriber {
     @Override
     public Boolean editDetails() {
         return null;
+    }
+
+    public boolean isFictive(){
+        if(originalObject==null){
+            return false;
+        }
+        return true;
+    }
+
+    protected OwnerEligible getOriginalObject() {
+        return originalObject;
+    }
+
+    protected void setOriginalObject(OwnerEligible originalObject) {
+        this.originalObject = originalObject;
     }
 }

@@ -1,7 +1,9 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
-import org.junit.BeforeClass;
+import businessLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.TeamOwner;
+import org.junit.Before;
 import org.junit.Test;
 import serviceLayer.SystemController;
 
@@ -9,18 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestTeamOwner {
+    private Player Buzaglo;
+    private TeamOwner Barkat;
+    private TeamOwner Glazers;
+    private TeamOwner Nissanov;
+    private Team BeerSheva;
+    private Team ManchesterUnited;
+    private SystemController systemController;
 
-    static TeamOwner Barkat;
-    static TeamOwner Glazers;
-    static TeamOwner Nissanov;
-    static Team BeerSheva;
-    static Team ManchesterUnited;
-    static SystemController systemController;
 
-
-    @BeforeClass
-    public static void createTestValues(){
+    @Before
+    public void createTestValues(){
         systemController = SystemController.SystemController();
+        Buzaglo = new Player("Buzaglo","Buzaglo123","Buzaglo","","midfield",null,systemController);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
         Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
@@ -58,6 +61,15 @@ public class TestTeamOwner {
     }
 
     @Test
+    public void isFictive(){
+
+        assertFalse(Nissanov.isFictive());
+        Nissanov.setOriginalObject(Buzaglo);
+        assertTrue(Nissanov.isFictive());
+
+    }
+
+    @Test
 
     public void checkTeamRequest(){
         //1
@@ -73,6 +85,7 @@ public class TestTeamOwner {
         assertFalse(Barkat.sendRequestForTeam("","2004"));
 
     }
+
 
 
 }

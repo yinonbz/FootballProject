@@ -4,8 +4,9 @@ import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
 import serviceLayer.SystemController;
 
-public class Coach extends Subscriber {
+public class Coach extends Subscriber implements OwnerEligible {
 
+    private TeamOwner teamOwner;
     private String name;
     private String training;
     private String teamJob;
@@ -24,6 +25,8 @@ public class Coach extends Subscriber {
         this.name=name;
         this.training=training;
         this.teamJob=teamJob;
+        this.teamOwner =null;
+
     }
 
     /**
@@ -109,5 +112,25 @@ public class Coach extends Subscriber {
     @Override
     public Boolean editDetails() {
         return null;
+    }
+
+    /**
+     * this function determine if the coach is also an Owner
+     * @return true if also an owner, false if only coach
+     */
+    @Override
+    public boolean isOwner() {
+        if(teamOwner ==null){
+            return false;
+        }
+        return true;
+    }
+
+    protected TeamOwner getTeamOwner() {
+        return teamOwner;
+    }
+
+    protected void setTeamOwner(TeamOwner teamOwner) {
+        this.teamOwner = teamOwner;
     }
 }
