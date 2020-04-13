@@ -1,5 +1,6 @@
+package businessLayer.userTypes.Administration;
+
 import businessLayer.Team.Team;
-import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
 import org.junit.Test;
 import serviceLayer.SystemController;
@@ -8,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestTeamOwner {
-
+    private Player Buzaglo;
     private TeamOwner Barkat;
     private TeamOwner Glazers;
     private TeamOwner Nissanov;
@@ -19,6 +20,7 @@ public class TestTeamOwner {
 
     @Before
     public void createTestValues(){
+        Buzaglo = new Player("Buzaglo","Buzaglo123","Buzaglo","","midfield",null,systemController);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
         Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
@@ -53,6 +55,15 @@ public class TestTeamOwner {
         BeerSheva.getTeamOwners().remove(Nissanov);
         Nissanov.getTeams().remove(BeerSheva);
         assertFalse(Nissanov.isExclusiveTeamOwner());
+    }
+
+    @Test
+    public void isFictive(){
+
+        assertFalse(Nissanov.isFictive());
+        Nissanov.setOriginalObject(Buzaglo);
+        assertTrue(Nissanov.isFictive());
+
     }
 
 
