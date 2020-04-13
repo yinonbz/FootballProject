@@ -2,8 +2,10 @@ package businessLayer.Tournament;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
+import businessLayer.userTypes.Administration.Referee;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Season {
@@ -16,9 +18,9 @@ public class Season {
     private MatchingPolicy matchingPolicy;
     private RankingPolicy rankingPolicy;
     private List<Team> teams;
+    private HashMap<String, Referee> referees;
 
     /**
-     *
      * @param seasonId
      * @param startDate
      * @param endDate
@@ -36,7 +38,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
     public int getSeasonId() {
@@ -44,7 +45,6 @@ public class Season {
     }
 
     /**
-     *
      * @param seasonId
      */
     public void setSeasonId(int seasonId) {
@@ -52,7 +52,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
     public Date getStartDate() {
@@ -60,7 +59,6 @@ public class Season {
     }
 
     /**
-     *
      * @param startDate
      */
     public void setStartDate(Date startDate) {
@@ -68,7 +66,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
     public Date getEndDate() {
@@ -76,7 +73,6 @@ public class Season {
     }
 
     /**
-     *
      * @param endDate
      */
 
@@ -85,7 +81,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -94,7 +89,6 @@ public class Season {
     }
 
     /**
-     *
      * @param league
      */
 
@@ -103,7 +97,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -112,7 +105,6 @@ public class Season {
     }
 
     /**
-     *
      * @param matches
      */
 
@@ -121,7 +113,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -130,7 +121,6 @@ public class Season {
     }
 
     /**
-     *
      * @param matchingPolicy
      */
 
@@ -139,7 +129,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -148,7 +137,6 @@ public class Season {
     }
 
     /**
-     *
      * @param rankingPolicy
      */
     public void setRankingPolicy(RankingPolicy rankingPolicy) {
@@ -156,7 +144,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -165,10 +152,24 @@ public class Season {
     }
 
     /**
-     *
      * @param teams
      */
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+
+    /**
+     * The function receives a referee and adds it to the data structure that holds the referees which assigned to the current season
+     * @param refToAdd
+     * @return true/false
+     */
+    public boolean addReferee(Referee refToAdd) {
+
+        if (refToAdd == null || referees.containsKey(refToAdd.getUsername())) {
+            return false;
+        }
+        referees.put(refToAdd.getUsername(), refToAdd);
+        return true;
     }
 }

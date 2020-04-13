@@ -1,21 +1,26 @@
 package serviceLayer;
 
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.MatchingPolicy;
+import businessLayer.Tournament.RankingPolicy;
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
+import businessLayer.userTypes.Subscriber;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class LeagueController {
 
-    private List<League> leagues;
+    private HashMap<String, League> leagues;
     //private businessLayer.Tournament.RankingPolicy rankingPolicy; //might be list as well, define later
     //private businessLayer.Tournament.MatchingPolicy matchingPolicy; //might be list as well, define later
     private LoggingSystem loggingSystem;
     private List<AssociationRepresentative> associationRepresentatives;
-    private List<Referee> referees;
+    private HashMap<String, Referee> referees;
     private AlertSystem alertSystem;
 
     /**
@@ -49,7 +54,7 @@ public class LeagueController {
      *
      * @return
      */
-    public List<League> getLeagues() {
+    public HashMap<String, League> getLeagues() {
         return leagues;
     }
 
@@ -57,7 +62,7 @@ public class LeagueController {
      *
      * @param leagues
      */
-    public void setLeagues(List<League> leagues) {
+    public void setLeagues(HashMap<String, League> leagues) {
         this.leagues = leagues;
     }
 /*
@@ -139,7 +144,7 @@ public class LeagueController {
      *
      * @return
      */
-    public List<Referee> getReferees() {
+    public HashMap<String, Referee> getReferees() {
         return referees;
     }
 
@@ -147,7 +152,7 @@ public class LeagueController {
      *
      * @param referees
      */
-    public void setReferees(List<Referee> referees) {
+    public void setReferees(HashMap<String, Referee> referees) {
         this.referees = referees;
     }
 
@@ -165,5 +170,88 @@ public class LeagueController {
      */
     public void setAlertSystem(AlertSystem alertSystem) {
         this.alertSystem = alertSystem;
+    }
+
+    /**
+     * The function returns whether a league with the same ID exists
+     *
+     * @param leagueID
+     * @return true/false
+     */
+    public boolean doesLeagueExist(String leagueID) {
+        return leagues.containsKey(leagueID);
+    }
+
+    /**
+     * The function creates a league and returns whether the league was created successfully or not
+     *
+     * @param leagueID
+     * @return true/false
+     */
+    public boolean createLeague(String leagueID) {
+
+        League newLeague = new League(leagueID);
+        leagues.put(leagueID, newLeague);
+        if (!leagues.containsKey(leagueID)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * The function creates a season within league and returns whether the season was created successfully or not
+     *
+     * @param leagueID
+     * @param seasonID
+     * @param startingDate
+     * @return
+     */
+    public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate, MatchingPolicy matchPolicy, RankingPolicy rankPolicy) {
+
+        League leagueToAdd = leagues.get(leagueID);
+        if (leagueID == null) {
+            return false;
+        }
+        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate, matchPolicy, rankPolicy);
+        //todo: check if when you pull out a complex object from a hashmap, the changes you do to it are registered in the hashmap
+    }
+
+    /**
+     * The function receives referee from the system controller, removes it from its data structures and returns whether the removal was successful or not
+     *
+     * @param referee
+     * @return true/false
+     */
+    public boolean removeReferee(Subscriber referee) {
+        if (!(referee instanceof Referee)) {
+            return false;
+        }
+        String refName = referee.getUsername();
+        if (referees.containsKey(refName)) {
+            referees.remove(refName);
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * The function assigns a referee from the system to a season within a specific league, returns whether the assignment was successful or not
+     * @param refUserName
+     * @param leagueName
+     * @param seasonID
+     * @return true/false
+     */
+    public boolean addRefereeToSeasonInLeague(String refUserName, String leagueName, int seasonID) {
+
+        if (refUserName == null || leagueName == null) {
+            return false;
+        }
+        if (leagues.containsKey(leagueName) && referees.containsKey(refUserName)) {
+            League addingToLeague = leagues.get(leagueName);
+            Referee refToAssign = referees.get(refUserName);
+            return addingToLeague.addRefereeToSeason(refToAssign, seasonID);
+        }
+        return false;
     }
 }

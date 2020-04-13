@@ -5,10 +5,11 @@ import businessLayer.Tournament.League;
 import businessLayer.Tournament.Season;
 import businessLayer.userTypes.Administration.Referee;
 
+import javax.security.auth.Refreshable;
 import java.util.Date;
 import java.util.List;
 
-abstract public class Match {
+public class Match {
     private League league;
     private Season season;
     private Team homeTeam;
@@ -173,5 +174,21 @@ abstract public class Match {
      */
     public void setFinished(Boolean finished) {
         isFinished = finished;
+    }
+
+    /**
+     * The function removes the received referee from the list of referees in the match, and returns whether the removal was successful or not
+     * @param ref
+     * @return true/false
+     */
+    public boolean removeReferee(Referee ref){
+
+        for(Referee e : referees){
+            if(e.getUsername().equals(ref.getUsername())){
+                referees.remove(e);
+                return true;
+            }
+        }
+        return false;
     }
 }
