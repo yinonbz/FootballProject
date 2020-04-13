@@ -9,6 +9,7 @@ import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,6 +72,12 @@ public class Team {
         isActive=true;
         closedByAdmin=false;
         stadium = null;
+        this.players = new HashSet<>();
+        this.coaches =new HashSet<>();
+        this.teamManagers = new HashSet<>();
+        this.seasons=new ArrayList<>();
+        this.matches = new ArrayList<>();
+
     }
 
     /**
@@ -101,6 +108,7 @@ public class Team {
     public HashSet<Coach> getCoaches() {
         return coaches;
     }
+
 
     /**
      * @return
@@ -332,4 +340,14 @@ public class Team {
         }
         return null;
     }
+
+    public Boolean containPlayer(Player player) {
+        return players.contains(player);
+    }
+
+    public boolean containCoach(Coach coach) {
+        return this.coaches.contains(coach);
+    }
+
+
 }

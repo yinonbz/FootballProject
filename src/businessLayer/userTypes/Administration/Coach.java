@@ -4,13 +4,15 @@ import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
 import serviceLayer.SystemController;
 
-public class Coach extends Subscriber {
+import java.util.HashSet;
 
+public class Coach extends Subscriber implements OwnerEligible {
+
+    private TeamOwner teamOwner;
     private String name;
     private String training;
     private String teamJob;
-    private Team team;
-    private Boolean assign;
+    private HashSet<Team> teams;
 
     /**
      *
@@ -25,12 +27,10 @@ public class Coach extends Subscriber {
         this.name=name;
         this.training=training;
         this.teamJob=teamJob;
-        assign = false;
+        this.teamOwner =null;
     }
 
-    public void setAssign(Boolean assign) {
-        this.assign = assign;
-    }
+
 
     /**
      *
@@ -94,22 +94,12 @@ public class Coach extends Subscriber {
         this.teamJob = teamJob;
     }
 
-    /**
-     *
-     * @return
-     */
-
-    public Team getTeam() {
-        return team;
+    public HashSet<Team> getTeamS() {
+        return teams;
     }
 
-    /**
-     *
-     * @param team
-     */
-
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeamS(HashSet<Team> teamS) {
+        this.teams = teamS;
     }
 
     @Override
@@ -117,7 +107,31 @@ public class Coach extends Subscriber {
         return null;
     }
 
-    public Boolean getAssigned(){
-        return this.assign;
+    /**
+     * this function determine if the coach is also an Owner
+     * @return true if also an owner, false if only coach
+     */
+    @Override
+    public boolean isOwner() {
+        if(teamOwner ==null){
+            return false;
+        }
+        return true;
+    }
+
+    protected TeamOwner getTeamOwner() {
+        return teamOwner;
+    }
+
+    protected void setTeamOwner(TeamOwner teamOwner) {
+        this.teamOwner = teamOwner;
+    }
+
+    public boolean containTeam(Team team) {
+        return this.teams.contains(team);
+    }
+
+    public void addTeam(Team team) {
+        this.teams.add(team);
     }
 }

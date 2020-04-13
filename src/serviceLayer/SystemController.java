@@ -29,7 +29,7 @@ public class SystemController {
     private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private HashMap <String, LinkedList<String>> unconfirmedTeams;
-    private HashMap <Integer, Stadium> stadiums;
+    private HashMap <String, Stadium> stadiums;
 
 
     private SystemController() {
@@ -477,11 +477,11 @@ public class SystemController {
         return false;
     }
 
-    public HashMap<Integer, Stadium> getStadiums() {
+    public HashMap<String, Stadium> getStadiums() {
         return stadiums;
     }
 
-    public void setStadiums(HashMap<Integer, Stadium> stadiums) {
+    public void setStadiums(HashMap<String, Stadium> stadiums) {
         this.stadiums = stadiums;
     }
     /**
@@ -526,10 +526,16 @@ public class SystemController {
         Subscriber sub = systemSubscribers.get(assetUserName);
         if (sub instanceof Coach) {
             Coach coach = (Coach) sub;
-            //if(p.isAssociated())
             return coach;
         } else {
             return null;
         }
+    }
+
+    public Stadium findStadium(String assetUserName) {
+        if(stadiums.containsKey(assetUserName)){
+            return stadiums.get(assetUserName);
+        }
+        return null;
     }
 }

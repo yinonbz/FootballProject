@@ -98,4 +98,18 @@ public class Stadium {
     }
 
 
+    public boolean containTeam(Team team) {
+        if(owners.containsKey(team.getTeamId())){
+            return true;
+        }
+        return false;
+    }
+
+    public void removeTeam(Team team) {
+        this.owners.remove(team.getTeamName());
+    }
+
+    public void addTeam(Team team) {
+        this.owners.put(team.getTeamName(),team);
+    }
 }

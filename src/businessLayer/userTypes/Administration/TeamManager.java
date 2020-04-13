@@ -4,11 +4,14 @@ import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
 import serviceLayer.SystemController;
 
+import java.util.HashSet;
 import java.util.List;
 
-public class TeamManager extends Subscriber {
+public class TeamManager extends Subscriber implements OwnerEligible {
+
+    private TeamOwner teamOwner;
     private String name;
-    private List<Team> teams;
+    private HashSet<Team> teams;
     private Boolean assign;
     private int salary;
 
@@ -18,12 +21,13 @@ public class TeamManager extends Subscriber {
      * @param name
      * @param teams
      */
-    public TeamManager(String username, String password, String name,int salary, List<Team> teams, SystemController systemController) {
+    public TeamManager(String username, String password, String name,int salary, HashSet<Team> teams, SystemController systemController) {
         super(username, password, systemController);
         this.name = name;
         this.teams = teams;
         this.assign = false;
         this.salary = salary;
+        this.teamOwner =null;
     }
 
     public void setAssign(Boolean assign) {
@@ -40,7 +44,7 @@ public class TeamManager extends Subscriber {
     /**
      * @return
      */
-    public List<Team> getTeams() {
+    public HashSet<Team> getTeams() {
         return teams;
     }
 
@@ -54,7 +58,7 @@ public class TeamManager extends Subscriber {
     /**
      * @param teams
      */
-    public void setTeams(List<Team> teams) {
+    public void setTeams(HashSet<Team> teams) {
         this.teams = teams;
     }
 
@@ -70,5 +74,26 @@ public class TeamManager extends Subscriber {
 
     public void setSalary(int edit) {
         this.salary = edit;
+    }
+
+
+    /**
+     * this function determine if the coach is also an Owner
+     * @return true if also an owner, false if only coach
+     */
+    @Override
+    public boolean isOwner() {
+        if(teamOwner ==null){
+            return false;
+        }
+        return true;
+    }
+
+    protected TeamOwner getTeamOwner() {
+        return teamOwner;
+    }
+
+    protected void setTeamOwner(TeamOwner teamOwner) {
+        this.teamOwner = teamOwner;
     }
 }

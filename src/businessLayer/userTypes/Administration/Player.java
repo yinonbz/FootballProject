@@ -6,11 +6,13 @@ import serviceLayer.SystemController;
 
 import java.util.List;
 
-public class Player extends Subscriber {
+public class Player extends Subscriber implements OwnerEligible {
+
+    private TeamOwner teamOwner;
     private String name;
     private String birthDate;
     private String fieldJob;
-    private List<Team> teams;
+    private Team team;
     private boolean assign;
     /**
      * @param username
@@ -18,15 +20,16 @@ public class Player extends Subscriber {
      * @param name
      * @param birthDate
      * @param fieldJob
-     * @param teams
+     * @param team
      */
-    public Player(String username, String password, String name, String birthDate, String fieldJob, List<Team> teams, SystemController systemController) {
+    public Player(String username, String password, String name, String birthDate, String fieldJob, Team team, SystemController systemController) {
         super(username, password,systemController);
         this.name = name;
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
-        this.teams = teams;
+        this.team = team;
         this.assign = false;
+        this.teamOwner =null;
     }
 
     /**
@@ -78,8 +81,8 @@ public class Player extends Subscriber {
     /**
      * @return
      */
-    public List<Team> getTeams() {
-        return teams;
+    public Team getTeam() {
+        return team;
     }
 
     @Override
@@ -89,5 +92,29 @@ public class Player extends Subscriber {
 
     public Boolean getAssigned(){
         return assign;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    /**
+     * this function determine if the Player is also an Owner
+     * @return true if also an owner, false if only player
+     */
+    @Override
+    public boolean isOwner() {
+        if(teamOwner ==null){
+            return false;
+        }
+        return true;
+    }
+
+    protected TeamOwner getTeamOwner() {
+        return teamOwner;
+    }
+
+    protected void setTeamOwner(TeamOwner teamOwner) {
+        this.teamOwner = teamOwner;
     }
 }
