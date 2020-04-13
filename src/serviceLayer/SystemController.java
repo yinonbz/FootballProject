@@ -530,4 +530,8 @@ public class SystemController {
     public void setStadiums(HashMap<Integer, Stadium> stadiums) {
         this.stadiums = stadiums;
     }
+
+    public HashMap<String, Team> getTeams() {
+        return teams;
+    }
 }

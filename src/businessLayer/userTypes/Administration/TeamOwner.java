@@ -217,11 +217,12 @@ public class TeamOwner extends Subscriber {
 
 
     /**
-     * //UC-6.2
+     * //UC-6.2 todo - see if the user exist
      * @param userName the user name of the user that the Team Owner wants to appoint to
      * @return
      */
     public Subscriber enterMember(String userName){
+
         return systemController.getSubscriberByUserName(userName);
     }
 
@@ -234,18 +235,18 @@ public class TeamOwner extends Subscriber {
      *          false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
      */
     public Boolean appointToOwner(Subscriber subscriber, String teamName){
-        if(subscriber instanceof OwnerEligible){
-            if(((OwnerEligible) subscriber).isOwner() == false){
-                String newUserName = subscriber.getUsername();
-                while (subscriber.getSystemController().getSystemSubscribers().containsKey(newUserName)){ //generate new fictive user name
-                    newUserName = newUserName + "f";
+
+        if(subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner){
+            if(!(subscriber instanceof TeamOwner) && ((OwnerEligible) subscriber).isOwner() == false){
+                if(getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
+                    String newUserName = subscriber.getUsername();
+                    updateFictiveOwner(newUserName,subscriber,teamName);
+                    return true;
                 }
-                TeamOwner newTeamOwner = new TeamOwner(newUserName,subscriber.getPassword(),"fictive",subscriber.getSystemController());
-                newTeamOwner.originalObject = (OwnerEligible) subscriber;
-                subscriber.getSystemController().getTeamByName(teamName).getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
-                assignedByMe.add(newTeamOwner);
-                System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
-                return true;
+                else{
+                    System.out.println("You cannot add to a team which you do not own.");
+                    return false;
+                }
             }
             else{
                 System.out.println("The user " + subscriber.getUsername() + " is already an owner of a team.");
@@ -256,6 +257,41 @@ public class TeamOwner extends Subscriber {
             System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
             return false;
         }
+    }
+
+    private void updateFictiveOwner(String newUserName, Subscriber subscriber, String teamName) {
+        while (subscriber.getSystemController().getSystemSubscribers().containsKey(newUserName)) { //generate new fictive user name
+            //static int
+            newUserName = newUserName + "f";
+        }
+        //CHECK IF SUBSCRIBER IS PLAYER/COACH/MAANGER
+        TeamOwner newTeamOwner = new TeamOwner(newUserName, subscriber.getPassword(), "fictive", subscriber.getSystemController());
+        if(subscriber instanceof Player){
+            Player player = (Player)subscriber;
+            player.setTeamOwner(newTeamOwner);
+            newTeamOwner.setOriginalObject(player);
+
+        }
+        else if(subscriber instanceof Coach){
+            Coach coach = (Coach)subscriber;
+            coach.setTeamOwner(newTeamOwner);
+            newTeamOwner.setOriginalObject(coach);
+        }
+        else if(subscriber instanceof TeamManager){
+            TeamManager teamManager = (TeamManager)subscriber;
+            teamManager.setTeamOwner(newTeamOwner);
+            newTeamOwner.setOriginalObject(teamManager);
+        }
+        //CAST SUBSCRIBER TO FOUND CLASS OBJECT Player player = (Player)subscriber
+
+        //player.setTeamOwner(newTeamOwner)
+        //newTeamOwner.setOriginalObject(player);
+        subscriber.getSystemController().getTeamByName(teamName).getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
+        newTeamOwner.getTeams().add(getSystemController().getTeamByName(teamName));
+        assignedByMe.add(newTeamOwner);
+        //(Player) newTeamOwner.getOriginalObject();
+        //todo - add complaints to newTeamOwner?
+        System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
     }
 
     protected OwnerEligible getOriginalObject() {

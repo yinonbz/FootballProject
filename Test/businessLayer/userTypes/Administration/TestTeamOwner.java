@@ -9,6 +9,7 @@ import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.SystemController;
+import sun.swing.BakedArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -19,6 +20,7 @@ public class TestTeamOwner {
     private TeamOwner Barkat;
     private TeamOwner Glazers;
     private TeamOwner Nissanov;
+    private Referee Alon;
     private Team BeerSheva;
     private Team ManchesterUnited;
     private SystemController systemController;
@@ -27,10 +29,15 @@ public class TestTeamOwner {
     @Before
     public void createTestValues(){
         systemController = SystemController.SystemController();
-        Buzaglo = new Player("Buzaglo","Buzaglo123","Buzaglo","","midfield",null,systemController);
+        Buzaglo = new Player("Buzaglo","Buzaglo123","Buzaglo","1900","midfield",null,systemController);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
         Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
+        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
+        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
+        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
+        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
+        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
         BeerSheva = new Team("Beer Sheva", Barkat,1973);
         ManchesterUnited = new Team("Manchester United",Barkat,1899);
         Barkat.getTeams().add(BeerSheva); //todo change it later to a normal function UC 6.1
@@ -40,7 +47,8 @@ public class TestTeamOwner {
         ManchesterUnited.getTeamOwners().add(Glazers);
         BeerSheva.getTeamOwners().add(Barkat);
         BeerSheva.getTeamOwners().add(Nissanov);
-
+        systemController.getTeams().put(BeerSheva.getTeamName(),BeerSheva);
+        systemController.getTeams().put(ManchesterUnited.getTeamName(),ManchesterUnited);
     }
 
     @Test
@@ -84,14 +92,6 @@ public class TestTeamOwner {
         teamOwner.changeStatus(team1);
         assertTrue(team1.getActive());
     }
-    @Test
-    public void isFictive(){
-
-        assertFalse(Nissanov.isFictive());
-        Nissanov.setOriginalObject(Buzaglo);
-        assertTrue(Nissanov.isFictive());
-
-    }
 
     @Test
     public void checkTeamRequest() {
@@ -117,7 +117,16 @@ public class TestTeamOwner {
     }
 
     @Test
-    public void testEnterMember() {
+    public void UC_6_2() {
+        //1 - Test enterMember(String userName)
+        assertEquals(Barkat.enterMember("Glazers"), Glazers);
+        assertNull(Barkat.enterMember("Itay"));
+
+        //2 - Test
+        assertFalse(Barkat.appointToOwner(Buzaglo, "Manchester"));
+        assertTrue(Barkat.appointToOwner(Buzaglo, "Beer Sheva"));
+        assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva"));
+        assertFalse(Barkat.appointToOwner(Alon,"Beer Sheva"));
 
     }
 }
