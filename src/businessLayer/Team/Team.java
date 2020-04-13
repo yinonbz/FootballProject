@@ -78,6 +78,7 @@ public class Team {
         this.establishedYear=establishedYear;
         isActive=true;
         closedByAdmin=false;
+        stadium = null;
     }
 
     /**

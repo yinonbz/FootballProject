@@ -4,6 +4,7 @@ import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Season {
@@ -15,7 +16,7 @@ public class Season {
     private List<Match> matches;
     private MatchingPolicy matchingPolicy;
     private RankingPolicy rankingPolicy;
-    private List<Team> teams;
+    private HashMap <Integer,Team> teams;
 
     /**
      *
@@ -160,7 +161,7 @@ public class Season {
      * @return
      */
 
-    public List<Team> getTeams() {
+    public HashMap<Integer, Team> getTeams() {
         return teams;
     }
 
@@ -168,7 +169,7 @@ public class Season {
      *
      * @param teams
      */
-    public void setTeams(List<Team> teams) {
+    public void setTeams(HashMap<Integer,Team> teams) {
         this.teams = teams;
     }
 }
