@@ -20,7 +20,7 @@ public class Match {
     private Boolean isFinished;
     private int matchId;
     private Stadium stadium;
-    private int numerOfFans;
+    private int numberOfFans;
     private static int index=1;
     /**
      * @param league
@@ -32,9 +32,9 @@ public class Match {
      * @param time
      * @param date
      * @param isFinished
-     * @param numerOfFans
+     * @param numberOfFans
      */
-    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium, int numerOfFans) {
+    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium, int numberOfFans) {
         this.league = league;
         this.season = season;
         this.homeTeam = homeTeam;
@@ -46,7 +46,7 @@ public class Match {
         this.isFinished = isFinished;
         this.matchId=index;
         this.stadium=stadium;
-        this.numerOfFans=numerOfFans;
+        this.numberOfFans=numberOfFans;
         index++;
 
     }
@@ -61,6 +61,8 @@ public class Match {
         this.homeTeam=home;
         this.awayTeam=away;
         this.stadium=stadium;
+        this.matchId=index;
+        index++;
     }
 
     /**
@@ -221,10 +223,16 @@ public class Match {
     }
 
     public int getNumerOfFans() {
-        return numerOfFans;
+        return numberOfFans;
     }
 
     public void setNumerOfFans(int numerOfFans) {
-        this.numerOfFans = numerOfFans;
+        this.numberOfFans = numerOfFans;
+    }
+
+    @Override
+    public String toString(){
+        return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: " + awayTeam.getTeamName() + "\n" +
+                "Stadium: " + stadium.getName() + "\n" + "Date: " + date;
     }
 }

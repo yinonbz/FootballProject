@@ -96,4 +96,6 @@ public class Stadium {
     public void setOwners(HashMap<String, Team> owners) {
         this.owners = owners;
     }
+
+
 }

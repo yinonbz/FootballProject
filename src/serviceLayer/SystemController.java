@@ -2,6 +2,7 @@ package serviceLayer;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -28,6 +29,7 @@ public class SystemController {
     private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private HashMap <String, LinkedList<String>> unconfirmedTeams;
+    private HashMap <Integer, Stadium> stadiums;
 
 
     private SystemController() {
@@ -37,6 +39,7 @@ public class SystemController {
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
         unconfirmedTeams = new HashMap<>();
+        stadiums = new HashMap<>();
     }
 
     /**
@@ -474,4 +477,11 @@ public class SystemController {
         return false;
     }
 
+    public HashMap<Integer, Stadium> getStadiums() {
+        return stadiums;
+    }
+
+    public void setStadiums(HashMap<Integer, Stadium> stadiums) {
+        this.stadiums = stadiums;
+    }
 }

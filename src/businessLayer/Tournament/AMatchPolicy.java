@@ -33,7 +33,7 @@ abstract public class AMatchPolicy implements MatchingPolicy{
      * @param matches the matches in array list
      * @param tablesMatch the matches in hash map
      */
-    protected void scheduleDates (ArrayList<Match> matches, HashMap<Integer,Match> tablesMatch){
+    protected HashMap<Integer, Match> scheduleDates (ArrayList<Match> matches, HashMap<Integer,Match> tablesMatch){
         int week = 0;
         Calendar cal = Calendar.getInstance();
         cal.setTime(season.getStartDate());
@@ -44,6 +44,7 @@ abstract public class AMatchPolicy implements MatchingPolicy{
             week=week+7;
             tablesMatch.put(match.getMatchId(),match);
         }
+        return tablesMatch;
     }
 
     /**
@@ -53,5 +54,13 @@ abstract public class AMatchPolicy implements MatchingPolicy{
      * @return the table of the matches
      */
     public abstract HashMap <Integer, Match> activatePolicy (HashMap <Integer,Team> teams, LeagueController leagueController);
+
+    /*
+    @Override
+    public toString(){
+       String tableMatch = "";
+       for()
+    }
+    */
 
 }

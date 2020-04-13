@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+/*
+*********************FOR IDO**********************************
+ */
+
 public class TeamOwner extends Subscriber {
 
     private String name;

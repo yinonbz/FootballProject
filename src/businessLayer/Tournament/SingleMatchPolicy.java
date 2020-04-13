@@ -61,7 +61,7 @@ public class SingleMatchPolicy extends AMatchPolicy {
                 }
             }
             //after we finish to schedule each game, we want to schedule a date for them
-            scheduleDates(tempMatchTable,gamesTable);
+            gamesTable = scheduleDates(tempMatchTable,gamesTable);
         }
         return gamesTable;
     }
