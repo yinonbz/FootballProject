@@ -48,7 +48,7 @@ public class SingleMatchPolicy extends AMatchPolicy {
                         }
                         else{
                             if(away.getStadium()!=null){
-                                match = new Match(home, away, home.getStadium());
+                                match = new Match(home, away, away.getStadium());
                             }
                             else{
                                 //if no one of the teams has a stadium we will choose one from the controller
@@ -61,7 +61,7 @@ public class SingleMatchPolicy extends AMatchPolicy {
                 }
             }
             //after we finish to schedule each game, we want to schedule a date for them
-            scheduleDates(tempMatchTable,gamesTable);
+            gamesTable = scheduleDates(tempMatchTable,gamesTable);
         }
         return gamesTable;
     }

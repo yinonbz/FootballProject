@@ -2,6 +2,8 @@
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Administration.*;
+import businessLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
@@ -14,12 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTeamOwner {
     private Player Buzaglo;
-    static TeamOwner Barkat;
-    static TeamOwner Glazers;
-    static TeamOwner Nissanov;
-    static Team BeerSheva;
-    static Team ManchesterUnited;
-    static SystemController systemController;
+    private TeamOwner Barkat;
+    private TeamOwner Glazers;
+    private TeamOwner Nissanov;
+    private Team BeerSheva;
+    private Team ManchesterUnited;
+    private SystemController systemController;
+
 
     @Before
     public void createTestValues(){
@@ -82,7 +85,15 @@ public class TestTeamOwner {
         assertTrue(team1.getActive());
     }
     @Test
+    public void isFictive(){
 
+        assertFalse(Nissanov.isFictive());
+        Nissanov.setOriginalObject(Buzaglo);
+        assertTrue(Nissanov.isFictive());
+
+    }
+
+    @Test
     public void checkTeamRequest() {
         //1
         //check if we get true on a normal request
@@ -95,11 +106,18 @@ public class TestTeamOwner {
         assertFalse(Nissanov.isFictive());
         Nissanov.setOriginalObject(Buzaglo);
         assertTrue(Nissanov.isFictive());
+        //2
+        //check if we get a false on a not valid year
+        assertFalse(Barkat.sendRequestForTeam("TheSharks","0"));
+
+        //3
+        //check if we get a false on not valid name
+        assertFalse(Barkat.sendRequestForTeam("","2004"));
 
     }
 
     @Test
     public void testEnterMember() {
-        
+
     }
 }

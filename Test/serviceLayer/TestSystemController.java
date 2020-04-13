@@ -13,15 +13,15 @@ import static org.junit.Assert.*;
 
 public class TestSystemController {
 
-    public static SystemController systemController;
-    public static Team ManchesterUnited;
-    public static Team BeerSheva;
-    public static TeamOwner Glazers;
-    public static TeamOwner Nissanov;
-    public static TeamOwner Barkat;
-    public static Admin admin;
-    public static Admin admin2;
-    public static Fan fan;
+     static SystemController systemController;
+     static Team ManchesterUnited;
+     static Team BeerSheva;
+     static TeamOwner Glazers;
+     static TeamOwner Nissanov;
+     static TeamOwner Barkat;
+     static Admin admin;
+     static Admin admin2;
+     static Fan fan;
 
 
     @BeforeClass

@@ -37,6 +37,20 @@ public class Season {
     }
 
     /**
+     * constructor of a new season without a policy
+     * @param seasonId
+     * @param startDate
+     * @param endDate
+     * @param league
+     */
+    public Season (int seasonId, Date startDate, Date endDate, League league){
+        this.seasonId = seasonId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.league = league;
+    }
+
+    /**
      *
      * @return
      */

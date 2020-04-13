@@ -2,6 +2,7 @@ package serviceLayer;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -28,6 +29,7 @@ public class SystemController {
     private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private HashMap <String, LinkedList<String>> unconfirmedTeams;
+    private HashMap <Integer, Stadium> stadiums;
 
 
     private SystemController() {
@@ -37,6 +39,7 @@ public class SystemController {
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
         unconfirmedTeams = new HashMap<>();
+        stadiums = new HashMap<>();
     }
 
     /**
@@ -158,7 +161,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param userNotifications
      */
 
@@ -167,7 +169,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @return
      */
 
@@ -176,7 +177,6 @@ public class SystemController {
     }
 
     /**
-     *
      * @param alertSystem
      */
 
@@ -280,6 +280,7 @@ public class SystemController {
 
     /**
      * getter of system complaints
+     *
      * @return the system complaints
      */
     public HashMap<Integer, Complaint> getSystemComplaints() {
@@ -357,7 +358,7 @@ public class SystemController {
      * the function removes a user from the system by the admin
      *
      * @param subscriberName the name of the user we want to delete
-     * @param userType the type of the user that tries to delete
+     * @param userType       the type of the user that tries to delete
      * @return a string that explains what was the result
      * 8.2
      */
@@ -521,5 +522,12 @@ public class SystemController {
             return teams.get(teamName);
         }
         return null;
+    }
+    public HashMap<Integer, Stadium> getStadiums() {
+        return stadiums;
+    }
+
+    public void setStadiums(HashMap<Integer, Stadium> stadiums) {
+        this.stadiums = stadiums;
     }
 }

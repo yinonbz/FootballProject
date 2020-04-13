@@ -13,8 +13,8 @@ class PlayerTest {
 
     @Before
     public void createTestValues() {
-        this.messi = new Player("Messi", "Messi123", "Messi", "", "foward", null, systemController);
-        this.teamOwner = new TeamOwner("MessiFictive", "MessiF123", "MessiF", systemController);
+        messi = new Player("Messi", "Messi123", "Messi", "", "foward", null, systemController);
+        teamOwner = new TeamOwner("MessiFictive", "MessiF123", "MessiF", systemController);
     }
 
     @Test

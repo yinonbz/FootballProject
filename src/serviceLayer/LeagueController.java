@@ -19,13 +19,23 @@ public class LeagueController {
     private List<AssociationRepresentative> associationRepresentatives;
     private List<Referee> referees;
     private AlertSystem alertSystem;
-    private HashMap <Integer, Stadium> stadiums;
+    private SystemController systemController;
+
 
     /**
-     *
+     * the constructor of league controller
+     * @param systemController the system controller
      */
-    public LeagueController() {
-        stadiums = new HashMap<>();
+    public LeagueController(SystemController systemController) {
+        this.systemController=systemController;
+    }
+
+    /**
+     * returns the data structure that holds all of the stadiums in the system
+     * @return the stadiums in the system
+     */
+    public HashMap <Integer,Stadium> getStadiums (){
+        return systemController.getStadiums();
     }
 
     /**
@@ -170,8 +180,5 @@ public class LeagueController {
         this.alertSystem = alertSystem;
     }
 
-    public HashMap<Integer, Stadium> getStadiums() {
-        return stadiums;
-    }
 
 }

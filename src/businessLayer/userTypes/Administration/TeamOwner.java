@@ -11,6 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+/*
+*********************FOR IDO**********************************
+ */
+
 public class TeamOwner extends Subscriber {
 
     private OwnerEligible originalObject;
