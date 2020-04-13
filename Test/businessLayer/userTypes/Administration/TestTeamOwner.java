@@ -97,4 +97,9 @@ public class TestTeamOwner {
         assertTrue(Nissanov.isFictive());
 
     }
+
+    @Test
+    public void testEnterMember() {
+        
+    }
 }
