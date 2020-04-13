@@ -23,25 +23,30 @@ public class AssociationRepresentative extends Subscriber {
      * @param leaguesController
      */
     public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeagueController leaguesController, SystemController systemController) {
+
         super(username, password, systemController);
         this.name = name;
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leaguesController;
+        leaguesController.addAssociationRepToController(this);
 
     }
 
     /**
      * The function creates a league in the system and returns a boolean representing whether it was created or not
      *
-     * @param leagueInfo
+     * @param newLeagueID
      * @return true/false
      */
-    public Boolean createLeague(String leagueInfo) {
+    public Boolean createLeague(String newLeagueID) {
 
-        if (leagueController.doesLeagueExist(leagueInfo)) {
+        if (newLeagueID == null) {
             return false;
         }
-        return leagueController.createLeague(leagueInfo);
+        if (leagueController.doesLeagueExist(newLeagueID)) {
+            return false;
+        }
+        return leagueController.createLeague(newLeagueID);
     }
 
     /**
@@ -93,6 +98,7 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * The function receives a referee's username, a league's name and season's ID and assigns the referee to the season within the given league, returns whether was successful or not
+     *
      * @param username
      * @param leagueName
      * @param seasonID

@@ -9,6 +9,7 @@ import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,36 +23,45 @@ public class LeagueController {
     private List<AssociationRepresentative> associationRepresentatives;
     private HashMap<String, Referee> referees;
     private AlertSystem alertSystem;
+    private static LeagueController single_instance = null; //singleton instance
 
-    /**
-     *
-     */
-    public LeagueController() {
 
+    private LeagueController() {
+
+        leagues = new HashMap<>();
+        referees = new HashMap<>();
+        associationRepresentatives = new ArrayList<>();
     }
 
     /**
      *
+     */
+    public static LeagueController LeagueController() {
+        if (single_instance == null) {
+            single_instance = new LeagueController();
+        }
+        return single_instance;
+    }
+
+    /**
      * @param alerts
      * @return
      */
-    public boolean sendAlerts(List<String> alerts){
+    public boolean sendAlerts(List<String> alerts) {
 
         return true;
     }
 
     /**
-     *
      * @param logs
      * @return
      */
-    public boolean sendLogs(List<String> logs){
+    public boolean sendLogs(List<String> logs) {
 
         return true;
     }
 
     /**
-     *
      * @return
      */
     public HashMap<String, League> getLeagues() {
@@ -59,19 +69,18 @@ public class LeagueController {
     }
 
     /**
-     *
      * @param leagues
      */
     public void setLeagues(HashMap<String, League> leagues) {
         this.leagues = leagues;
     }
-/*
+    /*
 
-    */
+     */
 /**
-     *
-     * @return
-     *//*
+ *
+ * @return
+ *//*
 
     public businessLayer.Tournament.RankingPolicy getRankingPolicy() {
         return rankingPolicy;
@@ -79,9 +88,9 @@ public class LeagueController {
 
     */
 /**
-     *
-     * @param rankingPolicy
-     *//*
+ *
+ * @param rankingPolicy
+ *//*
 
     public void setRankingPolicy(businessLayer.Tournament.RankingPolicy rankingPolicy) {
         this.rankingPolicy = rankingPolicy;
@@ -89,9 +98,9 @@ public class LeagueController {
 
     */
 /**
-     *
-     * @return
-     *//*
+ *
+ * @return
+ *//*
 
     public businessLayer.Tournament.MatchingPolicy getMatchingPolicy() {
         return matchingPolicy;
@@ -99,9 +108,9 @@ public class LeagueController {
 
     */
 /**
-     *
-     * @param matchingPolicy
-     *//*
+ *
+ * @param matchingPolicy
+ *//*
 
     public void setMatchingPolicy(businessLayer.Tournament.MatchingPolicy matchingPolicy) {
         this.matchingPolicy = matchingPolicy;
@@ -109,7 +118,6 @@ public class LeagueController {
 */
 
     /**
-     *
      * @return
      */
     public LoggingSystem getLoggingSystem() {
@@ -117,7 +125,6 @@ public class LeagueController {
     }
 
     /**
-     *
      * @param loggingSystem
      */
     public void setLoggingSystem(LoggingSystem loggingSystem) {
@@ -125,7 +132,6 @@ public class LeagueController {
     }
 
     /**
-     *
      * @return
      */
     public List<AssociationRepresentative> getAssociationRepresentatives() {
@@ -133,7 +139,6 @@ public class LeagueController {
     }
 
     /**
-     *
      * @param associationRepresentatives
      */
     public void setAssociationRepresentatives(List<AssociationRepresentative> associationRepresentatives) {
@@ -141,7 +146,6 @@ public class LeagueController {
     }
 
     /**
-     *
      * @return
      */
     public HashMap<String, Referee> getReferees() {
@@ -149,7 +153,6 @@ public class LeagueController {
     }
 
     /**
-     *
      * @param referees
      */
     public void setReferees(HashMap<String, Referee> referees) {
@@ -157,7 +160,6 @@ public class LeagueController {
     }
 
     /**
-     *
      * @return
      */
     public AlertSystem getAlertSystem() {
@@ -165,7 +167,6 @@ public class LeagueController {
     }
 
     /**
-     *
      * @param alertSystem
      */
     public void setAlertSystem(AlertSystem alertSystem) {
@@ -190,6 +191,9 @@ public class LeagueController {
      */
     public boolean createLeague(String leagueID) {
 
+        if (leagueID == null) {
+            return false;
+        }
         League newLeague = new League(leagueID);
         leagues.put(leagueID, newLeague);
         if (!leagues.containsKey(leagueID)) {
@@ -237,6 +241,7 @@ public class LeagueController {
 
     /**
      * The function assigns a referee from the system to a season within a specific league, returns whether the assignment was successful or not
+     *
      * @param refUserName
      * @param leagueName
      * @param seasonID
@@ -253,5 +258,19 @@ public class LeagueController {
             return addingToLeague.addRefereeToSeason(refToAssign, seasonID);
         }
         return false;
+    }
+
+
+    /**
+     * The function adds an association representative to the data structure in the league controller
+     *
+     * @param associationRep
+     */
+    public void addAssociationRepToController(AssociationRepresentative associationRep) {
+        if (associationRep != null) {
+            if (!associationRepresentatives.contains(associationRep)) {
+                associationRepresentatives.add(associationRep);
+            }
+        }
     }
 }
