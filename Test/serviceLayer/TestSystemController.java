@@ -1,5 +1,3 @@
-package serviceLayer;
-
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
@@ -7,7 +5,7 @@ import businessLayer.userTypes.viewers.Fan;
 import org.junit.BeforeClass;
 
 import org.junit.Test;
-
+import serviceLayer.SystemController;
 
 
 import static junit.framework.TestCase.assertTrue;

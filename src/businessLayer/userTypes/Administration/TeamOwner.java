@@ -200,11 +200,58 @@ public class TeamOwner extends Subscriber {
         return null;
     }
 
+    /**
+     * @return true if fictive (ex: player is also a team owner = fictive)
+     * false else
+     */
     public boolean isFictive(){
         if(originalObject==null){
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * //UC-6.2
+     * @param userName the user name of the user that the Team Owner wants to appoint to
+     * @return
+     */
+    public Subscriber enterMember(String userName){
+        return systemController.getSubscriberByUserName(userName);
+    }
+
+
+    /**
+     * //UC-6.2
+     * @param subscriber the new subscriber that the user wants to add to the team's owners
+     * @param teamName the team name that the user wants to add a new team owner
+     * @return true if the new team owner has added successfully.
+     *          false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
+     */
+    public Boolean appointToOwner(Subscriber subscriber, String teamName){
+        if(subscriber instanceof OwnerEligible){
+            if(((OwnerEligible) subscriber).isOwner() == false){
+                String newUserName = subscriber.getUsername();
+                while (subscriber.getSystemController().getSystemSubscribers().containsKey(newUserName)){ //generate new fictive user name
+                    newUserName = newUserName + "f";
+                }
+                TeamOwner newTeamOwner = new TeamOwner(newUserName,subscriber.getPassword(),"fictive",subscriber.getSystemController());
+                newTeamOwner.originalObject = (OwnerEligible) subscriber;
+                subscriber.getSystemController().getTeamByName(teamName).getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
+                assignedByMe.add(newTeamOwner);
+                System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
+                return true;
+            }
+            else{
+                System.out.println("The user " + subscriber.getUsername() + " is already an owner of a team.");
+                return false;
+            }
+        }
+        else{
+            System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
+            return false;
+        }
     }
 
     protected OwnerEligible getOriginalObject() {

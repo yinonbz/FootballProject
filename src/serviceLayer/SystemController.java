@@ -498,4 +498,28 @@ public class SystemController {
         System.out.println("Wrong Password or User Name.");
         return null;
     }
+
+    /**
+     * @param userName the user name that the user searches it's user instance
+     * @return the user's instance with the user name, if existed in the system
+     *      NULL if there is no user in the system with the input user name
+     */
+    public Subscriber getSubscriberByUserName(String userName){
+        if(getSystemSubscribers().containsKey(userName)){
+            return getSystemSubscribers().get(userName);
+        }
+        return null;
+    }
+
+    /**
+     * @param teamName the team name that the user searches it's team instance
+     * @return the team's instance with the team name, if existed in the system
+     *      *      NULL if there is no team in the system with the input team name
+     */
+    public Team getTeamByName(String teamName){
+        if(teams.containsKey(teamName)){
+            return teams.get(teamName);
+        }
+        return null;
+    }
 }
