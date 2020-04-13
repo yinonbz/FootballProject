@@ -20,6 +20,7 @@ class PlayerTest {
     @Test
     void isOwner() {
         assertFalse(messi.isOwner());
+        Player hanfish;
         messi.setTeamOwner(teamOwner);
         assertTrue(messi.isOwner());
     }
