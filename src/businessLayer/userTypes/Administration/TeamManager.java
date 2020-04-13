@@ -10,6 +10,7 @@ public class TeamManager extends Subscriber {
     private String name;
     private List<Team> teams;
     private Boolean assign;
+    private int salary;
 
     /**
      * @param username
@@ -17,11 +18,12 @@ public class TeamManager extends Subscriber {
      * @param name
      * @param teams
      */
-    public TeamManager(String username, String password, String name, List<Team> teams, SystemController systemController) {
+    public TeamManager(String username, String password, String name,int salary, List<Team> teams, SystemController systemController) {
         super(username, password, systemController);
         this.name = name;
         this.teams = teams;
         this.assign = false;
+        this.salary = salary;
     }
 
     public void setAssign(Boolean assign) {
@@ -64,5 +66,9 @@ public class TeamManager extends Subscriber {
 
     public Boolean getAssigned(){
         return this.assign;
+    }
+
+    public void setSalary(int edit) {
+        this.salary = edit;
     }
 }

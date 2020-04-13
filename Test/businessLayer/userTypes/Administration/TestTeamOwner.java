@@ -73,6 +73,25 @@ public class TestTeamOwner {
         assertFalse(Barkat.sendRequestForTeam("","2004"));
 
     }
+    @Test
+    void addAsset() {
+    }
+
+    @Test
+    void deleteAsset() {
+    }
+
+    @Test
+    void editPlayer() {
+    }
+
+    @Test
+    void editCoach() {
+    }
+
+    @Test
+    void editTeamManager() {
+    }
 
 
 }

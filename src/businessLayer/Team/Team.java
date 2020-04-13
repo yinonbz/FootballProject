@@ -305,4 +305,31 @@ public class Team {
             coaches.remove(coach);
         }
     }
+
+    public Player getPlayerByUser(String playerUser) {
+        for (Player player:players) {
+            if(player.getUsername().equals(playerUser)){
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Coach getCoachByUser(String coachUser) {
+        for (Coach coach:coaches) {
+            if(coach.getUsername().equals(coachUser)){
+                return coach;
+            }
+        }
+        return null;
+    }
+
+    public TeamManager getManegerByUser(String teamManagerUser) {
+        for (TeamManager teamManager:teamManagers) {
+            if(teamManager.getUsername().equals(teamManagerUser)){
+                return teamManager;
+            }
+        }
+        return null;
+    }
 }

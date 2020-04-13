@@ -180,10 +180,64 @@ public class TeamOwner extends Subscriber {
         }
         return isDeleted;
     }
-    public boolean editAsset(){
+    public boolean editAsset(int teamId, String assetType, String assetUserName ,String typeEdit,String edit){
 
+        return false;
+    }
 
-
+    public boolean editPlayer(int teamId,String playerUser,String typeEdit,String edit){
+        Team team = findTeam(teamId);
+        if(playerUser!=null &&typeEdit!=null && edit!=null ){
+            Player player = team.getPlayerByUser(playerUser);
+            if(player!=null) {
+                if (typeEdit.equals("birthDate")) {
+                    team.removePlayer(player);
+                    player.setBirthDate(edit);
+                    team.addPlayer(player);
+                    return true;
+                } else if (typeEdit.equals("fieldJobs")) {
+                    team.removePlayer(player);
+                    player.setFieldJob(edit);
+                    team.addPlayer(player);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean editCoach(int teamId,String CoachUser,String typeEdit,String edit){
+        Team team = findTeam(teamId);
+        if(CoachUser!=null &&typeEdit!=null && edit!=null ){
+            Coach coach = team.getCoachByUser(CoachUser);
+            if(coach!=null) {
+                if (typeEdit.equals("training")) {
+                    team.removeCoach(coach);
+                    coach.setTraining(edit);
+                    team.addCoach(coach);
+                    return true;
+                } else if (typeEdit.equals("teamJob")) {
+                    team.removeCoach(coach);
+                    coach.setTeamJob(edit);
+                    team.addCoach(coach);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean editTeamManager(int teamId,String teamManagerUser,String typeEdit,int edit) {
+        Team team = findTeam(teamId);
+        if (teamManagerUser != null && typeEdit != null) {
+            TeamManager teamManager = team.getManegerByUser(teamManagerUser);
+            if (teamManager != null) {
+                if (typeEdit.equals("salary")) {
+                    team.removeTeamManager(teamManager);
+                    teamManager.setSalary(edit);
+                    team.addTeamManager(teamManager);
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
