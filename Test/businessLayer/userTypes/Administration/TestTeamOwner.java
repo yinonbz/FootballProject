@@ -1,4 +1,7 @@
+
+
 import businessLayer.Team.Team;
+import org.junit.Before;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,14 +12,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTeamOwner {
-
     static TeamOwner Barkat;
     static TeamOwner Glazers;
     static TeamOwner Nissanov;
     static Team BeerSheva;
     static Team ManchesterUnited;
     static SystemController systemController;
-
 
     @BeforeClass
     public static void createTestValues(){
@@ -79,10 +80,20 @@ public class TestTeamOwner {
     }
     @Test
 
-    public void checkTeamRequest(){
+    public void checkTeamRequest() {
         //1
         //check if we get true on a normal request
-        assertTrue(Barkat.sendRequestForTeam("TheSharks","2003"));
+        assertTrue(Barkat.sendRequestForTeam("TheSharks", "2003"));
+    }
+    @Test
+    public void isFictive(){
+
+        assertFalse(Nissanov.isFictive());
+        Nissanov.setOriginalObject(Buzaglo);
+        assertTrue(Nissanov.isFictive());
+
+    }
+
 
         //2
         //check if we get a false on a not valid year
