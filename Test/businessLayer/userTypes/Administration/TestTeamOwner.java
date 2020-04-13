@@ -1,14 +1,18 @@
+package businessLayer.userTypes.Administration;
+
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
 import org.junit.Test;
 import serviceLayer.SystemController;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestTeamOwner {
-
+/**
     private TeamOwner Barkat;
     private TeamOwner Glazers;
     private TeamOwner Nissanov;
@@ -53,7 +57,7 @@ public class TestTeamOwner {
         BeerSheva.getTeamOwners().remove(Nissanov);
         Nissanov.getTeams().remove(BeerSheva);
         assertFalse(Nissanov.isExclusiveTeamOwner());
+
     }
-
-
+*/
 }
