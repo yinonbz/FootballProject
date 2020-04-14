@@ -615,4 +615,9 @@ public class SystemController {
 
         return newFan;
     }
+    public void addStadium(Stadium stadium){
+        if(stadium!=null){
+            stadiums.put(stadium.getName(),stadium);
+        }
+    }
 }

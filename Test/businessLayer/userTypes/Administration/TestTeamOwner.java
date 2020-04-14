@@ -100,7 +100,6 @@ public class TestTeamOwner {
         systemController.getSystemSubscribers().put(tomer.getUsername(),tomer);
         systemController.getSystemSubscribers().put(itay.getUsername(),itay);
         systemController.addStadium(samiOfer);
-        System.out.println("delete line 103");
         /******************************/
     }
 
