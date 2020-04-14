@@ -587,6 +587,7 @@ public class SystemController {
         return null;
     }
 
+
     public HashMap<String, Team> getTeams() {
         return teams;
     }

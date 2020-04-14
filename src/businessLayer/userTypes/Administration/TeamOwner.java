@@ -13,9 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-/*
-*********************FOR IDO**********************************
- */
 
 public class TeamOwner extends Subscriber {
 
@@ -27,8 +24,8 @@ public class TeamOwner extends Subscriber {
     private HashSet<TeamManager> teamManagers;
 
     public static int newTeamOwnerCounter = 0;
+
     /**
-     *
      * @param username
      * @param password
      * @param name
@@ -129,27 +126,25 @@ public class TeamOwner extends Subscriber {
             switch (assetType) {
                 case "Player":
                     Player player = systemController.findPlayer(assetUserName);
-                    if (player != null && !player.getAssigned()) {
+                    if (player != null && player.getTeam() == null) {
                         team.addPlayer(player);
                         player.setTeam(team);
-                        player.setAssign(true);
                         isAdded = true;
                     }
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && !teamManager.getAssigned()) {
+                    if (teamManager != null && !teamManager.containTeam(team)) {
                         team.addTeamManager(teamManager);
-
+                        teamManager.addTeam(team);
                         this.teamManagers.add(teamManager);
-                        teamManager.setAssign(true);
                         isAdded = true;
                     }
                     break;
 
                 case "Coach":
                     Coach coach = systemController.findCoach(assetUserName);
-                    if (coach != null&&!coach.containTeam(team)) {
+                    if (coach != null && !coach.containTeam(team)) {
                         team.addCoach(coach);
                         coach.addTeam(team);
                         isAdded = true;
@@ -158,7 +153,7 @@ public class TeamOwner extends Subscriber {
 
                 case "Stadium":
                     Stadium stadium = systemController.findStadium(assetUserName);
-                    if (stadium != null && stadium.containTeam(team) == false&& team.getStadium()==null) {
+                    if (stadium != null && stadium.containTeam(team) == false && team.getStadium() == null) {
                         team.setStadium(stadium);
                         stadium.addTeam(team);
                         isAdded = true;
@@ -179,17 +174,17 @@ public class TeamOwner extends Subscriber {
             switch (assetType) {
                 case "Player":
                     Player player = systemController.findPlayer(assetUserName);
-                    if (player != null && player.getAssigned() && team.containPlayer(player)) {
-                        player.setAssign(false);
+                    if (player != null && player.getTeam() != null && player.getTeam() == team && team.containPlayer(player)) {
+                        player.setTeam(null);
                         team.removePlayer(player);
                         isDeleted = true;
                     }
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && teamManager.getAssigned() && teamManagers.contains(teamManager)) {
+                    if (teamManager != null && teamManagers.contains(teamManager)) {
                         team.removeTeamManager(teamManager);
-                        teamManager.setAssign(false);
+                        teamManager.removeTeam(team);
                         isDeleted = true;
                     }
                     break;
@@ -198,7 +193,7 @@ public class TeamOwner extends Subscriber {
                     Coach coach = systemController.findCoach(assetUserName);
                     if (coach != null && coach.containTeam(team) && team.containCoach(coach)) {
                         team.removeCoach(coach);
-                        coach.addTeam(team);
+                        coach.removeTeam(team);
                         isDeleted = true;
                     }
                     break;
@@ -276,6 +271,22 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
+    public Boolean editStadium(int teamId, String editStadiumName, String typeEdit, int edit) {
+        Team team = findTeam(teamId);
+        if (editStadiumName != null && typeEdit != null && team != null) {
+            Stadium stadium = team.getStadium();
+            if(stadium!=null&&stadium.getName().equals(editStadiumName)){
+                if(typeEdit.equals("numberOfSeats")){
+                    stadium.setNumberOfSeats(edit);
+                    team.setStadium(stadium);
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
     private Team findTeam(int teamId) {
         for (Team team : teams) {
             if (team.getTeamId() == teamId) {
@@ -283,6 +294,38 @@ public class TeamOwner extends Subscriber {
             }
         }
         return null;
+    }
+
+    /**
+     * UC 6.6
+     *
+     * @param teamName the name of the team to be returned.
+     * @return instance of the team with the name of 'teamName'.
+     * null if there is no such team in the system.
+     */
+    public Team getTeam(String teamName) {
+        Iterator<Team> it = teams.iterator();
+        while (it.hasNext()) {
+            Team teamCheck = it.next();
+            if (teamCheck.getTeamName().equals(teamName)) {
+                return teamCheck;
+            }
+        }
+        //System.out.println("There is no team with the name '" + teamName + "' in the system.");
+        return null;
+    }
+
+    /**
+     * @param team team to be enabled/disabled.
+     */
+    public void changeStatus(Team team) {
+        if (!team.getActive()) {
+            team.setActive(true);
+            //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
+        } else {
+            team.setActive(false);
+            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not active.");
+        }
     }
 
     /**
@@ -361,8 +404,8 @@ public class TeamOwner extends Subscriber {
      * @return true if fictive (ex: player is also a team owner = fictive)
      * false else
      */
-    public boolean isFictive() {
-        if (originalObject == null) {
+    public boolean isFictive(){
+        if(originalObject==null){
             return false;
         }
         return true;
@@ -451,39 +494,7 @@ public class TeamOwner extends Subscriber {
         return originalObject;
     }
 
-    public void setOriginalObject(OwnerEligible originalObject) {
+    protected void setOriginalObject(OwnerEligible originalObject) {
         this.originalObject = originalObject;
     }
-    /**
-     * UC 6.6
-     * @param teamName the name of the team to be returned.
-     * @return instance of the team with the name of 'teamName'.
-     * null if there is no such team in the system.
-     */
-    public Team getTeam(String teamName) {
-        Iterator<Team> it = teams.iterator();
-        while (it.hasNext()) {
-            Team teamCheck = it.next();
-            if (teamCheck.getTeamName().equals(teamName)) {
-                return teamCheck;
-            }
-        }
-        //System.out.println("There is no team with the name '" + teamName + "' in the system.");
-        return null;
-    }
-
-    /**
-     * @param team team to be enabled/disabled.
-     */
-    public void changeStatus(Team team) {
-        if (!team.getActive()) {
-            team.setActive(true);
-            //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
-        }
-        else{
-            team.setActive(false);
-            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not active.");
-        }
-    }
-
 }

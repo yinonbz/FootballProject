@@ -13,7 +13,6 @@ public class Player extends Subscriber implements OwnerEligible {
     private String birthDate;
     private String fieldJob;
     private Team team;
-    private boolean assign;
     /**
      * @param username
      * @param password
@@ -28,7 +27,6 @@ public class Player extends Subscriber implements OwnerEligible {
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
         this.team = team;
-        this.assign = false;
         this.teamOwner =null;
     }
 
@@ -60,9 +58,6 @@ public class Player extends Subscriber implements OwnerEligible {
         return name;
     }
 
-    public void setAssign(boolean assign) {
-        this.assign = assign;
-    }
 
     /**
      * @return
@@ -90,9 +85,6 @@ public class Player extends Subscriber implements OwnerEligible {
         return null;
     }
 
-    public Boolean getAssigned(){
-        return assign;
-    }
 
     public void setTeam(Team team) {
         this.team = team;
