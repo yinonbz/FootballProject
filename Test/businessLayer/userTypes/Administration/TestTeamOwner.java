@@ -11,13 +11,23 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
+import businessLayer.userTypes.Administration.*;
+import businessLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.TeamOwner;
+import org.junit.Before;
+import businessLayer.userTypes.Administration.TeamOwner;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.SystemController;
 import sun.swing.BakedArrayList;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import sun.swing.BakedArrayList;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -49,6 +59,11 @@ public class TestTeamOwner {
         systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
         systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
         systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
+        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
+        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
+        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
+        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
+        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
         BeerSheva = new Team("Beer Sheva", Barkat, 1973);
         ManchesterUnited = new Team("Manchester United", Barkat, 1899);
         Jacob = new TeamOwner("JacobS", "JacobS123", "Jacob", systemController);
@@ -65,6 +80,8 @@ public class TestTeamOwner {
         ManchesterUnited.getTeamOwners().add(Glazers);
         BeerSheva.getTeamOwners().add(Barkat);
         BeerSheva.getTeamOwners().add(Nissanov);
+        systemController.getTeams().put(BeerSheva.getTeamName(),BeerSheva);
+        systemController.getTeams().put(ManchesterUnited.getTeamName(),ManchesterUnited);
         systemController.getTeams().put(BeerSheva.getTeamName(),BeerSheva);
         systemController.getTeams().put(ManchesterUnited.getTeamName(),ManchesterUnited);
         /**

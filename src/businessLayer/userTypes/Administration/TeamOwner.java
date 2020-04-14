@@ -336,6 +336,7 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
+     *
      * @return
      */
     public boolean editOwners() {
@@ -344,6 +345,7 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
+     *
      * @return
      */
 
@@ -352,6 +354,7 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
+     *
      * @return
      */
     public boolean editTeams() {
@@ -360,6 +363,7 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
+     *
      * @return
      */
     public String getName() {
@@ -367,6 +371,7 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
+     *
      * @param name
      */
     public void setName(String name) {
@@ -399,8 +404,8 @@ public class TeamOwner extends Subscriber {
      * @return true if fictive (ex: player is also a team owner = fictive)
      * false else
      */
-    public boolean isFictive() {
-        if (originalObject == null) {
+    public boolean isFictive(){
+        if(originalObject==null){
             return false;
         }
         return true;
@@ -409,11 +414,10 @@ public class TeamOwner extends Subscriber {
 
     /**
      * //UC-6.2
-     *
      * @param userName the user name of the user that the Team Owner wants to appoint to
      * @return
      */
-    public Subscriber enterMember(String userName) {
+    public Subscriber enterMember(String userName){
 
         return systemController.getSubscriberByUserName(userName);
     }
@@ -421,29 +425,31 @@ public class TeamOwner extends Subscriber {
 
     /**
      * //UC-6.2
-     *
      * @param subscriber the new subscriber that the user wants to add to the team's owners
-     * @param teamName   the team name that the user wants to add a new team owner
+     * @param teamName the team name that the user wants to add a new team owner
      * @return true if the new team owner has added successfully.
-     * false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
+     *          false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
      */
-    public Boolean appointToOwner(Subscriber subscriber, String teamName) {
+    public Boolean appointToOwner(Subscriber subscriber, String teamName){
 
-        if (subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner) {
-            if (!(subscriber instanceof TeamOwner) && ((OwnerEligible) subscriber).isOwner() == false) {
-                if (getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
+        if(subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner){
+            if(!(subscriber instanceof TeamOwner) && ((OwnerEligible) subscriber).isOwner() == false){
+                if(getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
                     String newUserName = subscriber.getUsername();
-                    updateFictiveOwner(newUserName, subscriber, teamName);
+                    updateFictiveOwner(newUserName,subscriber,teamName);
                     return true;
-                } else {
+                }
+                else{
                     //System.out.println("You cannot add to a team which you do not own.");
                     return false;
                 }
-            } else {
+            }
+            else{
                 //System.out.println("The user " + subscriber.getUsername() + " is already an owner of a team.");
                 return false;
             }
-        } else {
+        }
+        else{
             //System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
             return false;
         }
@@ -451,27 +457,28 @@ public class TeamOwner extends Subscriber {
 
     /**
      * //UC - 6.2
-     *
      * @param newUserName the userName for the new fictive user.
-     * @param subscriber  the subscriber to add as a new team owner.
-     * @param teamName    the team name to add a new team owner.
+     * @param subscriber the subscriber to add as a new team owner.
+     * @param teamName the team name to add a new team owner.
      */
     private void updateFictiveOwner(String newUserName, Subscriber subscriber, String teamName) {
         while (subscriber.getSystemController().getSystemSubscribers().containsKey(newUserName)) { //generate new fictive user name
             newUserName = newUserName + newTeamOwnerCounter++;
         }
         TeamOwner newTeamOwner = new TeamOwner(newUserName, subscriber.getPassword(), "fictive", subscriber.getSystemController());
-        if (subscriber instanceof Player) {
-            Player player = (Player) subscriber;
+        if(subscriber instanceof Player){
+            Player player = (Player)subscriber;
             player.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(player);
 
-        } else if (subscriber instanceof Coach) {
-            Coach coach = (Coach) subscriber;
+        }
+        else if(subscriber instanceof Coach){
+            Coach coach = (Coach)subscriber;
             coach.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(coach);
-        } else if (subscriber instanceof TeamManager) {
-            TeamManager teamManager = (TeamManager) subscriber;
+        }
+        else if(subscriber instanceof TeamManager){
+            TeamManager teamManager = (TeamManager)subscriber;
             teamManager.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(teamManager);
         }
@@ -487,7 +494,7 @@ public class TeamOwner extends Subscriber {
         return originalObject;
     }
 
-    public void setOriginalObject(OwnerEligible originalObject) {
+    protected void setOriginalObject(OwnerEligible originalObject) {
         this.originalObject = originalObject;
     }
 }
