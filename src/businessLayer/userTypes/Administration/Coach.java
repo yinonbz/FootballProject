@@ -7,7 +7,6 @@ import serviceLayer.SystemController;
 public class Coach extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
-    private String name;
     private String training;
     private String teamJob;
     private Team team;
@@ -21,8 +20,7 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param teamJob
      */
     public Coach(String username, String password, String name,String training, String teamJob, SystemController systemController) {
-        super(username, password, systemController);
-        this.name=name;
+        super(username, password,name, systemController);
         this.training=training;
         this.teamJob=teamJob;
         this.teamOwner =null;

@@ -7,6 +7,7 @@ import serviceLayer.SystemController;
 import java.util.HashMap;
 
 public abstract class Subscriber {
+    protected String name;
     protected String username;
     protected String password;
     protected SystemController systemController;
@@ -17,7 +18,8 @@ public abstract class Subscriber {
      * @param username
      * @param password
      */
-    public Subscriber(String username, String password, SystemController systemController) {
+    public Subscriber(String username, String password,String name, SystemController systemController) {
+        this.name = name;
         this.username = username;
         this.password = password;
         complaints = new HashMap<>();
@@ -118,4 +120,11 @@ public abstract class Subscriber {
         return alertSystem;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

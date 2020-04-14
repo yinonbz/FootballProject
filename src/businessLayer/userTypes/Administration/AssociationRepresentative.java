@@ -8,7 +8,6 @@ import serviceLayer.SystemController;
 import java.util.HashSet;
 
 public class AssociationRepresentative extends Subscriber {
-    private String name;
     private FinancialMonitoring financialMonitoring;
     private LeagueController leagueController;
 
@@ -20,7 +19,7 @@ public class AssociationRepresentative extends Subscriber {
      * @param leaguesController
      */
     public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeagueController leaguesController, SystemController systemController) {
-        super(username, password,systemController);
+        super(username, password,name,systemController);
         this.name = name;
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leagueController;
@@ -34,8 +33,7 @@ public class AssociationRepresentative extends Subscriber {
      * @param systemController
      */
     public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
-        super(username, password, systemController);
-        this.name= name;
+        super(username, password,name, systemController);
     }
 
     /**

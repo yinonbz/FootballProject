@@ -5,7 +5,6 @@ import businessLayer.userTypes.Subscriber;
 import serviceLayer.SystemController;
 
 public class Referee extends Subscriber {
-    private String name;
     private String training;
     private LeagueController leagueController;
 
@@ -17,8 +16,7 @@ public class Referee extends Subscriber {
      * @param leaguesController
      */
     public Referee(String username, String password, String name, String training, LeagueController leaguesController, SystemController systemController) {
-        super(username, password,systemController);
-        this.name = name;
+        super(username, password,name,systemController);
         this.training = training;
         this.leagueController = leaguesController;
     }

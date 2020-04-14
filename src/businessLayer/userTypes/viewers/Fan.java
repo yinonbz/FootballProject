@@ -15,7 +15,7 @@ public class Fan extends Subscriber {
      * @param name
      */
     public Fan(String username, String password, String name, SystemController systemController) {
-        super(username, password, systemController);
+        super(username, password,name, systemController);
         this.name = name;
     }
 

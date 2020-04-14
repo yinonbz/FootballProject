@@ -9,7 +9,6 @@ import java.util.List;
 public class Player extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
-    private String name;
     private String birthDate;
     private String fieldJob;
     private List<Team> teams;
@@ -23,8 +22,7 @@ public class Player extends Subscriber implements OwnerEligible {
      * @param teams
      */
     public Player(String username, String password, String name, String birthDate, String fieldJob, List<Team> teams, SystemController systemController) {
-        super(username, password,systemController);
-        this.name = name;
+        super(username, password,name,systemController);
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
         this.teams = teams;

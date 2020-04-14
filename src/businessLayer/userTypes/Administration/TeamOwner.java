@@ -5,10 +5,8 @@ import businessLayer.userTypes.Subscriber;
 import serviceLayer.SystemController;
 
 import java.awt.*;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 /*
 *********************FOR IDO**********************************
@@ -18,7 +16,7 @@ public class TeamOwner extends Subscriber {
 
     private OwnerEligible originalObject;
     private Set<TeamOwner> assignedByMe;
-    private String name;
+    private Map<Team,TeamManager> managersAssignedByMe;
     private HashSet<Team> teams;
     /**
      *
@@ -27,11 +25,11 @@ public class TeamOwner extends Subscriber {
      * @param name
      */
     public TeamOwner(String username, String password, String name, SystemController systemController) {
-        super(username, password, systemController);
-        this.name= name;
+        super(username, password,name, systemController);
         teams = new HashSet<>();
         assignedByMe = new HashSet<>();
         originalObject = null;
+        managersAssignedByMe= new HashMap<>();
     }
 
     /**
@@ -122,9 +120,103 @@ public class TeamOwner extends Subscriber {
      * @return
      */
 
-    public boolean editManagers(){
+    public boolean addManager(String username, Permissions permission,Team team){
+        //check if user exists in out system
+        Subscriber subscriber=null;
+        if(systemController.getSystemSubscribers().containsKey(username)){
+            subscriber = systemController.getSystemSubscribers().get(username);
+        }
+
+        //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
+        if(subscriber==null||team.getTeamManager().equals(subscriber)|| team.getTeamOwners().contains(subscriber)|| !(this.teams.contains(team))){
+            return false;
+            //todo check if we should print something based on the error given
+        }
+
+        if(team.getTeamManager() ==null){
+
+            //covert Subsriber to teamManger
+
+            TeamManager newTeamManger = new TeamManager(subscriber.getUsername(),
+                    subscriber.getPassword(),subscriber.getName(),team,this.getSystemController());
+
+            systemController.getSystemSubscribers().put(username,newTeamManger);
+            subscriber= newTeamManger;
+
+            //assign to team manager field in the team objects
+            team.setTeamManager((TeamManager)subscriber);
+
+            //grant permissions to the new team manager
+            newTeamManger.setPermissions(grantPermissions(permission));
+
+            //link to assigning owner
+            managersAssignedByMe.put(team,newTeamManger);
+
+            return true;
+        }
+
+        System.out.println("please fire current Manager before appointing a new one");
+        return false;
+
+    }
+
+    /**
+     * this function checks what permissions should be given to the team manager based on enum argument
+     * @param permission enum argument for permission category
+     * @return set of strings that indicating the permissions which should be given to team manager.
+     */
+    private HashSet<String> grantPermissions(Permissions permission) {
+
+        if(permission == Permissions.COACHORIENTED){
+            return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance", "addCoach", "fireCoach"));
+        }
+        if(permission == Permissions.PLAYERORIENTED){
+            return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance", "addPlayer", "firePlayer"));
+        }
+        if(permission == Permissions.FINANCE){
+            return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance"));
+        }
+        return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance", "addCoach", "fireCoach","addPlayer","firePlayer"));
+    }
+
+    /**
+     *
+     * @return
+     */
+
+    public boolean fireManager(String username,Team team){
+
+//check if user exists in out system
+        Subscriber subscriber=null;
+        if(systemController.getSystemSubscribers().containsKey(username)){
+            subscriber = systemController.getSystemSubscribers().get(username);
+        }
+
+        //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
+        if(subscriber==null|| !(this.teams.contains(team))||managersAssignedByMe.containsValue(subscriber) || !(subscriber instanceof TeamManager) || !(team.getTeamManager().equals(subscriber))){
+            return false;
+            //todo check if we should print something based on the error given
+        }
+
+        //fire manager from team and delete links
+        team.setTeamManager(null);
+        TeamManager tm = (TeamManager) subscriber;
+        tm.setTeams(null);
+
+        //cancel permissions
+        tm.setPermissions(new HashSet<>());
+
+        //delete assignment from owner
+        managersAssignedByMe.remove(team);
+
         return true;
     }
+
+    private void fireManagerFromTeam(Subscriber subscriber) {
+
+
+    }
+
 
     /**
      *
@@ -133,22 +225,6 @@ public class TeamOwner extends Subscriber {
     public boolean editTeams(){
 
         return true;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -186,5 +262,17 @@ public class TeamOwner extends Subscriber {
 
     public void setOriginalObject(OwnerEligible originalObject) {
         this.originalObject = originalObject;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj!=null && obj instanceof Subscriber){
+            Subscriber objS = (Subscriber) obj;
+            if(objS instanceof TeamOwner){
+                TeamOwner objTO = (TeamOwner) objS;
+                return super.equals(objTO);
+            }
+        }
+        return false;
     }
 }
