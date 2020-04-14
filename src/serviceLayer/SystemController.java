@@ -29,7 +29,7 @@ public class SystemController {
     private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private HashMap<String, LinkedList<String>> unconfirmedTeams;
-    private HashMap<Integer, Stadium> stadiums;
+    private HashMap<String, Stadium> stadiums;
 
     private LeagueController leagueController;
 
@@ -546,11 +546,164 @@ public class SystemController {
         return false;
     }
 
-    public HashMap<Integer, Stadium> getStadiums() {
+    public HashMap<String, Stadium> getStadiums() {
         return stadiums;
     }
 
-    public void setStadiums(HashMap<Integer, Stadium> stadiums) {
+    public void setStadiums(HashMap<String, Stadium> stadiums) {
         this.stadiums = stadiums;
+    }
+    /**
+     * this function find the player according to is user name and return it if the player exist in the system
+     * @param username the user name of the player
+     * @return the player
+     */
+    //todo add to player method isAssociated()
+    public Player findPlayer(String username) {
+        Subscriber sub = systemSubscribers.get(username);
+        if(sub instanceof Player){
+            Player p = (Player) sub;
+            //if(p.isAssociated())
+            return p;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * this function find the TeamManager according to is user name and return it if the TeamManager exist in the system
+     * @param assetUserName the user name of the TeamManager
+     * @return the TeamManager
+     */
+    public TeamManager findTeamManager(String assetUserName) {
+        Subscriber sub = systemSubscribers.get(assetUserName);
+        if(sub instanceof TeamManager){
+            TeamManager teamM = (TeamManager) sub;
+            //if(p.isAssociated())
+            return teamM;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * this function find the Coach according to is user name and return it if the Coach exist in the system
+     * @param assetUserName the user name of the Coach
+     * @return the Coach
+     */
+    public Coach findCoach(String assetUserName) {
+        Subscriber sub = systemSubscribers.get(assetUserName);
+        if (sub instanceof Coach) {
+            Coach coach = (Coach) sub;
+            return coach;
+        } else {
+            return null;
+        }
+    }
+
+    public Stadium findStadium(String assetUserName) {
+        if(stadiums.containsKey(assetUserName)){
+            return stadiums.get(assetUserName);
+        }
+        return null;
+    }
+    /**
+     * This function will create variables for the user to enter for the login procedure, and will send them (via enterUserDetails(userNameInput, passwordInput) to be filled by the guest in the UI/GUI.
+     *
+     * @param guest The guest which started the login procedure.
+     * @return the instance of Subscriber from systemSubscribers, if the login details were correct.
+     * NULL if the login form wasn't filled properly, or one of the user details wasn't correct.
+     */
+    public Subscriber createLoginForm(Guest guest) {
+        String userNameInput = null;
+        String passwordInput = null;
+        guest.enterUserDetails(userNameInput, passwordInput);
+        if (userNameInput == null || userNameInput.length() == 0 || passwordInput == null || passwordInput.length() == 0) {
+            System.out.println("Not all fields were filled by the user.");
+            return null;
+        }
+        if (systemSubscribers.containsKey(userNameInput)) {
+            if (systemSubscribers.get(userNameInput).getPassword().equals(passwordInput)) {
+                return systemSubscribers.get(userNameInput);
+            }
+        }
+        System.out.println("Wrong Password or User Name.");
+        return null;
+    }
+
+    /**
+     * @param userName the user name that the user searches it's user instance
+     * @return the user's instance with the user name, if existed in the system
+     * NULL if there is no user in the system with the input user name
+     */
+    public Subscriber getSubscriberByUserName(String userName) {
+        if (getSystemSubscribers().containsKey(userName)) {
+            return getSystemSubscribers().get(userName);
+        }
+        return null;
+    }
+
+    /**
+     * @param teamName the team name that the user searches it's team instance
+     * @return the team's instance with the team name, if existed in the system
+     * *      NULL if there is no team in the system with the input team name
+     */
+    public Team getTeamByName(String teamName) {
+        if (teams.containsKey(teamName)) {
+            return teams.get(teamName);
+        }
+        return null;
+    }
+
+
+    public HashMap<String, Team> getTeams() {
+        return teams;
+    }
+
+    public Subscriber createRegistrationForm(Guest guest) {
+        String userNameInput = null;
+        String passwordInput = null;
+        guest.enterUserDetails(userNameInput, passwordInput);
+        if (userNameInput == null || userNameInput.length() == 0 || passwordInput == null || passwordInput.length() == 0) {
+            //System.out.println("Not all fields were filled by the user.");
+            return null;
+        }
+        if (checkPasswordStrength(passwordInput, userNameInput) == false) {
+            return null;
+        }
+
+        String firstName = null;
+        String lastName = null;
+
+        while (!(firstName.matches("^[a-zA-Z]+$")) || !(lastName.matches("^[a-zA-Z]+$"))) //check if only letters
+            guest.enterUserRealName(firstName, lastName);
+
+        Subscriber newFan = new Fan(userNameInput, passwordInput, firstName + " " + lastName, this);
+        getSystemSubscribers().put(userNameInput, newFan);
+
+        return newFan;
+    }
+    public void addStadium(Stadium stadium){
+        if(stadium!=null){
+            stadiums.put(stadium.getName(),stadium);
+        }
+    }
+
+    // -------------------AssociationRepresentative--------------------//
+
+    /**
+     * the function adds
+     * @param nameStadium
+     * @param numberOfSeats
+     * @return
+     */
+    public boolean addNewStadium(String nameStadium, String numberOfSeats){
+        if (!stadiums.containsKey(nameStadium)){
+            int numOfSeats = Integer.parseInt(numberOfSeats);
+            Stadium stadium = new Stadium(nameStadium,numOfSeats);
+            stadiums.put(nameStadium,stadium);
+            return true;
+        }
+        return false;
     }
 }

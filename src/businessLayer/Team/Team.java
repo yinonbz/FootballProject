@@ -9,18 +9,20 @@ import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Team {
     private HashSet<Player> players;
     private HashSet<Coach> coaches;
-    private TeamManager teamManager;
+    private HashSet<TeamManager> teamManagers;
     private HashSet<TeamOwner> teamOwners;
     private FinancialMonitoring financialMonitoring;
-    private List<Match> matches;
-    private List<Season> seasons;
+    private HashSet<Match> matches;
+    private HashSet<Season> seasons;
     private Stadium stadium;
     private String teamName;
     private int teamId;
@@ -31,7 +33,7 @@ public class Team {
     /**a
      * @param players
      * @param coaches
-     * @param teamManager
+     * @param teamManagers
      * @param teamOwners
      * @param financialMonitoring
      * @param matches
@@ -42,11 +44,17 @@ public class Team {
      * @param establishedYear
      * @param isActive
      */
-    public Team(HashSet<Player> players, HashSet coaches, TeamManager teamManager, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> matches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
+    public Team(HashSet<Player> players, HashSet coaches, HashSet<TeamManager> teamManagers, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, HashSet<Match> matches, HashSet<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
         this.players = players;
         this.coaches = coaches;
-        this.teamManager = teamManager;
+        this.teamManagers = teamManagers;
+        //teamManager.getTeams().add(this);
         this.teamOwners = teamOwners;
+        Iterator<TeamOwner> it = teamOwners.iterator();
+        while (it.hasNext()) {
+            TeamOwner teamOwner = it.next();
+            teamOwner.getTeams().add(this);
+        }
         this.financialMonitoring = financialMonitoring;
         this.matches = matches;
         this.seasons = seasons;
@@ -67,10 +75,17 @@ public class Team {
         this.teamName=teamName;
         teamOwners= new HashSet<>();
         teamOwners.add(teamOwner);
+        teamOwner.getTeams().add(this);
         this.establishedYear=establishedYear;
         isActive=true;
         closedByAdmin=false;
         stadium = null;
+        this.players = new HashSet<>();
+        this.coaches =new HashSet<>();
+        this.seasons=new HashSet<>();
+        this.matches = new HashSet<>();
+        this.teamManagers = new HashSet<>();
+
     }
 
     /**
@@ -102,13 +117,15 @@ public class Team {
         return coaches;
     }
 
+
     /**
      * @return
      */
+    /*
     public TeamManager getTeamManager() {
         return teamManager;
     }
-
+    */
     /**
      * @return
      */
@@ -127,7 +144,7 @@ public class Team {
     /**
      * @return
      */
-    public List<Season> getSeasons() {
+    public HashSet<Season> getSeasons() {
         return seasons;
     }
 
@@ -180,13 +197,15 @@ public class Team {
         this.coaches = coaches;
     }
 
-    /**
+
+     /*
      * @param teamManager
      */
-    public void setTeamManager(TeamManager teamManager) {
+     /*
+    //public void setTeamManager(TeamManager teamManager) {
         this.teamManager = teamManager;
     }
-
+    */
     /**
      * @param teamOwners
      */
@@ -205,7 +224,7 @@ public class Team {
     /**
      * @param seasons
      */
-    public void setSeasons(List<Season> seasons) {
+    public void setSeasons(HashSet<Season> seasons) {
         this.seasons = seasons;
     }
 
@@ -247,14 +266,14 @@ public class Team {
     /**
      * @return
      */
-    public List<Match> getMatches() {
+    public HashSet<Match> getMatches() {
         return matches;
     }
 
     /**
      * @param matches
      */
-    public void setMatches(List<Match> matches) {
+    public void setMatches(HashSet<Match> matches) {
         this.matches = matches;
     }
 
@@ -264,6 +283,82 @@ public class Team {
      */
     public Boolean getClosedByAdmin() {
         return closedByAdmin;
+    }
+
+    /** ido added
+     * this function add a player to the team
+     * @param p the player to be added
+     */
+    public void addPlayer(Player p){
+        this.players.add(p);
+    }
+
+    /**
+     * ido add
+     * this function add a teamManager to the team
+     * @param teamManager the teamManager to be added
+     */
+
+    public void addTeamManager(TeamManager teamManager) {
+        this.teamManagers.add(teamManager);
+    }
+
+    public void addCoach(Coach coach) {
+        this.coaches.add(coach);
+    }
+
+    public void removePlayer(Player player) {
+        if(players.contains(player)) {
+            players.remove(player);
+        }
+    }
+
+    public void removeTeamManager(TeamManager teamManager) {
+        if(teamManagers.contains(teamManager)){
+            teamManagers.remove(teamManager);
+        }
+    }
+
+
+    public void removeCoach(Coach coach) {
+        if(coaches.contains(coach)){
+            coaches.remove(coach);
+        }
+    }
+
+    public Player getPlayerByUser(String playerUser) {
+        for (Player player:players) {
+            if(player.getUsername().equals(playerUser)){
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Coach getCoachByUser(String coachUser) {
+        for (Coach coach:coaches) {
+            if(coach.getUsername().equals(coachUser)){
+                return coach;
+            }
+        }
+        return null;
+    }
+
+    public TeamManager getManegerByUser(String teamManagerUser) {
+        for (TeamManager teamManager:teamManagers) {
+            if(teamManager.getUsername().equals(teamManagerUser)){
+                return teamManager;
+            }
+        }
+        return null;
+    }
+
+    public Boolean containPlayer(Player player) {
+        return players.contains(player);
+    }
+
+    public boolean containCoach(Coach coach) {
+        return this.coaches.contains(coach);
     }
 
 

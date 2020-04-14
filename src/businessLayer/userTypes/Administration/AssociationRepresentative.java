@@ -30,6 +30,34 @@ public class AssociationRepresentative extends Subscriber {
     }
 
     /**
+     * constructor
+     * @param username
+     * @param password
+     * @param name
+     * @param systemController
+     */
+    public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
+        super(username, password, systemController);
+        this.name= name;
+        this.systemController=systemController;
+    }
+
+    /**
+     * the function gets the name of the stadium and the number of seats it has
+     * @param nameStadium the name of the stadium
+     * @param numberOfSeats the number of seats in the stadium
+     * @return true if the stadium was added successfully
+     */
+    public boolean createNewStadium(String nameStadium, String numberOfSeats){
+        if(!nameStadium.isEmpty() && !numberOfSeats.isEmpty()){
+            if(tryParseInt(numberOfSeats)){
+                return systemController.addNewStadium(nameStadium,numberOfSeats);
+            }
+        }
+        return false;
+    }
+
+    /**
      * The function creates a league in the system and returns a boolean representing whether it was created or not
      *
      * @param newLeagueID
@@ -167,4 +195,17 @@ public class AssociationRepresentative extends Subscriber {
     public Boolean editDetails() {
         return null;
     }
+
+
+    /**
+     * the function lets the AR to confirm new teams in the system
+     * @param teamName the team the AR wants to approve
+     * @return true if the team was approved
+     */
+    public boolean confirmTeamRequest(String teamName){
+        return systemController.confirmTeamByAssociationRepresntative(teamName,this);
+    }
+
+
+
 }

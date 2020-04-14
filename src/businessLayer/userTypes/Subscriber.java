@@ -61,6 +61,20 @@ public abstract class Subscriber {
     }
 
     /**
+     * private function that checks that a string represents an interger
+     * @param value the string
+     * @return true if it an integer
+     */
+    protected boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
      * @return
      */
     abstract public Boolean editDetails();
