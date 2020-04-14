@@ -617,6 +617,7 @@ public class SystemController {
         }
         return null;
     }
+
     public void addStadium(Stadium stadium){
         if(stadium!=null){
             stadiums.put(stadium.getName(),stadium);
