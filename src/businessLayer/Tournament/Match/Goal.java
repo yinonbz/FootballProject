@@ -7,11 +7,13 @@ public class Goal extends Event {
     Player assist;
 
     /**
-     * @param match
+     * constructor
+     * @param scorer
+     * @param assist
+     * @param matchController
      */
-    public Goal(Match match, Player scorer, Player assist) {
-        super(match);
-        this.scorer= scorer;
+    public Goal(Player scorer, Player assist, MatchController matchController) {
+        super(matchController,scorer);
         this.assist = assist;
     }
 }

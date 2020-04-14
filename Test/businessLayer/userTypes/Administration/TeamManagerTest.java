@@ -2,7 +2,7 @@ package businessLayer.userTypes.Administration;
 
 import org.junit.Before;
 import org.junit.Test;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,8 @@ public class TeamManagerTest {
 
     @Before
     public void createTestValues() {
-        teamManager = new TeamManager("JurgenKlopp", "Klopp123", "Klopp", null, systemController);
+
+        teamManager = new TeamManager("JurgenKlopp", "Klopp123", "Klopp",null,0, systemController);
         teamOwner = new TeamOwner("JurgenFictive","KloppF123","KloppF",systemController);
     }
 

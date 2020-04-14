@@ -1,7 +1,7 @@
 package businessLayer.userTypes.Administration;
 
 import org.junit.*;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

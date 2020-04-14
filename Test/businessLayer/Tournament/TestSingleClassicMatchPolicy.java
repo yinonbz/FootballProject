@@ -7,8 +7,7 @@ import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import serviceLayer.LeagueController;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class TestSingleClassicMatchPolicy {
     @BeforeClass
     public static void defineValues(){
         systemController = SystemController.SystemController();
-        leagueController = new LeagueController(systemController);
+        leagueController = new LeagueController();
         s1 = new Stadium("s1",200);
         s2 = new Stadium("s2",300);
         s3 = new Stadium("s3",400);
@@ -85,10 +84,10 @@ public class TestSingleClassicMatchPolicy {
         Arsenal = new Team ("Arsenal", teamOwner,1888);
         Chelsea = new Team ("Chelsea", teamOwner,1888);
         Chelsea.setStadium(s1);
-        primerLeague = new League ("PriemerLeague",1);
+        primerLeague = new League ("PriemerLeague");
         s9 = new Stadium("Default",500);
         //systemController.getStadiums().put(0,s9);
-        leagueController.getStadiums().put(0,s9);
+        leagueController.getStadiums().put("s9",s9);
         startDate = new Date();
         endDate = new Date ();
         currSeason = new Season (2,startDate,endDate, primerLeague);

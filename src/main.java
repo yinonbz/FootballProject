@@ -1,7 +1,5 @@
 import businessLayer.Utilities.alertSystem.AlertSystem;
-import serviceLayer.SystemController;
-
-import java.util.Scanner;
+import businessLayer.userTypes.SystemController;
 
 public class main {
     public static void main(String args[]){

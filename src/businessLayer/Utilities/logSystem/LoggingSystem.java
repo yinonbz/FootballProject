@@ -1,7 +1,7 @@
 package businessLayer.Utilities.logSystem;
 
-import serviceLayer.LeagueController;
-import serviceLayer.SystemController;
+import businessLayer.Tournament.LeagueController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.HashMap;
 import java.util.List;

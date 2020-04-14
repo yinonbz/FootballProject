@@ -1,7 +1,7 @@
 package businessLayer.Utilities.alertSystem;
 
-import serviceLayer.LeagueController;
-import serviceLayer.SystemController;
+import businessLayer.Tournament.LeagueController;
+import businessLayer.userTypes.SystemController;
 import businessLayer.userTypes.Subscriber;
 
 import java.util.List;

@@ -3,12 +3,8 @@ package businessLayer.Tournament;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
-import serviceLayer.LeagueController;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 
@@ -22,7 +18,7 @@ public class SingleMatchPolicy extends AMatchPolicy {
      * @param league the league
      * @param season the season
      */
-    SingleMatchPolicy (HashMap <Integer,Team> teams, League league, Season season){
+    public SingleMatchPolicy (HashMap <Integer,Team> teams, League league, Season season){
         super(teams,league,season);
     }
 

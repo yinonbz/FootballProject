@@ -2,14 +2,16 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
+
+import java.util.HashSet;
 
 public class Coach extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
     private String training;
     private String teamJob;
-    private Team team;
+    private HashSet<Team> teams;
 
     /**
      *
@@ -24,8 +26,10 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.training=training;
         this.teamJob=teamJob;
         this.teamOwner =null;
-
+        this.teams = new HashSet<>();
     }
+
+
 
     /**
      *
@@ -89,22 +93,12 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.teamJob = teamJob;
     }
 
-    /**
-     *
-     * @return
-     */
-
-    public Team getTeam() {
-        return team;
+    public HashSet<Team> getTeamS() {
+        return teams;
     }
 
-    /**
-     *
-     * @param team
-     */
-
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeamS(HashSet<Team> teamS) {
+        this.teams = teamS;
     }
 
     @Override
@@ -130,5 +124,17 @@ public class Coach extends Subscriber implements OwnerEligible {
 
     protected void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
+    }
+
+    public boolean containTeam(Team team) {
+        return this.teams.contains(team);
+    }
+
+    public void addTeam(Team team) {
+        this.teams.add(team);
+    }
+
+    public void removeTeam(Team team) {
+        this.teams.remove(team);
     }
 }

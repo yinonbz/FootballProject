@@ -2,7 +2,6 @@ package businessLayer.userTypes;
 
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.AlertSystem;
-import serviceLayer.SystemController;
 
 import java.util.HashMap;
 
@@ -59,6 +58,20 @@ public abstract class Subscriber {
                 complaints.remove(complaint.getId());
                 complaints.put(complaint.getId(),complaint);
             }
+        }
+    }
+
+    /**
+     * private function that checks that a string represents an interger
+     * @param value the string
+     * @return true if it an integer
+     */
+    protected boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 

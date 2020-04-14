@@ -2,7 +2,7 @@ package businessLayer.userTypes.Administration;
 
 import org.junit.Before;
 import org.junit.Test;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import static org.junit.Assert.*;
 

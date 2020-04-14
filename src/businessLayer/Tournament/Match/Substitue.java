@@ -7,10 +7,13 @@ public class Substitue extends Event {
     Player out;
 
     /**
-     * @param match
+     * constructor
+     * @param in
+     * @param out
+     * @param matchController
      */
-    public Substitue(Match match, Player in, Player out) {
-        super(match);
+    public Substitue(Player in, Player out, MatchController matchController) {
+        super(matchController,in);
         this.in= in;
         this.out = out;
     }

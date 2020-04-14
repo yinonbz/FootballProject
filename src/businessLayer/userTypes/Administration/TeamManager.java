@@ -2,10 +2,9 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class TeamManager extends Subscriber implements OwnerEligible {
@@ -13,6 +12,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
     private TeamOwner teamOwner; //fictive account for team owner permission via team manager account
     private Team team;
     private Set<String> permissions;
+    private int salary;
 
     /**
      * @param username
@@ -20,12 +20,14 @@ public class TeamManager extends Subscriber implements OwnerEligible {
      * @param name
      * @param team
      */
-    public TeamManager(String username, String password, String name, Team team, SystemController systemController) {
+    public TeamManager(String username, String password, String name, Team team,int salary, SystemController systemController) {
         super(username, password,name, systemController);
         this.team = team;
         this.teamOwner =null;
+        this.salary = salary;
         permissions= new HashSet<>();
     }
+
 
     /**
      * @return
@@ -37,7 +39,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
     /**
      * @return
      */
-    public Team getTeams() {
+    public Team getTeam() {
         return team;
     }
 
@@ -51,8 +53,8 @@ public class TeamManager extends Subscriber implements OwnerEligible {
     /**
      * @param team
      */
-    public void setTeams(Team team) {
-        team = team;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
 
@@ -61,6 +63,9 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         return null;
     }
 
+    public void setSalary(int edit) {
+        this.salary = edit;
+    }
 
     /**
      * this function determine if the coach is also an Owner
@@ -101,4 +106,5 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         }
         return false;
     }
+
 }

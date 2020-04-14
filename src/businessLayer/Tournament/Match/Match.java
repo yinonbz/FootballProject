@@ -22,6 +22,7 @@ public class Match {
     private Stadium stadium;
     private int numberOfFans;
     private static int index=1;
+    private EventRecord eventRecord;
     /**
      * @param league
      * @param season
@@ -63,6 +64,13 @@ public class Match {
         this.stadium=stadium;
         this.matchId=index;
         index++;
+    }
+
+    /**
+     * opens an event recorder for the game
+     */
+    public void startTheGame(){
+        eventRecord = new EventRecord(this);
     }
 
     /**
@@ -235,5 +243,21 @@ public class Match {
         return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
                 + awayTeam.getTeamName() + "\n" +
                 "Stadium: " + stadium.getName() + "\n" + "Date: " + date +"\n";
+    }
+
+    /**
+     * The function removes the received referee from the list of referees in the match, and returns whether the removal was successful or not
+     * @param ref
+     * @return true/false
+     */
+    public boolean removeReferee(Referee ref){
+
+        for(Referee e : referees){
+            if(e.getUsername().equals(ref.getUsername())){
+                referees.remove(e);
+                return true;
+            }
+        }
+        return false;
     }
 }

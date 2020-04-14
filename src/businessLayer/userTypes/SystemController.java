@@ -1,13 +1,13 @@
-package serviceLayer;
+package businessLayer.userTypes;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
-import businessLayer.userTypes.*;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 
@@ -28,9 +28,10 @@ public class SystemController {
     private HashMap<String, Team> teams; //name of the team, the team object
     private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
-    private HashMap <String, LinkedList<String>> unconfirmedTeams;
-    private HashMap <Integer, Stadium> stadiums;
+    private HashMap<String, LinkedList<String>> unconfirmedTeams;
+    private HashMap<String, Stadium> stadiums;
 
+    private LeagueController leagueController;
 
     private SystemController() {
         this.teams = new HashMap<>();
@@ -40,6 +41,7 @@ public class SystemController {
         systemComplaints = new HashMap<>();
         unconfirmedTeams = new HashMap<>();
         stadiums = new HashMap<>();
+        leagueController = new LeagueController();
     }
 
     /**
@@ -51,6 +53,16 @@ public class SystemController {
         }
         return single_instance;
     }
+
+
+    /**
+     * Getter function for the league controller
+     * @return
+     */
+    public LeagueController getLeagueController() {
+        return leagueController;
+    }
+
 
     /**
      * @param subscriber
@@ -427,14 +439,70 @@ public class SystemController {
         return false;
     }
 
+    /**
+     * The function adds a referee to the system and returns whether the referee was successfully added or not
+     *
+     * @param username
+     * @param password
+     * @param name
+     * @param training
+     * @param representative
+     * @return true/false
+     */
+    public boolean addReferee(String username, String password, String name, String training, Subscriber representative) {
+
+        if (username == null || password == null || name == null || training == null || representative == null) {
+            return false;
+        }
+        if (!(representative instanceof AssociationRepresentative)) {
+            return false;
+        }
+        if (systemSubscribers.containsKey(username)) {
+            return false;
+        }
+
+        Referee newRef = new Referee(username, password, name, training, leagueController, this);
+        systemSubscribers.put(username, newRef);
+        leagueController.addRefereeToDataFromSystemController(newRef);
+        return true;
+    }
+
+
+    /**
+     * The function removes referee from the system and returns whether the removal was successful or not
+     *
+     * @param username
+     * @return true/false
+     */
+    public boolean removeReferee(String username) {
+
+        if (username == null) {
+            return false;
+        }
+        if (!systemSubscribers.containsKey(username)) {
+            return false;
+        }
+        Subscriber possibleRef = systemSubscribers.get(username);
+        if (!(possibleRef instanceof Referee)) {
+            return false;
+        }
+
+        leagueController.removeReferee(possibleRef);
+        Referee ref = (Referee) possibleRef;
+        ref.removeFromAllMatches();
+        systemSubscribers.remove(username);
+        return true;
+    }
+
     //-------------------TeamOwner--------------------//
 
     /**
      * the function takes a request for opening a new team and puts it in the data structure
+     *
      * @param details of the new team
      */
-    public boolean addToTeamConfirmList (LinkedList<String> details, Subscriber subscriber){
-        if(subscriber instanceof TeamOwner) {
+    public boolean addToTeamConfirmList(LinkedList<String> details, Subscriber subscriber) {
+        if (subscriber instanceof TeamOwner) {
             unconfirmedTeams.put(details.getFirst(), details);
             return true;
         }
@@ -445,29 +513,30 @@ public class SystemController {
 
     /**
      * the function approves the request by the AR and updates the new team in the system and in the team owner
-     * @param teamName the name of the team
+     *
+     * @param teamName   the name of the team
      * @param subscriber the subscriber who tries to confirm the request
      * @return true if it done successfully
      */
-    public boolean confirmTeamByAssociationRepresntative (String teamName, Subscriber subscriber){
-        if(subscriber instanceof AssociationRepresentative){
-            if(unconfirmedTeams.containsKey(teamName)){
+    public boolean confirmTeamByAssociationRepresntative(String teamName, Subscriber subscriber) {
+        if (subscriber instanceof AssociationRepresentative) {
+            if (unconfirmedTeams.containsKey(teamName)) {
                 //check that a team with a same name doesn't exist
-                if(!teams.containsKey(teamName)){
-                    LinkedList <String> request = unconfirmedTeams.get(teamName);
+                if (!teams.containsKey(teamName)) {
+                    LinkedList<String> request = unconfirmedTeams.get(teamName);
                     //checks that the user who wrote the request exists
-                    if (systemSubscribers.containsKey(request.get(2))){
+                    if (systemSubscribers.containsKey(request.get(2))) {
                         Subscriber teamOwner = systemSubscribers.get(request.get(2));
                         //checks that the user is a team owner
-                        if(teamOwner instanceof TeamOwner) {
+                        if (teamOwner instanceof TeamOwner) {
                             int year = Integer.parseInt(request.get(1));
                             Team team = new Team(teamName, (TeamOwner) teamOwner, year);
-                            teams.put(teamName,team);
+                            teams.put(teamName, team);
                             unconfirmedTeams.remove(teamName);
                             ((TeamOwner) teamOwner).getTeams().add(team);
                             //updates the structure of the updated subscriber with the team
                             systemSubscribers.remove(teamOwner.getUsername());
-                            systemSubscribers.put(teamOwner.getUsername(),teamOwner);
+                            systemSubscribers.put(teamOwner.getUsername(), teamOwner);
                             return true;
                         }
                     }
@@ -477,11 +546,164 @@ public class SystemController {
         return false;
     }
 
-    public HashMap<Integer, Stadium> getStadiums() {
+    public HashMap<String, Stadium> getStadiums() {
         return stadiums;
     }
 
-    public void setStadiums(HashMap<Integer, Stadium> stadiums) {
+    public void setStadiums(HashMap<String, Stadium> stadiums) {
         this.stadiums = stadiums;
+    }
+    /**
+     * this function find the player according to is user name and return it if the player exist in the system
+     * @param username the user name of the player
+     * @return the player
+     */
+    //todo add to player method isAssociated()
+    public Player findPlayer(String username) {
+        Subscriber sub = systemSubscribers.get(username);
+        if(sub instanceof Player){
+            Player p = (Player) sub;
+            //if(p.isAssociated())
+            return p;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * this function find the TeamManager according to is user name and return it if the TeamManager exist in the system
+     * @param assetUserName the user name of the TeamManager
+     * @return the TeamManager
+     */
+    public TeamManager findTeamManager(String assetUserName) {
+        Subscriber sub = systemSubscribers.get(assetUserName);
+        if(sub instanceof TeamManager){
+            TeamManager teamM = (TeamManager) sub;
+            //if(p.isAssociated())
+            return teamM;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * this function find the Coach according to is user name and return it if the Coach exist in the system
+     * @param assetUserName the user name of the Coach
+     * @return the Coach
+     */
+    public Coach findCoach(String assetUserName) {
+        Subscriber sub = systemSubscribers.get(assetUserName);
+        if (sub instanceof Coach) {
+            Coach coach = (Coach) sub;
+            return coach;
+        } else {
+            return null;
+        }
+    }
+
+    public Stadium findStadium(String assetUserName) {
+        if(stadiums.containsKey(assetUserName)){
+            return stadiums.get(assetUserName);
+        }
+        return null;
+    }
+    /**
+     * This function will create variables for the user to enter for the login procedure, and will send them (via enterUserDetails(userNameInput, passwordInput) to be filled by the guest in the UI/GUI.
+     *
+     * @param guest The guest which started the login procedure.
+     * @return the instance of Subscriber from systemSubscribers, if the login details were correct.
+     * NULL if the login form wasn't filled properly, or one of the user details wasn't correct.
+     */
+    public Subscriber createLoginForm(Guest guest) {
+        String userNameInput = null;
+        String passwordInput = null;
+        guest.enterUserDetails(userNameInput, passwordInput);
+        if (userNameInput == null || userNameInput.length() == 0 || passwordInput == null || passwordInput.length() == 0) {
+            System.out.println("Not all fields were filled by the user.");
+            return null;
+        }
+        if (systemSubscribers.containsKey(userNameInput)) {
+            if (systemSubscribers.get(userNameInput).getPassword().equals(passwordInput)) {
+                return systemSubscribers.get(userNameInput);
+            }
+        }
+        System.out.println("Wrong Password or User Name.");
+        return null;
+    }
+
+    /**
+     * @param userName the user name that the user searches it's user instance
+     * @return the user's instance with the user name, if existed in the system
+     * NULL if there is no user in the system with the input user name
+     */
+    public Subscriber getSubscriberByUserName(String userName) {
+        if (getSystemSubscribers().containsKey(userName)) {
+            return getSystemSubscribers().get(userName);
+        }
+        return null;
+    }
+
+    /**
+     * @param teamName the team name that the user searches it's team instance
+     * @return the team's instance with the team name, if existed in the system
+     * *      NULL if there is no team in the system with the input team name
+     */
+    public Team getTeamByName(String teamName) {
+        if (teams.containsKey(teamName)) {
+            return teams.get(teamName);
+        }
+        return null;
+    }
+
+
+    public HashMap<String, Team> getTeams() {
+        return teams;
+    }
+
+    public Subscriber createRegistrationForm(Guest guest) {
+        String userNameInput = null;
+        String passwordInput = null;
+        guest.enterUserDetails(userNameInput, passwordInput);
+        if (userNameInput == null || userNameInput.length() == 0 || passwordInput == null || passwordInput.length() == 0) {
+            //System.out.println("Not all fields were filled by the user.");
+            return null;
+        }
+        if (checkPasswordStrength(passwordInput, userNameInput) == false) {
+            return null;
+        }
+
+        String firstName = null;
+        String lastName = null;
+
+        while (!(firstName.matches("^[a-zA-Z]+$")) || !(lastName.matches("^[a-zA-Z]+$"))) //check if only letters
+            guest.enterUserRealName(firstName, lastName);
+
+        Subscriber newFan = new Fan(userNameInput, passwordInput, firstName + " " + lastName, this);
+        getSystemSubscribers().put(userNameInput, newFan);
+
+        return newFan;
+    }
+    public void addStadium(Stadium stadium){
+        if(stadium!=null){
+            stadiums.put(stadium.getName(),stadium);
+        }
+    }
+
+    // -------------------AssociationRepresentative--------------------//
+
+    /**
+     * the function adds
+     * @param nameStadium
+     * @param numberOfSeats
+     * @return
+     */
+    public boolean addNewStadium(String nameStadium, String numberOfSeats){
+        if (!stadiums.containsKey(nameStadium)){
+            int numOfSeats = Integer.parseInt(numberOfSeats);
+            Stadium stadium = new Stadium(nameStadium,numOfSeats);
+            stadiums.put(nameStadium,stadium);
+            return true;
+        }
+        return false;
     }
 }

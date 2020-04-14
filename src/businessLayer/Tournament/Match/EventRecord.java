@@ -1,29 +1,73 @@
 package businessLayer.Tournament.Match;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class EventRecord {
 
     private Match match;
-    private Date date;
-    private String time;
-    private String matchTime;
-    private String description;
+    private HashMap<String, LinkedList <Event>> gameEvents;
+
 
     /**
-     *
-     * @param match
-     * @param date
-     * @param time
-     * @param matchTime
-     * @param description
+     * constructor
+     * @param match the match that the events belongs to
      */
-    public EventRecord(Match match, Date date, String time, String matchTime, String description) {
-        this.match = match;
-        this.date = date;
-        this.time = time;
-        this.matchTime = matchTime;
-        this.description = description;
+    public EventRecord (Match match){
+        this.match=match;
+        gameEvents = new HashMap<>();
+    }
+
+    /**
+     * adding a new event to the event recorder
+     * @param time the time that the event have occurred
+     * @param event the event
+     */
+    public void addEvent (String time, Event event){
+        //if the game has already an event in the current minute
+        if(gameEvents.containsKey(time)){
+            LinkedList <Event> temp = gameEvents.get(time);
+            temp.add(event);
+            gameEvents.remove(time);
+            gameEvents.put(time,temp);
+        }
+        else{
+          LinkedList<Event> newList = new LinkedList<>();
+          newList.add(event);
+          gameEvents.put(time,newList);
+        }
+    }
+
+    /**
+     * lets the referee to remove an event from the recorder
+     * @param time the time of the event
+     * @param event the event the referee wants to remove
+     * @return true if the event was removed successfully
+     */
+    public boolean removeEvent (String time, Event event){
+        if(gameEvents.containsKey(time)){
+            LinkedList<Event> temp = gameEvents.get(time);
+            if(temp.contains(event)){
+                temp.remove(event);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * the function swaps an old event with a new event
+     * @param time the time of the event
+     * @param oldEvent the old event we want to remove
+     * @param newEvent the new event we want to add
+     * @return true if the change was done successfully
+     */
+    public boolean editEvent (String time, Event oldEvent, Event newEvent){
+        if(removeEvent(time,oldEvent)){
+            addEvent(time,newEvent);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -43,73 +87,28 @@ public class EventRecord {
         this.match = match;
     }
 
+
     /**
-     *
+     * a getter for the game events of the match
      * @return
      */
-
-    public Date getDate() {
-        return date;
+    public HashMap<String, LinkedList<Event>> getGameEvents() {
+        return gameEvents;
     }
 
-    /**
-     *
-     * @param date
-     */
-
-    public void setDate(Date date) {
-        this.date = date;
+    @Override
+    public String toString(){
+        String events = "";
+        if(gameEvents!=null){
+            for(LinkedList<Event> listEvents : gameEvents.values()){
+                if(listEvents.size()>1){
+                    for(Event event : listEvents){
+                        events=events+event.toString()+"\n";
+                    }
+                }
+            }
+        }
+        return events;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getTime() {
-        return time;
-    }
-
-    /**
-     *
-     * @param time
-     */
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    /**
-     *
-     * @return
-     */
-
-    public String getMatchTime() {
-        return matchTime;
-    }
-
-    /**
-     *
-     * @param matchTime
-     */
-
-    public void setMatchTime(String matchTime) {
-        this.matchTime = matchTime;
-    }
-
-    /**
-     *
-     * @return
-     */
-
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     *
-     * @param description
-     */
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
