@@ -119,14 +119,14 @@ public class TestTeamOwner {
     @Test
     public void UC_6_2() {
         //1 - Test enterMember(String userName)
-        assertEquals(Barkat.enterMember("Glazers"), Glazers);
-        assertNull(Barkat.enterMember("Itay"));
+        assertEquals(Barkat.enterMember("Glazers"), Glazers); //Try to search a subscriber
+        assertNull(Barkat.enterMember("Itay")); //Search a team member which in not exist in the system.
 
         //2 - Test
-        assertFalse(Barkat.appointToOwner(Buzaglo, "Manchester"));
-        assertTrue(Barkat.appointToOwner(Buzaglo, "Beer Sheva"));
-        assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva"));
-        assertFalse(Barkat.appointToOwner(Alon,"Beer Sheva"));
+        assertFalse(Barkat.appointToOwner(Buzaglo, "Manchester")); //Try and Fail to add to a team which you don't own.
+        assertTrue(Barkat.appointToOwner(Buzaglo, "Beer Sheva")); //Try to add successfully.
+        assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva")); //Try and Fail to add someone which is already a team owner.
+        assertFalse(Barkat.appointToOwner(Alon,"Beer Sheva")); //Try and Fail to add someone, when you are not a Player, a Coach or a Team Manager.
 
     }
 }
