@@ -12,22 +12,21 @@ public class Player extends Subscriber implements OwnerEligible {
     private String name;
     private String birthDate;
     private String fieldJob;
-    private List<Team> teams;
-
+    private Team team;
     /**
      * @param username
      * @param password
      * @param name
      * @param birthDate
      * @param fieldJob
-     * @param teams
+     * @param team
      */
-    public Player(String username, String password, String name, String birthDate, String fieldJob, List<Team> teams, SystemController systemController) {
+    public Player(String username, String password, String name, String birthDate, String fieldJob, Team team, SystemController systemController) {
         super(username, password,systemController);
         this.name = name;
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
-        this.teams = teams;
+        this.team = team;
         this.teamOwner =null;
     }
 
@@ -59,6 +58,7 @@ public class Player extends Subscriber implements OwnerEligible {
         return name;
     }
 
+
     /**
      * @return
      */
@@ -76,8 +76,8 @@ public class Player extends Subscriber implements OwnerEligible {
     /**
      * @return
      */
-    public List<Team> getTeams() {
-        return teams;
+    public Team getTeam() {
+        return team;
     }
 
     @Override
@@ -85,6 +85,10 @@ public class Player extends Subscriber implements OwnerEligible {
         return null;
     }
 
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     /**
      * this function determine if the Player is also an Owner

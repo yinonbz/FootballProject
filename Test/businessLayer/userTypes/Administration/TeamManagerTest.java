@@ -13,7 +13,7 @@ class TeamManagerTest {
 
     @Before
     public void createTestValues() {
-        teamManager = new TeamManager("JurgenKlopp", "Klopp123", "Klopp", null, systemController);
+        teamManager = new TeamManager("JurgenKlopp", "Klopp123", "Klopp",0, null, systemController);
         teamOwner = new TeamOwner("JurgenFictive","KloppF123","KloppF",systemController);
     }
 

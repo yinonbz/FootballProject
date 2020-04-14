@@ -29,6 +29,10 @@ public class Stadium {
         this.previousMatches=previousMatches;
         this.numberOfSeats=numberOfSeats;
         this.owners=owners;
+        if(this.owners ==null){
+            this.owners = new HashMap<>();
+
+        }
     }
 
     /**
@@ -98,4 +102,18 @@ public class Stadium {
     }
 
 
+    public boolean containTeam(Team team) {
+        if(owners.containsKey(team.getTeamName())){
+            return true;
+        }
+        return false;
+    }
+
+    public void removeTeam(Team team) {
+        this.owners.remove(team.getTeamName());
+    }
+
+    public void addTeam(Team team) {
+        this.owners.put(team.getTeamName(),team);
+    }
 }
