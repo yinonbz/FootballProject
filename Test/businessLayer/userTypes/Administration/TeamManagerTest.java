@@ -1,10 +1,10 @@
 package businessLayer.userTypes.Administration;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import serviceLayer.SystemController;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 class TeamManagerTest {
     private SystemController systemController;
@@ -13,6 +13,7 @@ class TeamManagerTest {
 
     @Before
     public void createTestValues() {
+
         teamManager = new TeamManager("JurgenKlopp", "Klopp123", "Klopp",0, null, systemController);
         teamOwner = new TeamOwner("JurgenFictive","KloppF123","KloppF",systemController);
     }

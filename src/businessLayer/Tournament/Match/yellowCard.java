@@ -13,7 +13,7 @@ public class yellowCard extends Event {
      * @param matchController
      */
     public yellowCard(Player against, MatchController matchController) {
-        super(matchController);
+        super(matchController, against);
         this.against= against;
     }
 }

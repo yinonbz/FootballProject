@@ -3,6 +3,7 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Subscriber;
+import com.sun.javaws.jnl.MatcherReturnCode;
 import org.junit.Assert;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.Administration.Player;
@@ -18,6 +19,7 @@ import org.junit.Before;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import serviceLayer.MatchController;
 import serviceLayer.SystemController;
 import sun.swing.BakedArrayList;
 
@@ -50,16 +52,17 @@ public class TestTeamOwner {
     @Before
     public void createTestValues() {
         systemController = SystemController.SystemController();
+        MatchController matchController = new MatchController(systemController);
         Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield", null, systemController);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva", "alona", systemController);
         Glazers = new TeamOwner("Glazers", "manchesterU", "glazer", systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv", "nissanov", systemController);
-        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
+        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
         systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
         systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
         systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
         systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
-        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
+        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
         systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
         systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
         systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);

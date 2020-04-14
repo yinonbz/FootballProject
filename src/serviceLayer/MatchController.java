@@ -9,6 +9,15 @@ public class MatchController {
     private SystemController systemController;
     private HashMap<Integer, Match> matches;
 
+
+    /**
+     * constructor
+     * @param systemController
+     */
+    public MatchController (SystemController systemController){
+        this.systemController=systemController;
+    }
+
     /**
      * the function reports on a foul and add it to the event recorder
      * @param time
