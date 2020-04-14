@@ -28,6 +28,7 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.training=training;
         this.teamJob=teamJob;
         this.teamOwner =null;
+        this.teams = new HashSet<>();
     }
 
 
