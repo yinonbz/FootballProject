@@ -88,7 +88,7 @@ public class TestSingleClassicMatchPolicy {
         primerLeague = new League ("PriemerLeague",1);
         s9 = new Stadium("Default",500);
         //systemController.getStadiums().put(0,s9);
-        leagueController.getStadiums().put(0,s9);
+        leagueController.getStadiums().put("s9",s9);
         startDate = new Date();
         endDate = new Date ();
         currSeason = new Season (2,startDate,endDate, primerLeague);

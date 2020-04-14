@@ -55,19 +55,7 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
-    /**
-     * private function that checks that a string represents an interger
-     * @param value the string
-     * @return true if it an integer
-     */
-    private boolean tryParseInt(String value) {
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+
 
     /**
      * this function check a string that represent a NUMBER and checks if it can be a year

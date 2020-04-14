@@ -36,6 +36,22 @@ public class AssociationRepresentative extends Subscriber {
     public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
         super(username, password, systemController);
         this.name= name;
+        this.systemController=systemController;
+    }
+
+    /**
+     * the function gets the name of the stadium and the number of seats it has
+     * @param nameStadium the name of the stadium
+     * @param numberOfSeats the number of seats in the stadium
+     * @return true if the stadium was added successfully
+     */
+    public boolean createNewStadium(String nameStadium, String numberOfSeats){
+        if(!nameStadium.isEmpty() && !numberOfSeats.isEmpty()){
+            if(tryParseInt(numberOfSeats)){
+                return systemController.addNewStadium(nameStadium,numberOfSeats);
+            }
+        }
+        return false;
     }
 
     /**
