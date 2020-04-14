@@ -1,18 +1,26 @@
+
+
 import businessLayer.Team.Team;
+import businessLayer.userTypes.Administration.*;
+import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
+import businessLayer.userTypes.Administration.TeamOwner;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.SystemController;
+import sun.swing.BakedArrayList;
 
-import java.util.HashSet;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTeamOwner {
-
+    private Player Buzaglo;
     private TeamOwner Barkat;
     private TeamOwner Glazers;
     private TeamOwner Nissanov;
+    private Referee Alon;
     private Team BeerSheva;
     private Team ManchesterUnited;
     private SystemController systemController;
@@ -20,9 +28,16 @@ public class TestTeamOwner {
 
     @Before
     public void createTestValues(){
+        systemController = SystemController.SystemController();
+        Buzaglo = new Player("Buzaglo","Buzaglo123","Buzaglo","1900","midfield",null,systemController);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
         Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
+        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
+        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
+        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
+        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
+        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
         BeerSheva = new Team("Beer Sheva", Barkat,1973);
         ManchesterUnited = new Team("Manchester United",Barkat,1899);
         Barkat.getTeams().add(BeerSheva); //todo change it later to a normal function UC 6.1
@@ -32,7 +47,8 @@ public class TestTeamOwner {
         ManchesterUnited.getTeamOwners().add(Glazers);
         BeerSheva.getTeamOwners().add(Barkat);
         BeerSheva.getTeamOwners().add(Nissanov);
-
+        systemController.getTeams().put(BeerSheva.getTeamName(),BeerSheva);
+        systemController.getTeams().put(ManchesterUnited.getTeamName(),ManchesterUnited);
     }
 
     @Test
@@ -77,4 +93,40 @@ public class TestTeamOwner {
         assertTrue(team1.getActive());
     }
 
+    @Test
+    public void checkTeamRequest() {
+        //1
+        //check if we get true on a normal request
+        assertTrue(Barkat.sendRequestForTeam("TheSharks", "2003"));
+    }
+
+    @Test
+    public void isFictive(){
+
+        assertFalse(Nissanov.isFictive());
+        Nissanov.setOriginalObject(Buzaglo);
+        assertTrue(Nissanov.isFictive());
+        //2
+        //check if we get a false on a not valid year
+        assertFalse(Barkat.sendRequestForTeam("TheSharks","0"));
+
+        //3
+        //check if we get a false on not valid name
+        assertFalse(Barkat.sendRequestForTeam("","2004"));
+
+    }
+
+    @Test
+    public void UC_6_2() {
+        //1 - Test enterMember(String userName)
+        assertEquals(Barkat.enterMember("Glazers"), Glazers); //Try to search a subscriber
+        assertNull(Barkat.enterMember("Itay")); //Search a team member which in not exist in the system.
+
+        //2 - Test
+        assertFalse(Barkat.appointToOwner(Buzaglo, "Manchester")); //Try and Fail to add to a team which you don't own.
+        assertTrue(Barkat.appointToOwner(Buzaglo, "Beer Sheva")); //Try to add successfully.
+        assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva")); //Try and Fail to add someone which is already a team owner.
+        assertFalse(Barkat.appointToOwner(Alon,"Beer Sheva")); //Try and Fail to add someone, when you are not a Player, a Coach or a Team Manager.
+
+    }
 }

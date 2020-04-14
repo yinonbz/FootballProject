@@ -7,11 +7,11 @@ import serviceLayer.SystemController;
 import java.util.HashMap;
 
 public abstract class Subscriber {
-    private String username;
-    private String password;
-    private SystemController systemController;
-    private AlertSystem alertSystem;
-    private HashMap <Integer, Complaint> complaints;
+    protected String username;
+    protected String password;
+    protected SystemController systemController;
+    protected AlertSystem alertSystem;
+    protected HashMap <Integer, Complaint> complaints;
 
     /**
      * @param username

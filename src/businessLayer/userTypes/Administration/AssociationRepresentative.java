@@ -5,6 +5,8 @@ import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Subscriber;
 import serviceLayer.SystemController;
 
+import java.util.HashSet;
+
 public class AssociationRepresentative extends Subscriber {
     private String name;
     private FinancialMonitoring financialMonitoring;
@@ -22,6 +24,18 @@ public class AssociationRepresentative extends Subscriber {
         this.name = name;
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leagueController;
+    }
+
+    /**
+     * constructor
+     * @param username
+     * @param password
+     * @param name
+     * @param systemController
+     */
+    public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
+        super(username, password, systemController);
+        this.name= name;
     }
 
     /**
@@ -108,4 +122,17 @@ public class AssociationRepresentative extends Subscriber {
     public Boolean editDetails() {
         return null;
     }
+
+
+    /**
+     * the function lets the AR to confirm new teams in the system
+     * @param teamName the team the AR wants to approve
+     * @return true if the team was approved
+     */
+    public boolean confirmTeamRequest(String teamName){
+        return systemController.confirmTeamByAssociationRepresntative(teamName,this);
+    }
+
+
+
 }

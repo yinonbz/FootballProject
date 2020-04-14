@@ -2,23 +2,46 @@ package businessLayer.Tournament.Match;
 
 import businessLayer.Team.Team;
 
+import java.util.HashMap;
+
 public class Stadium {
     private String name;
     private Match currentMatch;
-    private Team currentPlayingTeam1;
-    private Team currentPlayingTeam2;
+    private HashMap <Integer,Match> previousMatches;
+    private int numberOfSeats;
+    private HashMap <String, Team> owners;
+
+    //private Team currentPlayingTeam1;
+    //private Team currentPlayingTeam2;
+
 
     /**
+     * the constructor of stadium
      * @param name
      * @param currentMatch
-     * @param currentPlayingTeam1
-     * @param currentPlayingTeam2
+     * @param previousMatches
+     * @param numberOfSeats
+     * @param owners
      */
-    public Stadium(String name, Match currentMatch, Team currentPlayingTeam1, Team currentPlayingTeam2) {
+    public Stadium(String name, Match currentMatch, HashMap <Integer,Match> previousMatches, int numberOfSeats, HashMap <String, Team> owners ) {
         this.name = name;
         this.currentMatch = currentMatch;
-        this.currentPlayingTeam1 = currentPlayingTeam1;
-        this.currentPlayingTeam2 = currentPlayingTeam2;
+        this.previousMatches=previousMatches;
+        this.numberOfSeats=numberOfSeats;
+        this.owners=owners;
+    }
+
+    /**
+     * the function creates a new stadium in the system
+     * @param name the name of the stadium
+     * @param numberOfSeats the number of seats the stadium has
+     */
+    public Stadium (String name, int numberOfSeats){
+        this.name = name;
+        currentMatch = null;
+        previousMatches = new HashMap<>();
+        this.numberOfSeats = numberOfSeats;
+        this.owners = new HashMap<>();
     }
 
     /**
@@ -35,19 +58,6 @@ public class Stadium {
         return currentMatch;
     }
 
-    /**
-     * @return
-     */
-    public Team getCurrentPlayingTeam1() {
-        return currentPlayingTeam1;
-    }
-
-    /**
-     * @return
-     */
-    public Team getCurrentPlayingTeam2() {
-        return currentPlayingTeam2;
-    }
 
     /**
      * @param name
@@ -63,17 +73,29 @@ public class Stadium {
         this.currentMatch = currentMatch;
     }
 
-    /**
-     * @param currentPlayingTeam1
-     */
-    public void setCurrentPlayingTeam1(Team currentPlayingTeam1) {
-        this.currentPlayingTeam1 = currentPlayingTeam1;
+    public HashMap<Integer, Match> getPreviousMatches() {
+        return previousMatches;
     }
 
-    /**
-     * @param currentPlayingTeam2
-     */
-    public void setCurrentPlayingTeam2(Team currentPlayingTeam2) {
-        this.currentPlayingTeam2 = currentPlayingTeam2;
+    public void setPreviousMatches(HashMap<Integer, Match> previousMatches) {
+        this.previousMatches = previousMatches;
     }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
+    }
+
+    public HashMap<String, Team> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(HashMap<String, Team> owners) {
+        this.owners = owners;
+    }
+
+
 }

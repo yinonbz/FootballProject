@@ -6,7 +6,9 @@ import serviceLayer.SystemController;
 
 import java.util.List;
 
-public class TeamManager extends Subscriber {
+public class TeamManager extends Subscriber implements OwnerEligible {
+
+    private TeamOwner teamOwner;
     private String name;
     private List<Team> teams;
 
@@ -20,6 +22,7 @@ public class TeamManager extends Subscriber {
         super(username, password, systemController);
         this.name = name;
         this.teams = teams;
+        this.teamOwner =null;
     }
 
     /**
@@ -54,5 +57,26 @@ public class TeamManager extends Subscriber {
     @Override
     public Boolean editDetails() {
         return null;
+    }
+
+
+    /**
+     * this function determine if the coach is also an Owner
+     * @return true if also an owner, false if only coach
+     */
+    @Override
+    public boolean isOwner() {
+        if(teamOwner ==null){
+            return false;
+        }
+        return true;
+    }
+
+    protected TeamOwner getTeamOwner() {
+        return teamOwner;
+    }
+
+    protected void setTeamOwner(TeamOwner teamOwner) {
+        this.teamOwner = teamOwner;
     }
 }
