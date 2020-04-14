@@ -2,6 +2,7 @@ package serviceLayer;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -27,6 +28,9 @@ public class SystemController {
     private HashMap<String, Team> teams; //name of the team, the team object
     private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
+    private HashMap<String, LinkedList<String>> unconfirmedTeams;
+    private HashMap<Integer, Stadium> stadiums;
+
     private LeagueController leagueController;
 
     private SystemController() {
@@ -35,6 +39,9 @@ public class SystemController {
         this.systemComplaints = new HashMap<>();
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
+        unconfirmedTeams = new HashMap<>();
+        stadiums = new HashMap<>();
+        leagueController = new LeagueController();
     }
 
     /**
@@ -46,6 +53,16 @@ public class SystemController {
         }
         return single_instance;
     }
+
+
+    /**
+     * Getter function for the league controller
+     * @return
+     */
+    public LeagueController getLeagueController() {
+        return leagueController;
+    }
+
 
     /**
      * @param subscriber
@@ -446,12 +463,14 @@ public class SystemController {
 
         Referee newRef = new Referee(username, password, name, training, leagueController, this);
         systemSubscribers.put(username, newRef);
+        leagueController.addRefereeToDataFromSystemController(newRef);
         return true;
     }
 
 
     /**
      * The function removes referee from the system and returns whether the removal was successful or not
+     *
      * @param username
      * @return true/false
      */
@@ -469,9 +488,69 @@ public class SystemController {
         }
 
         leagueController.removeReferee(possibleRef);
-        Referee ref = (Referee)possibleRef;
+        Referee ref = (Referee) possibleRef;
         ref.removeFromAllMatches();
         systemSubscribers.remove(username);
         return true;
+    }
+
+    //-------------------TeamOwner--------------------//
+
+    /**
+     * the function takes a request for opening a new team and puts it in the data structure
+     *
+     * @param details of the new team
+     */
+    public boolean addToTeamConfirmList(LinkedList<String> details, Subscriber subscriber) {
+        if (subscriber instanceof TeamOwner) {
+            unconfirmedTeams.put(details.getFirst(), details);
+            return true;
+        }
+        return false;
+    }
+
+    //-------------------TeamOwner--------------------//
+
+    /**
+     * the function approves the request by the AR and updates the new team in the system and in the team owner
+     *
+     * @param teamName   the name of the team
+     * @param subscriber the subscriber who tries to confirm the request
+     * @return true if it done successfully
+     */
+    public boolean confirmTeamByAssociationRepresntative(String teamName, Subscriber subscriber) {
+        if (subscriber instanceof AssociationRepresentative) {
+            if (unconfirmedTeams.containsKey(teamName)) {
+                //check that a team with a same name doesn't exist
+                if (!teams.containsKey(teamName)) {
+                    LinkedList<String> request = unconfirmedTeams.get(teamName);
+                    //checks that the user who wrote the request exists
+                    if (systemSubscribers.containsKey(request.get(2))) {
+                        Subscriber teamOwner = systemSubscribers.get(request.get(2));
+                        //checks that the user is a team owner
+                        if (teamOwner instanceof TeamOwner) {
+                            int year = Integer.parseInt(request.get(1));
+                            Team team = new Team(teamName, (TeamOwner) teamOwner, year);
+                            teams.put(teamName, team);
+                            unconfirmedTeams.remove(teamName);
+                            ((TeamOwner) teamOwner).getTeams().add(team);
+                            //updates the structure of the updated subscriber with the team
+                            systemSubscribers.remove(teamOwner.getUsername());
+                            systemSubscribers.put(teamOwner.getUsername(), teamOwner);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public HashMap<Integer, Stadium> getStadiums() {
+        return stadiums;
+    }
+
+    public void setStadiums(HashMap<Integer, Stadium> stadiums) {
+        this.stadiums = stadiums;
     }
 }

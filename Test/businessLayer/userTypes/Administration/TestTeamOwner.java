@@ -1,6 +1,8 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
+import businessLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
 import org.junit.Test;
 import serviceLayer.SystemController;
@@ -20,6 +22,7 @@ public class TestTeamOwner {
 
     @Before
     public void createTestValues(){
+        systemController = SystemController.SystemController();
         Buzaglo = new Player("Buzaglo","Buzaglo123","Buzaglo","","midfield",null,systemController);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
         Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
@@ -65,6 +68,24 @@ public class TestTeamOwner {
         assertTrue(Nissanov.isFictive());
 
     }
+
+    @Test
+
+    public void checkTeamRequest(){
+        //1
+        //check if we get true on a normal request
+        assertTrue(Barkat.sendRequestForTeam("TheSharks","2003"));
+
+        //2
+        //check if we get a false on a not valid year
+        assertFalse(Barkat.sendRequestForTeam("TheSharks","0"));
+
+        //3
+        //check if we get a false on not valid name
+        assertFalse(Barkat.sendRequestForTeam("","2004"));
+
+    }
+
 
 
 }

@@ -5,7 +5,6 @@ import businessLayer.Tournament.League;
 import businessLayer.Tournament.Season;
 import businessLayer.userTypes.Administration.Referee;
 
-import javax.security.auth.Refreshable;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +18,10 @@ public class Match {
     private String time;
     private Date date;
     private Boolean isFinished;
-
+    private int matchId;
+    private Stadium stadium;
+    private int numberOfFans;
+    private static int index=1;
     /**
      * @param league
      * @param season
@@ -30,8 +32,9 @@ public class Match {
      * @param time
      * @param date
      * @param isFinished
+     * @param numberOfFans
      */
-    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished) {
+    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium, int numberOfFans) {
         this.league = league;
         this.season = season;
         this.homeTeam = homeTeam;
@@ -41,6 +44,25 @@ public class Match {
         this.time = time;
         this.date = date;
         this.isFinished = isFinished;
+        this.matchId=index;
+        this.stadium=stadium;
+        this.numberOfFans=numberOfFans;
+        index++;
+
+    }
+
+    /**
+     * constructor for match policy
+     * @param home the home team
+     * @param away the away team
+     * @param stadium the stadium
+     */
+    public Match (Team home, Team away, Stadium stadium){
+        this.homeTeam=home;
+        this.awayTeam=away;
+        this.stadium=stadium;
+        this.matchId=index;
+        index++;
     }
 
     /**
@@ -174,6 +196,45 @@ public class Match {
      */
     public void setFinished(Boolean finished) {
         isFinished = finished;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getMatchId() {
+        return matchId;
+    }
+
+    /**
+     *
+     * @param matchId
+     */
+    public void setMatchId(int matchId) {
+        this.matchId = matchId;
+    }
+
+    public Stadium getStadium() {
+        return stadium;
+    }
+
+    public void setStadium(Stadium stadium) {
+        this.stadium = stadium;
+    }
+
+    public int getNumerOfFans() {
+        return numberOfFans;
+    }
+
+    public void setNumerOfFans(int numberOfFans) {
+        this.numberOfFans = numberOfFans;
+    }
+
+    @Override
+    public String toString(){
+        return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
+                + awayTeam.getTeamName() + "\n" +
+                "Stadium: " + stadium.getName() + "\n" + "Date: " + date +"\n";
     }
 
     /**

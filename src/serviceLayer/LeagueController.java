@@ -1,6 +1,7 @@
 package serviceLayer;
 
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Tournament.MatchingPolicy;
 import businessLayer.Tournament.RankingPolicy;
 import businessLayer.Utilities.alertSystem.AlertSystem;
@@ -23,24 +24,24 @@ public class LeagueController {
     private List<AssociationRepresentative> associationRepresentatives;
     private HashMap<String, Referee> referees;
     private AlertSystem alertSystem;
-    private static LeagueController single_instance = null; //singleton instance
+    private SystemController systemController;
 
-
-    private LeagueController() {
+    public LeagueController() {
 
         leagues = new HashMap<>();
         referees = new HashMap<>();
         associationRepresentatives = new ArrayList<>();
+        //systemController = SystemController.SystemController();
     }
 
+
     /**
+     * returns the data structure that holds all of the stadiums in the system
      *
+     * @return the stadiums in the system
      */
-    public static LeagueController LeagueController() {
-        if (single_instance == null) {
-            single_instance = new LeagueController();
-        }
-        return single_instance;
+    public HashMap<Integer, Stadium> getStadiums() {
+        return systemController.getStadiums();
     }
 
     /**
@@ -210,13 +211,13 @@ public class LeagueController {
      * @param startingDate
      * @return
      */
-    public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate, MatchingPolicy matchPolicy, RankingPolicy rankPolicy) {
+    public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate) {
 
         League leagueToAdd = leagues.get(leagueID);
-        if (leagueID == null) {
+        if (leagueToAdd == null) {
             return false;
         }
-        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate, matchPolicy, rankPolicy);
+        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate);
         //todo: check if when you pull out a complex object from a hashmap, the changes you do to it are registered in the hashmap
     }
 
@@ -271,6 +272,18 @@ public class LeagueController {
             if (!associationRepresentatives.contains(associationRep)) {
                 associationRepresentatives.add(associationRep);
             }
+        }
+    }
+
+
+    /**
+     * The function adds referee to the league controller data structures by receiving it from the system controller
+     * @param referee
+     */
+    public void addRefereeToDataFromSystemController(Referee referee) {
+
+        if (referee != null && !referees.containsKey(referee.getUsername())) {
+            referees.put(referee.getUsername(), referee);
         }
     }
 }

@@ -5,10 +5,7 @@ import businessLayer.Tournament.Match.Match;
 import businessLayer.userTypes.Administration.Referee;
 import serviceLayer.SystemController;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class League {
 
@@ -26,6 +23,8 @@ public class League {
     public League(String leagueName) {
         this.leagueName = leagueName;
         scoreTable = new HashMap<>();
+        seasons = new HashMap<>();
+        matches = new ArrayList<>();
     }
 
     /**
@@ -107,16 +106,14 @@ public class League {
      * @param seasonID
      * @param startingDate
      * @param endingDate
-     * @param matchPolicy
-     * @param rankPolicy
      * @return
      */
-    public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate, MatchingPolicy matchPolicy, RankingPolicy rankPolicy) {
+    public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate) {
 
-        if (seasons.containsKey(seasonID)) {
+        if (seasons.containsKey(seasonID) || startingDate.after(endingDate)) {
             return false;
         }
-        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this, matchPolicy, rankPolicy));
+        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this));
         return true;
     }
 

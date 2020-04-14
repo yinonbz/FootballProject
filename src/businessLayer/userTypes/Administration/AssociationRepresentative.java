@@ -1,7 +1,5 @@
 package businessLayer.userTypes.Administration;
 
-import businessLayer.Tournament.MatchingPolicy;
-import businessLayer.Tournament.RankingPolicy;
 import serviceLayer.LeagueController;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Subscriber;
@@ -10,7 +8,6 @@ import serviceLayer.SystemController;
 import java.util.Date;
 
 public class AssociationRepresentative extends Subscriber {
-
     private String name;
     private FinancialMonitoring financialMonitoring;
     private LeagueController leagueController;
@@ -56,16 +53,14 @@ public class AssociationRepresentative extends Subscriber {
      * @param seasonID
      * @param startingDate
      * @param endingDate
-     * @param matchPolicy
-     * @param rankingPolicy
      * @return true/false
      */
-    public Boolean createSeason(String leagueName, int seasonID, Date startingDate, Date endingDate, MatchingPolicy matchPolicy, RankingPolicy rankingPolicy) {
+    public Boolean createSeason(String leagueName, int seasonID, Date startingDate, Date endingDate) {
 
         if (!leagueController.doesLeagueExist(leagueName)) {
             return false;
         }
-        return leagueController.addSeasonToLeague(leagueName, seasonID, startingDate, endingDate, matchPolicy, rankingPolicy);
+        return leagueController.addSeasonToLeague(leagueName, seasonID, startingDate, endingDate);
     }
 
     /**

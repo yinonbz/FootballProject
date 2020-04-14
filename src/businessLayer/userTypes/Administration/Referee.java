@@ -5,6 +5,7 @@ import serviceLayer.LeagueController;
 import businessLayer.userTypes.Subscriber;
 import serviceLayer.SystemController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Referee extends Subscriber {
@@ -27,6 +28,7 @@ public class Referee extends Subscriber {
         this.name = name;
         this.training = training;
         this.leagueController = leaguesController;
+        matches = new ArrayList<>();
     }
 
     /**
