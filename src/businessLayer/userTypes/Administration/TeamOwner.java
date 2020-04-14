@@ -212,11 +212,6 @@ public class TeamOwner extends Subscriber {
         return true;
     }
 
-    private void fireManagerFromTeam(Subscriber subscriber) {
-
-
-    }
-
 
     /**
      *
