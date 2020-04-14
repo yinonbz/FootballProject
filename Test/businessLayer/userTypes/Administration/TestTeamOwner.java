@@ -1,24 +1,35 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
+import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Subscriber;
 import org.junit.Assert;
+import businessLayer.userTypes.Administration.*;
+import businessLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.SystemController;
+import sun.swing.BakedArrayList;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTeamOwner {
     private Player Buzaglo;
     private TeamOwner Barkat;
     private TeamOwner Glazers;
     private TeamOwner Nissanov;
+    private Referee Alon;
     private Team BeerSheva;
     private Team ManchesterUnited;
     private SystemController systemController;
@@ -29,10 +40,15 @@ public class TestTeamOwner {
     @Before
     public void createTestValues() {
         systemController = SystemController.SystemController();
-        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "", "midfield", null, systemController);
+        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield", null, systemController);
         Barkat = new TeamOwner("AlonaBarkat", "beerSheva", "alona", systemController);
         Glazers = new TeamOwner("Glazers", "manchesterU", "glazer", systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv", "nissanov", systemController);
+        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
+        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
+        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
+        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
+        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
         BeerSheva = new Team("Beer Sheva", Barkat, 1973);
         ManchesterUnited = new Team("Manchester United", Barkat, 1899);
         Jacob = new TeamOwner("JacobS", "JacobS123", "Jacob", systemController);
@@ -49,19 +65,25 @@ public class TestTeamOwner {
         ManchesterUnited.getTeamOwners().add(Glazers);
         BeerSheva.getTeamOwners().add(Barkat);
         BeerSheva.getTeamOwners().add(Nissanov);
+        systemController.getTeams().put(BeerSheva.getTeamName(),BeerSheva);
+        systemController.getTeams().put(ManchesterUnited.getTeamName(),ManchesterUnited);
         /**
          * this data is for 6.1
          */
-        HashMap<String, Subscriber> sysSub = new HashMap<>();
+        //HashMap<String, Subscriber> sysSub = new HashMap<>();
         Coach Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach", systemController);
         Coach tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach", systemController);
         TeamManager itay = new TeamManager("itayK", "111", "itay", 100, null, systemController);
+        Stadium samiOfer = new Stadium("samiOfer",null,null,30000,null);
+        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
+        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
+        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
+        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
+        systemController.getSystemSubscribers().put(Ido.getUsername(),Ido);
+        systemController.getSystemSubscribers().put(tomer.getUsername(),tomer);
+        systemController.getSystemSubscribers().put(itay.getUsername(),itay);
+        systemController.addStadium(samiOfer);
 
-        sysSub.put("Buzaglo", Buzaglo);
-        sysSub.put("efronio", Ido);
-        sysSub.put("TomerZ", tomer);
-        sysSub.put("itayK", itay);
-        systemController.setSystemSubscribers(sysSub);
         /******************************/
     }
 
@@ -81,6 +103,11 @@ public class TestTeamOwner {
         assertTrue(Barkat.addAsset(123, "TeamManager", "itayK"));
 
         assertFalse(Nissanov.addAsset(123, "TeamManager", "itayK"));
+
+        assertTrue(Jacob.addAsset(789,"Stadium","samiOfer"));
+
+        assertFalse(Jacob.addAsset(789,"Stadium","samiOfer"));
+
     }
 
     @Test
@@ -100,6 +127,13 @@ public class TestTeamOwner {
        Jacob.addAsset(789, "TeamManager", "itayK");
         assertTrue(Jacob.deleteAsset(789, "TeamManager", "itayK"));
         assertFalse(Barkat.deleteAsset(123, "TeamManager", "itayK"));
+
+        Jacob.addAsset(789,"Stadium","samiOfer");
+
+        assertTrue(Jacob.deleteAsset(789,"Stadium","samiOfer"));
+        assertFalse(Jacob.deleteAsset(789,"Stadium","samiOfer"));
+        assertFalse(Barkat.deleteAsset(123, "Stadium", "samiOfer"));
+
     }
 
     @Test
@@ -107,6 +141,7 @@ public class TestTeamOwner {
         Barkat.addAsset(123, "Player", "Buzaglo");
         Barkat.addAsset(123, "Coach", "efronio");
         Jacob.addAsset(789, "TeamManager", "itayK");
+        Jacob.addAsset(789,"Stadium","samiOfer");
 
         assertTrue(Barkat.editPlayer(123,"Buzaglo","birthDate","9/11"));
         assertTrue(Barkat.editPlayer(123,"Buzaglo","fieldJob","attacker"));
@@ -123,10 +158,14 @@ public class TestTeamOwner {
         Jacob.deleteAsset(789,"TeamManager","itayK");
         assertFalse(Jacob.editTeamManager(789,"itayK","salary",20));
 
+        assertTrue(Jacob.editStadium(789,"samiOfer","numberOfSeats",50));
+
+        assertFalse(Jacob.editStadium(789,"natania","numberOfSeats",50));
+
     }
 
     @Test
-    public void UC8_2() { //todo need to check about the names of the sub-functions tomer
+    public void UC8_2(){ //todo need to check about the names of the sub-functions tomer
         //1
         //check if Alona who has 2 teams is exclusive
 
@@ -152,11 +191,9 @@ public class TestTeamOwner {
         assertFalse(Nissanov.isFictive());
         Nissanov.setOriginalObject(Buzaglo);
         assertTrue(Nissanov.isFictive());
-
     }
 
     @Test
-
     public void checkTeamRequest() {
         //1
         //check if we get true on a normal request
@@ -174,20 +211,36 @@ public class TestTeamOwner {
 
 
     @Test
-    public void deleteAsset() {
-    }
+    public void UC_6_2() {
+        //1 - Test enterMember(String userName)
+        assertEquals(Barkat.enterMember("Glazers"), Glazers); //Try to search a subscriber
+        assertNull(Barkat.enterMember("Itay")); //Search a team member which in not exist in the system.
 
+        //2 - Test
+        assertFalse(Barkat.appointToOwner(Buzaglo, "Manchester")); //Try and Fail to add to a team which you don't own.
+        assertTrue(Barkat.appointToOwner(Buzaglo, "Beer Sheva")); //Try to add successfully.
+        assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva")); //Try and Fail to add someone which is already a team owner.
+        assertFalse(Barkat.appointToOwner(Alon,"Beer Sheva")); //Try and Fail to add someone, when you are not a Player, a Coach or a Team Manager.
+
+    }
     @Test
-    public void editPlayer() {
+    public void UC6_6() {
+        TeamOwner teamOwner = new TeamOwner("teamOwner1","to123456","Alon",SystemController.SystemController());
+        Team team1 = new Team("Beer Sheva", teamOwner,1993);
+        Team team2 = new Team("HTA", teamOwner,1990);
+
+        //1 - test getTeam
+        assertEquals(teamOwner.getTeam("Beer Sheva"),team1);
+        assertNull(teamOwner.getTeam("NAS"));
+        assertEquals(teamOwner.getTeam("HTA"),team2);
+        assertNotEquals(teamOwner.getTeam("HTA"),team1);
+
+        //2 - test changeStatus - enabled to disabled
+        teamOwner.changeStatus(team1);
+        assertFalse(team1.getActive());
+
+        //3 - test changeStatus - disabled to enabled
+        teamOwner.changeStatus(team1);
+        assertTrue(team1.getActive());
     }
-
-    @Test
-    public void editCoach() {
-    }
-
-    @Test
-    public void editTeamManager() {
-    }
-
-
 }

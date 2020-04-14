@@ -12,7 +12,6 @@ public class TeamManager extends Subscriber implements OwnerEligible {
     private TeamOwner teamOwner;
     private String name;
     private HashSet<Team> teams;
-    private Boolean assign;
     private int salary;
 
     /**
@@ -25,14 +24,13 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         super(username, password, systemController);
         this.name = name;
         this.teams = teams;
-        this.assign = false;
         this.salary = salary;
         this.teamOwner =null;
+        if(this.teams==null){
+            this.teams = new HashSet<>();
+        }
     }
 
-    public void setAssign(Boolean assign) {
-        this.assign = assign;
-    }
 
     /**
      * @return
@@ -68,9 +66,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         return null;
     }
 
-    public Boolean getAssigned(){
-        return this.assign;
-    }
+
 
     public void setSalary(int edit) {
         this.salary = edit;
@@ -95,5 +91,17 @@ public class TeamManager extends Subscriber implements OwnerEligible {
 
     protected void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
+    }
+
+    public boolean containTeam(Team team) {
+        return this.teams.contains(team);
+    }
+
+    public void addTeam(Team team) {
+        this.teams.add(team);
+    }
+
+    public void removeTeam(Team team) {
+        this.teams.remove(team);
     }
 }

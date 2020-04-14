@@ -11,6 +11,7 @@ import businessLayer.userTypes.Administration.TeamOwner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class Team {
     private HashSet<TeamManager> teamManagers;
     private HashSet<TeamOwner> teamOwners;
     private FinancialMonitoring financialMonitoring;
-    private List<Match> matches;
-    private List<Season> seasons;
+    private HashSet<Match> matches;
+    private HashSet<Season> seasons;
     private Stadium stadium;
     private String teamName;
     private int teamId;
@@ -43,11 +44,17 @@ public class Team {
      * @param establishedYear
      * @param isActive
      */
-    public Team(HashSet<Player> players, HashSet coaches, HashSet<TeamManager> teamManagers, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, List<Match> matches, List<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
+    public Team(HashSet<Player> players, HashSet coaches, HashSet<TeamManager> teamManagers, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, HashSet<Match> matches, HashSet<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
         this.players = players;
         this.coaches = coaches;
         this.teamManagers = teamManagers;
+        //teamManager.getTeams().add(this);
         this.teamOwners = teamOwners;
+        Iterator<TeamOwner> it = teamOwners.iterator();
+        while (it.hasNext()) {
+            TeamOwner teamOwner = it.next();
+            teamOwner.getTeams().add(this);
+        }
         this.financialMonitoring = financialMonitoring;
         this.matches = matches;
         this.seasons = seasons;
@@ -68,15 +75,16 @@ public class Team {
         this.teamName=teamName;
         teamOwners= new HashSet<>();
         teamOwners.add(teamOwner);
+        teamOwner.getTeams().add(this);
         this.establishedYear=establishedYear;
         isActive=true;
         closedByAdmin=false;
         stadium = null;
         this.players = new HashSet<>();
         this.coaches =new HashSet<>();
+        this.seasons=new HashSet<>();
+        this.matches = new HashSet<>();
         this.teamManagers = new HashSet<>();
-        this.seasons=new ArrayList<>();
-        this.matches = new ArrayList<>();
 
     }
 
@@ -113,11 +121,11 @@ public class Team {
     /**
      * @return
      */
-    /** TODO IDO HIDE THIS FUNCTION
+    /*
     public TeamManager getTeamManager() {
         return teamManager;
     }
-     */
+    */
     /**
      * @return
      */
@@ -136,7 +144,7 @@ public class Team {
     /**
      * @return
      */
-    public List<Season> getSeasons() {
+    public HashSet<Season> getSeasons() {
         return seasons;
     }
 
@@ -189,13 +197,15 @@ public class Team {
         this.coaches = coaches;
     }
 
-    /**
-     * @param teamManagers
-     */
-    public void setTeamManager(HashSet<TeamManager>teamManagers) {
-        this.teamManagers = teamManagers;
-    }
 
+     /*
+     * @param teamManager
+     */
+     /*
+    //public void setTeamManager(TeamManager teamManager) {
+        this.teamManager = teamManager;
+    }
+    */
     /**
      * @param teamOwners
      */
@@ -214,7 +224,7 @@ public class Team {
     /**
      * @param seasons
      */
-    public void setSeasons(List<Season> seasons) {
+    public void setSeasons(HashSet<Season> seasons) {
         this.seasons = seasons;
     }
 
@@ -256,14 +266,14 @@ public class Team {
     /**
      * @return
      */
-    public List<Match> getMatches() {
+    public HashSet<Match> getMatches() {
         return matches;
     }
 
     /**
      * @param matches
      */
-    public void setMatches(List<Match> matches) {
+    public void setMatches(HashSet<Match> matches) {
         this.matches = matches;
     }
 
@@ -288,6 +298,7 @@ public class Team {
      * this function add a teamManager to the team
      * @param teamManager the teamManager to be added
      */
+
     public void addTeamManager(TeamManager teamManager) {
         this.teamManagers.add(teamManager);
     }
@@ -307,6 +318,7 @@ public class Team {
             teamManagers.remove(teamManager);
         }
     }
+
 
     public void removeCoach(Coach coach) {
         if(coaches.contains(coach)){

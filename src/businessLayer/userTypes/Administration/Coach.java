@@ -135,4 +135,8 @@ public class Coach extends Subscriber implements OwnerEligible {
     public void addTeam(Team team) {
         this.teams.add(team);
     }
+
+    public void removeTeam(Team team) {
+        this.teams.remove(team);
+    }
 }
