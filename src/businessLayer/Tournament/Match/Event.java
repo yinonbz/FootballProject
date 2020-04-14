@@ -1,32 +1,21 @@
 package businessLayer.Tournament.Match;
 
+import businessLayer.userTypes.Administration.Player;
+import serviceLayer.MatchController;
+
 public abstract class Event {
 
-    private Match match;
+    protected MatchController matchController;
+    protected Player playerSubject;
 
     /**
-     *
-     * @param match
+     * the constructor of an event
+     * @param matchController
+     * @param playerSubject
      */
-    public Event(Match match) {
-        this.match = match;
+    public Event(MatchController matchController, Player playerSubject) {
+        this.matchController = matchController;
+        this.playerSubject=playerSubject;
     }
 
-    /**
-     *
-     * @return
-     */
-
-    public Match getMatch() {
-        return match;
-    }
-
-    /**
-     *
-     * @param match
-     */
-
-    public void setMatch(Match match) {
-        this.match = match;
-    }
 }

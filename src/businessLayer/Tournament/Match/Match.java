@@ -22,6 +22,7 @@ public class Match {
     private Stadium stadium;
     private int numberOfFans;
     private static int index=1;
+    private EventRecord eventRecord;
     /**
      * @param league
      * @param season
@@ -63,6 +64,13 @@ public class Match {
         this.stadium=stadium;
         this.matchId=index;
         index++;
+    }
+
+    /**
+     * opens an event recorder for the game
+     */
+    public void startTheGame(){
+        eventRecord = new EventRecord(this);
     }
 
     /**

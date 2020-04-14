@@ -1,17 +1,21 @@
 package businessLayer.Tournament.Match;
 
 import businessLayer.userTypes.Administration.Player;
+import serviceLayer.MatchController;
 
 public class Foul extends Event {
-    Player against;
+
     Player inFavor;
 
+
     /**
-     * @param match
+     * constructor
+     * @param against
+     * @param inFavor
+     * @param matchController
      */
-    public Foul(Match match, Player against , Player inFavor) {
-        super(match);
-        this.against= against;
-        this.inFavor = inFavor;
+    public Foul(Player against , Player inFavor, MatchController matchController) {
+        super(matchController,against);
+        this.inFavor=inFavor;
     }
 }
