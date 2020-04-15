@@ -287,7 +287,7 @@ public class LeagueController {
     }
 
 
-    //-----------------------------AssociationRepresentative------------------------
+    //-----------------------------AssociationRepresentative: Link to Service Layer------------------------
 
     /**
      * The function receives username and leagueID from the interface layer and calls the creation function in the business layer
