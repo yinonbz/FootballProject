@@ -55,6 +55,16 @@ public class SystemController {
         return single_instance;
     }
 
+    /**
+     * this function connects to the DB
+     * @param DB
+     * @return
+     */
+    public boolean connectToDB(DemoDB DB){
+        this.DB=DB;
+        return true;
+    }
+
 
     /**
      * Getter function for the league controller

@@ -37,6 +37,7 @@ public class DemoDB {
         leagues = new HashMap<>();
         associationRepresentatives = new HashMap<>();
         referees = new HashMap<>();
+        stadiums = new HashMap<>();
     }
 
     //-------------------------SYSTEM CONTROLLER-------------------------//

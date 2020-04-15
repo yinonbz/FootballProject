@@ -5,9 +5,7 @@ import businessLayer.Tournament.*;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Tournament.Match.Stadium;
-import businessLayer.userTypes.Administration.Player;
-import businessLayer.userTypes.Administration.Referee;
-import businessLayer.userTypes.Administration.TeamOwner;
+import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.SystemController;
 import dataLayer.DemoDB;
 
@@ -16,9 +14,10 @@ import java.util.HashMap;
 
 public class DataBaseValues {
 
-    public DemoDB db;
+    //static public DemoDB db;
 
-    static DemoDB DB = new DemoDB();
+    static DemoDB DB;
+
     static Team ManchesterUnited;
     static Team ManchersterCity;
     static Team NewCastle;
@@ -36,7 +35,7 @@ public class DataBaseValues {
     static Team Bnei_Yehuda;
     static Team LeedsUnited;
     static Team Sunderland;
-
+    static Team MacabiHaifa;
 
 
     static TeamOwner teamOwner;
@@ -45,9 +44,15 @@ public class DataBaseValues {
     static TeamOwner Glazers;
     static TeamOwner Nissanov;
 
+
+    static TeamManager itay;
+
     static Referee Alon;
 
     static Player Buzaglo;
+
+    static Coach tomer;
+    static Coach Ido;
 
 
     static League primerLeague;
@@ -59,6 +64,7 @@ public class DataBaseValues {
     static SingleMatchPolicy singleMatchPolicy;
     static ClassicMatchPolicy classicMatchPolicy;
     static LeagueController leagueController;
+
     static Stadium s1;
     static Stadium s2;
     static Stadium s3;
@@ -68,6 +74,8 @@ public class DataBaseValues {
     static Stadium s7;
     static Stadium s8;
     static Stadium s9;
+    static Stadium samiOfer;
+
     static HashMap <Integer, Match> singleMatchTable;
     static HashMap <Integer, Match> classicTable;
     static MatchController matchController;
@@ -75,7 +83,7 @@ public class DataBaseValues {
 
 
     public DataBaseValues(){
-        db = new DemoDB();
+        DB = new DemoDB();
 
         systemController = SystemController.SystemController();
         leagueController = new LeagueController();
@@ -91,6 +99,9 @@ public class DataBaseValues {
         s7 = new Stadium("s7",900);
         s8 = new Stadium("s8",1000);
         s9 = new Stadium("Default",500);
+        samiOfer = new Stadium("samiOfer",null,null,30000,null);
+
+
 
         DB.addStadiumToDB("s1",s1);
         DB.addStadiumToDB("s2",s2);
@@ -129,6 +140,21 @@ public class DataBaseValues {
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
         DB.addSubscriberToDB("Alon",Alon);
 
+        //add coach
+        //6.1
+        Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach", systemController);
+        tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach", systemController);
+        DB.addSubscriberToDB("efronio",Ido);
+        DB.addSubscriberToDB("TomerZ",Ido);
+
+        //add team manager
+        itay = new TeamManager("itayK", "111", "itay",BeerSheva ,100, systemController);
+        DB.addSubscriberToDB("itayK",itay);
+
+
+
+
+
         //add teams
         ManchesterUnited = new Team("ManchesterUnited",teamOwner,1888);
         ManchesterUnited.setStadium(s8);
@@ -153,8 +179,25 @@ public class DataBaseValues {
         BeerSheva = new Team("Beer Sheva", Barkat,1973);
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
+        MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
 
+        //setters for teams
+        BeerSheva.setTeamId(123); //todo delete and change this fields
+        ManchesterUnited.setTeamId(456);
+        MacabiHaifa.setTeamId(789);
 
+        //setter team-owners and teams
+        Jacob.getTeams().add(MacabiHaifa);
+        MacabiHaifa.getTeamOwners().add(Jacob);
+        Barkat.getTeams().add(BeerSheva);
+        Barkat.getTeams().add(ManchesterUnited);
+        Glazers.getTeams().add(ManchesterUnited);
+        ManchesterUnited.getTeamOwners().add(Barkat);
+        ManchesterUnited.getTeamOwners().add(Glazers);
+        BeerSheva.getTeamOwners().add(Barkat);
+        BeerSheva.getTeamOwners().add(Nissanov);
+
+        //teams
         DB.addTeamToDB("ManchesterUnited",ManchesterUnited);
         DB.addTeamToDB("ManchesterCity",ManchersterCity);
         DB.addTeamToDB("NewCastle",NewCastle);
@@ -169,6 +212,9 @@ public class DataBaseValues {
         DB.addTeamToDB("Chelsea",Chelsea);
         DB.addTeamToDB("Natanya",Natanya);
         DB.addTeamToDB("Bnei Yehuda",Bnei_Yehuda);
+        DB.addTeamToDB("McabiHaifa",MacabiHaifa);
+
+        systemController.connectToDB(DB);
     }
 
     /**
@@ -176,7 +222,7 @@ public class DataBaseValues {
      * @return
      */
     public DemoDB getDB (){
-        return db;
+        return DB;
     }
 
 }
