@@ -1,3 +1,5 @@
+package businessLayer.userTypes;
+
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
@@ -47,9 +49,9 @@ public class TestSystemController {
         Glazers.getTeams().add(ManchesterUnited);
         systemController.addTeam(ManchesterUnited);
         systemController.addTeam(BeerSheva);
-        systemController.addComplaint("My system doesn't work",fan);
-        systemController.addComplaint("I don't like this team",fan);
-        systemController.addComplaint("",fan);
+        systemController.addComplaint("My system doesn't work",fan.getUsername());
+        systemController.addComplaint("I don't like this team",fan.getUsername());
+        systemController.addComplaint("",fan.getUsername());
 
     }
 
@@ -110,16 +112,16 @@ public class TestSystemController {
 
         //1
         //regular test add a comment
-        assertTrue(admin.replyComplaints(0,admin, "Solved"));
+        assertTrue(admin.replyComplaints(0,admin.getUsername(), "Solved"));
  //       System.out.println(systemController.getSystemComplaints().get(0).toString());
 
         //2
         //can't add an empty comment
-        assertFalse(admin.replyComplaints(0,admin, ""));
+        assertFalse(admin.replyComplaints(0,admin.getUsername(), ""));
 
         //3
         //can't add a comment to invalid complaint id
-        assertFalse(admin.replyComplaints(3,admin, ""));
+        assertFalse(admin.replyComplaints(3,admin.getUsername(), ""));
 
     }
 

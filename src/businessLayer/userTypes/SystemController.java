@@ -323,8 +323,9 @@ public class SystemController {
      * @return true if the status was changed to close
      * UC 8.1
      */
-    public boolean closeTeamByAdmin(String teamName, Subscriber userType) {
-        if (userType instanceof Admin) {
+    public boolean closeTeamByAdmin(String teamName, String userType) {
+        Subscriber subscriber = getSubscriberByUserName(userType);
+        if (subscriber instanceof Admin) {
             if (teams.containsKey(teamName)) {
                 Team chosenTeam = teams.get(teamName);
                 //checks what is the status of the team
@@ -350,17 +351,18 @@ public class SystemController {
 
     /**
      * the function lets the subscriber to upload a complaint
-     *
-     * @param content    the content of the complaint
-     * @param subscriber the subscriber who wants to complain
-     *                   UC 3.4
+     *  @param content    the content of the complaint
+     * @param username the subscriber who wants to complain
      */
-    public void addComplaint(String content, Subscriber subscriber) {
-        Complaint complaint = subscriber.createComplaint(content);
-        if (complaint != null) {
-            complaint.setId(systemComplaints.size());
-            systemComplaints.put(systemComplaints.size(), complaint);
-            subscriber.addComplaint(complaint);
+    public void addComplaint(String content, String username) {
+        Subscriber subscriber = getSubscriberByUserName(username);
+        if(subscriber!=null){
+            Complaint complaint = subscriber.createComplaint(content);
+            if (complaint != null) {
+                complaint.setId(systemComplaints.size());
+                systemComplaints.put(systemComplaints.size(), complaint);
+                subscriber.addComplaint(complaint);
+            }
         }
     }
 
@@ -375,12 +377,13 @@ public class SystemController {
      * 8.2
      */
 
-    public String removeSubscriber(String subscriberName, Subscriber userType) {
-        if (subscriberName != null && (userType instanceof Admin)) {
+    public String removeSubscriber(String subscriberName, String userType) {
+        Subscriber subscriber = getSubscriberByUserName(userType);
+        if (subscriberName != null && (subscriber instanceof Admin)) {
             if (systemSubscribers.containsKey(subscriberName)) {
                 Subscriber tempSubscriber = systemSubscribers.get(subscriberName);
                 if (tempSubscriber instanceof Admin) {
-                    if (userType.getUsername().equals(subscriberName)) {
+                    if (subscriber.getUsername().equals(subscriberName)) {
                         return "Admin can't remove his own user";
                     }
                 } else if (tempSubscriber instanceof TeamOwner) {
@@ -419,12 +422,13 @@ public class SystemController {
      * the function lets the admin to respond the the comments in the system
      *
      * @param complaintID the complain's id the admin wants to respond to
-     * @param subscriber  the user that wants to respond - has to be an admin
+     * @param username  the user that wants to respond - has to be an admin
      * @param comment     - the comment of the admin
      * @return true is he responded successfully
      * UC 8.3.2
      */
-    public boolean replyComplaints(int complaintID, Subscriber subscriber, String comment) {
+    public boolean replyComplaints(int complaintID, String username, String comment) {
+        Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof Admin && !comment.isEmpty()) {
             if (systemComplaints.containsKey(complaintID)) {
                 Complaint complaint = systemComplaints.get(complaintID);
@@ -447,11 +451,12 @@ public class SystemController {
      * @param password
      * @param name
      * @param training
-     * @param representative
+     * @param representativeUser
      * @return true/false
      */
-    public boolean addReferee(String username, String password, String name, String training, Subscriber representative) {
+    public boolean addReferee(String username, String password, String name, String training, String representativeUser) {
 
+        Subscriber representative = getSubscriberByUserName(representativeUser);
         if (username == null || password == null || name == null || training == null || representative == null) {
             return false;
         }
@@ -501,8 +506,10 @@ public class SystemController {
      * the function takes a request for opening a new team and puts it in the data structure
      *
      * @param details of the new team
+     * @param username
      */
-    public boolean addToTeamConfirmList(LinkedList<String> details, Subscriber subscriber) {
+    public boolean addToTeamConfirmList(LinkedList<String> details, String username) {
+        Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof TeamOwner) {
             unconfirmedTeams.put(details.getFirst(), details);
             return true;
@@ -516,10 +523,11 @@ public class SystemController {
      * the function approves the request by the AR and updates the new team in the system and in the team owner
      *
      * @param teamName   the name of the team
-     * @param subscriber the subscriber who tries to confirm the request
+     * @param username the subscriber who tries to confirm the request
      * @return true if it done successfully
      */
-    public boolean confirmTeamByAssociationRepresntative(String teamName, Subscriber subscriber) {
+    public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
+        Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof AssociationRepresentative) {
             if (unconfirmedTeams.containsKey(teamName)) {
                 //check that a team with a same name doesn't exist
