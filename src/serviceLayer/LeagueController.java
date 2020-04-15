@@ -40,7 +40,7 @@ public class LeagueController {
      *
      * @return the stadiums in the system
      */
-    public HashMap<Integer, Stadium> getStadiums() {
+    public HashMap<String, Stadium> getStadiums() {
         return systemController.getStadiums();
     }
 
