@@ -1,7 +1,7 @@
 package businessLayer.userTypes.viewers;
 
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class Fan extends Subscriber {
      * @param name
      */
     public Fan(String username, String password, String name, SystemController systemController) {
-        super(username, password, systemController);
+        super(username, password,name, systemController);
         this.name = name;
     }
 

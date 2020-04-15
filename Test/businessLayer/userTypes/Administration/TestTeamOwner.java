@@ -2,39 +2,12 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
-import businessLayer.userTypes.Subscriber;
-import com.sun.javaws.jnl.MatcherReturnCode;
-import org.junit.Assert;
-import businessLayer.userTypes.Administration.*;
-import businessLayer.userTypes.Administration.Player;
-import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import businessLayer.userTypes.Administration.TeamOwner;
-import org.junit.BeforeClass;
-import businessLayer.userTypes.Administration.*;
-import businessLayer.userTypes.Administration.Player;
-import businessLayer.userTypes.Administration.TeamOwner;
-import org.junit.Before;
-import businessLayer.userTypes.Administration.TeamOwner;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import serviceLayer.MatchController;
-import serviceLayer.SystemController;
-import sun.swing.BakedArrayList;
+import businessLayer.Tournament.Match.MatchController;
+import businessLayer.userTypes.SystemController;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import sun.swing.BakedArrayList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class TestTeamOwner {
     private Player Buzaglo;
@@ -93,7 +66,7 @@ public class TestTeamOwner {
         //HashMap<String, Subscriber> sysSub = new HashMap<>();
         Coach Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach", systemController);
         Coach tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach", systemController);
-        TeamManager itay = new TeamManager("itayK", "111", "itay", 100, null, systemController);
+        TeamManager itay = new TeamManager("itayK", "111", "itay",BeerSheva ,100, systemController);
         Stadium samiOfer = new Stadium("samiOfer",null,null,30000,null);
         systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
         systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
@@ -119,7 +92,7 @@ public class TestTeamOwner {
 
         assertFalse(Nissanov.addAsset(123, "Coach", "efronio"));
 
-        assertTrue(Barkat.addAsset(123, "TeamManager", "itayK"));
+        assertFalse(Barkat.addAsset(123, "TeamManager", "itayK"));
 
         assertFalse(Nissanov.addAsset(123, "TeamManager", "itayK"));
 

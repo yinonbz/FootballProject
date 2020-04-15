@@ -3,7 +3,7 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Team.Team;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

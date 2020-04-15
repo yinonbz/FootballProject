@@ -1,14 +1,12 @@
-package serviceLayer;
+package businessLayer.Tournament;
 
-import businessLayer.Tournament.League;
 import businessLayer.Tournament.Match.Stadium;
-import businessLayer.Tournament.MatchingPolicy;
-import businessLayer.Tournament.RankingPolicy;
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
+import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
 import java.util.Date;

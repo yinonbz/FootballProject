@@ -5,7 +5,7 @@ import businessLayer.userTypes.viewers.Fan;
 import org.junit.BeforeClass;
 
 import org.junit.Test;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 
 import static junit.framework.TestCase.assertTrue;

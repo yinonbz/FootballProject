@@ -2,14 +2,13 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.HashSet;
 
 public class Coach extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
-    private String name;
     private String training;
     private String teamJob;
     private HashSet<Team> teams;
@@ -23,8 +22,7 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param teamJob
      */
     public Coach(String username, String password, String name,String training, String teamJob, SystemController systemController) {
-        super(username, password, systemController);
-        this.name=name;
+        super(username, password,name, systemController);
         this.training=training;
         this.teamJob=teamJob;
         this.teamOwner =null;

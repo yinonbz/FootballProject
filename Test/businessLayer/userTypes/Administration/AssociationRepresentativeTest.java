@@ -3,8 +3,8 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import org.junit.Before;
 import org.junit.Test;
-import serviceLayer.LeagueController;
-import serviceLayer.SystemController;
+import businessLayer.Tournament.LeagueController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.Date;
 

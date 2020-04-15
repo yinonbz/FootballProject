@@ -7,8 +7,7 @@ import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import serviceLayer.LeagueController;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.Date;
 import java.util.HashMap;

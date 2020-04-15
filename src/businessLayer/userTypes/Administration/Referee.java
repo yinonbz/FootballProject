@@ -1,21 +1,18 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Tournament.Match.Match;
-import javafx.scene.layout.Pane;
-import serviceLayer.LeagueController;
+import businessLayer.Tournament.LeagueController;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.MatchController;
-import serviceLayer.SystemController;
+import businessLayer.Tournament.Match.MatchController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Referee extends Subscriber {
-    private String name;
     private String training;
     private LeagueController leagueController;
     private List<Match> matches;
-
     private MatchController matchController;
 
     /**
@@ -26,9 +23,7 @@ public class Referee extends Subscriber {
      * @param leaguesController
      */
     public Referee(String username, String password, String name, String training, LeagueController leaguesController, SystemController systemController) {
-
-        super(username, password, systemController);
-        this.name = name;
+        super(username, password, name,systemController);
         this.training = training;
         this.leagueController = leaguesController;
         matches = new ArrayList<>();
@@ -45,8 +40,7 @@ public class Referee extends Subscriber {
      */
     public Referee(String username, String password, String name, String training, LeagueController leaguesController, SystemController systemController, MatchController matchController) {
 
-        super(username, password, systemController);
-        this.name = name;
+        super(username, password,name, systemController);
         this.training = training;
         this.leagueController = leaguesController;
         matches = new ArrayList<>();

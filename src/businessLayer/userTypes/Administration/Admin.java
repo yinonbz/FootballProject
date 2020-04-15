@@ -1,12 +1,11 @@
 package businessLayer.userTypes.Administration;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.HashMap;
 
 public class Admin extends Subscriber {
-    private String name;
     private SystemController systemController;
 
     /**
@@ -15,8 +14,7 @@ public class Admin extends Subscriber {
      * @param name
      */
     public Admin(String username, String password, String name, SystemController systemController) {
-        super(username, password,systemController);
-        this.name = name;
+        super(username, password,name,systemController);
         this.systemController=systemController;
     }
 

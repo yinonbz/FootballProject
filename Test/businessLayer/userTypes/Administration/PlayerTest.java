@@ -2,7 +2,7 @@ package businessLayer.userTypes.Administration;
 
 import org.junit.Before;
 import org.junit.Test;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +18,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void isOwner() {
+    public void isOwner(){
         assertFalse(messi.isOwner());
         messi.setTeamOwner(teamOwner);
         assertTrue(messi.isOwner());
