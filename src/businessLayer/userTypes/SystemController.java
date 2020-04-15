@@ -402,11 +402,12 @@ public class SystemController {
     /**
      * the function displays the complaints in the system to the admin
      *
-     * @param subscriber the user who wants to see the complaints
+     * @param username the user who wants to see the complaints
      * @return the complaints in the system
      * UC 8.3.1
      */
-    public HashMap<Integer, Complaint> displayComplaints(Subscriber subscriber) {
+    public HashMap<Integer, Complaint> displayComplaints(String username) {
+        Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof Admin) {
             return systemComplaints;
         } else {

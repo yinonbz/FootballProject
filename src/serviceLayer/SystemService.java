@@ -20,16 +20,30 @@ public class SystemService {
      * @return
      */
     public HashMap<Integer, Complaint> displayComplaints(String username) {
-        Subscriber subscriber = systemController.getSubscriberByUserName(username); // find subscriber who request the team opening
-        if(subscriber == null){
-            // user not found. return null to presentation layer and print error there.
-            return null;
-        }
-        return systemController.displayComplaints(subscriber);
+        return systemController.displayComplaints(username);
+    }
+
+    /**
+     * @param userName The user name of the default temporary admin, as mentioned in the Readme file.
+     * @param password The password of the default temporary admin, as mentioned in the Readme file.
+     * @return true: if the temporary admin user was created successfully by the system. | false: The userName or password didn't match to the default temporary admin details.
+     */
+    public Boolean insertInfo(String userName, String password) {
+        return insertInfo(userName,password);
+    }
+
+    /**
+     * the function closes a team Permanently by the admin
+     *
+     * @param teamName the team the user wants to close
+     * @param username the user type of the user that requested to close the team
+     * @return true if the status was changed to close
+     * UC 8.1
+     */
+    public boolean closeTeamByAdmin(String teamName, String username) {
+        return closeTeamByAdmin(teamName,username);
     }
 
 
 
-
-
-    }
+}
