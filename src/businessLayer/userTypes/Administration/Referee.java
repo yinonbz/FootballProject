@@ -1,16 +1,34 @@
 package businessLayer.userTypes.Administration;
 
-import javafx.scene.layout.Pane;
-import serviceLayer.LeagueController;
+import businessLayer.Tournament.Match.Match;
+import businessLayer.Tournament.LeagueController;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.MatchController;
-import serviceLayer.SystemController;
+import businessLayer.Tournament.Match.MatchController;
+import businessLayer.userTypes.SystemController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Referee extends Subscriber {
-    private String name;
     private String training;
     private LeagueController leagueController;
+    private List<Match> matches;
     private MatchController matchController;
+
+    /**
+     * @param username
+     * @param password
+     * @param name
+     * @param training
+     * @param leaguesController
+     */
+    public Referee(String username, String password, String name, String training, LeagueController leaguesController, SystemController systemController) {
+        super(username, password, name,systemController);
+        this.training = training;
+        this.leagueController = leaguesController;
+        matches = new ArrayList<>();
+        this.matchController = matchController;
+    }
 
     /**
      * @param username
@@ -21,10 +39,11 @@ public class Referee extends Subscriber {
      * @param matchController
      */
     public Referee(String username, String password, String name, String training, LeagueController leaguesController, SystemController systemController, MatchController matchController) {
-        super(username, password,systemController);
-        this.name = name;
+
+        super(username, password,name, systemController);
         this.training = training;
         this.leagueController = leaguesController;
+        matches = new ArrayList<>();
         this.matchController = matchController;
     }
 
@@ -149,14 +168,14 @@ public class Referee extends Subscriber {
     /**
      *
      */
-    public void updateEvents(){
+    public void updateEvents() {
 
     }
 
     /**
      *
      */
-    public void viewMatchDetails(){
+    public void viewMatchDetails() {
 
     }
 
@@ -206,6 +225,23 @@ public class Referee extends Subscriber {
     public Boolean editDetails() {
         return null;
     }
+
+
+    /**
+     * The function receives order from the system controller to remove the referee from every match he's registered to
+     *
+     * @return
+     */
+    public boolean removeFromAllMatches() {
+
+        for (Match e : matches) {
+            if(!(e.removeReferee(this))){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public MatchController getMatchController() {
         return matchController;

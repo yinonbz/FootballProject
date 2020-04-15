@@ -2,7 +2,6 @@ package businessLayer.Tournament;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
-import serviceLayer.LeagueController;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,7 +10,7 @@ import java.util.HashMap;
 
 abstract public class AMatchPolicy implements MatchingPolicy{
 
-    protected HashMap <Integer,Team> teams;
+    protected HashMap <String,Team> teams;
     protected League league;
     protected Season season;
     private HashMap<Integer,Match> matchTable;
@@ -22,7 +21,7 @@ abstract public class AMatchPolicy implements MatchingPolicy{
      * @param league the league
      * @param season the season
      */
-        AMatchPolicy (HashMap<Integer, Team> teams, League league, Season season){
+        AMatchPolicy (HashMap<String, Team> teams, League league, Season season){
         this.teams=teams;
         this.league=league;
         this.season=season;
@@ -67,7 +66,7 @@ abstract public class AMatchPolicy implements MatchingPolicy{
      * @param leagueController the league controller
      * @return the table of the matches
      */
-    public abstract HashMap <Integer, Match> activatePolicy (HashMap <Integer,Team> teams, LeagueController leagueController);
+    public abstract HashMap <Integer, Match> activatePolicy (HashMap <String,Team> teams, LeagueController leagueController);
 
 
     @Override

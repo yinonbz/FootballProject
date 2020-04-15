@@ -5,7 +5,7 @@ import businessLayer.userTypes.viewers.Fan;
 import org.junit.BeforeClass;
 
 import org.junit.Test;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 
 import static junit.framework.TestCase.assertTrue;
@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 public class TestSystemController {
 
      static SystemController systemController;
-     static Team ManchesterUnited;
-     static Team BeerSheva;
-     static TeamOwner Glazers;
-     static TeamOwner Nissanov;
-     static TeamOwner Barkat;
+     static Team LeedsUnited;
+     static Team Sunderland;
+     static TeamOwner Alex;
+     static TeamOwner Max;
+     static TeamOwner YaelM;
      static Admin admin;
      static Admin admin2;
      static Fan fan;
@@ -29,24 +29,24 @@ public class TestSystemController {
         systemController = SystemController.SystemController();
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
         admin2 = new Admin ("ItaiKatz", "helloWorld", "itai",systemController);
-        Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
-        Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
-        Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
+        YaelM = new TeamOwner("AlonaYaelM", "Sunderland","alona",systemController);
+        Max = new TeamOwner("Max", "telAviv","Max",systemController);
+        Alex = new TeamOwner("Alex", "manchesterU","glazer",systemController);
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
-        systemController.getSystemSubscribers().put("AlonaBarkat",Barkat);
-        systemController.getSystemSubscribers().put("Nissanov",Nissanov);
-        systemController.getSystemSubscribers().put("Glazers",Glazers);
+        systemController.getSystemSubscribers().put("AlonaYaelM",YaelM);
+        systemController.getSystemSubscribers().put("Max",Max);
+        systemController.getSystemSubscribers().put("Alex",Alex);
         systemController.getSystemSubscribers().put("Gate13",fan);
         systemController.getSystemSubscribers().put("TomerSein",admin);
         systemController.getSystemSubscribers().put("ItaiKatz",admin2);
-        ManchesterUnited = new Team("Manchester United",Glazers,1899);
-        ManchesterUnited.getTeamOwners().add(Barkat); //todo will be changed later to a normal function depends on 6.1
-        BeerSheva = new Team("Beer Sheva", Barkat,1973);
-        Barkat.getTeams().add(BeerSheva); //todo will be changed later to a normal function depends on 6.1
-        Barkat.getTeams().add(ManchesterUnited);
-        Glazers.getTeams().add(ManchesterUnited);
-        systemController.addTeam(ManchesterUnited);
-        systemController.addTeam(BeerSheva);
+        LeedsUnited = new Team("Manchester United",Alex,1899);
+        LeedsUnited.getTeamOwners().add(YaelM); //todo will be changed later to a normal function depends on 6.1
+        Sunderland = new Team("Beer Sheva", YaelM,1973);
+        YaelM.getTeams().add(Sunderland); //todo will be changed later to a normal function depends on 6.1
+        YaelM.getTeams().add(LeedsUnited);
+        Alex.getTeams().add(LeedsUnited);
+        systemController.addTeam(LeedsUnited);
+        systemController.addTeam(Sunderland);
         systemController.addComplaint("My system doesn't work",fan);
         systemController.addComplaint("I don't like this team",fan);
         systemController.addComplaint("",fan);
@@ -85,8 +85,8 @@ public class TestSystemController {
 
         //4
         //checks that the admin can't delete an exclusive team owner
-        assertEquals("Can't remove an exclusive team owner",admin.deleteSubscriber("AlonaBarkat"));
-        assertTrue(systemController.getSystemSubscribers().containsKey("AlonaBarkat"));
+        assertEquals("Can't remove an exclusive team owner",admin.deleteSubscriber("AlonaYaelM"));
+        assertTrue(systemController.getSystemSubscribers().containsKey("AlonaYaelM"));
 
         //5
         //checks admin can't delete himself

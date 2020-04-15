@@ -1,15 +1,20 @@
 package dataLayer;
 
 import businessLayer.Team.Team;
+import businessLayer.Tournament.League;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
+import businessLayer.userTypes.Administration.AssociationRepresentative;
+import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class DemoDB {
+    //------------System Controller------------//
     private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
     private HashMap<String, Team> teams; //name of the team, the team object
     private HashMap <String, LinkedList<String>> userNotifications;
@@ -17,6 +22,10 @@ public class DemoDB {
     private HashMap<String, LinkedList<String>> unconfirmedTeams; //name of the team, details on the team
     private HashMap<String, Stadium> stadiums;
 
+    //------------League Controller------------//
+    private HashMap<String, League> leagues;
+    private HashMap<String,AssociationRepresentative> associationRepresentatives;
+    private HashMap<String, Referee> referees;
 
 
     public DemoDB(){
@@ -25,7 +34,13 @@ public class DemoDB {
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
         unconfirmedTeams = new HashMap<>();
+        leagues = new HashMap<>();
+        associationRepresentatives = new HashMap<>();
+        referees = new HashMap<>();
     }
+
+    //-------------------------SYSTEM CONTROLLER-------------------------//
+
 
     /**
      * demo function to search in db for subscribers
@@ -238,6 +253,177 @@ public class DemoDB {
         return true;
     }
 
+    /**
+     * demo function to search in db for stadium
+     * @param stadiumName
+     * @return
+     */
+    public boolean containsInSystemStadium(String stadiumName){
+        return stadiums.containsKey(stadiumName);
+    }
+
+    /**
+     * demo function to get a stadium object from data base
+     * @param stadiumName
+     * @return
+     */
+    public Stadium selectStadiumFromDB(String stadiumName){
+        return stadiums.get(stadiumName);
+    }
+
+    /**
+     * demo function to remove a stadium from DB
+     * @param stadiumName
+     * @return
+     */
+    public boolean removeStadiumFromDB (String stadiumName){
+        stadiums.remove(stadiumName);
+        return true;
+    }
+
+    /**
+     * demo function to add a stadium to DB
+     * @param stadiumName
+     * @param stadium
+     * @return
+     */
+    public boolean addStadiumToDB (String stadiumName, Stadium stadium){
+        stadiums.put(stadiumName, stadium);
+        return true;
+    }
+
+    /**
+     * demo function that return a random stadium from the stadiums
+     * @return
+     */
+    public Stadium selectRandomStadium(){
+        Map.Entry <String, Stadium> entry = stadiums.entrySet().iterator().next();
+        Stadium stadium = entry.getValue();
+        return stadium;
+    }
+
+    //-------------------------LEAGUE CONTROLLER-------------------------//
+
+    /**
+     * demo function to search in db for League
+     * @param leagueID
+     * @return
+     */
+    public boolean containsInSystemLeague(String leagueID){
+        return leagues.containsKey(leagueID);
+    }
+
+    /**
+     * demo function to get a League object from data base
+     * @param leagueID
+     * @return
+     */
+    public League selectLeagueFromDB(String leagueID){
+        return leagues.get(leagueID);
+    }
+
+    /**
+     * demo function to remove a League from DB
+     * @param leagueID
+     * @return
+     */
+    public boolean removeLeagueFromDB (String leagueID){
+        leagues.remove(leagueID);
+        return true;
+    }
+
+    /**
+     * demo function to add a League to DB
+     * @param leagueID
+     * @param league
+     * @return
+     */
+    public boolean addLeagueToDB (String leagueID, League league){
+        leagues.put(leagueID, league);
+        return true;
+    }
+
+    /**
+     * demo function to search in db for League
+     * @param userName
+     * @return
+     */
+    public boolean containsInSystemAssociationRepresentative(String userName){
+        return associationRepresentatives.containsKey(userName);
+    }
+
+    /**
+     * demo function to get a League object from data base
+     * @param userName
+     * @return
+     */
+    public AssociationRepresentative AssociationRepresentativeLeagueFromDB(String userName){
+        return associationRepresentatives.get(userName);
+    }
+
+    /**
+     * demo function to remove a League from DB
+     * @param userName
+     * @return
+     */
+    public boolean removeAssociationRepresentativeFromDB (String userName){
+        associationRepresentatives.remove(userName);
+        return true;
+    }
+
+    /**
+     * demo function to add a League to DB
+     * @param userName
+     * @param ar
+     * @return
+     */
+    public boolean addAssociationRepresentativeToDB (String userName, AssociationRepresentative ar){
+        associationRepresentatives.put(userName, ar);
+        return true;
+    }
+
+    /**
+     * demo function to search in db for League
+     * @param username
+     * @return
+     */
+    public boolean containsInSystemReferee(String username){
+        return referees.containsKey(username);
+    }
+
+    /**
+     * demo function to get a League object from data base
+     * @param username
+     * @return
+     */
+    public Referee selectRefereeFromDB(String username){
+        return referees.get(username);
+    }
+
+    /**
+     * demo function to remove a League from DB
+     * @param username
+     * @return
+     */
+    public boolean removeRefereeFromDB (String username){
+        referees.remove(username);
+        return true;
+    }
+
+    /**
+     * demo function to add a League to DB
+     * @param username
+     * @param ref
+     * @return
+     */
+    public boolean addRefereeToDB (String username, Referee ref){
+        referees.put(username, ref);
+        return true;
+    }
+
+
+
+    //-------------------------GETTERS AND SETTERS-------------------------//
 
     public HashMap<String, Subscriber> getSystemSubscribers() {
         return systemSubscribers;
@@ -287,4 +473,6 @@ public class DemoDB {
     public void setStadiums(HashMap<String, Stadium> stadiums) {
         this.stadiums = stadiums;
     }
+
+
 }

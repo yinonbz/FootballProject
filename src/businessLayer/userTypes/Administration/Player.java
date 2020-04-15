@@ -2,14 +2,11 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
-
-import java.util.List;
+import businessLayer.userTypes.SystemController;
 
 public class Player extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
-    private String name;
     private String birthDate;
     private String fieldJob;
     private Team team;
@@ -22,8 +19,7 @@ public class Player extends Subscriber implements OwnerEligible {
      * @param team
      */
     public Player(String username, String password, String name, String birthDate, String fieldJob, Team team, SystemController systemController) {
-        super(username, password,systemController);
-        this.name = name;
+        super(username, password,name,systemController);
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
         this.team = team;

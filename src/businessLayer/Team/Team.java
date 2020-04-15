@@ -18,7 +18,7 @@ import java.util.List;
 public class Team {
     private HashSet<Player> players;
     private HashSet<Coach> coaches;
-    private HashSet<TeamManager> teamManagers;
+    private TeamManager teamManager;
     private HashSet<TeamOwner> teamOwners;
     private FinancialMonitoring financialMonitoring;
     private HashSet<Match> matches;
@@ -44,10 +44,10 @@ public class Team {
      * @param establishedYear
      * @param isActive
      */
-    public Team(HashSet<Player> players, HashSet coaches, HashSet<TeamManager> teamManagers, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, HashSet<Match> matches, HashSet<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
+    public Team(HashSet<Player> players, HashSet coaches, TeamManager teamManagers, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, HashSet<Match> matches, HashSet<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
         this.players = players;
         this.coaches = coaches;
-        this.teamManagers = teamManagers;
+        this.teamManager = teamManagers;
         //teamManager.getTeams().add(this);
         this.teamOwners = teamOwners;
         Iterator<TeamOwner> it = teamOwners.iterator();
@@ -84,7 +84,7 @@ public class Team {
         this.coaches =new HashSet<>();
         this.seasons=new HashSet<>();
         this.matches = new HashSet<>();
-        this.teamManagers = new HashSet<>();
+        this.teamManager =null;
 
     }
 
@@ -121,11 +121,11 @@ public class Team {
     /**
      * @return
      */
-    /*
+
     public TeamManager getTeamManager() {
         return teamManager;
     }
-    */
+
     /**
      * @return
      */
@@ -197,15 +197,14 @@ public class Team {
         this.coaches = coaches;
     }
 
-
-     /*
+    /**
+     *
      * @param teamManager
      */
-     /*
-    //public void setTeamManager(TeamManager teamManager) {
+
+    public void setTeamManager(TeamManager teamManager) {
         this.teamManager = teamManager;
     }
-    */
     /**
      * @param teamOwners
      */
@@ -300,7 +299,7 @@ public class Team {
      */
 
     public void addTeamManager(TeamManager teamManager) {
-        this.teamManagers.add(teamManager);
+        this.teamManager=teamManager;
     }
 
     public void addCoach(Coach coach) {
@@ -314,9 +313,7 @@ public class Team {
     }
 
     public void removeTeamManager(TeamManager teamManager) {
-        if(teamManagers.contains(teamManager)){
-            teamManagers.remove(teamManager);
-        }
+        this.teamManager = null;
     }
 
 
@@ -344,6 +341,7 @@ public class Team {
         return null;
     }
 
+    /*
     public TeamManager getManegerByUser(String teamManagerUser) {
         for (TeamManager teamManager:teamManagers) {
             if(teamManager.getUsername().equals(teamManagerUser)){
@@ -351,7 +349,7 @@ public class Team {
             }
         }
         return null;
-    }
+    }*/
 
     public Boolean containPlayer(Player player) {
         return players.contains(player);

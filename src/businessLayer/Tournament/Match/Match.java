@@ -244,4 +244,20 @@ public class Match {
                 + awayTeam.getTeamName() + "\n" +
                 "Stadium: " + stadium.getName() + "\n" + "Date: " + date +"\n";
     }
+
+    /**
+     * The function removes the received referee from the list of referees in the match, and returns whether the removal was successful or not
+     * @param ref
+     * @return true/false
+     */
+    public boolean removeReferee(Referee ref){
+
+        for(Referee e : referees){
+            if(e.getUsername().equals(ref.getUsername())){
+                referees.remove(e);
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,6 +1,6 @@
-package serviceLayer;
+package businessLayer.Tournament.Match;
 
-import businessLayer.Tournament.Match.Match;
+import businessLayer.userTypes.SystemController;
 
 import java.util.HashMap;
 

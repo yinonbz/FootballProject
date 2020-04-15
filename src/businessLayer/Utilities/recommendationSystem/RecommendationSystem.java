@@ -1,6 +1,6 @@
 package businessLayer.Utilities.recommendationSystem;
 
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.List;
 
