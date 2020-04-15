@@ -6,10 +6,7 @@ import businessLayer.Tournament.Match.Stadium;
 import serviceLayer.LeagueController;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class SingleMatchPolicy extends AMatchPolicy {
@@ -52,7 +49,8 @@ public class SingleMatchPolicy extends AMatchPolicy {
                             }
                             else{
                                 //if no one of the teams has a stadium we will choose one from the controller
-                                Stadium stadium = leagueController.getStadiums().get(0);
+                                Map.Entry <String, Stadium> entry = leagueController.getStadiums().entrySet().iterator().next();
+                                Stadium stadium = entry.getValue();
                                 match = new Match (home, away, stadium);
                             }
                         }

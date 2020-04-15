@@ -87,8 +87,8 @@ public class TestSingleClassicMatchPolicy {
         Chelsea.setStadium(s1);
         primerLeague = new League ("PriemerLeague",1);
         s9 = new Stadium("Default",500);
-        //systemController.getStadiums().put(0,s9);
-        leagueController.getStadiums().put("s9",s9);
+        systemController.getStadiums().put("s9",s9);
+        //leagueController.getStadiums().put("s9",s9);
         startDate = new Date();
         endDate = new Date ();
         currSeason = new Season (2,startDate,endDate, primerLeague);
