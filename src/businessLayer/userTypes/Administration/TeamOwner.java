@@ -94,7 +94,7 @@ public class TeamOwner extends Subscriber {
      */
     public boolean addAsset(int teamId, String assetType, String assetUserName) {
         boolean isAdded = false;
-        Team team = findTeam(teamId);
+        Team team = findTeamById(teamId);
         SystemController systemController = this.getSystemController();
         if (team != null && team.getActive()) {
             switch (assetType) {
@@ -142,7 +142,7 @@ public class TeamOwner extends Subscriber {
 
     public boolean deleteAsset(int teamId, String assetType, String assetUserName) {
         boolean isDeleted = false;
-        Team team = findTeam(teamId);
+        Team team = findTeamById(teamId);
         SystemController systemController = this.getSystemController();
         if (team != null && team.getActive()) {
             switch (assetType) {
@@ -188,7 +188,7 @@ public class TeamOwner extends Subscriber {
 
 
     public boolean editPlayer(int teamId, String playerUser, String typeEdit, String edit) {
-        Team team = findTeam(teamId);
+        Team team = findTeamById(teamId);
         if (playerUser != null && typeEdit != null && edit != null) {
             Player player = team.getPlayerByUser(playerUser);
             if (player != null) {
@@ -209,7 +209,7 @@ public class TeamOwner extends Subscriber {
     }
 
     public boolean editCoach(int teamId, String CoachUser, String typeEdit, String edit) {
-        Team team = findTeam(teamId);
+        Team team = findTeamById(teamId);
         if (CoachUser != null && typeEdit != null && edit != null) {
             Coach coach = team.getCoachByUser(CoachUser);
             if (coach != null) {
@@ -230,7 +230,7 @@ public class TeamOwner extends Subscriber {
     }
 
     public boolean editTeamManager(int teamId, String teamManagerUser, String typeEdit, int edit) {
-        Team team = findTeam(teamId);
+        Team team = findTeamById(teamId);
         if (teamManagerUser != null && typeEdit != null && team != null) {
             TeamManager teamManager = team.getTeamManager();
             if (teamManager != null) {
@@ -246,7 +246,7 @@ public class TeamOwner extends Subscriber {
     }
 
     public Boolean editStadium(int teamId, String editStadiumName, String typeEdit, int edit) {
-        Team team = findTeam(teamId);
+        Team team = findTeamById(teamId);
         if (editStadiumName != null && typeEdit != null && team != null) {
             Stadium stadium = team.getStadium();
             if(stadium!=null&&stadium.getName().equals(editStadiumName)){
@@ -261,7 +261,7 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
-    private Team findTeam(int teamId) {
+    private Team findTeamById(int teamId) {
         for (Team team : teams) {
             if (team.getTeamId() == teamId) {
                 return team;
@@ -271,7 +271,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     * UC 6.6
      *
      * @param teamName the name of the team to be returned.
      * @return instance of the team with the name of 'teamName'.
@@ -465,7 +464,6 @@ public class TeamOwner extends Subscriber {
      * @return
      */
     public Subscriber enterMember(String userName){
-
         return systemController.getSubscriberByUserName(userName);
     }
 

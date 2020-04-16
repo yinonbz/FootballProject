@@ -164,7 +164,7 @@ public class TestSystemController {
         assertFalse(systemController.changePassword("123456admin","admin")); //include the user name
     }
 
-    //T1.1_4
+    //UC-1_1
     /**
      * Test wrong/right password in the initialize system process
      */

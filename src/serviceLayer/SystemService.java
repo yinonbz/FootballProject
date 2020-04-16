@@ -32,6 +32,31 @@ public class SystemService {
      */
     public Boolean insertInfo(String userName, String password) {
         return systemController.insertInfo(userName,password);
+
+    }
+
+    /**
+     * UC 1.1 - Initialize System
+     * @param password the password of the temporary admin
+     * @return true if the system has initialized successfully
+     *          false else
+     */
+    public Boolean initializeSystem(String password){
+        return systemController.initializeSystem(password);
+    }
+
+    /**
+     * @param newPassword The new password of the user
+     * @param userName the user's user name
+     * @return true if the passsword has been changed
+     *          false else
+     */
+    public Boolean changePassword(String newPassword, String userName){
+        return systemController.changePassword(newPassword, userName);
+    }
+
+    public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName){
+        return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
     }
 
     /**
@@ -46,6 +71,17 @@ public class SystemService {
         return systemController.closeTeamByAdmin(teamName,username);
     }
 
+
+    /**
+     *  UC 6.6
+     * @param teamName the team's name
+     * @param userName the user's user name who tries to change the team status
+     * @return true if the status
+     */
+    public Boolean changeTeamStatus(String teamName, String userName){
+        return systemController.changeTeamStatus(teamName,userName);
+    }
+
     /**
      * the function lets the subscriber to upload a complaint via the presentation layer, and execute the command.
      *  @param content    the content of the complaint
@@ -53,7 +89,6 @@ public class SystemService {
      */
 
     public void addComplaint(String content, String username) {
-
         systemController.addComplaint(content,username);
     }
 
