@@ -34,7 +34,10 @@ public class Admin extends Subscriber {
      * @return true if the complaint was added
      * UC 8.3.2
      */
-    public boolean replyComplaints(int complaintID,String subscriber, String comment){
+    public boolean replyComplaints(String complaintID,String subscriber, String comment){
+        if(!tryParseInt(complaintID)){
+            return false;
+        }
         return systemController.replyComplaints(complaintID, subscriber, comment);
     }
 

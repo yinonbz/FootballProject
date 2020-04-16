@@ -14,4 +14,9 @@ public class Offside extends Event {
         super(matchController,inOffside);
         this.inOffside= inOffside;
     }
+
+    @Override
+    public String toString(){
+        return "Offside By: "+playerSubject.getName();
+    }
 }

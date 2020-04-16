@@ -23,6 +23,7 @@ public class Match {
     private int numberOfFans;
     private static int index=1;
     private EventRecord eventRecord;
+    private Referee mainReferee;
     /**
      * @param league
      * @param season
@@ -35,7 +36,7 @@ public class Match {
      * @param isFinished
      * @param numberOfFans
      */
-    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium, int numberOfFans) {
+    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium, int numberOfFans, EventRecord eventRecord, Referee mainReferee) {
         this.league = league;
         this.season = season;
         this.homeTeam = homeTeam;
@@ -48,6 +49,7 @@ public class Match {
         this.matchId=index;
         this.stadium=stadium;
         this.numberOfFans=numberOfFans;
+        this.eventRecord=eventRecord;
         index++;
 
     }
@@ -63,7 +65,35 @@ public class Match {
         this.awayTeam=away;
         this.stadium=stadium;
         this.matchId=index;
+        eventRecord = new EventRecord(this);
         index++;
+    }
+
+    /**
+     * function that let to choose a main referee to a game
+     * @param mainReferee
+     * @return
+     */
+    public boolean chooseMainReferee(Referee mainReferee){
+        if(mainReferee!=null) {
+            this.mainReferee = mainReferee;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * function that checks that a referee is the same main referee
+     * @param otherReferee
+     * @return
+     */
+    public boolean isMainReferee(Referee otherReferee){
+        if(mainReferee!=null && otherReferee!=null){
+            if(mainReferee.equals(otherReferee)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -259,5 +289,9 @@ public class Match {
             }
         }
         return false;
+    }
+
+    public EventRecord getEventRecord() {
+        return eventRecord;
     }
 }
