@@ -11,7 +11,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner; //fictive account for team owner permission via team manager account
     private Team team;
-    private Set<String> permissions;
+    private Permissions permissions;
     private int salary;
 
     /**
@@ -25,7 +25,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         this.team = team;
         this.teamOwner =null;
         this.salary = salary;
-        permissions= new HashSet<>();
+        permissions= null;
     }
 
 
@@ -87,15 +87,135 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         this.teamOwner = teamOwner;
     }
 
-    public Set<String> getPermissions() {
+    public Permissions getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<String> permissions) {
+    public void setPermissions(Permissions permissions) {
         this.permissions = permissions;
     }
 
-    @Override
+    public boolean addPlayer(String playerUserName){
+        if(permissions==Permissions.PLAYERORIENTED || permissions == Permissions.GENERAL){
+            if (playerUserName!= null){
+                Player player = systemController.findPlayer(playerUserName);
+                if (player != null && player.getTeam() == null) {
+                    team.addPlayer(player);
+                    player.setTeam(team);
+                    return true;
+                }
+            }
+        }
+        else{
+            System.out.println("Invalid permissions");
+        }
+        return false;
+    }
+
+    public boolean deletePlayer(String playerUserName){
+        if(permissions == Permissions.PLAYERORIENTED || permissions == Permissions.GENERAL) {
+            if (playerUserName!= null) {
+                Player player = systemController.findPlayer(playerUserName);
+                if (player != null && player.getTeam() != null && player.getTeam() == team && team.containPlayer(player)) {
+                    player.setTeam(null);
+                    team.removePlayer(player);
+                }
+                return false;
+            }
+        }
+        else{
+            System.out.println("Invalid permissions");
+        }
+        return true;
+    }
+
+    public boolean editPlayer(String playerUser,String typeEdit, String edit){
+        if(permissions == Permissions.PLAYERORIENTED || permissions == Permissions.GENERAL) {
+            if (playerUser != null && typeEdit != null && edit != null) {
+                Player player = team.getPlayerByUser(playerUser);
+                if (player != null) {
+                    if (typeEdit.equals("birthDate")) {
+                        team.removePlayer(player);
+                        player.setBirthDate(edit);
+                        team.addPlayer(player);
+                    } else if (typeEdit.equals("fieldJob")) {
+                        team.removePlayer(player);
+                        player.setFieldJob(edit);
+                        team.addPlayer(player);
+                    }
+                    return true;
+                }
+            }
+            else{
+                System.out.println("Invalid permissions");
+            }
+        }
+        return false;
+    }
+
+    public boolean addCoach(String coachUserName){
+        if(permissions == Permissions.COACHORIENTED || permissions==Permissions.GENERAL){
+            if(coachUserName != null){
+                Coach coach = systemController.findCoach(coachUserName);
+                if (coach != null && !coach.containTeam(team)) {
+                    team.addCoach(coach);
+                    coach.addTeam(team);
+                    return true;
+                }
+            }
+        }
+        else{
+            System.out.println("Invalid permissions");
+        }
+        return false;
+
+    }
+
+    public boolean deleteCoach(String coachUserName){
+        if(permissions == Permissions.COACHORIENTED || permissions==Permissions.GENERAL) {
+            if(coachUserName != null){
+                Coach coach = systemController.findCoach(coachUserName);
+                if (coach != null && coach.containTeam(team) && team.containCoach(coach)) {
+                    team.removeCoach(coach);
+                    coach.removeTeam(team);
+                    return true;
+                }
+            }
+        }
+        else{
+            System.out.println("Invalid permissions");
+
+        }
+        return false;
+    }
+
+    public boolean editCoach(String CoachUser, String typeEdit, String edit) {
+        if(permissions == Permissions.COACHORIENTED || permissions==Permissions.GENERAL) {
+
+            if (CoachUser != null && typeEdit != null && edit != null) {
+                Coach coach = team.getCoachByUser(CoachUser);
+                if (coach != null) {
+                    if (typeEdit.equals("training")) {
+                        team.removeCoach(coach);
+                        coach.setTraining(edit);
+                        team.addCoach(coach);
+                    } else if (typeEdit.equals("teamJob")) {
+                        team.removeCoach(coach);
+                        coach.setTeamJob(edit);
+                        team.addCoach(coach);
+                    }
+                    return true;
+                }
+            }
+        }
+        else{
+            System.out.println("Invalid permissions");
+        }
+        return false;
+    }
+
+
+        @Override
     public boolean equals(Object obj) {
         if (obj!=null && obj instanceof Subscriber){
             Subscriber objS = (Subscriber) obj;
