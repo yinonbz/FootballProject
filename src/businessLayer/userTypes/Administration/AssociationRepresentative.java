@@ -98,7 +98,7 @@ public class AssociationRepresentative extends Subscriber {
         if (username == null) {
             return false;
         }
-        return super.getSystemController().addReferee(username, "1111", "default", "basic", this);
+        return super.getSystemController().addReferee(username, "1111", "default", "basic", this.getUsername());
     }
 
     /**
@@ -200,7 +200,7 @@ public class AssociationRepresentative extends Subscriber {
      * @return true if the team was approved
      */
     public boolean confirmTeamRequest(String teamName){
-        return systemController.confirmTeamByAssociationRepresntative(teamName,this);
+        return systemController.confirmTeamByAssociationRepresntative(teamName,this.getUsername());
     }
 
 

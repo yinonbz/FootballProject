@@ -23,7 +23,7 @@ public class Admin extends Subscriber {
      * @return a hash map of the complaints
      */
     public HashMap<Integer, Complaint> displayComplaints(){
-        return systemController.displayComplaints(this);
+        return systemController.displayComplaints(this.getUsername());
     }
 
     /**
@@ -34,7 +34,7 @@ public class Admin extends Subscriber {
      * @return true if the complaint was added
      * UC 8.3.2
      */
-    public boolean replyComplaints(int complaintID,Subscriber subscriber, String comment){
+    public boolean replyComplaints(int complaintID,String subscriber, String comment){
         return systemController.replyComplaints(complaintID, subscriber, comment);
     }
 
@@ -65,7 +65,7 @@ public class Admin extends Subscriber {
      * @return the string of the result
      */
     public String deleteSubscriber(String subscriberUserName){
-        return systemController.removeSubscriber(subscriberUserName, this);
+        return systemController.removeSubscriber(subscriberUserName, this.getUsername());
     }
 
     /**
@@ -74,7 +74,7 @@ public class Admin extends Subscriber {
      * @return true if it done successfully
      */
     public Boolean closeTeam(String teamName){
-        return systemController.closeTeamByAdmin(teamName, this);
+        return systemController.closeTeamByAdmin(teamName, this.getUsername());
     }
 
     /**
