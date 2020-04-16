@@ -2,6 +2,7 @@ import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.Referee;
+import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
@@ -30,8 +31,13 @@ public class TestTeamOwner {
     private TeamOwner Nissanov;
     private TeamOwner Jacob;
     private TeamOwner Glazers;
+    private TeamOwner Inon;
+
+
     private Player Buzaglo;
+
     private Referee Alon;
+
     private Team BeerSheva;
     private Team HTA;
 
@@ -50,6 +56,7 @@ public class TestTeamOwner {
         Nissanov = (TeamOwner) DB.selectSubscriberFromDB("Nissanov");
         Jacob = (TeamOwner) DB.selectSubscriberFromDB("JabobS");
         Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
+        Inon = (TeamOwner) DB.selectSubscriberFromDB("Inon");
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
 
@@ -205,18 +212,17 @@ public class TestTeamOwner {
     public void UC6_6() {
 
         //1 - test getTeam
-        assertEquals(Barkat.getTeam("Beer Sheva"),BeerSheva);
-        assertNull(Barkat.getTeam("NAS"));
-        assertEquals(Barkat.getTeam("HTA"),HTA);
-        assertNotEquals(Barkat.getTeam("HTA"),BeerSheva);
+        assertEquals(Inon.getTeam("Beer Sheva"),BeerSheva);
+        assertNull(Inon.getTeam("NAS"));
+        assertEquals(Inon.getTeam("HTA"),HTA);
+        assertNotEquals(Inon.getTeam("HTA"),BeerSheva);
 
         //2 - test changeStatus - enabled to disabled
-        Barkat.changeStatus(BeerSheva);
+        Inon.changeStatus(BeerSheva);
         assertFalse(BeerSheva.getActive());
 
         //3 - test changeStatus - disabled to enabled
-        Barkat.changeStatus(BeerSheva);
+        Inon.changeStatus(BeerSheva);
         assertTrue(BeerSheva.getActive());
     }
-
 }

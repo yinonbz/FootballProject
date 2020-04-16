@@ -44,6 +44,7 @@ public class DataBaseValues {
     static TeamOwner Shimon;
     static TeamOwner Glazers;
     static TeamOwner Nissanov;
+    static TeamOwner Inon;
 
 
     static TeamManager itay;
@@ -122,6 +123,7 @@ public class DataBaseValues {
         Glazers = new TeamOwner("Glazers", "manchesterU", "glazer", systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv", "nissanov", systemController);
         Jacob = new TeamOwner("JacobS", "JacobS123", "Jacob", systemController);
+        Inon = new TeamOwner("Inon","Inon123456", "Inon",systemController);
 
 
 
@@ -131,6 +133,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("Glazers",Glazers);
         DB.addSubscriberToDB("Nissanov",Nissanov);
         DB.addSubscriberToDB("JacobS",Jacob);
+        DB.addSubscriberToDB("Inon",Inon);
 
         //add player
         Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield", null, systemController);
@@ -181,7 +184,7 @@ public class DataBaseValues {
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
-        HTA = new Team("HTA", Barkat,1990);
+        HTA = new Team("HTA", Inon,1990);
 
         //setters for teams
         BeerSheva.setTeamId(123); //todo delete and change this fields
@@ -193,12 +196,15 @@ public class DataBaseValues {
         MacabiHaifa.getTeamOwners().add(Jacob);
         Barkat.getTeams().add(BeerSheva);
         Barkat.getTeams().add(ManchesterUnited);
+        Inon.getTeams().add(HTA);
+        Inon.getTeams().add(BeerSheva);
         Glazers.getTeams().add(ManchesterUnited);
         ManchesterUnited.getTeamOwners().add(Barkat);
         ManchesterUnited.getTeamOwners().add(Glazers);
         BeerSheva.getTeamOwners().add(Barkat);
         BeerSheva.getTeamOwners().add(Nissanov);
-        HTA.getTeamOwners().add(Barkat);
+        HTA.getTeamOwners().add(Inon);
+
 
         //teams
         DB.addTeamToDB("ManchesterUnited",ManchesterUnited);
