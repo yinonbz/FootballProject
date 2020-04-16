@@ -213,6 +213,7 @@ public class DataBaseValues {
         DB.addTeamToDB("Natanya",Natanya);
         DB.addTeamToDB("Bnei Yehuda",Bnei_Yehuda);
         DB.addTeamToDB("McabiHaifa",MacabiHaifa);
+        DB.addTeamToDB("Beer Sheva",BeerSheva);
 
         systemController.connectToDB(DB);
     }

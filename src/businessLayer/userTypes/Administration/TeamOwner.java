@@ -509,7 +509,7 @@ public class TeamOwner extends Subscriber {
      * @param teamName the team name to add a new team owner.
      */
     private void updateFictiveOwner(String newUserName, Subscriber subscriber, String teamName) {
-        while (subscriber.getSystemController().checkUserExists(username)) { //generate new fictive user name
+        while (subscriber.getSystemController().checkUserExists(newUserName)) { //generate new fictive user name
             newUserName = newUserName + newTeamOwnerCounter++;
         }
         TeamOwner newTeamOwner = new TeamOwner(newUserName, subscriber.getPassword(), "fictive", subscriber.getSystemController());

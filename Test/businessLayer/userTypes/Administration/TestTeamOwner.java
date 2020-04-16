@@ -1,13 +1,16 @@
-package businessLayer.userTypes.Administration;
-
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
+import businessLayer.userTypes.Administration.Player;
+import businessLayer.userTypes.Administration.Referee;
+import businessLayer.userTypes.Administration.TeamOwner;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
 import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
+
+import java.sql.Ref;
 
 import static org.junit.Assert.*;
 
@@ -26,6 +29,9 @@ public class TestTeamOwner {
     private TeamOwner Barkat;
     private TeamOwner Nissanov;
     private TeamOwner Jacob;
+    private TeamOwner Glazers;
+    private Player Buzaglo;
+    private Referee Alon;
 
 
     //private SystemController systemController;
@@ -41,8 +47,9 @@ public class TestTeamOwner {
         Barkat = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
         Nissanov = (TeamOwner) DB.selectSubscriberFromDB("Nissanov");
         Jacob = (TeamOwner) DB.selectSubscriberFromDB("JabobS");
-
-
+        Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
+        Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
+        Alon = (Referee) DB.selectSubscriberFromDB("Alon");
 
     }
 
@@ -128,7 +135,7 @@ public class TestTeamOwner {
 
     }
 
-    /*
+/*
     @Test
     public void UC8_2(){ //todo need to check about the names of the sub-functions tomer
         //1
@@ -174,6 +181,7 @@ public class TestTeamOwner {
 
     }
 
+*/
 
     @Test
     public void UC_6_2() {
@@ -208,6 +216,5 @@ public class TestTeamOwner {
         teamOwner.changeStatus(team1);
         assertTrue(team1.getActive());
     }
-    */
 
 }
