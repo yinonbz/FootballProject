@@ -13,7 +13,7 @@ import java.util.List;
 public class Referee extends Subscriber {
     private String training;
     private LeagueController leagueController;
-    private HashMap<Integer,Match> matches;
+    private HashMap<Integer, Match> matches;
     private MatchController matchController;
 
     /**
@@ -116,7 +116,7 @@ public class Referee extends Subscriber {
             }
         }
         return false;
-    }*/
+    }
 
 /*
     *//**
