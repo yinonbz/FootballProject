@@ -50,6 +50,7 @@ public class DataBaseValues {
     static TeamOwner Max;
     static TeamOwner YaelM;
     static TeamOwner Alex;
+    static TeamOwner Inon;
 
     //team manager
     static TeamManager itay;
@@ -110,7 +111,7 @@ public class DataBaseValues {
         DB = new DemoDB();
 
         systemController = SystemController.SystemController();
-        leagueController = new LeagueController();
+        leagueController = systemController.getLeagueController();
         matchController = new MatchController(systemController);
 
         //add stadiums
@@ -146,6 +147,7 @@ public class DataBaseValues {
         Glazers = new TeamOwner("Glazers", "manchesterU", "glazer", systemController);
         Nissanov = new TeamOwner("Nissanov", "telAviv", "nissanov", systemController);
         Jacob = new TeamOwner("JacobS", "JacobS123", "Jacob", systemController);
+        Inon = new TeamOwner("Inon","Inon123456", "Inon",systemController);
         YaelM = new TeamOwner("YaelM", "Sunderland","alona",systemController);
         Max = new TeamOwner("Max", "telAviv","Max",systemController);
         Alex = new TeamOwner("Alex", "manchesterU","glazer",systemController);
@@ -161,6 +163,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("YaelM",YaelM);
         DB.addSubscriberToDB("Max",Max);
         DB.addSubscriberToDB("Alex",Alex);
+        DB.addSubscriberToDB("Inon",Inon);
 
         //add admins
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
@@ -220,7 +223,7 @@ public class DataBaseValues {
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
-        HTA = new Team("HTA", Barkat,1990);
+        HTA = new Team("HTA", Inon,1990);
         LeedsUnited = new Team("LeedsUnited",Alex,1899);
         Sunderland = new Team("Sunderland", YaelM,1973);
 
@@ -236,6 +239,8 @@ public class DataBaseValues {
         MacabiHaifa.getTeamOwners().add(Jacob);
         Barkat.getTeams().add(BeerSheva);
         Barkat.getTeams().add(ManchesterUnited);
+        Inon.getTeams().add(HTA);
+        Inon.getTeams().add(BeerSheva);
         Glazers.getTeams().add(ManchesterUnited);
         ManchesterUnited.getTeamOwners().add(Barkat);
         ManchesterUnited.getTeamOwners().add(Glazers);
@@ -245,7 +250,7 @@ public class DataBaseValues {
         YaelM.getTeams().add(Sunderland);
         YaelM.getTeams().add(LeedsUnited);
         Alex.getTeams().add(LeedsUnited);
-        HTA.getTeamOwners().add(Barkat);
+        HTA.getTeamOwners().add(Inon);
 
         //teams
         DB.addTeamToDB("ManchesterUnited",ManchesterUnited);
