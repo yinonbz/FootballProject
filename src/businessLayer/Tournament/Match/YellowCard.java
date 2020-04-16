@@ -2,7 +2,7 @@ package businessLayer.Tournament.Match;
 
 import businessLayer.userTypes.Administration.Player;
 
-public class yellowCard extends Event {
+public class YellowCard extends Event {
 
     Player against;
 
@@ -11,8 +11,13 @@ public class yellowCard extends Event {
      * @param against
      * @param matchController
      */
-    public yellowCard(Player against, MatchController matchController) {
+    public YellowCard(Player against, MatchController matchController) {
         super(matchController, against);
         this.against= against;
+    }
+
+    @Override
+    public String toString(){
+        return "Yellow card: "+playerSubject.getName();
     }
 }

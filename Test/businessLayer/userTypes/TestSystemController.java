@@ -103,16 +103,16 @@ public class TestSystemController {
 
         //1
         //regular test add a comment
-        assertTrue(admin.replyComplaints(0,admin.getUsername(), "Solved"));
+        assertTrue(admin.replyComplaints("0",admin.getUsername(), "Solved"));
  //       System.out.println(systemController.getSystemComplaints().get(0).toString());
 
         //2
         //can't add an empty comment
-        assertFalse(admin.replyComplaints(0,admin.getUsername(), ""));
+        assertFalse(admin.replyComplaints("0",admin.getUsername(), ""));
 
         //3
         //can't add a comment to invalid complaint id
-        assertFalse(admin.replyComplaints(3,admin.getUsername(), ""));
+        assertFalse(admin.replyComplaints("3",admin.getUsername(), ""));
 
     }
 

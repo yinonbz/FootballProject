@@ -48,134 +48,18 @@ public class Referee extends Subscriber {
         this.matchController = matchController;
     }
 
-/*    *//**
-     *
-     * @param time
-     * @param playerAgainst
-     * @param playOn
-     * @return
-     *//*
-    public boolean reportFoul(String time, String playerAgainst , String playOn, String matchID){
-        if (!playerAgainst.isEmpty() && !playOn.isEmpty() && tryParseInt(time) && tryParseInt(matchID)){
-            int timeEvent = Integer.parseInt(time);
-            if(timeEvent>0 && timeEvent<121){
-                return matchController.reportOnFoul(time,playerAgainst,playOn,matchID);
-            }
-        }
-        return false;
-    }*/
-
-/*    *//**
-     * the function reports on a goal and add it to the event recorder
-     * @param time
-     * @param PlayerGoal
-     * @param playerAssist
-     * @return
-     *//*
-    public boolean reportGoal(String time, String PlayerGoal, String playerAssist, String matchID){
-        if (!PlayerGoal.isEmpty() && !playerAssist.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            int timeEvent = Integer.parseInt(time);
-            if (timeEvent > 0 && timeEvent < 121) {
-                return matchController.reportGoal(time, PlayerGoal, playerAssist,matchID);
-            }
-        }
-        return false;
-    }*/
-
-/*
-    */
-/**
-     * the function reports on an injury and add it to the event recorder
-     * @param time
-     * @param PlayerInjury
-     * @return
-     *//*
-
-    public boolean reportOnInjury(String time, String PlayerInjury, String matchID){
-        if (!PlayerInjury.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            int timeEvent = Integer.parseInt(time);
-            if (timeEvent > 0 && timeEvent < 121) {
-                return matchController.reportOnInjury(time, PlayerInjury,matchID);
-            }
-        }
-        return false;
-    }
-*/
-
-/*
-    *
-     * the function reports on an offside and add it to the event recorder
-     * @param time
-     * @param playerOfSide
-     * @return
-    public boolean reportOffside(String time, String playerOfSide, String matchID){
-        if (!playerOfSide.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            int timeEvent = Integer.parseInt(time);
-            if (timeEvent > 0 && timeEvent < 121) {
-                return matchController.reportOnOffside(time, playerOfSide,matchID);
-            }
-        }
-        return false;
-    }
-
-/*
-    *//**
-     * the function reports on a red card and add it to the event recorder
-     * @param time
-     * @param PlayerAgainst
-     * @return
-     *//*
-    public boolean reportOnRedCard(String time, String PlayerAgainst, String matchID){
-        if (!PlayerAgainst.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            int timeEvent = Integer.parseInt(time);
-            if (timeEvent > 0 && timeEvent < 121) {
-                return matchController.reportOnRedCard(time, PlayerAgainst,matchID);
-            }
-        }
-        return false;
-    }*/
-/*
-    *//**
-     * the function reports on a Substitute and add it to the event recorder
-     * @param time
-     * @param PlayerOn
-     * @param playerOff
-     * @return
-     *//*
-    public boolean reportOnSubstitute(String time, String PlayerOn, String playerOff, String matchID){
-        if (!PlayerOn.isEmpty() && !playerOff.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            int timeEvent = Integer.parseInt(time);
-            if (timeEvent > 0 && timeEvent < 121) {
-                return matchController.reportOnSubstitute(time, PlayerOn, playerOff,matchID, username);
-            }
-        }
-        return false;
-
-    }
-
-    *//**
-     * the function reports on a yellow card and add it to the event recorder
-     * @param time
-     * @param PlayerAgainst
-     * @return
-     *//*
-    public boolean yellowCard (String time, String PlayerAgainst, String matchID){
-        if (!PlayerAgainst.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            int timeEvent = Integer.parseInt(time);
-            if (timeEvent > 0 && timeEvent < 121) {
-                return matchController.reportOnYellowCard(time, PlayerAgainst,matchID, username);
-            }
-        }
-        return false;
-    }*/
 
     /**
-     *
+     * function that checks that the referee is submitted to a game
+     * @param matchID
+     * @return
      */
-    public void updateEvents() {
-
+    public boolean isSubmittedToAGame (String matchID){
+        if(tryParseInt(matchID)){
+            return matches.containsKey(matchID);
+        }
+        return false;
     }
-
 
     /**
      * the function lets the referee to watch a game that he will manage or managed already

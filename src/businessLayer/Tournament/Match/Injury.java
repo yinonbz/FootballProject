@@ -8,12 +8,16 @@ public class Injury extends Event {
 
     /**
      * constructor
-     * @param match
      * @param injured
      * @param matchController
      */
-    public Injury(Match match, Player injured, MatchController matchController) {
+    public Injury(Player injured, MatchController matchController) {
         super(matchController,injured);
         this.injured= injured;
+    }
+
+    @Override
+    public String toString(){
+        return "Injured: "+playerSubject.getName();
     }
 }

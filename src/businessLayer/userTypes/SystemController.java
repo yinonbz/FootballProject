@@ -3,6 +3,7 @@ package businessLayer.userTypes;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
+import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
@@ -447,17 +448,18 @@ public class SystemController {
      * @return true is he responded successfully
      * UC 8.3.2
      */
-    public boolean replyComplaints(int complaintID, String username, String comment) {
+    public boolean replyComplaints(String complaintID, String username, String comment) {
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof Admin && !comment.isEmpty()) {
-            if (DB.containsInComplaintDB(complaintID)) {
-                Complaint complaint = DB.selectComplaintFromDB(complaintID);
+                int compID = Integer.parseInt(complaintID);
+            if (DB.containsInComplaintDB(compID)) {
+                Complaint complaint = DB.selectComplaintFromDB(compID);
                 //Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
                 complaint.setAnswered(true);
                 complaint.setComment(comment);
                 complaint.setHandler(subscriber.getUsername());
-                DB.removeComplaintFromDB(complaintID);
-                DB.addComplaintToDB(complaintID, complaint);
+                DB.removeComplaintFromDB(compID);
+                DB.addComplaintToDB(compID, complaint);
                 return true;
             }
         }
@@ -537,6 +539,45 @@ public class SystemController {
         return false;
     }
 
+    /**
+     * the function checks if the referee exists in the system
+     * @param username
+     * @return
+     */
+    public boolean containsReferee(String username){
+        Subscriber subscriber = getSubscriberByUserName(username);
+        if(subscriber instanceof Referee){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * a functions that returns the referee from the DB
+     * @param username
+     * @return
+     */
+    public Referee getRefereeFromDB(String username){
+        Subscriber subscriber = getSubscriberByUserName(username);
+        if(subscriber instanceof Referee){
+            return (Referee)subscriber;
+        }
+        return null;
+    }
+
+    /**
+     * checks if the Association Representative exists in the DB
+     * @param username
+     * @return
+     */
+    public boolean containsInSystemAssociationRepresentative(String username){
+        Subscriber subscriber = DB.selectSubscriberFromDB(username);
+        if(subscriber instanceof AssociationRepresentative){
+            return true;
+        }
+        return false;
+    }
+
     //-------------------TeamOwner--------------------//
 
     /**
@@ -606,16 +647,7 @@ public class SystemController {
         return DB.addSubscriberToDB(username,subscriber);
     }
 
-    /*
-    public HashMap<String, Stadium> getStadiums() {
-        return stadiums;
-    }
-    */
-    /*
-    public void setStadiums(HashMap<String, Stadium> stadiums) {
-        this.stadiums = stadiums;
-    }
-    */
+
     /**
      * this function find the player according to is user name and return it if the player exist in the system
      * @param username the user name of the player
@@ -632,6 +664,36 @@ public class SystemController {
             return null;
         }
     }
+
+    /**
+     * the function checks if the DB contains the league
+     * @param leagueID
+     * @return
+     */
+    public boolean containsLeague(String leagueID){
+        return DB.containsInSystemLeague(leagueID);
+    }
+
+    /**
+     * the function returns the league value from DB
+     * @param leagueID
+     * @return
+     */
+    public League getLeagueFromDB(String leagueID){
+        return DB.selectLeagueFromDB(leagueID);
+    }
+
+    /**
+     * add new league to the DB
+     * @param leagueID
+     * @param league
+     * @return
+     */
+    public boolean addLeagueToDB(String leagueID, League league){
+        return DB.addLeagueToDB(leagueID,league);
+    }
+
+
 
     /**
      * this function find the TeamManager according to is user name and return it if the TeamManager exist in the system
@@ -671,8 +733,13 @@ public class SystemController {
         return null;
     }
 
+    /**
+     * return a default stadium to the matches policies
+     * @return
+     */
     public Stadium findDefaultStadium(){
-        return null;
+        return DB.selectRandomStadium();
+
     }
 
     /**
@@ -780,4 +847,15 @@ public class SystemController {
         }
         return false;
     }
+
+    // -------------------Referee--------------------//
+
+    /**
+     * finds a match in the DB
+      * @param matchID
+     * @return
+     */
+    public Match findMatch(int matchID){
+            return DB.selectMatchFromDB(matchID);
+        }
 }

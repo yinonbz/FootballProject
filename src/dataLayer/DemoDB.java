@@ -2,6 +2,7 @@ package dataLayer;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.AssociationRepresentative;
@@ -27,6 +28,10 @@ public class DemoDB {
     private HashMap<String,AssociationRepresentative> associationRepresentatives;
     private HashMap<String, Referee> referees;
 
+    //------------Match Controller------------//
+    private HashMap <Integer, Match> matches;
+
+
 
     public DemoDB(){
         systemSubscribers = new HashMap<>();
@@ -38,6 +43,7 @@ public class DemoDB {
         associationRepresentatives = new HashMap<>();
         referees = new HashMap<>();
         stadiums = new HashMap<>();
+        matches = new HashMap<>();
     }
 
     //-------------------------SYSTEM CONTROLLER-------------------------//
@@ -421,6 +427,48 @@ public class DemoDB {
         referees.put(username, ref);
         return true;
     }
+
+    //-------------------------MATCH CONTROLLER-------------------------//
+
+    /**
+     * demo function to search in db for Match
+     * @param matchID
+     * @return
+     */
+    public boolean containsInSystemMatch(int matchID){
+        return matches.containsKey(matchID);
+    }
+
+    /**
+     * demo function to get a Match object from data base
+     * @param matchID
+     * @return
+     */
+    public Match selectMatchFromDB(int matchID){
+        return matches.get(matchID);
+    }
+
+    /**
+     * demo function to remove a Match from DB
+     * @param matchID
+     * @return
+     */
+    public boolean removeMatchFromDB (int matchID){
+        matches.remove(matchID);
+        return true;
+    }
+
+    /**
+     * demo function to add a Match to DB
+     * @param matchID
+     * @param match
+     * @return
+     */
+    public boolean addMatchToDB (int matchID, Match match){
+        matches.put(matchID, match);
+        return true;
+    }
+
 
 
 
