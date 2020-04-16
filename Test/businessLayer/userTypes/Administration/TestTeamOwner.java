@@ -11,25 +11,15 @@ import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
 
-import java.sql.Ref;
-
 import static org.junit.Assert.*;
 
 public class TestTeamOwner {
-    /*
-    private TeamOwner Barkat;
-    private TeamOwner Glazers;
-    private TeamOwner Nissanov;
-    private Referee Alon;
-    private Team BeerSheva;
-    private Team ManchesterUnited;
-    private Team MacabiHaifa;
-    private TeamOwner Jacob;
-    */
+
 
     private TeamOwner Barkat;
     private TeamOwner Nissanov;
     private TeamOwner Jacob;
+    private Team BeerSheva;
     private TeamOwner Glazers;
     private TeamOwner Inon;
 
@@ -38,7 +28,6 @@ public class TestTeamOwner {
 
     private Referee Alon;
 
-    private Team BeerSheva;
     private Team HTA;
 
 
@@ -49,7 +38,6 @@ public class TestTeamOwner {
 
     @Before
     public void createTestValues() {
-       // systemController = SystemController.SystemController();
         tDB = new DataBaseValues();
         DB = tDB.getDB();
         Barkat = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
@@ -60,8 +48,8 @@ public class TestTeamOwner {
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
 
-        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
         HTA = DB.selectTeamFromDB("HTA");
+        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
 
     }
 
@@ -147,10 +135,10 @@ public class TestTeamOwner {
 
     }
 
-/*
+
     @Test
-    public void UC8_2(){ //todo need to check about the names of the sub-functions tomer
-        //1
+    public void UC8_2(){
+        //1 - UNIT
         //check if Alona who has 2 teams is exclusive
 
         assertFalse(Barkat.isExclusiveTeamOwner());
@@ -169,6 +157,7 @@ public class TestTeamOwner {
         assertFalse(Nissanov.isExclusiveTeamOwner());
     }
 
+    /*
     @Test
     public void isFictive() {
 
@@ -208,6 +197,7 @@ public class TestTeamOwner {
         assertFalse(Barkat.appointToOwner(Alon,"Beer Sheva")); //Try and Fail to add someone, when you are not a Player, a Coach or a Team Manager.
 
     }
+
     @Test
     public void UC6_6() {
 
