@@ -57,7 +57,6 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         this.team = team;
     }
 
-
     @Override
     public Boolean editDetails() {
         return null;

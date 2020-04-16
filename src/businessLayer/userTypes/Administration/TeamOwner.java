@@ -204,6 +204,12 @@ public class TeamOwner extends Subscriber {
                     team.addPlayer(player);
                     return true;
                 }
+                else if(typeEdit.equals("salary")){
+                    team.removePlayer(player);
+                   // int salary = tryParseInt()
+
+                  //  player.setSalary();
+                }
             }
         }
         return false;

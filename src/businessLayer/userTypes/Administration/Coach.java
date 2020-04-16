@@ -11,6 +11,7 @@ public class Coach extends Subscriber implements OwnerEligible {
     private TeamOwner teamOwner;
     private String training;
     private String teamJob;
+    private int salary;
     private HashSet<Team> teams;
 
     /**
@@ -20,16 +21,33 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param name
      * @param training
      * @param teamJob
+     * @param salary
+     * @param systemController
      */
-    public Coach(String username, String password, String name,String training, String teamJob, SystemController systemController) {
+    public Coach(String username, String password, String name,String training, String teamJob,int salary, SystemController systemController) {
         super(username, password,name, systemController);
         this.training=training;
         this.teamJob=teamJob;
         this.teamOwner =null;
+        this.salary = salary;
         this.teams = new HashSet<>();
     }
 
+    /**
+     *
+     * @return
+     */
+    public int getSalary() {
+        return salary;
+    }
 
+    /**
+     *
+     * @param salary
+     */
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
 
     /**
      *

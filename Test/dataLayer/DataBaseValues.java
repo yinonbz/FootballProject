@@ -133,7 +133,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("JacobS",Jacob);
 
         //add player
-        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield", null, systemController);
+        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
 
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
 
@@ -143,8 +143,8 @@ public class DataBaseValues {
 
         //add coach
         //6.1
-        Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach", systemController);
-        tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach", systemController);
+        Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach",0, systemController);
+        tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach",0, systemController);
         DB.addSubscriberToDB("efronio",Ido);
         DB.addSubscriberToDB("TomerZ",Ido);
 

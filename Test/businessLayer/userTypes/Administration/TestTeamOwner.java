@@ -5,6 +5,7 @@ import businessLayer.Tournament.Match.Stadium;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
@@ -23,9 +24,9 @@ public class TestTeamOwner {
     private TeamOwner Jacob;
     */
 
-    private TeamOwner Barkat;
-    private TeamOwner Nissanov;
-    private TeamOwner Jacob;
+    static TeamOwner Barkat;
+    static TeamOwner Nissanov;
+    static TeamOwner Jacob;
 
 
     //private SystemController systemController;
@@ -33,8 +34,8 @@ public class TestTeamOwner {
     static DataBaseValues tDB;
 
 
-    @Before
-    public void createTestValues() {
+    @BeforeClass
+    public static void createTestValues() {
        // systemController = SystemController.SystemController();
         tDB = new DataBaseValues();
         DB = tDB.getDB();
