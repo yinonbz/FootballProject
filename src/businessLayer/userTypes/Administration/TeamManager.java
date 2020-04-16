@@ -2,33 +2,30 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 public class TeamManager extends Subscriber implements OwnerEligible {
 
-    private TeamOwner teamOwner;
-    private String name;
-    private HashSet<Team> teams;
+    private TeamOwner teamOwner; //fictive account for team owner permission via team manager account
+    private Team team;
+    private Set<String> permissions;
     private int salary;
 
     /**
      * @param username
      * @param password
      * @param name
-     * @param teams
+     * @param team
      */
-    public TeamManager(String username, String password, String name,int salary, HashSet<Team> teams, SystemController systemController) {
-        super(username, password, systemController);
-        this.name = name;
-        this.teams = teams;
-        this.salary = salary;
+    public TeamManager(String username, String password, String name, Team team,int salary, SystemController systemController) {
+        super(username, password,name, systemController);
+        this.team = team;
         this.teamOwner =null;
-        if(this.teams==null){
-            this.teams = new HashSet<>();
-        }
+        this.salary = salary;
+        permissions= new HashSet<>();
     }
 
 
@@ -42,8 +39,8 @@ public class TeamManager extends Subscriber implements OwnerEligible {
     /**
      * @return
      */
-    public HashSet<Team> getTeams() {
-        return teams;
+    public Team getTeam() {
+        return team;
     }
 
     /**
@@ -54,10 +51,10 @@ public class TeamManager extends Subscriber implements OwnerEligible {
     }
 
     /**
-     * @param teams
+     * @param team
      */
-    public void setTeams(HashSet<Team> teams) {
-        this.teams = teams;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
 
@@ -66,12 +63,9 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         return null;
     }
 
-
-
     public void setSalary(int edit) {
         this.salary = edit;
     }
-
 
     /**
      * this function determine if the coach is also an Owner
@@ -85,23 +79,32 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         return true;
     }
 
-    protected TeamOwner getTeamOwner() {
+    public TeamOwner getTeamOwner() {
         return teamOwner;
     }
 
-    protected void setTeamOwner(TeamOwner teamOwner) {
+    public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
     }
 
-    public boolean containTeam(Team team) {
-        return this.teams.contains(team);
+    public Set<String> getPermissions() {
+        return permissions;
     }
 
-    public void addTeam(Team team) {
-        this.teams.add(team);
+    public void setPermissions(Set<String> permissions) {
+        this.permissions = permissions;
     }
 
-    public void removeTeam(Team team) {
-        this.teams.remove(team);
+    @Override
+    public boolean equals(Object obj) {
+        if (obj!=null && obj instanceof Subscriber){
+            Subscriber objS = (Subscriber) obj;
+            if(objS instanceof TeamManager){
+                TeamManager objTM = (TeamManager) objS;
+                return super.equals(objTM);
+            }
+        }
+        return false;
     }
+
 }

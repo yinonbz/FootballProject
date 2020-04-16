@@ -2,114 +2,59 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
-import businessLayer.userTypes.Subscriber;
-import org.junit.Assert;
-import businessLayer.userTypes.Administration.*;
-import businessLayer.userTypes.Administration.Player;
-import businessLayer.userTypes.Administration.TeamOwner;
+import dataLayer.DataBaseValues;
+import dataLayer.DemoDB;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import businessLayer.userTypes.Administration.TeamOwner;
-import org.junit.BeforeClass;
-import businessLayer.userTypes.Administration.*;
-import businessLayer.userTypes.Administration.Player;
-import businessLayer.userTypes.Administration.TeamOwner;
-import org.junit.Before;
-import businessLayer.userTypes.Administration.TeamOwner;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import serviceLayer.SystemController;
-import sun.swing.BakedArrayList;
+import businessLayer.Tournament.Match.MatchController;
+import businessLayer.userTypes.SystemController;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import sun.swing.BakedArrayList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class TestTeamOwner {
-    private Player Buzaglo;
+    /*
     private TeamOwner Barkat;
     private TeamOwner Glazers;
     private TeamOwner Nissanov;
     private Referee Alon;
     private Team BeerSheva;
     private Team ManchesterUnited;
-    private SystemController systemController;
     private Team MacabiHaifa;
     private TeamOwner Jacob;
+    */
+
+    private TeamOwner Barkat;
+    private TeamOwner Nissanov;
+    private TeamOwner Jacob;
+
+
+    //private SystemController systemController;
+    static DemoDB DB;
+    static DataBaseValues tDB;
 
 
     @Before
     public void createTestValues() {
-        systemController = SystemController.SystemController();
-        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield", null, systemController);
-        Barkat = new TeamOwner("AlonaBarkat", "beerSheva", "alona", systemController);
-        Glazers = new TeamOwner("Glazers", "manchesterU", "glazer", systemController);
-        Nissanov = new TeamOwner("Nissanov", "telAviv", "nissanov", systemController);
-        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
-        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
-        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
-        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
-        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
-        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController);
-        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
-        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
-        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
-        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
-        BeerSheva = new Team("Beer Sheva", Barkat, 1973);
-        ManchesterUnited = new Team("Manchester United", Barkat, 1899);
-        Jacob = new TeamOwner("JacobS", "JacobS123", "Jacob", systemController);
-        MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
-        BeerSheva.setTeamId(123);
-        ManchesterUnited.setTeamId(456);
-        MacabiHaifa.setTeamId(789);
-        Jacob.getTeams().add(MacabiHaifa);
-        MacabiHaifa.getTeamOwners().add(Jacob);
-        Barkat.getTeams().add(BeerSheva); //todo change it later to a normal function UC 6.1
-        Barkat.getTeams().add(ManchesterUnited);
-        Glazers.getTeams().add(ManchesterUnited);
-        ManchesterUnited.getTeamOwners().add(Barkat);
-        ManchesterUnited.getTeamOwners().add(Glazers);
-        BeerSheva.getTeamOwners().add(Barkat);
-        BeerSheva.getTeamOwners().add(Nissanov);
-        systemController.getTeams().put(BeerSheva.getTeamName(),BeerSheva);
-        systemController.getTeams().put(ManchesterUnited.getTeamName(),ManchesterUnited);
-        systemController.getTeams().put(BeerSheva.getTeamName(),BeerSheva);
-        systemController.getTeams().put(ManchesterUnited.getTeamName(),ManchesterUnited);
-        /**
-         * this data is for 6.1
-         */
-        //HashMap<String, Subscriber> sysSub = new HashMap<>();
-        Coach Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach", systemController);
-        Coach tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach", systemController);
-        TeamManager itay = new TeamManager("itayK", "111", "itay", 100, null, systemController);
-        Stadium samiOfer = new Stadium("samiOfer",null,null,30000,null);
-        systemController.getSystemSubscribers().put(Buzaglo.getUsername(),Buzaglo);
-        systemController.getSystemSubscribers().put(Barkat.getUsername(),Barkat);
-        systemController.getSystemSubscribers().put(Glazers.getUsername(),Glazers);
-        systemController.getSystemSubscribers().put(Nissanov.getUsername(),Nissanov);
-        systemController.getSystemSubscribers().put(Ido.getUsername(),Ido);
-        systemController.getSystemSubscribers().put(tomer.getUsername(),tomer);
-        systemController.getSystemSubscribers().put(itay.getUsername(),itay);
-        systemController.addStadium(samiOfer);
-        /******************************/
+       // systemController = SystemController.SystemController();
+        tDB = new DataBaseValues();
+        DB = tDB.getDB();
+        Barkat = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
+        Nissanov = (TeamOwner) DB.selectSubscriberFromDB("Nissanov");
+        Jacob = (TeamOwner) DB.selectSubscriberFromDB("JacobS");
+
+
     }
 
     @Test
     public void UC6_1_1() {
         //check if add asset works correctly 6.1.1
         //new player that was not assign to a team
+
         assertTrue(Barkat.addAsset(123, "Player", "Buzaglo"));
+
         //a player that was already assign to a team
         assertFalse(Barkat.addAsset(123, "Player", "Buzaglo"));
+
         assertFalse(Nissanov.addAsset(456, "Player", "Buzaglo"));
 
         assertTrue(Barkat.addAsset(123, "Coach", "efronio"));
@@ -119,6 +64,8 @@ public class TestTeamOwner {
         assertTrue(Barkat.addAsset(123, "TeamManager", "itayK"));
 
         assertFalse(Nissanov.addAsset(123, "TeamManager", "itayK"));
+
+      //  assertTrue(Barkat.deleteAsset(123, "TeamManager", "itayK"));
 
         assertTrue(Jacob.addAsset(789,"Stadium","samiOfer"));
 
@@ -140,9 +87,10 @@ public class TestTeamOwner {
         assertTrue(Barkat.deleteAsset(123, "Coach", "efronio"));
         assertFalse(Nissanov.deleteAsset(123, "Coach", "efronio"));
 
-       Jacob.addAsset(789, "TeamManager", "itayK");
-        assertTrue(Jacob.deleteAsset(789, "TeamManager", "itayK"));
+        Barkat.addAsset(123, "TeamManager", "itayK");
+        assertTrue(Barkat.deleteAsset(123, "TeamManager", "itayK"));
         assertFalse(Barkat.deleteAsset(123, "TeamManager", "itayK"));
+        assertFalse(Jacob.deleteAsset(789, "TeamManager", "itayK"));
 
         Jacob.addAsset(789,"Stadium","samiOfer");
 
@@ -180,6 +128,7 @@ public class TestTeamOwner {
 
     }
 
+    /*
     @Test
     public void UC8_2(){ //todo need to check about the names of the sub-functions tomer
         //1
@@ -259,4 +208,6 @@ public class TestTeamOwner {
         teamOwner.changeStatus(team1);
         assertTrue(team1.getActive());
     }
+    */
+
 }

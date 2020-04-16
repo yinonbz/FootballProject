@@ -2,7 +2,7 @@ package businessLayer.Team;
 
 import businessLayer.userTypes.Administration.TeamOwner;
 import org.junit.Before;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 public class TestTeam {
 

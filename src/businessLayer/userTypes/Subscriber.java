@@ -2,11 +2,11 @@ package businessLayer.userTypes;
 
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.AlertSystem;
-import serviceLayer.SystemController;
 
 import java.util.HashMap;
 
 public abstract class Subscriber {
+    protected String name;
     protected String username;
     protected String password;
     protected SystemController systemController;
@@ -17,7 +17,8 @@ public abstract class Subscriber {
      * @param username
      * @param password
      */
-    public Subscriber(String username, String password, SystemController systemController) {
+    public Subscriber(String username, String password,String name, SystemController systemController) {
+        this.name = name;
         this.username = username;
         this.password = password;
         complaints = new HashMap<>();
@@ -57,6 +58,20 @@ public abstract class Subscriber {
                 complaints.remove(complaint.getId());
                 complaints.put(complaint.getId(),complaint);
             }
+        }
+    }
+
+    /**
+     * private function that checks that a string represents an interger
+     * @param value the string
+     * @return true if it an integer
+     */
+    protected boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 
@@ -118,4 +133,11 @@ public abstract class Subscriber {
         return alertSystem;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

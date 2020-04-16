@@ -1,12 +1,12 @@
 package businessLayer.userTypes.Administration;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
-import serviceLayer.SystemController;
+import org.junit.Test;
+import businessLayer.userTypes.SystemController;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class PlayerTest {
+public class PlayerTest {
     private SystemController systemController;
     private Player messi;
     private TeamOwner teamOwner;
@@ -18,7 +18,7 @@ class PlayerTest {
     }
 
     @Test
-    void isOwner() {
+    public void isOwner(){
         assertFalse(messi.isOwner());
         messi.setTeamOwner(teamOwner);
         assertTrue(messi.isOwner());

@@ -1,45 +1,48 @@
-package serviceLayer;
+package businessLayer.userTypes;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
+import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
-import businessLayer.userTypes.*;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
+import dataLayer.DemoDB;
 
 import java.util.*;
 
 public class SystemController {
 
     private static SystemController single_instance = null; //singleton instance
-
-    private Map<Subscriber, List<String>> userNotifications;
+    private DemoDB DB; //this will be our DB until the next iteration
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
-    private List<Guest> onlineGuests;
-    private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
-    private List<Admin> admins; //todo check why we need this field tomer
     private LoggingSystem loggingSystem;
-    private List<League> leagues;
-    private HashMap<String, Team> teams; //name of the team, the team object
-    private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
-    private HashMap<String, LinkedList<String>> unconfirmedTeams;
-    private HashMap<String, Stadium> stadiums;
+    private LeagueController leagueController;
+
+    //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
+    //private HashMap<String, Team> teams; //name of the team, the team object
+    //private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
+    //private Map<Subscriber, List<String>> userNotifications;
+    //private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
+    //private HashMap<String, LinkedList<String>> unconfirmedTeams;
+    //private HashMap<String, Stadium> stadiums;
+
+
+    //----------------OLD DATA STRUCTURES THAT ARE NOT USED-------------------------------//
+
+    //private List<Guest> onlineGuests;
+    //private List<Admin> admins;
+    //private List<League> leagues;
 
 
     private SystemController() {
-        this.teams = new HashMap<>();
-        systemSubscribers = new HashMap<>();
-        this.systemComplaints = new HashMap<>();
-        userNotifications = new HashMap<>();
-        systemComplaints = new HashMap<>();
-        unconfirmedTeams = new HashMap<>();
-        stadiums = new HashMap<>();
+        leagueController = new LeagueController();
+         DB = new DemoDB();
     }
 
     /**
@@ -51,6 +54,26 @@ public class SystemController {
         }
         return single_instance;
     }
+
+    /**
+     * this function connects to the DB
+     * @param DB
+     * @return
+     */
+    public boolean connectToDB(DemoDB DB){
+        this.DB=DB;
+        return true;
+    }
+
+
+    /**
+     * Getter function for the league controller
+     * @return
+     */
+    public LeagueController getLeagueController() {
+        return leagueController;
+    }
+
 
     /**
      * @param subscriber
@@ -163,11 +186,11 @@ public class SystemController {
     /**
      * @param userNotifications
      */
-
+    /*
     public void setUserNotifications(Map<Subscriber, List<String>> userNotifications) {
         this.userNotifications = userNotifications;
     }
-
+    */
     /**
      * @return
      */
@@ -204,50 +227,56 @@ public class SystemController {
      * @return
      */
 
+    /*
     public List<Guest> getOnlineGuests() {
         return onlineGuests;
     }
-
+    */
     /**
      * @param onlineGuests
      */
 
+    /*
     public void setOnlineGuests(List<Guest> onlineGuests) {
         this.onlineGuests = onlineGuests;
     }
-
+    /*
     /**
      * @return
      */
 
+    /*
     public HashMap<String, Subscriber> getSystemSubscribers() {
         return systemSubscribers;
     }
+    */
+
 
     /**
      * @param systemSubscribers
      */
-
+    /*
     public void setSystemSubscribers(HashMap<String, Subscriber> systemSubscribers) {
         this.systemSubscribers = systemSubscribers;
     }
+    */
 
     /**
      * @return
      */
-
+    /*
     public List<Admin> getAdmins() {
         return admins;
     }
-
+    /*
     /**
      * @param admins
      */
-
+    /*
     public void setAdmins(List<Admin> admins) {
         this.admins = admins;
     }
-
+    */
     /**
      * @return
      */
@@ -265,27 +294,29 @@ public class SystemController {
     /**
      * @return
      */
-
+    /*
     public List<League> getLeagues() {
         return leagues;
     }
-
+    */
     /**
      * @param leagues
      */
-
+    /*
     public void setLeagues(List<League> leagues) {
         this.leagues = leagues;
     }
-
+    */
     /**
      * getter of system complaints
      *
      * @return the system complaints
      */
+    /*
     public HashMap<Integer, Complaint> getSystemComplaints() {
         return systemComplaints;
     }
+    */
 
     //-------------------TEAM--------------------//
 
@@ -296,8 +327,8 @@ public class SystemController {
      */
     public void addTeam(Team team) {
         if (team != null) {
-            if (!teams.containsKey(team)) {
-                teams.put(team.getTeamName(), team);
+            if (!DB.containsInTeamsDB(team.getTeamName())) {
+                DB.addTeamToDB(team.getTeamName(), team);
             }
         }
     }
@@ -313,11 +344,11 @@ public class SystemController {
      */
     public boolean closeTeamByAdmin(String teamName, Subscriber userType) {
         if (userType instanceof Admin) {
-            if (teams.containsKey(teamName)) {
-                Team chosenTeam = teams.get(teamName);
+            if (DB.containsInTeamsDB(teamName)) {
+                Team chosenTeam = DB.selectTeamFromDB(teamName);
                 //checks what is the status of the team
                 if (chosenTeam.closeTeamPermanently()) {
-                    teams.replace(teamName, chosenTeam);
+                    DB.addTeamToDB(teamName, chosenTeam);
                     return true;
                 }
                 //team is already closed by admin
@@ -346,8 +377,9 @@ public class SystemController {
     public void addComplaint(String content, Subscriber subscriber) {
         Complaint complaint = subscriber.createComplaint(content);
         if (complaint != null) {
-            complaint.setId(systemComplaints.size());
-            systemComplaints.put(systemComplaints.size(), complaint);
+            int id = DB.countComplaintsInDB();
+            complaint.setId(id);
+            DB.addComplaintToDB(id, complaint);
             subscriber.addComplaint(complaint);
         }
     }
@@ -365,8 +397,8 @@ public class SystemController {
 
     public String removeSubscriber(String subscriberName, Subscriber userType) {
         if (subscriberName != null && (userType instanceof Admin)) {
-            if (systemSubscribers.containsKey(subscriberName)) {
-                Subscriber tempSubscriber = systemSubscribers.get(subscriberName);
+            if (DB.containsInSystemSubscribers(subscriberName)) {
+                Subscriber tempSubscriber = DB.selectSubscriberFromDB(subscriberName);
                 if (tempSubscriber instanceof Admin) {
                     if (userType.getUsername().equals(subscriberName)) {
                         return "Admin can't remove his own user";
@@ -376,10 +408,10 @@ public class SystemController {
                         return "Can't remove an exclusive team owner";
                     }
                 }
-                systemSubscribers.remove(subscriberName);
+                DB.removeSubscriberFromDB(subscriberName);
                 //remove from notifications
-                if (userNotifications.containsKey(tempSubscriber)) {
-                    userNotifications.remove(tempSubscriber);
+                if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
+                    DB.removeNotificationFromDB(tempSubscriber.getUsername());
                 }
                 return "The User " + subscriberName + " was removed";
             }
@@ -396,7 +428,7 @@ public class SystemController {
      */
     public HashMap<Integer, Complaint> displayComplaints(Subscriber subscriber) {
         if (subscriber instanceof Admin) {
-            return systemComplaints;
+            return DB.selectAllComplaints();
         } else {
             return null;
         }
@@ -413,18 +445,73 @@ public class SystemController {
      */
     public boolean replyComplaints(int complaintID, Subscriber subscriber, String comment) {
         if (subscriber instanceof Admin && !comment.isEmpty()) {
-            if (systemComplaints.containsKey(complaintID)) {
-                Complaint complaint = systemComplaints.get(complaintID);
+            if (DB.containsInComplaintDB(complaintID)) {
+                Complaint complaint = DB.selectComplaintFromDB(complaintID);
                 //Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
                 complaint.setAnswered(true);
                 complaint.setComment(comment);
                 complaint.setHandler(subscriber.getUsername());
-                systemComplaints.remove(complaintID);
-                systemComplaints.put(complaintID, complaint);
+                DB.removeComplaintFromDB(complaintID);
+                DB.addComplaintToDB(complaintID, complaint);
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * The function adds a referee to the system and returns whether the referee was successfully added or not
+     *
+     * @param username
+     * @param password
+     * @param name
+     * @param training
+     * @param representative
+     * @return true/false
+     */
+    public boolean addReferee(String username, String password, String name, String training, Subscriber representative) {
+
+        if (username == null || password == null || name == null || training == null || representative == null) {
+            return false;
+        }
+        if (!(representative instanceof AssociationRepresentative)) {
+            return false;
+        }
+        if (DB.containsInSystemSubscribers(username)) {
+            return false;
+        }
+
+        Referee newRef = new Referee(username, password, name, training, leagueController, this);
+        DB.addSubscriberToDB(username, newRef);
+        leagueController.addRefereeToDataFromSystemController(newRef);
+        return true;
+    }
+
+
+    /**
+     * The function removes referee from the system and returns whether the removal was successful or not
+     *
+     * @param username
+     * @return true/false
+     */
+    public boolean removeReferee(String username) {
+
+        if (username == null) {
+            return false;
+        }
+        if (!DB.containsInSystemSubscribers(username)) {
+            return false;
+        }
+        Subscriber possibleRef = DB.selectSubscriberFromDB(username);
+        if (!(possibleRef instanceof Referee)) {
+            return false;
+        }
+
+        leagueController.removeReferee(possibleRef);
+        Referee ref = (Referee) possibleRef;
+        ref.removeFromAllMatches();
+        DB.removeSubscriberFromDB(username);
+        return true;
     }
 
     //-------------------TeamOwner--------------------//
@@ -436,7 +523,7 @@ public class SystemController {
      */
     public boolean addToTeamConfirmList(LinkedList<String> details, Subscriber subscriber) {
         if (subscriber instanceof TeamOwner) {
-            unconfirmedTeams.put(details.getFirst(), details);
+            DB.addUnconfirmedTeamsToDB(details.getFirst(), details);
             return true;
         }
         return false;
@@ -453,23 +540,23 @@ public class SystemController {
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, Subscriber subscriber) {
         if (subscriber instanceof AssociationRepresentative) {
-            if (unconfirmedTeams.containsKey(teamName)) {
+            if (DB.containsInUnconfirmedTeams(teamName)) {
                 //check that a team with a same name doesn't exist
-                if (!teams.containsKey(teamName)) {
-                    LinkedList<String> request = unconfirmedTeams.get(teamName);
+                if (!DB.containsInTeamsDB(teamName)) {
+                    LinkedList<String> request = DB.selectUnconfirmedTeamsFromDB(teamName);
                     //checks that the user who wrote the request exists
-                    if (systemSubscribers.containsKey(request.get(2))) {
-                        Subscriber teamOwner = systemSubscribers.get(request.get(2));
+                    if (DB.containsInSystemSubscribers(request.get(2))) {
+                        Subscriber teamOwner = DB.selectSubscriberFromDB(request.get(2));
                         //checks that the user is a team owner
                         if (teamOwner instanceof TeamOwner) {
                             int year = Integer.parseInt(request.get(1));
                             Team team = new Team(teamName, (TeamOwner) teamOwner, year);
-                            teams.put(teamName, team);
-                            unconfirmedTeams.remove(teamName);
+                            DB.addTeamToDB(teamName, team);
+                            DB.removeSubscriberFromDB(teamName);
                             ((TeamOwner) teamOwner).getTeams().add(team);
                             //updates the structure of the updated subscriber with the team
-                            systemSubscribers.remove(teamOwner.getUsername());
-                            systemSubscribers.put(teamOwner.getUsername(), teamOwner);
+                            DB.removeSubscriberFromDB(teamOwner.getUsername());
+                            DB.addSubscriberToDB(teamOwner.getUsername(), teamOwner);
                             return true;
                         }
                     }
@@ -477,6 +564,106 @@ public class SystemController {
             }
         }
         return false;
+    }
+
+    /**
+     * the function checks if a player exists in the DB
+     * @param playerName
+     * @return
+     */
+    public boolean checkUserExists(String playerName){
+        return DB.containsInSystemSubscribers(playerName);
+    }
+
+    /**
+     * brings back a subscriber from the data base if he exists in the system
+     * @param username
+     * @return
+     */
+    public Subscriber selectUserFromDB(String username){
+        if(checkUserExists(username)){
+            return DB.selectSubscriberFromDB(username);
+        }
+        return null;
+    }
+
+    /**
+     * add a subscriber to the DB
+     * @param username
+     * @param subscriber
+     * @return
+     */
+    public boolean addSubscriberToDB (String username, Subscriber subscriber){
+        return DB.addSubscriberToDB(username,subscriber);
+    }
+
+    /*
+    public HashMap<String, Stadium> getStadiums() {
+        return stadiums;
+    }
+    */
+    /*
+    public void setStadiums(HashMap<String, Stadium> stadiums) {
+        this.stadiums = stadiums;
+    }
+    */
+    /**
+     * this function find the player according to is user name and return it if the player exist in the system
+     * @param username the user name of the player
+     * @return the player
+     */
+    //todo add to player method isAssociated()
+    public Player findPlayer(String username) {
+        Subscriber sub = DB.selectSubscriberFromDB(username);
+        if(sub instanceof Player){
+            Player p = (Player) sub;
+            //if(p.isAssociated())
+            return p;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * this function find the TeamManager according to is user name and return it if the TeamManager exist in the system
+     * @param assetUserName the user name of the TeamManager
+     * @return the TeamManager
+     */
+    public TeamManager findTeamManager(String assetUserName) {
+        Subscriber sub = DB.selectSubscriberFromDB(assetUserName);
+        if(sub instanceof TeamManager){
+            TeamManager teamM = (TeamManager) sub;
+            //if(p.isAssociated())
+            return teamM;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * this function find the Coach according to is user name and return it if the Coach exist in the system
+     * @param assetUserName the user name of the Coach
+     * @return the Coach
+     */
+    public Coach findCoach(String assetUserName) {
+        Subscriber sub = DB.selectSubscriberFromDB(assetUserName);
+        if (sub instanceof Coach) {
+            Coach coach = (Coach) sub;
+            return coach;
+        } else {
+            return null;
+        }
+    }
+
+    public Stadium findStadium(String assetUserName) {
+        if(DB.containsInSystemStadium(assetUserName)){
+            return DB.selectStadiumFromDB(assetUserName);
+        }
+        return null;
+    }
+
+    public Stadium findDefaultStadium(){
+        return null;
     }
 
     /**
@@ -494,9 +681,9 @@ public class SystemController {
             System.out.println("Not all fields were filled by the user.");
             return null;
         }
-        if (systemSubscribers.containsKey(userNameInput)) {
-            if (systemSubscribers.get(userNameInput).getPassword().equals(passwordInput)) {
-                return systemSubscribers.get(userNameInput);
+        if (DB.containsInSystemSubscribers(userNameInput)) {
+            if (DB.selectSubscriberFromDB(userNameInput).getPassword().equals(passwordInput)) {
+                return DB.selectSubscriberFromDB(userNameInput);
             }
         }
         System.out.println("Wrong Password or User Name.");
@@ -509,8 +696,8 @@ public class SystemController {
      * NULL if there is no user in the system with the input user name
      */
     public Subscriber getSubscriberByUserName(String userName) {
-        if (getSystemSubscribers().containsKey(userName)) {
-            return getSystemSubscribers().get(userName);
+        if (DB.containsInSystemSubscribers(userName)) {
+            return DB.selectSubscriberFromDB(userName);
         }
         return null;
     }
@@ -521,23 +708,17 @@ public class SystemController {
      * *      NULL if there is no team in the system with the input team name
      */
     public Team getTeamByName(String teamName) {
-        if (teams.containsKey(teamName)) {
-            return teams.get(teamName);
+        if (DB.containsInTeamsDB(teamName)) {
+            return DB.selectTeamFromDB(teamName);
         }
         return null;
     }
 
-    public HashMap<String, Stadium> getStadiums() {
-        return stadiums;
-    }
-
-    public void setStadiums(HashMap<String, Stadium> stadiums) {
-        this.stadiums = stadiums;
-    }
-
+    /*
     public HashMap<String, Team> getTeams() {
         return teams;
     }
+    */
 
     public Subscriber createRegistrationForm(Guest guest) {
         String userNameInput = null;
@@ -558,69 +739,36 @@ public class SystemController {
             guest.enterUserRealName(firstName, lastName);
 
         Subscriber newFan = new Fan(userNameInput, passwordInput, firstName + " " + lastName, this);
-        getSystemSubscribers().put(userNameInput, newFan);
+        DB.addSubscriberToDB(userNameInput, newFan);
 
         return newFan;
     }
 
     /**
-     * this function find the player according to is user name and return it if the player exist in the system
-     * @param username the user name of the player
-     * @return the player
+     * FUNCTION OF IDO, MAYBE NEEDS TO BE REMOVED
+     * @param stadium
      */
-    //todo add to player method isAssociated()
-    public Player findPlayer(String username) {
-        Subscriber sub = systemSubscribers.get(username);
-        if(sub instanceof Player){
-            Player p = (Player) sub;
-            //if(p.isAssociated())
-            return p;
-        } else{
-            return null;
-        }
-    }
-
-    /**
-     * this function find the TeamManager according to is user name and return it if the TeamManager exist in the system
-     * @param assetUserName the user name of the TeamManager
-     * @return the TeamManager
-     */
-    public TeamManager findTeamManager(String assetUserName) {
-        Subscriber sub = systemSubscribers.get(assetUserName);
-        if(sub instanceof TeamManager){
-            TeamManager teamM = (TeamManager) sub;
-            //if(p.isAssociated())
-            return teamM;
-        } else{
-            return null;
-        }
-    }
-
-    /**
-     * this function find the Coach according to is user name and return it if the Coach exist in the system
-     * @param assetUserName the user name of the Coach
-     * @return the Coach
-     */
-    public Coach findCoach(String assetUserName) {
-        Subscriber sub = systemSubscribers.get(assetUserName);
-        if (sub instanceof Coach) {
-            Coach coach = (Coach) sub;
-            return coach;
-        } else {
-            return null;
-        }
-    }
-
-    public Stadium findStadium(String assetUserName) {
-        if(stadiums.containsKey(assetUserName)){
-            return stadiums.get(assetUserName);
-        }
-        return null;
-    }
-
     public void addStadium(Stadium stadium){
         if(stadium!=null){
-            stadiums.put(stadium.getName(),stadium);
+            DB.addStadiumToDB(stadium.getName(),stadium); //todo for IDO please check if you can use my function
         }
+    }
+
+    // -------------------AssociationRepresentative--------------------//
+
+    /**
+     * the function adds
+     * @param nameStadium
+     * @param numberOfSeats
+     * @return
+     */
+    public boolean addNewStadium(String nameStadium, String numberOfSeats){
+        if (!DB.containsInSystemStadium(nameStadium)){
+            int numOfSeats = Integer.parseInt(numberOfSeats);
+            Stadium stadium = new Stadium(nameStadium,numOfSeats);
+            DB.addStadiumToDB(nameStadium,stadium);
+            return true;
+        }
+        return false;
     }
 }

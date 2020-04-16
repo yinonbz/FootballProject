@@ -1,7 +1,6 @@
 package businessLayer.userTypes.viewers;
 
-import businessLayer.userTypes.Subscriber;
-import serviceLayer.SystemController;
+import businessLayer.userTypes.SystemController;
 
 import java.util.List;
 

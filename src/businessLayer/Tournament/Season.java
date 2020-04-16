@@ -2,7 +2,9 @@ package businessLayer.Tournament;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
+import businessLayer.userTypes.Administration.Referee;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +18,10 @@ public class Season {
     private List<Match> matches;
     private MatchingPolicy matchingPolicy;
     private RankingPolicy rankingPolicy;
+    private HashMap<String, Referee> referees;
     private HashMap <Integer,Team> teams;
 
     /**
-     *
      * @param seasonId
      * @param startDate
      * @param endDate
@@ -34,6 +36,9 @@ public class Season {
         this.league = league;
         this.matchingPolicy = matchingPolicy;
         this.rankingPolicy = rankingPolicy;
+        referees = new HashMap<>();
+        teams = new HashMap<>();
+        matches = new ArrayList<>();
     }
 
     /**
@@ -48,10 +53,12 @@ public class Season {
         this.startDate = startDate;
         this.endDate = endDate;
         this.league = league;
+        referees = new HashMap<>();
+        teams = new HashMap<>();
+        matches = new ArrayList<>();
     }
 
     /**
-     *
      * @return
      */
     public int getSeasonId() {
@@ -59,7 +66,6 @@ public class Season {
     }
 
     /**
-     *
      * @param seasonId
      */
     public void setSeasonId(int seasonId) {
@@ -67,7 +73,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
     public Date getStartDate() {
@@ -75,7 +80,6 @@ public class Season {
     }
 
     /**
-     *
      * @param startDate
      */
     public void setStartDate(Date startDate) {
@@ -83,7 +87,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
     public Date getEndDate() {
@@ -91,7 +94,6 @@ public class Season {
     }
 
     /**
-     *
      * @param endDate
      */
 
@@ -100,7 +102,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -109,7 +110,6 @@ public class Season {
     }
 
     /**
-     *
      * @param league
      */
 
@@ -118,7 +118,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -127,7 +126,6 @@ public class Season {
     }
 
     /**
-     *
      * @param matches
      */
 
@@ -136,7 +134,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -145,7 +142,6 @@ public class Season {
     }
 
     /**
-     *
      * @param matchingPolicy
      */
 
@@ -154,7 +150,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -163,7 +158,6 @@ public class Season {
     }
 
     /**
-     *
      * @param rankingPolicy
      */
     public void setRankingPolicy(RankingPolicy rankingPolicy) {
@@ -171,7 +165,6 @@ public class Season {
     }
 
     /**
-     *
      * @return
      */
 
@@ -180,10 +173,24 @@ public class Season {
     }
 
     /**
-     *
      * @param teams
      */
     public void setTeams(HashMap<Integer,Team> teams) {
         this.teams = teams;
+    }
+
+
+    /**
+     * The function receives a referee and adds it to the data structure that holds the referees which assigned to the current season
+     * @param refToAdd
+     * @return true/false
+     */
+    public boolean addReferee(Referee refToAdd) {
+
+        if (refToAdd == null || referees.containsKey(refToAdd.getUsername())) {
+            return false;
+        }
+        referees.put(refToAdd.getUsername(), refToAdd);
+        return true;
     }
 }
