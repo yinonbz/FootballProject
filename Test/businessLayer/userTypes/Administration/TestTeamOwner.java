@@ -26,6 +26,7 @@ public class TestTeamOwner {
     static Player Buzaglo;
     static Player Tamash;
     static Player Roso; //This Player will not be in the DB
+    static Player yosi;
 
     static Referee Alon;
 
@@ -50,11 +51,12 @@ public class TestTeamOwner {
         DB = tDB.getDB();
         Barkat = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
         Nissanov = (TeamOwner) DB.selectSubscriberFromDB("Nissanov");
-        Jacob = (TeamOwner) DB.selectSubscriberFromDB("JabobS");
+        Jacob = (TeamOwner) DB.selectSubscriberFromDB("JacobS");
         Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
         Inon = (TeamOwner) DB.selectSubscriberFromDB("Inon");
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
         Tamash = (Player) DB.selectSubscriberFromDB("Tamash");
+        yosi = (Player)DB.selectSubscriberFromDB("yosi");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
 
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
@@ -68,7 +70,7 @@ public class TestTeamOwner {
         //check if add asset works correctly 6.1.1
         //new player that was not assign to a team
 
-        assertTrue(Barkat.addAsset(123, "Player", "Buzaglo"));
+        assertTrue(Barkat.addAsset(123, "Player", "yosi"));
 
         //a player that was already assign to a team
         assertFalse(Barkat.addAsset(123, "Player", "Buzaglo"));

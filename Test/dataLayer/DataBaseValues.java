@@ -49,10 +49,12 @@ public class DataBaseValues {
     static TeamOwner Shimon;
     static TeamOwner Glazers;
     static TeamOwner Nissanov;
-    static TeamOwner Max;
-    static TeamOwner YaelM;
     static TeamOwner Alex;
     static TeamOwner Inon;
+    static TeamOwner Max;
+    static TeamOwner YaelM;
+    static TeamOwner Jacob;
+
 
 
     //team manager
@@ -64,6 +66,7 @@ public class DataBaseValues {
     //players
     static Player Buzaglo;
     static Player Tamash;
+    static Player yosi;
 
     //admins
     static Admin admin;
@@ -104,7 +107,6 @@ public class DataBaseValues {
     static HashMap<Integer, Match> singleMatchTable;
     static HashMap<Integer, Match> classicTable;
     static MatchController matchController;
-    private TeamOwner Jacob;
     static SystemService systemService;
 
     //complaints
@@ -179,6 +181,7 @@ public class DataBaseValues {
         Alex = new TeamOwner("Alex", "manchesterU", "glazer", systemController);
 
 
+
         DB.addSubscriberToDB("Tomer", teamOwner);
         DB.addSubscriberToDB("AlonaBarkat", Barkat);
         DB.addSubscriberToDB("Shimon", Shimon);
@@ -201,9 +204,10 @@ public class DataBaseValues {
         //add player
         Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
         Tamash = new Player("Tamash","Tamash123","Tamash","1983","captain",0,null,systemController);
-
+        yosi = new Player("yosi","yosi123","yosiDekel", "1993","captian",0,null,systemController);
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
         DB.addSubscriberToDB("Tamash",Tamash);
+        DB.addSubscriberToDB("yosi",yosi);
 
         //add referee
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
