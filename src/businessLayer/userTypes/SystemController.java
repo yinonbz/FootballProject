@@ -1,6 +1,7 @@
 package businessLayer.userTypes;
 
 import businessLayer.Team.Team;
+import businessLayer.Team.TeamController;
 import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.Stadium;
@@ -23,6 +24,7 @@ public class SystemController {
     private LoggingSystem loggingSystem;
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private LeagueController leagueController;
+    private TeamController teamController;
 
     //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
     //private HashMap<String, Team> teams; //name of the team, the team object
@@ -93,6 +95,22 @@ public class SystemController {
     public boolean sendLogs(List<String> logs) {
 
         return true;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public TeamController getTeamController() {
+        return teamController;
+    }
+
+    /**
+     *
+     * @param teamController
+     */
+    public void setTeamController(TeamController teamController) {
+        this.teamController = teamController;
     }
 
     /**
@@ -621,7 +639,6 @@ public class SystemController {
      * @param username the user name of the player
      * @return the player
      */
-    //todo add to player method isAssociated()
     public Player findPlayer(String username) {
         Subscriber sub = DB.selectSubscriberFromDB(username);
         if(sub instanceof Player){

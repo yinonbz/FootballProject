@@ -101,7 +101,7 @@ public class DataBaseValues {
     static HashMap<Integer, Match> singleMatchTable;
     static HashMap<Integer, Match> classicTable;
     static MatchController matchController;
-    static TeamOwner Jacob;
+    private TeamOwner Jacob;
 
     //complaints
     static Complaint c1;
@@ -148,15 +148,17 @@ public class DataBaseValues {
         samiOfer = new Stadium("samiOfer", null, null, 30000, null);
 
 
-        DB.addStadiumToDB("s1", s1);
-        DB.addStadiumToDB("s2", s2);
-        DB.addStadiumToDB("s3", s3);
-        DB.addStadiumToDB("s4", s4);
-        DB.addStadiumToDB("s5", s5);
-        DB.addStadiumToDB("s6", s6);
-        DB.addStadiumToDB("s7", s7);
-        DB.addStadiumToDB("s8", s8);
-        DB.addStadiumToDB("Default", s9);
+        DB.addStadiumToDB("samiOfer",samiOfer);
+        DB.addStadiumToDB("s1",s1);
+        DB.addStadiumToDB("s2",s2);
+        DB.addStadiumToDB("s3",s3);
+        DB.addStadiumToDB("s4",s4);
+        DB.addStadiumToDB("s5",s5);
+        DB.addStadiumToDB("s6",s6);
+        DB.addStadiumToDB("s7",s7);
+        DB.addStadiumToDB("s8",s8);
+        DB.addStadiumToDB("Default",s9);
+
 
 
         //add team owners
@@ -192,7 +194,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("Inon",Inon);
 
         //add player
-        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield", null, systemController);
+        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
 
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
 
@@ -202,8 +204,8 @@ public class DataBaseValues {
 
         //add coach
         //6.1
-        Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach", systemController);
-        tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach", systemController);
+        Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach",0, systemController);
+        tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach",0, systemController);
         DB.addSubscriberToDB("efronio",Ido);
         DB.addSubscriberToDB("TomerZ",Ido);
 

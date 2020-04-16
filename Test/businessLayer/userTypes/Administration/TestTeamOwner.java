@@ -5,29 +5,30 @@ import businessLayer.Tournament.Match.Stadium;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
+import serviceLayer.TeamService;
 
 import static org.junit.Assert.*;
 
 public class TestTeamOwner {
 
 
-    private TeamOwner Barkat;
-    private TeamOwner Nissanov;
-    private TeamOwner Jacob;
-    private TeamOwner Glazers;
+    static TeamOwner Barkat;
+    static TeamOwner Nissanov;
+    static TeamOwner Jacob;
+    static TeamOwner Glazers;
+    static TeamOwner Inon;
 
-    private TeamOwner Inon;
 
+    static Player Buzaglo;
 
-    private Player Buzaglo;
+    static Referee Alon;
 
-    private Referee Alon;
-
-    private Team HTA;
-    private Team BeerSheva;
+    static Team HTA;
+    static Team BeerSheva;
 
 
 
@@ -36,8 +37,12 @@ public class TestTeamOwner {
     static DataBaseValues tDB;
 
 
-    @Before
-    public void createTestValues() {
+    static TeamService teamService;
+
+
+    @BeforeClass
+    public static void createTestValues() {
+       // systemController = SystemController.SystemController();
         tDB = new DataBaseValues();
         DB = tDB.getDB();
         Barkat = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
@@ -50,6 +55,7 @@ public class TestTeamOwner {
 
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
         HTA = DB.selectTeamFromDB("HTA");
+        teamService = new TeamService();
 
     }
 
@@ -73,7 +79,7 @@ public class TestTeamOwner {
 
         assertFalse(Nissanov.addAsset(123, "TeamManager", "itayK"));
 
-        TeamOwner Jacob = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
+      //  assertTrue(Barkat.deleteAsset(123, "TeamManager", "itayK"));
 
         assertTrue(Jacob.addAsset(789,"Stadium","samiOfer"));
 
@@ -95,9 +101,10 @@ public class TestTeamOwner {
         assertTrue(Barkat.deleteAsset(123, "Coach", "efronio"));
         assertFalse(Nissanov.deleteAsset(123, "Coach", "efronio"));
 
-       Jacob.addAsset(789, "TeamManager", "itayK");
-        assertTrue(Jacob.deleteAsset(789, "TeamManager", "itayK"));
+        Barkat.addAsset(123, "TeamManager", "itayK");
+        assertTrue(Barkat.deleteAsset(123, "TeamManager", "itayK"));
         assertFalse(Barkat.deleteAsset(123, "TeamManager", "itayK"));
+        assertFalse(Jacob.deleteAsset(789, "TeamManager", "itayK"));
 
         Jacob.addAsset(789,"Stadium","samiOfer");
 
@@ -132,6 +139,10 @@ public class TestTeamOwner {
         assertTrue(Jacob.editStadium(789,"samiOfer","numberOfSeats",50));
 
         assertFalse(Jacob.editStadium(789,"natania","numberOfSeats",50));
+    }
+    @Test
+    public void UC6_1() {
+    //teamService.addAsset();
 
     }
 

@@ -13,7 +13,7 @@ public class PlayerTest {
 
     @Before
     public void createTestValues() {
-        messi = new Player("Messi", "Messi123", "Messi", "", "foward", null, systemController);
+        messi = new Player("Messi", "Messi123", "Messi", "", "foward", 0,null, systemController);
         teamOwner = new TeamOwner("MessiFictive", "MessiF123", "MessiF", systemController);
     }
 

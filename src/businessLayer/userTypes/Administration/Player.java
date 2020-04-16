@@ -10,20 +10,34 @@ public class Player extends Subscriber implements OwnerEligible {
     private String birthDate;
     private String fieldJob;
     private Team team;
+    private int salary;
+
     /**
+     *
      * @param username
      * @param password
      * @param name
      * @param birthDate
      * @param fieldJob
+     * @param salary
      * @param team
+     * @param systemController
      */
-    public Player(String username, String password, String name, String birthDate, String fieldJob, Team team, SystemController systemController) {
+    public Player(String username, String password, String name, String birthDate, String fieldJob,int salary, Team team, SystemController systemController) {
         super(username, password,name,systemController);
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
         this.team = team;
         this.teamOwner =null;
+        this.salary= salary;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 
     /**

@@ -108,7 +108,7 @@ public class TeamOwner extends Subscriber {
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && !teamManager.getTeam().equals(team)) {
+                    if (teamManager != null && teamManager.getTeam()==null) {//ido change !teamManager.getTeam().equals(team)
                         team.addTeamManager(teamManager);
                         teamManager.setTeam(team);
                         this.teamManagers.put(team,teamManager);
@@ -156,9 +156,10 @@ public class TeamOwner extends Subscriber {
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && teamManagers.containsKey(team) && teamManagers.get(team).equals(teamManager)) {
+                    if (teamManager != null && teamManagers.containsKey(team) && teamManagers.get(team).equals(teamManager)&&teamManager.getTeam().equals(team)) {
                         team.removeTeamManager(teamManager);
                         teamManager.setTeam(null);
+                        this.teamManagers.remove(team);
                         isDeleted = true;
                     }
                     break;
@@ -201,6 +202,13 @@ public class TeamOwner extends Subscriber {
                     team.removePlayer(player);
                     player.setFieldJob(edit);
                     team.addPlayer(player);
+                    return true;
+                }
+                else if(typeEdit.equals("salary")){
+                    team.removePlayer(player);
+                   // int salary = tryParseInt()
+
+                  //  player.setSalary();
                     return true;
                 }
             }
@@ -341,15 +349,14 @@ public class TeamOwner extends Subscriber {
 
             TeamManager newTeamManger = new TeamManager(subscriber.getUsername(),
                     subscriber.getPassword(),subscriber.getName(),team,salary,this.getSystemController());
-
-            systemController.addSubscriberToDB(username,newTeamManger);
+             systemController.addSubscriberToDB(username,newTeamManger);
             subscriber= newTeamManger;
 
             //assign to team manager field in the team objects
             team.setTeamManager((TeamManager)subscriber);
 
             //grant permissions to the new team manager
-            newTeamManger.setPermissions(grantPermissions(permission));
+            newTeamManger.setPermissions(permission);
 
             //link to assigning owner
             teamManagers.put(team,newTeamManger);
@@ -361,16 +368,16 @@ public class TeamOwner extends Subscriber {
         return false;
 
     }
-
-    /**
+/*
+    *//**
      * this function checks what permissions should be given to the team manager based on enum argument
      * @param permission enum argument for permission category
      * @return set of strings that indicating the permissions which should be given to team manager.
-     */
-    private HashSet<String> grantPermissions(Permissions permission) {
+     *//*
+    private HashSet<Permissions> grantPermissions(Permissions permission) {
 
         if(permission == Permissions.COACHORIENTED){
-            return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance", "addCoach", "fireCoach"));
+            return new HashSet<String>(Arrays.asList(Permissions.COACHORIENTED));
         }
         if(permission == Permissions.PLAYERORIENTED){
             return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance", "addPlayer", "firePlayer"));
@@ -379,7 +386,7 @@ public class TeamOwner extends Subscriber {
             return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance"));
         }
         return new HashSet<String>(Arrays.asList("watchFinance", "reportFinance", "addCoach", "fireCoach","addPlayer","firePlayer"));
-    }
+    }*/
 
     /**
      *
@@ -406,7 +413,7 @@ public class TeamOwner extends Subscriber {
         tm.setTeam(null);
 
         //cancel permissions
-        tm.setPermissions(new HashSet<>());
+        tm.setPermissions(null);
 
         //delete assignment from owner
         teamManagers.remove(team);
