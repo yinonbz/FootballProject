@@ -729,16 +729,16 @@ public class SystemController {
     }
     */
 
-    public Subscriber createRegistrationForm(Guest guest) {
+    public Boolean createRegistrationForm(Guest guest) {
         String userNameInput = null;
         String passwordInput = null;
         guest.enterUserDetails(userNameInput, passwordInput);
         if (userNameInput == null || userNameInput.length() == 0 || passwordInput == null || passwordInput.length() == 0) {
             //System.out.println("Not all fields were filled by the user.");
-            return null;
+            return false;
         }
         if (checkPasswordStrength(passwordInput, userNameInput) == false) {
-            return null;
+            return false;
         }
 
         String firstName = null;
@@ -750,7 +750,7 @@ public class SystemController {
         Subscriber newFan = new Fan(userNameInput, passwordInput, firstName + " " + lastName, this);
         DB.addSubscriberToDB(userNameInput, newFan);
 
-        return newFan;
+        return false;
     }
 
     /**

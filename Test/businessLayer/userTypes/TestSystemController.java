@@ -119,15 +119,15 @@ public class TestSystemController {
 
     //Unit Test - Check singleton functionality
     @Test
-    public void singletonTest () {
+    public void singletonUT () {
         SystemController systemController1 = SystemController.SystemController();
         SystemController systemController2 = SystemController.SystemController();
         assertEquals(systemController1,systemController2);
     }
 
     //Unit Test - insertInfo(String userName, String password)
-    @BeforeClass
-    public static void insertInfo() {
+    @Test
+    public void insertInfoUT() {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.insertInfo("admin","admin"));
         assertFalse(systemController.insertInfo("admin","wrongPass"));
@@ -138,7 +138,7 @@ public class TestSystemController {
      * Check the password guidelines
      */
     @Test
-    public void changePasswordTest() {
+    public void changePasswordUT() {
         SystemController systemController = SystemController.SystemController();
 
         /*
@@ -170,7 +170,7 @@ public class TestSystemController {
      * Test wrong/right password in the initialize system process
      */
     @Test
-    public void initializeSystemTest() {
+    public void initializeSystemUT() {
 
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.initializeSystem("admin"));
