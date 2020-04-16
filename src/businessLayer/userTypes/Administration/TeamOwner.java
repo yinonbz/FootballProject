@@ -95,7 +95,6 @@ public class TeamOwner extends Subscriber {
     public boolean addAsset(int teamId, String assetType, String assetUserName) {
         boolean isAdded = false;
         Team team = findTeam(teamId);
-        int k =0;
         SystemController systemController = this.getSystemController();
         if (team != null && team.getActive()) {
             switch (assetType) {
@@ -310,16 +309,34 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     * @param team team to be enabled/disabled.
+     * @param team team team to be enabled.
+     * @return true if the team has been enabled
+     *         false if already enabled
      */
-    public void changeStatus(Team team) {
+    public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
             team.setActive(true);
+            return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
-        } else {
-            team.setActive(false);
-            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not active.");
         }
+        //System.out.println("The team '" + team.getTeamName() + "' has already been enabled.");
+        return false;
+    }
+
+
+    /**
+     * @param team team to be disabled.
+     * @return true if the team has been disabled
+     *         false if already disabled
+     */
+    public Boolean disableStatus(Team team) {
+        if (team.getActive()) {
+            team.setActive(false);
+            return true;
+            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not-active.");
+        }
+        //System.out.println("The team '" + team.getTeamName() + "' has already been disabled.");
+        return false;
     }
 
     /**
@@ -497,7 +514,8 @@ public class TeamOwner extends Subscriber {
      *          false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
      */
     public Boolean appointToOwner(Subscriber subscriber, String teamName){
-
+        if(subscriber == null)
+            return false; //subscriber doesn't exist in the DB
         if(subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner){
             if(!(subscriber instanceof TeamOwner) && ((OwnerEligible) subscriber).isOwner() == false){
                 if(getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'

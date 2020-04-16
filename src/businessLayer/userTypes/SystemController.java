@@ -135,7 +135,7 @@ public class SystemController {
         return true;
     }
 
-    /**
+    /** UC-1.1
      * @param userName The user name of the default temporary admin, as mentioned in the Readme file.
      * @param password The password of the default temporary admin, as mentioned in the Readme file.
      * @return true: if the temporary admin user was created successfully by the system. | false: The userName or password didn't match to the default temporary admin details.
@@ -149,7 +149,7 @@ public class SystemController {
         return false;
     }
 
-    /**
+    /** UC-1.1 (get input from System Service)
      * @param password temporary admin password.
      * @return true if the temporary admin entered the sufficient password to initialize the system.
      * false else.
@@ -823,16 +823,16 @@ public class SystemController {
     }
     */
 
-    public Subscriber createRegistrationForm(Guest guest) {
+    public Boolean createRegistrationForm(Guest guest) {
         String userNameInput = null;
         String passwordInput = null;
         guest.enterUserDetails(userNameInput, passwordInput);
         if (userNameInput == null || userNameInput.length() == 0 || passwordInput == null || passwordInput.length() == 0) {
             //System.out.println("Not all fields were filled by the user.");
-            return null;
+            return false;
         }
         if (checkPasswordStrength(passwordInput, userNameInput) == false) {
-            return null;
+            return false;
         }
 
         String firstName = null;
@@ -844,7 +844,7 @@ public class SystemController {
         Subscriber newFan = new Fan(userNameInput, passwordInput, firstName + " " + lastName, this);
         DB.addSubscriberToDB(userNameInput, newFan);
 
-        return newFan;
+        return false;
     }
 
     /**
@@ -875,14 +875,98 @@ public class SystemController {
         return false;
     }
 
-    // -------------------Referee--------------------//
+    /** UC-6.6 - enable team status by Team Owner todo-write tests
+     * @param teamName the name of the team from input
+     * @param userName the user who wants to enable the team status
+     * @return true if the team's status has been enabled.
+     *          false else.
+     */
+    public Boolean enableTeamStatus(String teamName, String userName) {
+        if (userName == null || teamName == null) {
+            return false;
+        }
+        if (!DB.containsInSystemSubscribers(userName) || !DB.containsInTeamsDB(teamName)) {
+            return false;
+        }
+        Subscriber possibleTeamOwner = DB.selectSubscriberFromDB(userName);
+        if(possibleTeamOwner instanceof TeamOwner){ //check if the user is a team owner
+            TeamOwner teamOwner = ((TeamOwner)possibleTeamOwner);
+            if(teamOwner.getTeam(teamName) != null){ //check if the team owner owns the team
+                return teamOwner.enableStatus(teamOwner.getTeam(teamName));
+            }
+            else {
+                return false; //the team owner doesn't own the team
+            }
+        }
+        else{
+            return false; //the user isn't a team owner
+        }
+    }
+
+    /** UC-6.6 - disable team status by Team Owner todo-write tests
+     * @param teamName the name of the team from input
+     * @param userName the user who wants to disable the team status
+     * @return true if the team's status has been disabled.
+     *          false else.
+     */
+    public Boolean disableTeamStatus(String teamName, String userName) {
+        if (userName == null || teamName == null) {
+            return false;
+        }
+        if (!DB.containsInSystemSubscribers(userName) || !DB.containsInTeamsDB(teamName)) {
+            return false;
+        }
+        Subscriber possibleTeamOwner = DB.selectSubscriberFromDB(userName);
+        if(possibleTeamOwner instanceof TeamOwner){ //check if the user is a team owner
+            TeamOwner teamOwner = ((TeamOwner)possibleTeamOwner);
+            if(teamOwner.getTeam(teamName) != null){ //check if the team owner owns the team
+                return teamOwner.disableStatus(teamOwner.getTeam(teamName));
+            }
+            else {
+                return false; //the team owner doesn't own the team
+            }
+        }
+        else{
+            return false; //the user isn't a team owner
+        }
+    }
+
+    /**
+     * //UC-6.2
+     * @param teamName the team's name of the team which the user wants to add to it's owners
+     * @param newUserName the new team owner's user name
+     * @param userName the user which wants to add the user newUserName the the team owners
+     * @return true if newUserName was added to the team's owners
+     *          false else
+     */
+    public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName) {
+        if (userName == null || teamName == null || newUserName == null) {
+            return false;
+        }
+        if (!DB.containsInSystemSubscribers(userName) || !DB.containsInTeamsDB(teamName)) {
+            return false;
+        }
+        Subscriber possibleTeamOwner = DB.selectSubscriberFromDB(userName);
+        if(possibleTeamOwner instanceof TeamOwner) { //check if the user is a team owner
+            TeamOwner teamOwner = ((TeamOwner)possibleTeamOwner);
+            if(teamOwner.enterMember(newUserName) != null) {
+                return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
+            }
+            else //There is no such user with the user name of 'newUserName' in the system
+                return false;
+        }
+        else{
+            return false; //the user isn't a team owner
+        }
+    }
+
 
     /**
      * finds a match in the DB
-      * @param matchID
+     * @param matchID
      * @return
      */
     public Match findMatch(int matchID){
-            return DB.selectMatchFromDB(matchID);
+        return DB.selectMatchFromDB(matchID);
     }
 }

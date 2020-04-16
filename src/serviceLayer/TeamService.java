@@ -25,6 +25,28 @@ public class TeamService {
         return teamController.addAsset(userOwner, teamId,assetType,assetUserName);
     }
 
+       /**
+     *  UC 6.6
+     * @param teamName the team's name
+     * @param userName the user's user name who tries to enable the team status
+     * @return true if the team status has been enabled
+     */
+    public Boolean enableTeamStatus(String teamName, String userName){
+        return systemController.enableTeamStatus(teamName,userName);
+    }
+
+
+    /**
+     *  UC 6.6
+     * @param teamName the team's name
+     * @param userName the user's user name who tries to disable the team status
+     * @return true if the team status has been disabled
+     */
+    public Boolean disableTeamStatus(String teamName, String userName){
+        return systemController.disableTeamStatus(teamName,userName);
+    }
+
+
     /**
      *
 

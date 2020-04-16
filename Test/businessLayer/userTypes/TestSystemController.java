@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 
 import org.junit.Test;
 import businessLayer.userTypes.SystemController;
+import serviceLayer.SystemService;
 
 
 import static junit.framework.TestCase.assertTrue;
@@ -27,6 +28,7 @@ public class TestSystemController {
      static Fan fan;
     static DemoDB DB;
     static DataBaseValues tDB;
+    static SystemService systemService;
 
 
     @BeforeClass
@@ -42,8 +44,7 @@ public class TestSystemController {
         Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
         LeedsUnited = DB.selectTeamFromDB("LeedUnited");
         Sunderland = DB.selectTeamFromDB("Sunderland");
-
-
+        systemService = new SystemService();
     }
 
     @Test
@@ -116,28 +117,28 @@ public class TestSystemController {
 
     }
 
-    //T1.1_1 - Check singleton functionality
+    //Unit Test - Check singleton functionality
     @Test
-    public void singletonTest () {
+    public void singletonUT () {
         SystemController systemController1 = SystemController.SystemController();
         SystemController systemController2 = SystemController.SystemController();
         assertEquals(systemController1,systemController2);
     }
 
-    //T1.1_2 - Test insertInfo(String userName, String password)
-    @BeforeClass
-    public static void insertInfo() {
+    //Unit Test - insertInfo(String userName, String password)
+    @Test
+    public void insertInfoUT() {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.insertInfo("admin","admin"));
         assertFalse(systemController.insertInfo("admin","wrongPass"));
     }
 
-    //T1.1_3 - Test changePassword(String password,String userName)
+    //Unit Test - Test changePassword(String password,String userName)
     /**
      * Check the password guidelines
      */
     @Test
-    public void changePasswordTest() {
+    public void changePasswordUT() {
         SystemController systemController = SystemController.SystemController();
 
         /*
@@ -153,7 +154,7 @@ public class TestSystemController {
         System.out.println(s.toUpperCase());
         */
         assertFalse(systemController.changePassword("a2","admin")); //too short
-        assertFalse(systemController.changePassword("abcdefghijklmnopqrstuvwxyz1234567890","admin")); //too short
+        assertFalse(systemController.changePassword("abcdefghijklmnopqrstuvwxyz1234567890","admin")); //too long
         assertFalse(systemController.changePassword("abcdefg","admin")); //include only letters
         assertFalse(systemController.changePassword("123456","admin"));//include only numbers
         assertTrue(systemController.changePassword("123456abcde@","admin")); //include both numbers and letters
@@ -164,16 +165,23 @@ public class TestSystemController {
         assertFalse(systemController.changePassword("123456admin","admin")); //include the user name
     }
 
-    //T1.1_4
+    //Unit Test -initializeSystem(String Password)
     /**
      * Test wrong/right password in the initialize system process
      */
     @Test
-    public void initializeSystemTest() {
+    public void initializeSystemUT() {
 
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.initializeSystem("admin"));
         assertFalse(systemController.initializeSystem("wrongPass"));
 
+    }
+
+    @Test
+    public void UC_1_1() {
+        assertTrue(systemService.insertInfo("admin","admin"));
+        assertTrue(systemService.initializeSystem("admin"));
+        assertTrue(systemService.changePassword("ad123456","admin"));
     }
 }
