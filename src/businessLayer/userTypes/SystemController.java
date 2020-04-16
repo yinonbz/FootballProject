@@ -428,27 +428,30 @@ public class SystemController {
 
     public String removeSubscriber(String subscriberName, String userType) {
         Subscriber subscriber = getSubscriberByUserName(userType);
-        if (subscriberName != null && (subscriber instanceof Admin)) {
-            if (DB.containsInSystemSubscribers(subscriberName)) {
-                Subscriber tempSubscriber = DB.selectSubscriberFromDB(subscriberName);
-                if (tempSubscriber instanceof Admin) {
-                    if (subscriber.getUsername().equals(subscriberName)) {
-                        return "Admin can't remove his own user";
+        if ((subscriber instanceof Admin)) {
+            if(subscriberName != null) {
+                if (DB.containsInSystemSubscribers(subscriberName)) {
+                    Subscriber tempSubscriber = DB.selectSubscriberFromDB(subscriberName);
+                    if (tempSubscriber instanceof Admin) {
+                        if (subscriber.getUsername().equals(subscriberName)) {
+                            return "Admin can't remove his own user";
+                        }
+                    } else if (tempSubscriber instanceof TeamOwner) {
+                        if (((TeamOwner) tempSubscriber).isExclusiveTeamOwner()) {
+                            return "Can't remove an exclusive team owner";
+                        }
                     }
-                } else if (tempSubscriber instanceof TeamOwner) {
-                    if (((TeamOwner) tempSubscriber).isExclusiveTeamOwner()) {
-                        return "Can't remove an exclusive team owner";
+                    DB.removeSubscriberFromDB(subscriberName);
+                    //remove from notifications
+                    if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
+                        DB.removeNotificationFromDB(tempSubscriber.getUsername());
                     }
+                    return "The User " + subscriberName + " was removed";
                 }
-                DB.removeSubscriberFromDB(subscriberName);
-                //remove from notifications
-                if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
-                    DB.removeNotificationFromDB(tempSubscriber.getUsername());
-                }
-                return "The User " + subscriberName + " was removed";
+                return "User doesn't exist in the system";
             }
         }
-        return "User doesn't exist in the system";
+        return "Access denied";
     }
 
     /**

@@ -9,11 +9,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
+import serviceLayer.SystemService;
 import serviceLayer.TeamService;
 
 import static org.junit.Assert.*;
 
-public class TestTeamOwner {
+public class TeamOwnerTest {
 
 
     static TeamOwner Barkat;
@@ -21,6 +22,9 @@ public class TestTeamOwner {
     static TeamOwner Jacob;
     static TeamOwner Glazers;
     static TeamOwner Inon;
+    static TeamOwner Jimmy;
+    static TeamOwner Alex;
+    static TeamOwner teamOwner;
 
 
     static Player Buzaglo;
@@ -29,6 +33,7 @@ public class TestTeamOwner {
 
     static Team HTA;
     static Team BeerSheva;
+    static Team Arsenal;
 
 
     static DemoDB DB;
@@ -36,6 +41,7 @@ public class TestTeamOwner {
 
 
     static TeamService teamService;
+    static SystemService systemService;
 
 
     @BeforeClass
@@ -50,10 +56,17 @@ public class TestTeamOwner {
         Inon = (TeamOwner) DB.selectSubscriberFromDB("Inon");
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
+        Jimmy = (TeamOwner) DB.selectSubscriberFromDB("Jimmy");
+        Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
+        teamOwner = (TeamOwner) DB.selectSubscriberFromDB("Tomer");
+
 
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
         HTA = DB.selectTeamFromDB("HTA");
+        Arsenal = DB.selectTeamFromDB("Arsenal");
+
         teamService = new TeamService();
+        systemService = new SystemService();
 
     }
 
@@ -144,25 +157,52 @@ public class TestTeamOwner {
 
     }
 
+
+
+
+
     @Test
-    public void UC8_2(){
+    //UNIT TEST
+    public void checkExclusiveTeamOwner(){
         //1 - UNIT
         //check if Alona who has 2 teams is exclusive
 
-        assertFalse(Barkat.isExclusiveTeamOwner());
+        assertFalse(Jimmy.isExclusiveTeamOwner());
 
         //2
         //check if Alona is now Exclusive
-        BeerSheva.getTeamOwners().remove(Nissanov);
-        Nissanov.getTeams().remove(BeerSheva);
+        Arsenal.getTeamOwners().remove(Alex);
+        Arsenal.getTeamOwners().remove(teamOwner);
+        Alex.getTeams().remove(Arsenal);
 
-        assertTrue(Barkat.isExclusiveTeamOwner());
+        assertTrue(Jimmy.isExclusiveTeamOwner());
 
         //3
         //check what happens without any teams
         BeerSheva.getTeamOwners().remove(Nissanov);
         Nissanov.getTeams().remove(BeerSheva);
         assertFalse(Nissanov.isExclusiveTeamOwner());
+    }
+
+    @Test
+    public void UC8_2(){
+        //1
+        //check if removing a regular user is possible
+        assertEquals("The User Ben was removed",systemService.removeSubscriber("Ben","TomerSein"));
+
+        //2
+        //check if it is possible to remove an exclusive team owner from the system
+        assertEquals("Can't remove an exclusive team owner",systemService.removeSubscriber("Harry","TomerSein"));
+
+        //3
+        //check if admin can delete himself
+        assertEquals("Admin can't remove his own user",systemService.removeSubscriber("TomerSein","TomerSein"));
+
+        //4
+        //check if you can delete user that doesn't exists
+        assertEquals("User doesn't exist in the system",systemService.removeSubscriber("dddddd","TomerSein"));
+
+
     }
 
     @Test

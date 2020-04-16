@@ -53,6 +53,8 @@ public class DataBaseValues {
     static TeamOwner YaelM;
     static TeamOwner Alex;
     static TeamOwner Inon;
+    static TeamOwner Jimmy;
+    static TeamOwner Harry;
 
     //team manager
     static TeamManager itay;
@@ -69,6 +71,7 @@ public class DataBaseValues {
 
     //fan
     static Fan fan;
+    static Fan Ben;
 
 
     //coaches
@@ -175,6 +178,8 @@ public class DataBaseValues {
         YaelM = new TeamOwner("YaelM", "Sunderland", "alona", systemController);
         Max = new TeamOwner("Max", "telAviv", "Max", systemController);
         Alex = new TeamOwner("Alex", "manchesterU", "glazer", systemController);
+        Jimmy = new TeamOwner("Jimmy","jj","jimmy",systemController);
+        Harry = new TeamOwner("Harry","jj","Harry",systemController);
 
 
         DB.addSubscriberToDB("Tomer", teamOwner);
@@ -187,6 +192,8 @@ public class DataBaseValues {
         DB.addSubscriberToDB("Max", Max);
         DB.addSubscriberToDB("Alex", Alex);
         DB.addSubscriberToDB("Inon",Inon);
+        DB.addSubscriberToDB("Jimmy",Jimmy);
+        DB.addSubscriberToDB("Harry",Harry);
 
         //add admins
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
@@ -217,7 +224,9 @@ public class DataBaseValues {
 
         //add fan
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
+        Ben = new Fan ("Ben","1234","ben",systemController);
         DB.addSubscriberToDB("Gate13",fan);
+        DB.addSubscriberToDB("Ben",Ben);
 
 
 
@@ -237,7 +246,7 @@ public class DataBaseValues {
         Wolves.setStadium(s6);
         Everton = new Team ("Everton", teamOwner,1888);
         Everton.setStadium(s7);
-        Watford = new Team ("Watford", teamOwner,1888);
+        Watford = new Team ("Watford", Harry,1888);
         Southhampton = new Team ("Southhampton", teamOwner,1888);
         Arsenal = new Team ("Arsenal", teamOwner,1888);
         Chelsea = new Team ("Chelsea", teamOwner,1888);
@@ -273,6 +282,10 @@ public class DataBaseValues {
         YaelM.getTeams().add(LeedsUnited);
         Alex.getTeams().add(LeedsUnited);
         HTA.getTeamOwners().add(Inon);
+        Jimmy.getTeams().add(Arsenal);
+        Arsenal.getTeamOwners().add(Jimmy);
+        Arsenal.getTeamOwners().add(Alex);
+
 
         //teams
         DB.addTeamToDB("ManchesterUnited",ManchesterUnited);
