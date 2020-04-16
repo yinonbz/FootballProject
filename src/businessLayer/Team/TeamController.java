@@ -8,9 +8,12 @@ public class TeamController {
     private SystemController systemController;
 
     public TeamController() {
-        systemController = SystemController.SystemController();
+        //systemController = SystemController.SystemController();
     }
 
+    public void setSystemController(SystemController systemController) {
+        this.systemController = systemController;
+    }
 
     /**
      * this function add the asset to the chosen team

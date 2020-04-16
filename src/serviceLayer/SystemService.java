@@ -1,5 +1,9 @@
 package serviceLayer;
 
+import businessLayer.Team.TeamController;
+import businessLayer.Tournament.League;
+import businessLayer.Tournament.LeagueController;
+import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.Subscriber;
@@ -11,9 +15,29 @@ import java.util.LinkedList;
 
 public class SystemService {
     private SystemController systemController; //business layer system controller.
+    private LeagueController leagueController;
+    private TeamController teamController;
+    private MatchController matchController;
 
+
+    /** initalizing system and controllers as singeltons
+     *
+     */
     public SystemService(){
         this.systemController = SystemController.SystemController();
+        leagueController = new LeagueController();
+        teamController = new TeamController();
+        matchController = new MatchController();
+
+        systemController.setLeagueController(leagueController);
+        systemController.setTeamController(teamController);
+        systemController.setMatchController(matchController);
+
+        leagueController.setSystemController(systemController);
+
+        matchController.setSystemController(systemController);
+
+        teamController.setSystemController(systemController);
     }
 
     /**

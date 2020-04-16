@@ -14,10 +14,13 @@ public class MatchController {
 
     /**
      * constructor
-     * @param systemController
      */
-    public MatchController (SystemController systemController){
-        this.systemController=systemController;
+    public MatchController (){
+        //this.systemController=systemController;
+    }
+
+    public void setSystemController(SystemController systemController) {
+        this.systemController = systemController;
     }
 
     /**

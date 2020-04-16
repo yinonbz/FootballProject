@@ -29,9 +29,12 @@ public class LeagueController {
     private DemoDB DB;
 
     public LeagueController() {
-        DB = new DemoDB();
+        //DB = new DemoDB();
     }
 
+    public void setSystemController(SystemController systemController) {
+        this.systemController = systemController;
+    }
 
     /**
      * get a random stadium from the DB
