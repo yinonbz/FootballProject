@@ -17,7 +17,15 @@ public class TestTeamOwner {
     private TeamOwner Barkat;
     private TeamOwner Nissanov;
     private TeamOwner Jacob;
+    private TeamOwner Glazers;
+
+    private Player Buzaglo;
+
+    private Referee Alon;
+
+    private Team HTA;
     private Team BeerSheva;
+
 
     static DemoDB DB;
     static DataBaseValues tDB;
@@ -32,6 +40,12 @@ public class TestTeamOwner {
         Jacob = (TeamOwner) DB.selectSubscriberFromDB("JabobS");
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
 
+        Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
+        Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
+        Alon = (Referee) DB.selectSubscriberFromDB("Alon");
+
+        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
+        HTA = DB.selectTeamFromDB("HTA");
 
     }
 
@@ -117,7 +131,6 @@ public class TestTeamOwner {
 
     }
 
-
     @Test
     public void UC8_2(){
         //1 - UNIT
@@ -139,7 +152,6 @@ public class TestTeamOwner {
         assertFalse(Nissanov.isExclusiveTeamOwner());
     }
 
-    /*
     @Test
     public void isFictive() {
 
@@ -180,25 +192,20 @@ public class TestTeamOwner {
     }
     @Test
     public void UC6_6() {
-        TeamOwner teamOwner = new TeamOwner("teamOwner1","to123456","Alon",SystemController.SystemController());
-        Team team1 = new Team("Beer Sheva", teamOwner,1993);
-        Team team2 = new Team("HTA", teamOwner,1990);
 
         //1 - test getTeam
-        assertEquals(teamOwner.getTeam("Beer Sheva"),team1);
-        assertNull(teamOwner.getTeam("NAS"));
-        assertEquals(teamOwner.getTeam("HTA"),team2);
-        assertNotEquals(teamOwner.getTeam("HTA"),team1);
+        assertEquals(Barkat.getTeam("Beer Sheva"),BeerSheva);
+        assertNull(Barkat.getTeam("NAS"));
+        assertEquals(Barkat.getTeam("HTA"),HTA);
+        assertNotEquals(Barkat.getTeam("HTA"),BeerSheva);
 
         //2 - test changeStatus - enabled to disabled
-        teamOwner.changeStatus(team1);
-        assertFalse(team1.getActive());
+        Barkat.changeStatus(BeerSheva);
+        assertFalse(BeerSheva.getActive());
 
         //3 - test changeStatus - disabled to enabled
-        teamOwner.changeStatus(team1);
-        assertTrue(team1.getActive());
+        Barkat.changeStatus(BeerSheva);
+        assertTrue(BeerSheva.getActive());
     }
-    */
-
 
 }

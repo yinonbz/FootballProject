@@ -39,6 +39,7 @@ public class DataBaseValues {
     static Team LeedsUnited;
     static Team Sunderland;
     static Team MacabiHaifa;
+    static Team HTA;
 
     //team owner
     static TeamOwner teamOwner;
@@ -219,8 +220,10 @@ public class DataBaseValues {
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
+        HTA = new Team("HTA", Barkat,1990);
         LeedsUnited = new Team("LeedsUnited",Alex,1899);
         Sunderland = new Team("Sunderland", YaelM,1973);
+
 
 
         //setters for teams
@@ -242,6 +245,7 @@ public class DataBaseValues {
         YaelM.getTeams().add(Sunderland);
         YaelM.getTeams().add(LeedsUnited);
         Alex.getTeams().add(LeedsUnited);
+        HTA.getTeamOwners().add(Barkat);
 
         //teams
         DB.addTeamToDB("ManchesterUnited",ManchesterUnited);
@@ -260,6 +264,7 @@ public class DataBaseValues {
         DB.addTeamToDB("Bnei Yehuda",Bnei_Yehuda);
         DB.addTeamToDB("McabiHaifa",MacabiHaifa);
         DB.addTeamToDB("Beer Sheva", BeerSheva);
+        DB.addTeamToDB("HTA",HTA);
 
         //complaints
         c1 = new Complaint("My system doesn't work",fan.getUsername());
