@@ -142,6 +142,14 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                         player.setFieldJob(edit);
                         team.addPlayer(player);
                     }
+                    else if(typeEdit.equals("salary")){
+                        if(isNumeric(edit)){
+                            int salary = Integer.parseInt(edit);
+                            team.removePlayer(player);
+                            player.setSalary(salary);
+                            team.addPlayer(player);
+                        }
+                    }
                     return true;
                 }
             }
