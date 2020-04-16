@@ -36,6 +36,7 @@ public class DataBaseValues {
     static Team LeedsUnited;
     static Team Sunderland;
     static Team MacabiHaifa;
+    static Team HTA;
 
 
     static TeamOwner teamOwner;
@@ -180,6 +181,7 @@ public class DataBaseValues {
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
+        HTA = new Team("HTA", Barkat,1990);
 
         //setters for teams
         BeerSheva.setTeamId(123); //todo delete and change this fields
@@ -196,6 +198,7 @@ public class DataBaseValues {
         ManchesterUnited.getTeamOwners().add(Glazers);
         BeerSheva.getTeamOwners().add(Barkat);
         BeerSheva.getTeamOwners().add(Nissanov);
+        HTA.getTeamOwners().add(Barkat);
 
         //teams
         DB.addTeamToDB("ManchesterUnited",ManchesterUnited);
@@ -214,6 +217,7 @@ public class DataBaseValues {
         DB.addTeamToDB("Bnei Yehuda",Bnei_Yehuda);
         DB.addTeamToDB("McabiHaifa",MacabiHaifa);
         DB.addTeamToDB("Beer Sheva",BeerSheva);
+        DB.addTeamToDB("HTA",HTA);
 
         systemController.connectToDB(DB);
     }
