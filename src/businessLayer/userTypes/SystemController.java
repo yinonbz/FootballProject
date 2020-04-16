@@ -13,6 +13,7 @@ import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.DemoDB;
+import businessLayer.Tournament.Match.Match;
 
 import java.util.*;
 
