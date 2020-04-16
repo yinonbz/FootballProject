@@ -6,6 +6,7 @@ import businessLayer.userTypes.SystemController;
 
 public class TeamController {
     private SystemController systemController;
+    private static TeamController single_instance;
 
     public TeamController() {
         //systemController = SystemController.SystemController();
@@ -13,6 +14,13 @@ public class TeamController {
 
     public void setSystemController(SystemController systemController) {
         this.systemController = systemController;
+    }
+
+    public static TeamController SystemController() {
+        if (single_instance == null) {
+            single_instance = new TeamController();
+        }
+        return single_instance;
     }
 
     /**
