@@ -884,5 +884,5 @@ public class SystemController {
      */
     public Match findMatch(int matchID){
             return DB.selectMatchFromDB(matchID);
-        }
+    }
 }
