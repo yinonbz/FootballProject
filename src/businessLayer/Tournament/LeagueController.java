@@ -29,12 +29,13 @@ public class LeagueController {
     private DemoDB DB;
 
     public LeagueController() {
-        DB = new DemoDB();
+        systemController = SystemController.SystemController();
     }
 
 
     /**
      * get a random stadium from the DB
+     *
      * @return
      */
     public Stadium getRandomStadium() {
@@ -77,7 +78,6 @@ public class LeagueController {
         this.leagues = leagues;
     }
     */
-
 
 
 /**
@@ -280,7 +280,7 @@ public class LeagueController {
     public void addAssociationRepToController(AssociationRepresentative associationRep) {
         if (associationRep != null) {
             if (!DB.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
-                DB.addAssociationRepresentativeToDB(associationRep.getUsername(),associationRep);
+                DB.addAssociationRepresentativeToDB(associationRep.getUsername(), associationRep);
             }
         }
     }
