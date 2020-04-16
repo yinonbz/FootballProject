@@ -37,7 +37,6 @@ public class LeagueController {
      * get a random stadium from the DB
      * @return
      */
-
     public Stadium getRandomStadium() {
         return systemController.findDefaultStadium();
     }
@@ -144,8 +143,6 @@ public class LeagueController {
     public boolean doesLeagueExist(String leagueID) {
         return systemController.containsLeague(leagueID);
     }
-
-
 
     /**
      * The function creates a league and returns whether the league was created successfully or not
