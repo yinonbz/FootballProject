@@ -15,7 +15,7 @@ public class TeamService {
 
     /**
      * this function add the asset to the chosen team
-     *
+     *uc-6.1.1
      * @param teamId
      * @param assetType
      * @param assetUserName
@@ -25,6 +25,30 @@ public class TeamService {
         return teamController.addAsset(userOwner, teamId,assetType,assetUserName);
     }
 
+    /**
+     * this function delete the asset from a team of a team owner
+     * @param userOwner
+     * @param teamId
+     * @param assetType
+     * @param assetUserName
+     * @return
+     */
+    public boolean deleteAsset(String userOwner,int teamId, String assetType, String assetUserName){
+        return teamController.removeAsset(userOwner, teamId,assetType,assetUserName);
+    }
+
+    public boolean editPlayer(String userOwner,int teamId, String playerUser, String typeEdit, String edit){
+        return teamController.editPlayer(userOwner,teamId,playerUser,typeEdit,edit);
+    }
+    public boolean editCoach(String userOwner,int teamId, String coachUser, String typeEdit, String edit){
+        return teamController.editCoach(userOwner,teamId,coachUser,typeEdit,edit);
+    }
+    public boolean editTeamManager(String userOwner,int teamId, String teamManagerUser, String typeEdit, int edit){
+        return teamController.editTeamManager(userOwner,teamId,teamManagerUser,typeEdit,edit);
+    }
+    public boolean editStadium(String userOwner,int teamId, String editStadiumName, String typeEdit, int edit){
+        return teamController.editStadium(userOwner,teamId,editStadiumName,typeEdit,edit);
+    }
        /**
      *  UC 6.6
      * @param teamName the team's name
@@ -47,17 +71,7 @@ public class TeamService {
     }
 
 
-    /**
-     *
 
-     public boolean confirmAssetAdd(String userowner,int teamId, String assetType, String assetUserName){
-     if(systemController.selectUserFromDB(userowner) instanceof TeamOwner){
-     TeamOwner owner = (TeamOwner)systemController.selectUserFromDB(userowner);
-     return owner.addAsset(teamId,assetType,assetUserName);
-     }
-     return false;
-     }
-     */
 
 
 }

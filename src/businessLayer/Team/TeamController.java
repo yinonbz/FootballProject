@@ -50,4 +50,39 @@ public class TeamController {
     }
 
 
+    public boolean editPlayer(String userOwner, int teamId, String playerUser, String typeEdit, String edit) {
+        Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
+        if(subscriber instanceof TeamOwner && subscriber!=null){
+            TeamOwner teamOwner = (TeamOwner)subscriber;
+            return teamOwner.editPlayer(teamId,playerUser,typeEdit,edit);
+        }
+        return false;
+    }
+
+    public boolean editCoach(String userOwner, int teamId, String coachUser, String typeEdit, String edit) {
+        Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
+        if(subscriber instanceof TeamOwner && subscriber!=null){
+            TeamOwner teamOwner = (TeamOwner)subscriber;
+            return teamOwner.editCoach(teamId,coachUser,typeEdit,edit);
+        }
+        return false;
+    }
+
+    public boolean editTeamManager(String userOwner, int teamId, String teamManagerUser, String typeEdit, int edit) {
+        Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
+        if(subscriber instanceof TeamOwner && subscriber!=null){
+            TeamOwner teamOwner = (TeamOwner)subscriber;
+            return teamOwner.editTeamManager(teamId,teamManagerUser,typeEdit,edit);
+        }
+        return false;
+    }
+
+    public boolean editStadium(String userOwner, int teamId, String editStadiumName, String typeEdit, int edit) {
+        Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
+        if(subscriber instanceof TeamOwner && subscriber!=null){
+            TeamOwner teamOwner = (TeamOwner)subscriber;
+            return teamOwner.editStadium(teamId,editStadiumName,typeEdit,edit);
+        }
+        return false;
+    }
 }
