@@ -248,7 +248,7 @@ public class TestTeamOwner {
      * Unit Test - changeStatus(Team team)
      */
     @Test
-    public void changeStatus() {
+    public void changeStatusUT() {
         //enabled to disabled
         Inon.disableStatus(BeerSheva);
         assertFalse(BeerSheva.getActive());
