@@ -17,4 +17,9 @@ public class Foul extends Event {
         super(matchController,against);
         this.inFavor=inFavor;
     }
+
+    @Override
+    public String toString(){
+        return "Foul By: "+playerSubject.getName()+" "+ "against: "+" "+inFavor.getName();
+    }
 }

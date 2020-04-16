@@ -4,7 +4,6 @@ import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.*;
 

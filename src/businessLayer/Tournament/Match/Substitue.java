@@ -17,4 +17,9 @@ public class Substitue extends Event {
         this.in= in;
         this.out = out;
     }
+
+    @Override
+    public String toString(){
+        return "Substitute On: "+playerSubject.getName()+" "+ "Off: "+" "+out.getName();
+    }
 }
