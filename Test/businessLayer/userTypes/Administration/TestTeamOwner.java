@@ -140,7 +140,7 @@ public class TestTeamOwner {
     }
     @Test
     public void UC6_1() {
-    //teamService.addAsset();
+    teamService.addAsset("AlonaBarkat",123, "Player", "Buzaglo");
 
     }
 
