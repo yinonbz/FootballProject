@@ -206,11 +206,13 @@ public class TeamOwner extends Subscriber {
                     return true;
                 }
                 else if(typeEdit.equals("salary")){
-                    team.removePlayer(player);
-                   // int salary = tryParseInt()
-
-                  //  player.setSalary();
-                    return true;
+                    if(isNumeric(edit)){
+                        int salary = Integer.parseInt(edit);
+                        team.removePlayer(player);
+                        player.setSalary(salary);
+                        team.addPlayer(player);
+                        return true;
+                    }
                 }
             }
         }
@@ -232,6 +234,15 @@ public class TeamOwner extends Subscriber {
                     coach.setTeamJob(edit);
                     team.addCoach(coach);
                     return true;
+                }
+                else if(typeEdit.equals("salary")){
+                    if(isNumeric(edit)){
+                        int salary = Integer.parseInt(edit);
+                        team.removeCoach(coach);
+                        coach.setSalary(salary);
+                        team.addCoach(coach);
+                        return true;
+                    }
                 }
             }
         }
@@ -582,5 +593,17 @@ public class TeamOwner extends Subscriber {
             }
         }
         return false;
+    }
+
+    private boolean isNumeric(String str){
+        if(str == null || str.length() ==0){
+            return false;
+        }
+        for(char c : str.toCharArray()){
+            if(!Character.isDigit(c)){
+                return false;
+            }
+        }
+        return  true;
     }
 }

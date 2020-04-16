@@ -4,6 +4,7 @@ import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
+import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
@@ -25,6 +26,7 @@ public class SystemController {
     private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private LeagueController leagueController;
     private TeamController teamController;
+    private MatchController matchController;
 
     //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
     //private HashMap<String, Team> teams; //name of the team, the team object
@@ -43,8 +45,15 @@ public class SystemController {
 
 
     private SystemController() {
-        leagueController = new LeagueController();
          DB = new DemoDB();
+    }
+
+    public void setLeagueController(LeagueController leagueController) {
+        this.leagueController = leagueController;
+    }
+
+    public void setMatchController(MatchController matchController) {
+        this.matchController = matchController;
     }
 
     /**

@@ -11,6 +11,7 @@ import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.SystemController;
 import businessLayer.userTypes.viewers.Fan;
 import dataLayer.DemoDB;
+import serviceLayer.SystemService;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -104,6 +105,7 @@ public class DataBaseValues {
     static HashMap<Integer, Match> classicTable;
     static MatchController matchController;
     private TeamOwner Jacob;
+    static SystemService systemService;
 
     //complaints
     static Complaint c1;
@@ -119,9 +121,10 @@ public class DataBaseValues {
     public DataBaseValues() {
         DB = new DemoDB();
 
+        systemService = new SystemService();
         systemController = SystemController.SystemController();
         leagueController = systemController.getLeagueController();
-        matchController = new MatchController(systemController);
+        matchController = new MatchController(); // todo change to getter of controller
 
 
         //add Association-Representatives
