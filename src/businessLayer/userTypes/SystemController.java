@@ -44,6 +44,7 @@ public class SystemController {
 
     private SystemController() {
         leagueController = new LeagueController();
+        teamController = new TeamController();
          DB = new DemoDB();
     }
 

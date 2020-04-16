@@ -28,4 +28,15 @@ public class TeamController {
         }
         return false;
     }
+
+    public boolean removeAsset(String userOwner,int teamId, String assetType, String assetUserName){
+        Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
+        if(subscriber instanceof TeamOwner && subscriber!=null){
+            TeamOwner teamOwner = (TeamOwner)subscriber;
+            return teamOwner.deleteAsset(teamId,assetType,assetUserName);
+        }
+        return false;
+    }
+
+
 }

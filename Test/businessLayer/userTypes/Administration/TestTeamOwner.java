@@ -140,8 +140,7 @@ public class TestTeamOwner {
     }
     @Test
     public void UC6_1() {
-    //teamService.addAsset();
-
+    assertTrue(teamService.addAsset("Barkat",123, "Player", "Buzaglo"));
     }
 
     @Test
