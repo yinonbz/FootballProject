@@ -12,36 +12,25 @@ import businessLayer.userTypes.SystemController;
 import static org.junit.Assert.*;
 
 public class TestTeamOwner {
-    /*
+
+
     private TeamOwner Barkat;
-    private TeamOwner Glazers;
     private TeamOwner Nissanov;
-    private Referee Alon;
+    private TeamOwner Jacob;
     private Team BeerSheva;
-    private Team ManchesterUnited;
-    private Team MacabiHaifa;
-    private TeamOwner Jacob;
-    */
 
-    private TeamOwner Barkat;
-    private TeamOwner Nissanov;
-    private TeamOwner Jacob;
-
-
-    //private SystemController systemController;
     static DemoDB DB;
     static DataBaseValues tDB;
 
 
     @Before
     public void createTestValues() {
-       // systemController = SystemController.SystemController();
         tDB = new DataBaseValues();
         DB = tDB.getDB();
         Barkat = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
         Nissanov = (TeamOwner) DB.selectSubscriberFromDB("Nissanov");
         Jacob = (TeamOwner) DB.selectSubscriberFromDB("JabobS");
-
+        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
 
 
     }
@@ -128,10 +117,10 @@ public class TestTeamOwner {
 
     }
 
-    /*
+
     @Test
-    public void UC8_2(){ //todo need to check about the names of the sub-functions tomer
-        //1
+    public void UC8_2(){
+        //1 - UNIT
         //check if Alona who has 2 teams is exclusive
 
         assertFalse(Barkat.isExclusiveTeamOwner());
@@ -150,6 +139,7 @@ public class TestTeamOwner {
         assertFalse(Nissanov.isExclusiveTeamOwner());
     }
 
+    /*
     @Test
     public void isFictive() {
 
@@ -209,5 +199,6 @@ public class TestTeamOwner {
         assertTrue(team1.getActive());
     }
     */
+
 
 }
