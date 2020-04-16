@@ -16,4 +16,9 @@ public class Goal extends Event {
         super(matchController,scorer);
         this.assist = assist;
     }
+
+    @Override
+    public String toString(){
+        return "Goal By: "+playerSubject.getName()+" "+ "assisted: "+" "+assist.getName();
+    }
 }

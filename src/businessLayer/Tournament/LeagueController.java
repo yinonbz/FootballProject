@@ -26,10 +26,10 @@ public class LeagueController {
     private LoggingSystem loggingSystem;
     private AlertSystem alertSystem;
     private SystemController systemController;
-    private DemoDB DB;
+    //private DemoDB DB;
 
     public LeagueController() {
-        //DB = new DemoDB();
+
     }
 
     public void setSystemController(SystemController systemController) {
@@ -41,7 +41,7 @@ public class LeagueController {
      * @return
      */
     public Stadium getRandomStadium() {
-        return DB.selectRandomStadium();
+        return systemController.findDefaultStadium();
     }
 
     /**
@@ -62,24 +62,7 @@ public class LeagueController {
         return true;
     }
 
-    /**
-     * @return
-     */
-    /*
-    public HashMap<String, League> getLeagues() {
-        return leagues;
-    }
-    */
 
-    /**
-     * @param leagues
-     */
-
-    /*
-    public void setLeagues(HashMap<String, League> leagues) {
-        this.leagues = leagues;
-    }
-    */
 
 
 
@@ -137,41 +120,8 @@ public class LeagueController {
         this.loggingSystem = loggingSystem;
     }
 
-    /**
-     * @return
-     */
-    /*
-    public HashMap<String, AssociationRepresentative> getAssociationRepresentatives() {
-        return associationRepresentatives;
-    }
-    */
 
-    /**
-     * @param associationRepresentatives
-     */
-    /*
-    public void setAssociationRepresentatives(List<AssociationRepresentative> associationRepresentatives) {
-        this.associationRepresentatives = associationRepresentatives;
-    }
-    */
 
-    /**
-     * @return
-     */
-    /*
-    public HashMap<String, Referee> getReferees() {
-        return referees;
-    }
-    */
-
-    /**
-     * @param referees
-     */
-    /*
-    public void setReferees(HashMap<String, Referee> referees) {
-        this.referees = referees;
-    }
-    */
 
     /**
      * @return
@@ -194,7 +144,7 @@ public class LeagueController {
      * @return true/false
      */
     public boolean doesLeagueExist(String leagueID) {
-        return DB.containsInSystemLeague(leagueID);
+        return systemController.containsLeague(leagueID);
     }
 
     /**
@@ -209,8 +159,8 @@ public class LeagueController {
             return false;
         }
         League newLeague = new League(leagueID);
-        DB.addLeagueToDB(leagueID, newLeague);
-        if (!DB.containsInSystemLeague(leagueID)) {
+        systemController.addLeagueToDB(leagueID, newLeague);
+        if (!systemController.containsLeague(leagueID)) {
             return false;
         }
         return true;
@@ -226,7 +176,7 @@ public class LeagueController {
      */
     public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate) {
 
-        League leagueToAdd = DB.selectLeagueFromDB(leagueID);
+        League leagueToAdd = systemController.getLeagueFromDB(leagueID);
         if (leagueToAdd == null) {
             return false;
         }
@@ -245,8 +195,8 @@ public class LeagueController {
             return false;
         }
         String refName = referee.getUsername();
-        if (DB.containsInSystemReferee(refName)) {
-            DB.removeRefereeFromDB(refName);
+        if (systemController.containsReferee(refName)) {
+            systemController.removeReferee(refName);
             return true;
         }
         return false;
@@ -266,9 +216,9 @@ public class LeagueController {
         if (refUserName == null || leagueName == null) {
             return false;
         }
-        if (DB.containsInSystemLeague(leagueName) && DB.containsInSystemReferee(refUserName)) {
-            League addingToLeague = DB.selectLeagueFromDB(leagueName);
-            Referee refToAssign = DB.selectRefereeFromDB(refUserName);
+        if (systemController.containsLeague(leagueName) && systemController.containsReferee(refUserName)) {
+            League addingToLeague = systemController.getLeagueFromDB(leagueName);
+            Referee refToAssign = systemController.getRefereeFromDB(refUserName);
             return addingToLeague.addRefereeToSeason(refToAssign, seasonID);
         }
         return false;
@@ -282,8 +232,8 @@ public class LeagueController {
      */
     public void addAssociationRepToController(AssociationRepresentative associationRep) {
         if (associationRep != null) {
-            if (!DB.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
-                DB.addAssociationRepresentativeToDB(associationRep.getUsername(),associationRep);
+            if (!systemController.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
+                systemController.addSubscriberToDB(associationRep.getUsername(),associationRep);
             }
         }
     }
@@ -296,8 +246,8 @@ public class LeagueController {
      */
     public void addRefereeToDataFromSystemController(Referee referee) {
 
-        if (referee != null && !DB.containsInSystemReferee(referee.getUsername())) {
-            DB.addRefereeToDB(referee.getUsername(), referee);
+        if (referee != null && !systemController.containsReferee(referee.getUsername())) {
+            systemController.addSubscriberToDB(referee.getUsername(), referee);
         }
     }
 

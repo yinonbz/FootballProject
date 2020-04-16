@@ -18,7 +18,6 @@ public class MatchService {
 
     //-------------------------Referee-------------------------------
 
-    //FOR ALON//
     /**
      * The function receives the details to assign a foul and a referee's username from the interface layer and calls the reporting method in the business layer
      * @param time
@@ -29,7 +28,6 @@ public class MatchService {
      * @return
      */
     public boolean reportFoulThroughReferee(String time, String playerAgainst, String playOn, String matchID, String username) {
-
         if (!playerAgainst.isEmpty() && !playOn.isEmpty() && tryParseInt(time) && tryParseInt(matchID)){
             int timeEvent = Integer.parseInt(time);
             if(timeEvent>0 && timeEvent<121){
@@ -135,12 +133,45 @@ public class MatchService {
      * @param PlayerAgainst
      * @return
      */
-    public boolean yellowCard (String time, String PlayerAgainst, String matchID,String username){
+    public boolean yellowCard (String time, String PlayerAgainst, String matchID ,String username){
         if (!PlayerAgainst.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
             int timeEvent = Integer.parseInt(time);
             if (timeEvent > 0 && timeEvent < 121) {
                 return matchController.reportOnYellowCard(time, PlayerAgainst,matchID,username);
             }
+        }
+        return false;
+    }
+
+    /**
+     * the function lets a referee to view the details on a game he manages
+     * @param matchID the match id the referee chose
+     * @param usernameRequested the username the user wants to check
+     * @param username the username of the user
+     * @return the string of the details of the match
+     * UC 10.2
+     */
+    public String viewMatchDetails(String matchID, String usernameRequested ,String username){
+        if(tryParseInt(matchID)){
+            int id = Integer.parseInt(matchID);
+            return matchController.displayMatchDetails(id,usernameRequested, username);
+        }
+        return "";
+    }
+
+    /**
+     * the function lets a main referee to edit events after a game
+     * @param matchID
+     * @param usernameRequested
+     * @return
+     * UC 10.4
+     */
+    //int matchID, String usernameRequested, String timeOfEvent, String eventId)
+    public boolean removeEventByMainReferee (String time, String matchID, String usernameRequested, String eventID){
+        if(tryParseInt(matchID) && tryParseInt(eventID) && tryParseInt(time)){
+            int id = Integer.parseInt(matchID);
+            int evID = Integer.parseInt(eventID);
+            return matchController.removeEventByMainReferee(id,usernameRequested,time,evID);
         }
         return false;
     }

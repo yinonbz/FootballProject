@@ -45,10 +45,12 @@ public class SystemService {
      * and generate the arguments needed in the business layer to operate.
      * @param username
      * @return
+     * UC 8.3.1
      */
     public HashMap<Integer, Complaint> displayComplaints(String username) {
         return systemController.displayComplaints(username);
     }
+
 
     /**
      * this function gets the arguments inserted to the presentation layer by the user in the initialization of system
@@ -76,6 +78,7 @@ public class SystemService {
      * the function lets the subscriber to upload a complaint via the presentation layer, and execute the command.
      *  @param content    the content of the complaint
      * @param username the subscriber who wants to complain
+     * UC 3.4
      */
 
     public void addComplaint(String content, String username) {
@@ -105,7 +108,7 @@ public class SystemService {
      * @return true is he responded successfully
      * UC 8.3.2
      */
-    public boolean replyComplaints(int complaintID, String username, String comment) {
+    public boolean replyComplaints(String complaintID, String username, String comment) {
         return systemController.replyComplaints(complaintID,username,comment);
     }
 
@@ -137,10 +140,10 @@ public class SystemService {
 
     /**
      * the function takes a request for opening a new team and puts it in the data structure
-     *
      * @param details of the new team
+     *Not a UC - A function of TEAM OWNER
      */
-    public boolean addToTeamConfirmList(LinkedList<String> details, String username) {
+    public boolean requestForNewTeam(LinkedList<String> details, String username) {
         return systemController.addToTeamConfirmList(details,username);
     }
 
@@ -150,6 +153,7 @@ public class SystemService {
      * @param teamName   the name of the team
      * @param username the subscriber who tries to confirm the request
      * @return true if it done successfully
+     * Not a UC - A function of Association Represntative
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
         return systemController.confirmTeamByAssociationRepresntative(teamName,username);

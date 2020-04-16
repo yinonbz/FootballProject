@@ -27,12 +27,14 @@ public class EventRecord {
         //if the game has already an event in the current minute
         if(gameEvents.containsKey(time)){
             LinkedList <Event> temp = gameEvents.get(time);
+            event.setID(temp.size());
             temp.add(event);
             gameEvents.remove(time);
             gameEvents.put(time,temp);
         }
         else{
           LinkedList<Event> newList = new LinkedList<>();
+          event.setID(0);
           newList.add(event);
           gameEvents.put(time,newList);
         }
@@ -41,15 +43,17 @@ public class EventRecord {
     /**
      * lets the referee to remove an event from the recorder
      * @param time the time of the event
-     * @param event the event the referee wants to remove
+     * @param eventID
      * @return true if the event was removed successfully
      */
-    public boolean removeEvent (String time, Event event){
+    public boolean removeEvent (String time, int eventID){
         if(gameEvents.containsKey(time)){
             LinkedList<Event> temp = gameEvents.get(time);
-            if(temp.contains(event)){
-                temp.remove(event);
-                return true;
+            for(Event event : temp){
+                if(event.id == eventID){
+                    temp.remove(event);
+                    return true;
+                }
             }
         }
         return false;
@@ -62,6 +66,7 @@ public class EventRecord {
      * @param newEvent the new event we want to add
      * @return true if the change was done successfully
      */
+    /*
     public boolean editEvent (String time, Event oldEvent, Event newEvent){
         if(removeEvent(time,oldEvent)){
             addEvent(time,newEvent);
@@ -69,6 +74,7 @@ public class EventRecord {
         }
         return false;
     }
+    */
 
     /**
      *
