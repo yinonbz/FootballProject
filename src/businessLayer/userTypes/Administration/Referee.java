@@ -7,12 +7,13 @@ import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Referee extends Subscriber {
     private String training;
     private LeagueController leagueController;
-    private List<Match> matches;
+    private HashMap<Integer,Match> matches;
     private MatchController matchController;
 
     /**
@@ -26,7 +27,7 @@ public class Referee extends Subscriber {
         super(username, password, name,systemController);
         this.training = training;
         this.leagueController = leaguesController;
-        matches = new ArrayList<>();
+        matches = new HashMap<>();
         this.matchController = matchController;
     }
 
@@ -43,7 +44,7 @@ public class Referee extends Subscriber {
         super(username, password,name, systemController);
         this.training = training;
         this.leagueController = leaguesController;
-        matches = new ArrayList<>();
+        matches = new HashMap<>();
         this.matchController = matchController;
     }
 
@@ -172,11 +173,18 @@ public class Referee extends Subscriber {
 
     }
 
-    /**
-     *
-     */
-    public void viewMatchDetails() {
 
+    /**
+     * the function lets the referee to watch a game that he will manage or managed already
+     * @param matchID the matchID the referee wants to see
+     * @return a string of the game's details
+     */
+    public String viewMatchDetails(int matchID) {
+        if(matches.containsKey(matchID)){
+            Match toDisplay = matches.get(matchID);
+            return toDisplay.toString();
+        }
+        return null;
     }
 
     /**
@@ -234,7 +242,8 @@ public class Referee extends Subscriber {
      */
     public boolean removeFromAllMatches() {
 
-        for (Match e : matches) {
+        for (HashMap.Entry<Integer,Match> entry : matches.entrySet()) {
+            Match e = entry.getValue();
             if(!(e.removeReferee(this))){
                 return false;
             }
