@@ -14,6 +14,6 @@ public interface MatchingPolicy {
     LeagueController leaguesController = null;
     */
 
-    public HashMap <Integer, Match> activatePolicy (HashMap <Integer,Team> teams, LeagueController leagueController);
+    public HashMap <Integer, Match> activatePolicy (HashMap <String,Team> teams, LeagueController leagueController);
 
 }

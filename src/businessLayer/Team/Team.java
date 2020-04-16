@@ -64,6 +64,7 @@ public class Team {
         this.establishedYear = establishedYear;
         this.isActive = isActive;
         this.closedByAdmin=closedByAdmin;
+
     }
     //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited
     /**

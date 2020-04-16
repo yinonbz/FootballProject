@@ -1,7 +1,11 @@
+package serviceLayer;
+
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
+import dataLayer.DataBaseValues;
+import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 
 import org.junit.Test;
@@ -13,43 +17,32 @@ import static org.junit.Assert.*;
 
 public class TestSystemController {
 
-     static SystemController systemController;
-     static Team ManchesterUnited;
-     static Team BeerSheva;
-     static TeamOwner Glazers;
-     static TeamOwner Nissanov;
-     static TeamOwner Barkat;
+     static Team LeedsUnited;
+     static Team Sunderland;
+     static TeamOwner Alex;
+     static TeamOwner Max;
+     static TeamOwner YaelM;
      static Admin admin;
      static Admin admin2;
      static Fan fan;
+    static DemoDB DB;
+    static DataBaseValues tDB;
 
 
     @BeforeClass
+
     public static void createTestValuesForSystemController(){
-        systemController = SystemController.SystemController();
-        admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
-        admin2 = new Admin ("ItaiKatz", "helloWorld", "itai",systemController);
-        Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
-        Nissanov = new TeamOwner("Nissanov", "telAviv","nissanov",systemController);
-        Glazers = new TeamOwner("Glazers", "manchesterU","glazer",systemController);
-        fan = new Fan ("Gate13","aviNimni","avi",systemController);
-        systemController.getSystemSubscribers().put("AlonaBarkat",Barkat);
-        systemController.getSystemSubscribers().put("Nissanov",Nissanov);
-        systemController.getSystemSubscribers().put("Glazers",Glazers);
-        systemController.getSystemSubscribers().put("Gate13",fan);
-        systemController.getSystemSubscribers().put("TomerSein",admin);
-        systemController.getSystemSubscribers().put("ItaiKatz",admin2);
-        ManchesterUnited = new Team("Manchester United",Glazers,1899);
-        ManchesterUnited.getTeamOwners().add(Barkat); //todo will be changed later to a normal function depends on 6.1
-        BeerSheva = new Team("Beer Sheva", Barkat,1973);
-        Barkat.getTeams().add(BeerSheva); //todo will be changed later to a normal function depends on 6.1
-        Barkat.getTeams().add(ManchesterUnited);
-        Glazers.getTeams().add(ManchesterUnited);
-        systemController.addTeam(ManchesterUnited);
-        systemController.addTeam(BeerSheva);
-        systemController.addComplaint("My system doesn't work",fan);
-        systemController.addComplaint("I don't like this team",fan);
-        systemController.addComplaint("",fan);
+        tDB = new DataBaseValues();
+        DB = tDB.getDB();
+        fan = (Fan) DB.selectSubscriberFromDB("Gate13");
+        admin = (Admin)DB.selectSubscriberFromDB("TomerSein");
+        admin2 = (Admin)DB.selectSubscriberFromDB("ItaiKatz");
+        YaelM = (TeamOwner) DB.selectSubscriberFromDB("YaelM");
+        Max = (TeamOwner) DB.selectSubscriberFromDB("Max");
+        Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
+        LeedsUnited = DB.selectTeamFromDB("LeedUnited");
+        Sunderland = DB.selectTeamFromDB("Sunderland");
+
 
     }
 
@@ -77,7 +70,7 @@ public class TestSystemController {
         assertEquals("The User Gate13 was removed",admin.deleteSubscriber("Gate13"));
 
         //2 checks that the user was deleted from the list
-        assertFalse(systemController.getSystemSubscribers().containsKey("Gate13"));
+        assertFalse(DB.containsInSystemSubscribers("Gate13"));
 
         //3
         //checks that the admin can't delete a user that doesn't exist
@@ -85,13 +78,13 @@ public class TestSystemController {
 
         //4
         //checks that the admin can't delete an exclusive team owner
-        assertEquals("Can't remove an exclusive team owner",admin.deleteSubscriber("AlonaBarkat"));
-        assertTrue(systemController.getSystemSubscribers().containsKey("AlonaBarkat"));
+        assertEquals("Can't remove an exclusive team owner",admin.deleteSubscriber("YaelM"));
+        assertTrue(DB.containsInSystemSubscribers("YaelM"));
 
         //5
         //checks admin can't delete himself
         assertEquals("Admin can't remove his own user",admin.deleteSubscriber("TomerSein"));
-        assertTrue(systemController.getSystemSubscribers().containsKey("TomerSein"));
+        assertTrue(DB.containsInSystemSubscribers("TomerSein"));
 
     }
 

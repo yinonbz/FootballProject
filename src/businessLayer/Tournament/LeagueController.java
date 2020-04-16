@@ -7,6 +7,7 @@ import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
+import dataLayer.DemoDB;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,31 +16,29 @@ import java.util.List;
 
 public class LeagueController {
 
-    private HashMap<String, League> leagues;
+    //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
+    //private HashMap<String, League> leagues;
     //private businessLayer.Tournament.RankingPolicy rankingPolicy; //might be list as well, define later
     //private businessLayer.Tournament.MatchingPolicy matchingPolicy; //might be list as well, define later
+    //private List<AssociationRepresentative> associationRepresentatives;
+    //private HashMap<String, Referee> referees;
+
     private LoggingSystem loggingSystem;
-    private List<AssociationRepresentative> associationRepresentatives;
-    private HashMap<String, Referee> referees;
     private AlertSystem alertSystem;
     private SystemController systemController;
+    private DemoDB DB;
 
     public LeagueController() {
-
-        leagues = new HashMap<>();
-        referees = new HashMap<>();
-        associationRepresentatives = new ArrayList<>();
-        //systemController = SystemController.SystemController();
+        DB = new DemoDB();
     }
 
 
     /**
-     * returns the data structure that holds all of the stadiums in the system
-     *
-     * @return the stadiums in the system
+     * get a random stadium from the DB
+     * @return
      */
-    public HashMap<String, Stadium> getStadiums() {
-        return systemController.getStadiums();
+    public Stadium getRandomStadium() {
+        return DB.selectRandomStadium();
     }
 
     /**
@@ -63,19 +62,24 @@ public class LeagueController {
     /**
      * @return
      */
+    /*
     public HashMap<String, League> getLeagues() {
         return leagues;
     }
+    */
 
     /**
      * @param leagues
      */
+
+    /*
     public void setLeagues(HashMap<String, League> leagues) {
         this.leagues = leagues;
     }
-    /*
+    */
 
-     */
+
+
 /**
  *
  * @return
@@ -133,30 +137,38 @@ public class LeagueController {
     /**
      * @return
      */
-    public List<AssociationRepresentative> getAssociationRepresentatives() {
+    /*
+    public HashMap<String, AssociationRepresentative> getAssociationRepresentatives() {
         return associationRepresentatives;
     }
+    */
 
     /**
      * @param associationRepresentatives
      */
+    /*
     public void setAssociationRepresentatives(List<AssociationRepresentative> associationRepresentatives) {
         this.associationRepresentatives = associationRepresentatives;
     }
+    */
 
     /**
      * @return
      */
+    /*
     public HashMap<String, Referee> getReferees() {
         return referees;
     }
+    */
 
     /**
      * @param referees
      */
+    /*
     public void setReferees(HashMap<String, Referee> referees) {
         this.referees = referees;
     }
+    */
 
     /**
      * @return
@@ -179,7 +191,7 @@ public class LeagueController {
      * @return true/false
      */
     public boolean doesLeagueExist(String leagueID) {
-        return leagues.containsKey(leagueID);
+        return DB.containsInSystemLeague(leagueID);
     }
 
     /**
@@ -194,8 +206,8 @@ public class LeagueController {
             return false;
         }
         League newLeague = new League(leagueID);
-        leagues.put(leagueID, newLeague);
-        if (!leagues.containsKey(leagueID)) {
+        DB.addLeagueToDB(leagueID, newLeague);
+        if (!DB.containsInSystemLeague(leagueID)) {
             return false;
         }
         return true;
@@ -211,7 +223,7 @@ public class LeagueController {
      */
     public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate) {
 
-        League leagueToAdd = leagues.get(leagueID);
+        League leagueToAdd = DB.selectLeagueFromDB(leagueID);
         if (leagueToAdd == null) {
             return false;
         }
@@ -230,8 +242,8 @@ public class LeagueController {
             return false;
         }
         String refName = referee.getUsername();
-        if (referees.containsKey(refName)) {
-            referees.remove(refName);
+        if (DB.containsInSystemReferee(refName)) {
+            DB.removeRefereeFromDB(refName);
             return true;
         }
         return false;
@@ -251,9 +263,9 @@ public class LeagueController {
         if (refUserName == null || leagueName == null) {
             return false;
         }
-        if (leagues.containsKey(leagueName) && referees.containsKey(refUserName)) {
-            League addingToLeague = leagues.get(leagueName);
-            Referee refToAssign = referees.get(refUserName);
+        if (DB.containsInSystemLeague(leagueName) && DB.containsInSystemReferee(refUserName)) {
+            League addingToLeague = DB.selectLeagueFromDB(leagueName);
+            Referee refToAssign = DB.selectRefereeFromDB(refUserName);
             return addingToLeague.addRefereeToSeason(refToAssign, seasonID);
         }
         return false;
@@ -267,8 +279,8 @@ public class LeagueController {
      */
     public void addAssociationRepToController(AssociationRepresentative associationRep) {
         if (associationRep != null) {
-            if (!associationRepresentatives.contains(associationRep)) {
-                associationRepresentatives.add(associationRep);
+            if (!DB.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
+                DB.addAssociationRepresentativeToDB(associationRep.getUsername(),associationRep);
             }
         }
     }
@@ -281,8 +293,8 @@ public class LeagueController {
      */
     public void addRefereeToDataFromSystemController(Referee referee) {
 
-        if (referee != null && !referees.containsKey(referee.getUsername())) {
-            referees.put(referee.getUsername(), referee);
+        if (referee != null && !DB.containsInSystemReferee(referee.getUsername())) {
+            DB.addRefereeToDB(referee.getUsername(), referee);
         }
     }
 

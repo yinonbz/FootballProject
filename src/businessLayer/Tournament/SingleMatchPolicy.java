@@ -6,6 +6,7 @@ import businessLayer.Tournament.Match.Stadium;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class SingleMatchPolicy extends AMatchPolicy {
@@ -18,7 +19,7 @@ public class SingleMatchPolicy extends AMatchPolicy {
      * @param league the league
      * @param season the season
      */
-    public SingleMatchPolicy (HashMap <Integer,Team> teams, League league, Season season){
+    public SingleMatchPolicy (HashMap <String,Team> teams, League league, Season season){
         super(teams,league,season);
     }
 
@@ -28,7 +29,7 @@ public class SingleMatchPolicy extends AMatchPolicy {
      * @param leagueController the controller that holds the entire stadiums
      * @return the match table
      */
-    public HashMap<Integer, Match> activatePolicy (HashMap <Integer,Team> teams, LeagueController leagueController){
+    public HashMap<Integer, Match> activatePolicy (HashMap <String,Team> teams, LeagueController leagueController){
         HashMap <Integer, Match> gamesTable = new HashMap<>();
         ArrayList<Match> tempMatchTable = new ArrayList<>(); //we wil save here the games before we schedule a date for them
         if (teams!=null){
@@ -48,7 +49,7 @@ public class SingleMatchPolicy extends AMatchPolicy {
                             }
                             else{
                                 //if no one of the teams has a stadium we will choose one from the controller
-                                Stadium stadium = leagueController.getStadiums().get(0);
+                                Stadium stadium = leagueController.getRandomStadium();
                                 match = new Match (home, away, stadium);
                             }
                         }

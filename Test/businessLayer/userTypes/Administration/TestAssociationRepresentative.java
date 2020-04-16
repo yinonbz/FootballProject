@@ -1,6 +1,8 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
+import dataLayer.DataBaseValues;
+import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import businessLayer.userTypes.SystemController;
@@ -11,20 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestAssociationRepresentative {
 
     static TeamOwner Barkat;
-    static Team BeerSheva;
     static SystemController systemController;
     static AssociationRepresentative EliLuzon;
+    static DataBaseValues tDB;
+    static DemoDB DB;
 
     @BeforeClass
     public static void createTestValues(){
         systemController = SystemController.SystemController();
-        Barkat = new TeamOwner("AlonaBarkat", "beerSheva","alona",systemController);
-        BeerSheva = new Team("Beer Sheva", Barkat,1973);
         Barkat.sendRequestForTeam("ManchesterUnited","1888");
-        BeerSheva = new Team("Beer Sheva", Barkat,1973);
-        systemController.addTeam(BeerSheva);
         EliLuzon = new AssociationRepresentative("EliLuzon", "abcd", "Eli", systemController);
-        systemController.getSystemSubscribers().put("AlonaBarkat",Barkat);
+        DB = new DemoDB();
+        DB = tDB.getDB();
+
     }
 
     @Test
@@ -55,7 +56,7 @@ public class TestAssociationRepresentative {
 
         //2
         //check the stadium was added
-        assertTrue(systemController.getStadiums().containsKey("S1"));
+        assertTrue(DB.getStadiums().containsKey("S1"));
 
         //3
         //see we can't add the same stadium again
