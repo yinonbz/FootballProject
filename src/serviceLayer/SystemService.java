@@ -74,15 +74,6 @@ public class SystemService {
     }
 
 
-    /**
-     *  UC 6.6
-     * @param teamName the team's name
-     * @param userName the user's user name who tries to change the team status
-     * @return true if the status
-     */
-    public Boolean changeTeamStatus(String teamName, String userName){
-        return systemController.changeTeamStatus(teamName,userName);
-    }
 
     /**
      * the function lets the subscriber to upload a complaint via the presentation layer, and execute the command.

@@ -798,13 +798,13 @@ public class SystemController {
         return false;
     }
 
-    /** UC-6.6 - change team status by Team Owner todo-write tests
+    /** UC-6.6 - enable team status by Team Owner todo-write tests
      * @param teamName the name of the team from input
-     * @param userName the user who wants to change the team status
-     * @return true if the team's status has been changed.
+     * @param userName the user who wants to enable the team status
+     * @return true if the team's status has been enabled.
      *          false else.
      */
-    public Boolean changeTeamStatus(String teamName, String userName) {
+    public Boolean enableTeamStatus(String teamName, String userName) {
         if (userName == null || teamName == null) {
             return false;
         }
@@ -815,8 +815,35 @@ public class SystemController {
         if(possibleTeamOwner instanceof TeamOwner){ //check if the user is a team owner
             TeamOwner teamOwner = ((TeamOwner)possibleTeamOwner);
             if(teamOwner.getTeam(teamName) != null){ //check if the team owner owns the team
-                teamOwner.changeStatus(teamOwner.getTeam(teamName));
-                return true;
+                return teamOwner.enableStatus(teamOwner.getTeam(teamName));
+            }
+            else {
+                return false; //the team owner doesn't own the team
+            }
+        }
+        else{
+            return false; //the user isn't a team owner
+        }
+    }
+
+    /** UC-6.6 - disable team status by Team Owner todo-write tests
+     * @param teamName the name of the team from input
+     * @param userName the user who wants to disable the team status
+     * @return true if the team's status has been disabled.
+     *          false else.
+     */
+    public Boolean disableTeamStatus(String teamName, String userName) {
+        if (userName == null || teamName == null) {
+            return false;
+        }
+        if (!DB.containsInSystemSubscribers(userName) || !DB.containsInTeamsDB(teamName)) {
+            return false;
+        }
+        Subscriber possibleTeamOwner = DB.selectSubscriberFromDB(userName);
+        if(possibleTeamOwner instanceof TeamOwner){ //check if the user is a team owner
+            TeamOwner teamOwner = ((TeamOwner)possibleTeamOwner);
+            if(teamOwner.getTeam(teamName) != null){ //check if the team owner owns the team
+                return teamOwner.disableStatus(teamOwner.getTeam(teamName));
             }
             else {
                 return false; //the team owner doesn't own the team

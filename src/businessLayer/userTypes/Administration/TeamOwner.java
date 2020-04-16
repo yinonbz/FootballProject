@@ -4,6 +4,7 @@ import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.*;
 
@@ -296,17 +297,34 @@ public class TeamOwner extends Subscriber {
         return null;
     }
 
+
     /**
-     * @param team team to be enabled/disabled.
+     * @param team team team to be enabled.
+     * @return true if the team has been enabled
+     *         false is already enabled
      */
-    public void changeStatus(Team team) {
+    public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
             team.setActive(true);
+            return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
-        } else {
-            team.setActive(false);
-            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not active.");
         }
+        return false;
+    }
+
+
+    /**
+     * @param team team to be disabled.
+     * @return true if the team has been disabled
+     *         false is already disabled
+     */
+    public Boolean disableStatus(Team team) {
+        if (team.getActive()) {
+            team.setActive(false);
+            return true;
+            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not-active.");
+        }
+        return false;
     }
 
     /**

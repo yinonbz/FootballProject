@@ -31,6 +31,7 @@ public class TestTeamOwner {
 
     static Team HTA;
     static Team BeerSheva;
+    static Team Barca; //This Team will not be in the DB
 
 
 
@@ -232,21 +233,39 @@ public class TestTeamOwner {
 
     }
 
+    /**
+     * Unit Test - getTeam(String teamName)
+     */
     @Test
-    public void UC6_6() {
-
-        //1 - test getTeam
+    public void getTeamUT() {
         assertEquals(Inon.getTeam("Beer Sheva"),BeerSheva);
         assertNull(Inon.getTeam("NAS"));
         assertEquals(Inon.getTeam("HTA"),HTA);
         assertNotEquals(Inon.getTeam("HTA"),BeerSheva);
+    }
 
-        //2 - test changeStatus - enabled to disabled
-        Inon.changeStatus(BeerSheva);
+    /**
+     * Unit Test - changeStatus(Team team)
+     */
+    @Test
+    public void changeStatus() {
+        //enabled to disabled
+        Inon.disableStatus(BeerSheva);
         assertFalse(BeerSheva.getActive());
 
-        //3 - test changeStatus - disabled to enabled
-        Inon.changeStatus(BeerSheva);
+        //disabled to enabled
+        Inon.enableStatus(BeerSheva);
         assertTrue(BeerSheva.getActive());
+    }
+
+    @Test
+    public void UC6_6() {
+        //Test - 1 - Change successfully
+        assertTrue(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
+
+        //Test - 2 - Try to change a Team status which does not exists in the DB
+        assertFalse(teamService.disableTeamStatus("Barca","Glazers"));
+
+
     }
 }
