@@ -7,12 +7,13 @@ import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Referee extends Subscriber {
     private String training;
     private LeagueController leagueController;
-    private List<Match> matches;
+    private HashMap<Integer, Match> matches;
     private MatchController matchController;
 
     /**
@@ -26,7 +27,7 @@ public class Referee extends Subscriber {
         super(username, password, name,systemController);
         this.training = training;
         this.leagueController = leaguesController;
-        matches = new ArrayList<>();
+        matches = new HashMap<>();
         this.matchController = matchController;
     }
 
@@ -43,7 +44,7 @@ public class Referee extends Subscriber {
         super(username, password,name, systemController);
         this.training = training;
         this.leagueController = leaguesController;
-        matches = new ArrayList<>();
+        matches = new HashMap<>();
         this.matchController = matchController;
     }
 
@@ -234,7 +235,7 @@ public class Referee extends Subscriber {
      */
     public boolean removeFromAllMatches() {
 
-        for (Match e : matches) {
+        for (Match e : matches.values()) {
             if(!(e.removeReferee(this))){
                 return false;
             }
