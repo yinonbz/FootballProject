@@ -24,6 +24,8 @@ public class TestTeamOwner {
 
 
     static Player Buzaglo;
+    static Player Tamash;
+    static Player Roso; //This Player will not be in the DB
 
     static Referee Alon;
 
@@ -51,6 +53,7 @@ public class TestTeamOwner {
         Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
         Inon = (TeamOwner) DB.selectSubscriberFromDB("Inon");
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
+        Tamash = (Player) DB.selectSubscriberFromDB("Tamash");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
 
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
@@ -218,7 +221,15 @@ public class TestTeamOwner {
 
     @Test
     public void UC_6_2() {
-        //Test 1
+        //Test 1 - add Successfully
+        assertTrue(Barkat.appointToOwner(Tamash, "Beer Sheva"));
+
+        //Test - 2 - Try to add a Player which does not exists in the DB
+        assertFalse(Barkat.appointToOwner(Roso, "Beer Sheva"));
+
+        //Test - 3 -Try and Fail to add someone which is already a team owner.
+        assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva"));
+
     }
 
     @Test

@@ -53,6 +53,7 @@ public class DataBaseValues {
     static TeamOwner Alex;
     static TeamOwner Inon;
 
+
     //team manager
     static TeamManager itay;
 
@@ -61,6 +62,7 @@ public class DataBaseValues {
 
     //players
     static Player Buzaglo;
+    static Player Tamash;
 
     //admins
     static Admin admin;
@@ -195,8 +197,10 @@ public class DataBaseValues {
 
         //add player
         Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
+        Tamash = new Player("Tamash","Tamash123","Tamash","1983","captain",0,null,systemController);
 
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
+        DB.addSubscriberToDB("Tamash",Tamash);
 
         //add referee
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);

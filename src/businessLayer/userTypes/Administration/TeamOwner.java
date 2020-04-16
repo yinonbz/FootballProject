@@ -483,7 +483,8 @@ public class TeamOwner extends Subscriber {
      *          false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
      */
     public Boolean appointToOwner(Subscriber subscriber, String teamName){
-
+        if(subscriber == null)
+            return false; //subscriber doesn't exist in the DB
         if(subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner){
             if(!(subscriber instanceof TeamOwner) && ((OwnerEligible) subscriber).isOwner() == false){
                 if(getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
