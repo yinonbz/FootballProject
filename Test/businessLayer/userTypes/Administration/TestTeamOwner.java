@@ -260,12 +260,22 @@ public class TestTeamOwner {
 
     @Test
     public void UC6_6() {
-        //Test - 1 - Change successfully
+        //Test - 1 - Disable successfully
         assertTrue(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
 
-        //Test - 2 - Try to change a Team status which does not exists in the DB
+        //Test - 2 - Try to disable a Team status which does not exists in the DB
         assertFalse(teamService.disableTeamStatus("Barca","Glazers"));
 
+        //Test - 3 - Try to disable an already disabled team
+        assertFalse(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
 
+        //Test - 4 - Enable successfully
+        assertTrue(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
+
+        //Test - 5 - Try to enable a Team status which does not exists in the DB
+        assertFalse(teamService.enableTeamStatus("Barca","Glazers"));
+
+        //Test - 6 - Try to enable an already disabled team
+        assertFalse(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
     }
 }

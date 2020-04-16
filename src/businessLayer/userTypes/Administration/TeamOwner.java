@@ -301,7 +301,7 @@ public class TeamOwner extends Subscriber {
     /**
      * @param team team team to be enabled.
      * @return true if the team has been enabled
-     *         false is already enabled
+     *         false if already enabled
      */
     public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
@@ -309,6 +309,7 @@ public class TeamOwner extends Subscriber {
             return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
         }
+        //System.out.println("The team '" + team.getTeamName() + "' has already been enabled.");
         return false;
     }
 
@@ -316,7 +317,7 @@ public class TeamOwner extends Subscriber {
     /**
      * @param team team to be disabled.
      * @return true if the team has been disabled
-     *         false is already disabled
+     *         false if already disabled
      */
     public Boolean disableStatus(Team team) {
         if (team.getActive()) {
@@ -324,6 +325,7 @@ public class TeamOwner extends Subscriber {
             return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not-active.");
         }
+        //System.out.println("The team '" + team.getTeamName() + "' has already been disabled.");
         return false;
     }
 
