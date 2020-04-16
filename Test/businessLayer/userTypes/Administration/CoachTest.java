@@ -13,7 +13,7 @@ public class CoachTest {
 
     @Before
     public void createTestValues() {
-        henry = new Coach("Henry", "Henry123", "Henry", "manager", "assistent manager",systemController);
+        henry = new Coach("Henry", "Henry123", "Henry", "manager", "assistent manager",0,systemController);
         teamOwner = new TeamOwner("HenryFictive", "HenryF123", "HenryF", systemController);
     }
 

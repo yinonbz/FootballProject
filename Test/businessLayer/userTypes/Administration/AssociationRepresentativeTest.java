@@ -1,10 +1,11 @@
 package businessLayer.userTypes.Administration;
 
-import businessLayer.Utilities.Financial.FinancialMonitoring;
+
+import dataLayer.DataBaseValues;
+import dataLayer.DemoDB;
 import org.junit.Before;
 import org.junit.Test;
-import businessLayer.Tournament.LeagueController;
-import businessLayer.userTypes.SystemController;
+
 
 import java.util.Date;
 
@@ -13,20 +14,33 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AssociationRepresentativeTest {
 
-    private LeagueController leaguesControllerTest;
-    private SystemController systemController;
     private AssociationRepresentative gal;
     private AssociationRepresentative dor;
     private AssociationRepresentative tali;
 
+    static private DataBaseValues testingDBValues;
+    static private DemoDB testingDB;
+
+    //-------tomer's part-------------
+
+    static TeamOwner Barkat;
+    static AssociationRepresentative EliLuzon;
+
+
     @Before
     public void createTestValues() {
 
-        systemController = SystemController.SystemController();
-        leaguesControllerTest = systemController.getLeagueController();
-        gal = new AssociationRepresentative("gal5", "1111", "gal", new FinancialMonitoring("empty for now"), leaguesControllerTest, systemController);
-        dor = new AssociationRepresentative("gal5", "1111", "gal", new FinancialMonitoring("empty for now"), leaguesControllerTest, systemController);
-        tali = new AssociationRepresentative("gal5", "1111", "gal", new FinancialMonitoring("empty for now"), leaguesControllerTest, systemController);
+        testingDBValues = new DataBaseValues();
+        testingDB = testingDBValues.getDB();
+        gal = (AssociationRepresentative)testingDB.selectSubscriberFromDB("gal5");
+        dor = (AssociationRepresentative)testingDB.selectSubscriberFromDB("dor12");
+        tali = (AssociationRepresentative)testingDB.selectSubscriberFromDB("tali5");
+
+        Barkat = (TeamOwner)testingDB.selectSubscriberFromDB("AlonaBarkat");
+        Barkat.sendRequestForTeam("HapoelBeerSheva","1888");
+        EliLuzon = (AssociationRepresentative)testingDB.selectSubscriberFromDB("EliLuzon");
+
+
 
     }
 
@@ -111,5 +125,47 @@ public class AssociationRepresentativeTest {
 
         //7. tali assigns Bob to a non-existing league
         assertFalse(tali.assignRefereeToSeason("Bob", "102", 1));
+    }
+
+    @Test
+    public void checkTeamConfirmation(){
+        //1
+        //check if a regular confirmation
+        assertTrue(EliLuzon.confirmTeamRequest("HapoelBeerSheva"));
+
+        //2
+        //check if a team that already exists get false
+        assertFalse(EliLuzon.confirmTeamRequest("Beer Sheva"));
+
+        //3
+        //check that a team that doesn't exist get false
+        assertFalse(EliLuzon.confirmTeamRequest(""));
+
+        //4
+        //check that a team that doesn't exist get false
+        assertFalse(EliLuzon.confirmTeamRequest("HTA"));
+    }
+
+    @Test
+    public void checkAddStadium(){
+
+        //1
+        //check that a regular stadium is being updated
+        assertTrue(EliLuzon.createNewStadium("S1","200"));
+
+        //2
+        //check the stadium was added
+        assertTrue(testingDB.getStadiums().containsKey("S1"));
+
+        //3
+        //see we can't add the same stadium again
+        assertFalse(EliLuzon.createNewStadium("S1","200"));
+
+        //4
+        //see wa can't add a stadium with corrupt value
+        assertFalse(EliLuzon.createNewStadium("","200"));
+
+        //5
+        assertFalse(EliLuzon.createNewStadium("S3",""));
     }
 }

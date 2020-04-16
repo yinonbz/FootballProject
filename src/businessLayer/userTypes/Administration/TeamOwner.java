@@ -108,7 +108,7 @@ public class TeamOwner extends Subscriber {
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && !teamManager.getTeam().equals(team)) {
+                    if (teamManager != null && teamManager.getTeam()==null) {//ido change !teamManager.getTeam().equals(team)
                         team.addTeamManager(teamManager);
                         teamManager.setTeam(team);
                         this.teamManagers.put(team,teamManager);
@@ -156,9 +156,10 @@ public class TeamOwner extends Subscriber {
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && teamManagers.containsKey(team) && teamManagers.get(team).equals(teamManager)) {
+                    if (teamManager != null && teamManagers.containsKey(team) && teamManagers.get(team).equals(teamManager)&&teamManager.getTeam().equals(team)) {
                         team.removeTeamManager(teamManager);
                         teamManager.setTeam(null);
+                        this.teamManagers.remove(team);
                         isDeleted = true;
                     }
                     break;
@@ -201,6 +202,13 @@ public class TeamOwner extends Subscriber {
                     team.removePlayer(player);
                     player.setFieldJob(edit);
                     team.addPlayer(player);
+                    return true;
+                }
+                else if(typeEdit.equals("salary")){
+                    team.removePlayer(player);
+                   // int salary = tryParseInt()
+
+                  //  player.setSalary();
                     return true;
                 }
             }
@@ -326,8 +334,8 @@ public class TeamOwner extends Subscriber {
     public boolean addManager(String username, Permissions permission,Team team,int salary){
         //check if user exists in out system
         Subscriber subscriber=null;
-        if(systemController.getSystemSubscribers().containsKey(username)){
-            subscriber = systemController.getSystemSubscribers().get(username);
+        if(systemController.checkUserExists(username)){
+            subscriber = systemController.selectUserFromDB(username);
         }
 
         //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
@@ -342,9 +350,8 @@ public class TeamOwner extends Subscriber {
 
             TeamManager newTeamManger = new TeamManager(subscriber.getUsername(),
                     subscriber.getPassword(),subscriber.getName(),team,salary,this.getSystemController());
-             systemController.getSystemSubscribers().put(username,newTeamManger);
+             systemController.addSubscriberToDB(username,newTeamManger);
             subscriber= newTeamManger;
-
 
             //assign to team manager field in the team objects
             team.setTeamManager((TeamManager)subscriber);
@@ -389,10 +396,10 @@ public class TeamOwner extends Subscriber {
 
     public boolean fireManager(String username,Team team){
 
-//check if user exists in out system
+        //check if user exists in out system
         Subscriber subscriber=null;
-        if(systemController.getSystemSubscribers().containsKey(username)){
-            subscriber = systemController.getSystemSubscribers().get(username);
+        if(systemController.checkUserExists(username)){
+            subscriber = systemController.selectUserFromDB(username);
         }
 
         //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
@@ -509,7 +516,7 @@ public class TeamOwner extends Subscriber {
      * @param teamName the team name to add a new team owner.
      */
     private void updateFictiveOwner(String newUserName, Subscriber subscriber, String teamName) {
-        while (subscriber.getSystemController().getSystemSubscribers().containsKey(newUserName)) { //generate new fictive user name
+        while (subscriber.getSystemController().checkUserExists(newUserName)) { //generate new fictive user name
             newUserName = newUserName + newTeamOwnerCounter++;
         }
         TeamOwner newTeamOwner = new TeamOwner(newUserName, subscriber.getPassword(), "fictive", subscriber.getSystemController());

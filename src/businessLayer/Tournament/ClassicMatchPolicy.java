@@ -15,7 +15,7 @@ public class ClassicMatchPolicy extends AMatchPolicy{
      * @param league the league
      * @param season the season
      */
-    public ClassicMatchPolicy (HashMap <Integer,Team> teams, League league, Season season){
+    public ClassicMatchPolicy (HashMap <String,Team> teams, League league, Season season){
         super(teams,league,season);
     }
 
@@ -25,7 +25,7 @@ public class ClassicMatchPolicy extends AMatchPolicy{
      * @param leagueController the league controller
      * @return
      */
-    public HashMap<Integer, Match> activatePolicy (HashMap <Integer, Team> teams, LeagueController leagueController){
+    public HashMap<Integer, Match> activatePolicy (HashMap <String, Team> teams, LeagueController leagueController){
         HashMap <Integer, Match> gamesTable = new HashMap<>();
         ArrayList<Match> tempMatchTable = new ArrayList<>(); //we wil save here the games before we schedule a date for them
         if (teams!=null){
@@ -41,7 +41,7 @@ public class ClassicMatchPolicy extends AMatchPolicy{
                         }
                         else{
                             //if the home team can't host the game, it will be played in a random stadium
-                            match = new Match(home,away,leagueController.getStadiums().get(0));
+                            match = new Match(home,away,leagueController.getRandomStadium());
                         }
                         tempMatchTable.add(match);
                     }
