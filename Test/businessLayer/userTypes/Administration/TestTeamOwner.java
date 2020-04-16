@@ -9,29 +9,33 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
+import serviceLayer.TeamService;
 
 import static org.junit.Assert.*;
 
 public class TestTeamOwner {
-    /*
-    private TeamOwner Barkat;
-    private TeamOwner Glazers;
-    private TeamOwner Nissanov;
-    private Referee Alon;
-    private Team BeerSheva;
-    private Team ManchesterUnited;
-    private Team MacabiHaifa;
-    private TeamOwner Jacob;
-    */
+
 
     static TeamOwner Barkat;
     static TeamOwner Nissanov;
     static TeamOwner Jacob;
+    static TeamOwner Glazers;
+    static TeamOwner Inon;
 
 
-    //private SystemController systemController;
+    static Player Buzaglo;
+
+    static Referee Alon;
+
+    static Team HTA;
+    static Team BeerSheva;
+
+
     static DemoDB DB;
     static DataBaseValues tDB;
+
+
+    static TeamService teamService;
 
 
     @BeforeClass
@@ -41,8 +45,15 @@ public class TestTeamOwner {
         DB = tDB.getDB();
         Barkat = (TeamOwner) DB.selectSubscriberFromDB("AlonaBarkat");
         Nissanov = (TeamOwner) DB.selectSubscriberFromDB("Nissanov");
-        Jacob = (TeamOwner) DB.selectSubscriberFromDB("JacobS");
+        Jacob = (TeamOwner) DB.selectSubscriberFromDB("JabobS");
+        Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
+        Inon = (TeamOwner) DB.selectSubscriberFromDB("Inon");
+        Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
+        Alon = (Referee) DB.selectSubscriberFromDB("Alon");
 
+        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
+        HTA = DB.selectTeamFromDB("HTA");
+        teamService = new TeamService();
 
     }
 
@@ -126,13 +137,16 @@ public class TestTeamOwner {
         assertTrue(Jacob.editStadium(789,"samiOfer","numberOfSeats",50));
 
         assertFalse(Jacob.editStadium(789,"natania","numberOfSeats",50));
+    }
+    @Test
+    public void UC6_1() {
+    //teamService.addAsset();
 
     }
 
-    /*
     @Test
-    public void UC8_2(){ //todo need to check about the names of the sub-functions tomer
-        //1
+    public void UC8_2(){
+        //1 - UNIT
         //check if Alona who has 2 teams is exclusive
 
         assertFalse(Barkat.isExclusiveTeamOwner());
@@ -191,24 +205,19 @@ public class TestTeamOwner {
     }
     @Test
     public void UC6_6() {
-        TeamOwner teamOwner = new TeamOwner("teamOwner1","to123456","Alon",SystemController.SystemController());
-        Team team1 = new Team("Beer Sheva", teamOwner,1993);
-        Team team2 = new Team("HTA", teamOwner,1990);
 
         //1 - test getTeam
-        assertEquals(teamOwner.getTeam("Beer Sheva"),team1);
-        assertNull(teamOwner.getTeam("NAS"));
-        assertEquals(teamOwner.getTeam("HTA"),team2);
-        assertNotEquals(teamOwner.getTeam("HTA"),team1);
+        assertEquals(Inon.getTeam("Beer Sheva"),BeerSheva);
+        assertNull(Inon.getTeam("NAS"));
+        assertEquals(Inon.getTeam("HTA"),HTA);
+        assertNotEquals(Inon.getTeam("HTA"),BeerSheva);
 
         //2 - test changeStatus - enabled to disabled
-        teamOwner.changeStatus(team1);
-        assertFalse(team1.getActive());
+        Inon.changeStatus(BeerSheva);
+        assertFalse(BeerSheva.getActive());
 
         //3 - test changeStatus - disabled to enabled
-        teamOwner.changeStatus(team1);
-        assertTrue(team1.getActive());
+        Inon.changeStatus(BeerSheva);
+        assertTrue(BeerSheva.getActive());
     }
-    */
-
 }

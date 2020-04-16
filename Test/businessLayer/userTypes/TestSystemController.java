@@ -1,9 +1,11 @@
-package serviceLayer;
+package businessLayer.userTypes;
 
 import businessLayer.Team.Team;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
+import dataLayer.DataBaseValues;
+import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 
 import org.junit.Test;
@@ -15,7 +17,6 @@ import static org.junit.Assert.*;
 
 public class TestSystemController {
 
-     static SystemController systemController;
      static Team LeedsUnited;
      static Team Sunderland;
      static TeamOwner Alex;
@@ -24,35 +25,24 @@ public class TestSystemController {
      static Admin admin;
      static Admin admin2;
      static Fan fan;
+    static DemoDB DB;
+    static DataBaseValues tDB;
 
 
     @BeforeClass
 
     public static void createTestValuesForSystemController(){
-//        systemController = SystemController.SystemController();
-//        admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
-//        admin2 = new Admin ("ItaiKatz", "helloWorld", "itai",systemController);
-//        YaelM = new TeamOwner("AlonaYaelM", "Sunderland","alona",systemController);
-//        Max = new TeamOwner("Max", "telAviv","Max",systemController);
-//        Alex = new TeamOwner("Alex", "manchesterU","glazer",systemController);
-//        fan = new Fan ("Gate13","aviNimni","avi",systemController);
-//        systemController.getSystemSubscribers().put("AlonaYaelM",YaelM);
-//        systemController.getSystemSubscribers().put("Max",Max);
-//        systemController.getSystemSubscribers().put("Alex",Alex);
-//        systemController.getSystemSubscribers().put("Gate13",fan);
-//        systemController.getSystemSubscribers().put("TomerSein",admin);
-//        systemController.getSystemSubscribers().put("ItaiKatz",admin2);
-//        LeedsUnited = new Team("Manchester United",Alex,1899);
-//        LeedsUnited.getTeamOwners().add(YaelM); //todo will be changed later to a normal function depends on 6.1
-//        Sunderland = new Team("Beer Sheva", YaelM,1973);
-//        YaelM.getTeams().add(Sunderland); //todo will be changed later to a normal function depends on 6.1
-//        YaelM.getTeams().add(LeedsUnited);
-//        Alex.getTeams().add(LeedsUnited);
-//        systemController.addTeam(LeedsUnited);
-//        systemController.addTeam(Sunderland);
-//        systemController.addComplaint("My system doesn't work",fan);
-//        systemController.addComplaint("I don't like this team",fan);
-//        systemController.addComplaint("",fan);
+        tDB = new DataBaseValues();
+        DB = tDB.getDB();
+        fan = (Fan) DB.selectSubscriberFromDB("Gate13");
+        admin = (Admin)DB.selectSubscriberFromDB("TomerSein");
+        admin2 = (Admin)DB.selectSubscriberFromDB("ItaiKatz");
+        YaelM = (TeamOwner) DB.selectSubscriberFromDB("YaelM");
+        Max = (TeamOwner) DB.selectSubscriberFromDB("Max");
+        Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
+        LeedsUnited = DB.selectTeamFromDB("LeedUnited");
+        Sunderland = DB.selectTeamFromDB("Sunderland");
+
 
     }
 
@@ -64,7 +54,7 @@ public class TestSystemController {
 
         //2
         //close team that doesn't exist
-        assertFalse(admin.closeTeam("HTA"));
+        assertFalse(admin.closeTeam("MCA"));
 
         //3
         //close team that is already closed
@@ -74,27 +64,27 @@ public class TestSystemController {
 
     @Test
     public void UC8_2(){
-//        //1
-//        //checks if we can delete a fan from the system
-//
-//        assertEquals("The User Gate13 was removed",admin.deleteSubscriber("Gate13"));
-//
-//        //2 checks that the user was deleted from the list
-//        assertFalse(systemController.getSystemSubscribers().containsKey("Gate13"));
-//
-//        //3
-//        //checks that the admin can't delete a user that doesn't exist
-//        assertEquals("User doesn't exist in the system",admin.deleteSubscriber("Gate13"));
-//
-//        //4
-//        //checks that the admin can't delete an exclusive team owner
-//        assertEquals("Can't remove an exclusive team owner",admin.deleteSubscriber("AlonaYaelM"));
-//        assertTrue(systemController.getSystemSubscribers().containsKey("AlonaYaelM"));
-//
-//        //5
-//        //checks admin can't delete himself
-//        assertEquals("Admin can't remove his own user",admin.deleteSubscriber("TomerSein"));
-//        assertTrue(systemController.getSystemSubscribers().containsKey("TomerSein"));
+        //1
+        //checks if we can delete a fan from the system
+
+        assertEquals("The User Gate13 was removed",admin.deleteSubscriber("Gate13"));
+
+        //2 checks that the user was deleted from the list
+        assertFalse(DB.containsInSystemSubscribers("Gate13"));
+
+        //3
+        //checks that the admin can't delete a user that doesn't exist
+        assertEquals("User doesn't exist in the system",admin.deleteSubscriber("Gate13"));
+
+        //4
+        //checks that the admin can't delete an exclusive team owner
+        assertEquals("Can't remove an exclusive team owner",admin.deleteSubscriber("YaelM"));
+        assertTrue(DB.containsInSystemSubscribers("YaelM"));
+
+        //5
+        //checks admin can't delete himself
+        assertEquals("Admin can't remove his own user",admin.deleteSubscriber("TomerSein"));
+        assertTrue(DB.containsInSystemSubscribers("TomerSein"));
 
     }
 
@@ -113,16 +103,16 @@ public class TestSystemController {
 
         //1
         //regular test add a comment
-        assertTrue(admin.replyComplaints(0,admin, "Solved"));
+        assertTrue(admin.replyComplaints(0,admin.getUsername(), "Solved"));
  //       System.out.println(systemController.getSystemComplaints().get(0).toString());
 
         //2
         //can't add an empty comment
-        assertFalse(admin.replyComplaints(0,admin, ""));
+        assertFalse(admin.replyComplaints(0,admin.getUsername(), ""));
 
         //3
         //can't add a comment to invalid complaint id
-        assertFalse(admin.replyComplaints(3,admin, ""));
+        assertFalse(admin.replyComplaints(3,admin.getUsername(), ""));
 
     }
 
