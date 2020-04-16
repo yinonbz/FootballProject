@@ -1,9 +1,7 @@
+package businessLayer.userTypes.Administration;
+
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
-import businessLayer.userTypes.Administration.Player;
-import businessLayer.userTypes.Administration.Referee;
-import businessLayer.userTypes.Administration.TeamManager;
-import businessLayer.userTypes.Administration.TeamOwner;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
@@ -19,8 +17,8 @@ public class TestTeamOwner {
     private TeamOwner Barkat;
     private TeamOwner Nissanov;
     private TeamOwner Jacob;
-    private Team BeerSheva;
     private TeamOwner Glazers;
+
     private TeamOwner Inon;
 
 
@@ -29,6 +27,8 @@ public class TestTeamOwner {
     private Referee Alon;
 
     private Team HTA;
+    private Team BeerSheva;
+
 
 
     //private SystemController systemController;
@@ -48,8 +48,8 @@ public class TestTeamOwner {
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
 
-        HTA = DB.selectTeamFromDB("HTA");
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
+        HTA = DB.selectTeamFromDB("HTA");
 
     }
 

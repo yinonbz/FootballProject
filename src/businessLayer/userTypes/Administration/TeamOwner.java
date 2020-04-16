@@ -45,7 +45,7 @@ public class TeamOwner extends Subscriber {
                     details.add(teamName);
                     details.add(establishedYear);
                     details.add(getUsername());
-                    return systemController.addToTeamConfirmList(details, this);
+                    return systemController.addToTeamConfirmList(details, this.getUsername());
                 }
             }
         }
