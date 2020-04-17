@@ -60,18 +60,21 @@ public class TeamService {
         return teamController.addManager(teamOwner,username,permission,teamName,salary);
     }
 
+    public boolean fireManager(String ownerUser,String username,String teamName) {
+        return teamController.fireManager(ownerUser,username,teamName);
+    }
 
-    /**
-     *
+        /**
+         *
 
-     public boolean confirmAssetAdd(String userowner,int teamId, String assetType, String assetUserName){
-     if(systemController.selectUserFromDB(userowner) instanceof TeamOwner){
-     TeamOwner owner = (TeamOwner)systemController.selectUserFromDB(userowner);
-     return owner.addAsset(teamId,assetType,assetUserName);
-     }
-     return false;
-     }
-     */
+         public boolean confirmAssetAdd(String userowner,int teamId, String assetType, String assetUserName){
+         if(systemController.selectUserFromDB(userowner) instanceof TeamOwner){
+         TeamOwner owner = (TeamOwner)systemController.selectUserFromDB(userowner);
+         return owner.addAsset(teamId,assetType,assetUserName);
+         }
+         return false;
+         }
+         */
 
 
 }

@@ -72,5 +72,22 @@ public class TeamController {
         return false;
     }
 
+    public boolean fireManager(String ownerUser,String username,String teamName) {
+        if (ownerUser != null && username != null && teamName != null) {
+            Subscriber subscriber = systemController.getSubscriberByUserName(ownerUser);
+            if (subscriber instanceof TeamOwner) {
+                TeamOwner owner = (TeamOwner) subscriber;
+                return owner.fireManager(username, systemController.getTeamByName(teamName));
+            } else if (subscriber instanceof OwnerEligible) {
+                OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+                if (ownerEligible.isOwner()) {
+                    TeamOwner owner = ownerEligible.getTeamOwner();
+                    return owner.fireManager(username, systemController.getTeamByName(teamName));
+                }
+            }
+        }
+        return false;
+    }
 
-}
+
+    }

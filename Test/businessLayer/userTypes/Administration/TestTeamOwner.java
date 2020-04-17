@@ -17,19 +17,24 @@ public class TestTeamOwner {
     static TeamOwner Jacob;
     static TeamOwner Glazers;
     static TeamOwner Inon;
+    static TeamOwner Alex;
+    static TeamOwner piqueF;
 
     static TeamManager klopp;
+    static TeamManager pep;
 
 
     static Player Buzaglo;
     static Player Tamash;
     static Player Roso; //This Player will not be in the DB
+    static Player pique;
 
     static Referee Alon;
 
     static Team HTA;
     static Team BeerSheva;
     static Team Barca; //This Team will not be in the DB
+    static Team LeedsUnited; //This Team will not be in the DB
 
 
 
@@ -39,7 +44,6 @@ public class TestTeamOwner {
 
 
     static TeamService teamService;
-
 
     @BeforeClass
     public static void createTestValues() {
@@ -51,9 +55,15 @@ public class TestTeamOwner {
         Jacob = (TeamOwner) DB.selectSubscriberFromDB("JabobS");
         Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
         Inon = (TeamOwner) DB.selectSubscriberFromDB("Inon");
+        piqueF = (TeamOwner) DB.selectSubscriberFromDB("piqueF");
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
         Tamash = (Player) DB.selectSubscriberFromDB("Tamash");
+        pique = (Player) DB.selectSubscriberFromDB("pique");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
+
+        pep = (TeamManager) DB.selectSubscriberFromDB("pepG");
+        LeedsUnited = DB.selectTeamFromDB("LeedsUnited");
+        Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
 
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
         HTA = DB.selectTeamFromDB("HTA");
@@ -153,9 +163,28 @@ public class TestTeamOwner {
 
     @Test
     public void UC6_4(){
+        //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        //add same manager again and adding manager to occupied team
         assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        //wrong username
+        assertFalse(teamService.addManager("Inon","kloppJU","GENERAL","HTA","100"));
+        //try assign a teamOwner
+        assertFalse(teamService.addManager("Inon","AlonaBarkat","GENERAL","HTA","100"));
 
+
+    }
+
+    @Test
+    public void UC6_5(){
+        //all good
+        assertTrue(teamService.fireManager("Inon","kloppJ","HTA"));
+        //fire teamowner
+        assertFalse(teamService.fireManager("Inon","AlonaBarkat","HTA"));
+        //wrong username
+        assertFalse(teamService.fireManager("Inon","kloppJU","HTA"));
+        //try fire the same manager again
+        assertFalse(teamService.fireManager("Inon","kloppJ","HTA"));
     }
 
 
@@ -285,5 +314,53 @@ public class TestTeamOwner {
 
         //Test - 6 - Try to enable an already disabled team
         assertFalse(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
+    }
+
+    @Test
+    public void addManager() {
+        //try assign manager to a team that not belong to me
+        assertFalse(Alex.addManager("pepG",Permissions.GENERAL,BeerSheva,200));
+        //manager already has team
+        assertFalse(Alex.addManager("itayK",Permissions.GENERAL,LeedsUnited,200));
+        //all good
+        assertTrue(Alex.addManager("pepG",Permissions.GENERAL,LeedsUnited,1000));
+        //add again same manager
+        assertFalse(Alex.addManager("pepG",Permissions.GENERAL,LeedsUnited,1000));
+
+    }
+
+    @Test
+    public void fireManager() {
+        //try fire manager from team that not belong to me
+        assertFalse(Alex.fireManager("itayK",BeerSheva));
+        //not my manager
+        assertFalse(Alex.fireManager("itayK",LeedsUnited));
+        //all good
+        assertTrue(Alex.fireManager("pepG",LeedsUnited));
+        //manager has no team
+        assertFalse(Alex.fireManager("pepG",LeedsUnited));
+        //add again same manager
+
+    }
+
+    @Test
+    public void getOriginalObject() {
+        assertEquals(piqueF.getOriginalObject(),DB.selectSubscriberFromDB("pique"));
+    }
+
+    @Test
+    public void setOriginalObject() {
+        piqueF.setOriginalObject(null);
+        assertEquals(piqueF.getOriginalObject(),null);
+    }
+
+    @Test
+    public void equals() {
+        assertTrue(piqueF.equals(DB.selectSubscriberFromDB("piqueF")));
+        assertTrue(piqueF.equals((TeamOwner)DB.selectSubscriberFromDB("piqueF")));
+        assertFalse(piqueF.equals(DB.selectSubscriberFromDB("pepG")));
+        assertFalse(piqueF.equals(DB.selectSubscriberFromDB("Alex")));
+        assertFalse(piqueF.equals(null));
+
     }
 }
