@@ -368,7 +368,7 @@ public class TeamOwner extends Subscriber {
         }
 
         //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
-        if(subscriber==null||team.getTeamManager().equals(subscriber)|| team.getTeamOwners().contains(subscriber)|| !(this.teams.contains(team))){
+        if(subscriber==null||(team.getTeamManager()!=null  && team.getTeamManager().equals(subscriber))|| team.getTeamOwners().contains(subscriber)|| !(this.teams.contains(team))){
             return false;
             //todo check if we should print something based on the error given
         }
@@ -377,19 +377,17 @@ public class TeamOwner extends Subscriber {
 
             //covert Subsriber to teamManger
 
-            TeamManager newTeamManger = new TeamManager(subscriber.getUsername(),
-                    subscriber.getPassword(),subscriber.getName(),team,salary,this.getSystemController());
-             systemController.addSubscriberToDB(username,newTeamManger);
-            subscriber= newTeamManger;
+            TeamManager teamManager = (TeamManager)subscriber;
 
             //assign to team manager field in the team objects
-            team.setTeamManager((TeamManager)subscriber);
+            teamManager.setTeam(team);
+            team.setTeamManager(teamManager);
 
             //grant permissions to the new team manager
-            newTeamManger.setPermissions(permission);
+            teamManager.setPermissions(permission);
 
             //link to assigning owner
-            teamManagers.put(team,newTeamManger);
+            teamManagers.put(team,teamManager);
 
             return true;
         }

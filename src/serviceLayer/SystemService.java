@@ -25,19 +25,7 @@ public class SystemService {
      */
     public SystemService(){
         this.systemController = SystemController.SystemController();
-        leagueController = new LeagueController();
-        teamController = new TeamController();
-        matchController = new MatchController();
 
-        systemController.setLeagueController(leagueController);
-        systemController.setTeamController(teamController);
-        systemController.setMatchController(matchController);
-
-        leagueController.setSystemController(systemController);
-
-        matchController.setSystemController(systemController);
-
-        teamController.setSystemController(systemController);
     }
 
     /**

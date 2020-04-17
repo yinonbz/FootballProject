@@ -123,6 +123,7 @@ public class DataBaseValues {
 
         systemService = new SystemService();
         systemController = SystemController.SystemController();
+        systemController.initializeSystem("admin");
         leagueController = systemController.getLeagueController();
         matchController = new MatchController(); // todo change to getter of controller
 
@@ -217,7 +218,8 @@ public class DataBaseValues {
         DB.addSubscriberToDB("TomerZ",Ido);
 
         //add team manager
-        itay = new TeamManager("itayK", "111", "itay",BeerSheva ,100, systemController);
+        itay = new TeamManager("itayK", "111", "itay",null ,100, systemController);
+        itay.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("itayK",itay);
 
         //add fan
@@ -248,6 +250,8 @@ public class DataBaseValues {
         Chelsea = new Team ("Chelsea", teamOwner,1888);
         Chelsea.setStadium(s1);
         BeerSheva = new Team("Beer Sheva", Barkat,1973);
+        BeerSheva.setTeamManager(itay);
+        itay.setTeam(BeerSheva);
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);

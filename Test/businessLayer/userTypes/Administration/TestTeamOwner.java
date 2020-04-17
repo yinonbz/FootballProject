@@ -1,14 +1,10 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
-import businessLayer.Tournament.Match.Stadium;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import businessLayer.Tournament.Match.MatchController;
-import businessLayer.userTypes.SystemController;
 import serviceLayer.TeamService;
 
 import static org.junit.Assert.*;
@@ -147,6 +143,11 @@ public class TestTeamOwner {
     @Test
     public void UC6_1() {
     teamService.addAsset("AlonaBarkat",123, "Player", "Buzaglo");
+
+    }
+
+    @Test
+    public void UC6_4(){
 
     }
 

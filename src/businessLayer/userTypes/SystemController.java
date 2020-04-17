@@ -156,6 +156,19 @@ public class SystemController {
      */
     public Boolean initializeSystem(String password) {
         if (password.equals("admin")) {
+            leagueController = new LeagueController();
+            teamController = new TeamController();
+            matchController = new MatchController();
+
+            setLeagueController(leagueController);
+            setTeamController(teamController);
+            setMatchController(matchController);
+
+            leagueController.setSystemController(this);
+
+            matchController.setSystemController(this);
+
+            teamController.setSystemController(this);
             return true;
         }
         return false;
