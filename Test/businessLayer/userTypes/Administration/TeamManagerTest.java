@@ -37,7 +37,7 @@ public class TeamManagerTest {
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
         Ido = (Coach) DB.selectSubscriberFromDB("efronio");
 
-        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
+        BeerSheva = DB.selectTeamFromDB("BeerSheva");
         teamService = new TeamService();
 
 
@@ -54,7 +54,7 @@ public class TeamManagerTest {
     @Test
     public void isOwner() {
         assertFalse(itay.isOwner());
-        Barkat.appointToOwner(itay,"Beer Sheva");
+        Barkat.appointToOwner(itay,"BeerSheva");
         assertTrue(itay.isOwner());
     }
 
