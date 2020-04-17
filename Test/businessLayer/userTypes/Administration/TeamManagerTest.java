@@ -60,6 +60,7 @@ public class TeamManagerTest {
 
     @Test
     public void addPlayer() {
+        //itay.setTeam(BeerSheva);
         //no permissions
         assertFalse(itay.addPlayer(Buzaglo.getUsername()));
         //player has team
