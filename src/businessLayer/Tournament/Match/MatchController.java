@@ -177,7 +177,7 @@ public class MatchController {
         }
         return false;
     }
-    
+
     /*
     private boolean handleEvent(Event event, String time, String matchID, String username) {
         if (matchID != null && username != null) {
