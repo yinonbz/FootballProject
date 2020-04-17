@@ -38,6 +38,7 @@ public class LeagueController {
 
     /**
      * get a random stadium from the DB
+     *
      * @return
      */
     public Stadium getRandomStadium() {
@@ -61,9 +62,6 @@ public class LeagueController {
 
         return true;
     }
-
-
-
 
 
 /**
@@ -119,8 +117,6 @@ public class LeagueController {
     public void setLoggingSystem(LoggingSystem loggingSystem) {
         this.loggingSystem = loggingSystem;
     }
-
-
 
 
     /**
@@ -233,7 +229,7 @@ public class LeagueController {
     public void addAssociationRepToController(AssociationRepresentative associationRep) {
         if (associationRep != null) {
             if (!systemController.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
-                systemController.addSubscriberToDB(associationRep.getUsername(),associationRep);
+                systemController.addSubscriberToDB(associationRep.getUsername(), associationRep);
             }
         }
     }
@@ -342,13 +338,53 @@ public class LeagueController {
      * @param username
      * @return
      */
-    public boolean assignRefereeThroughRepresentation(String refUsername, String leagueName, int seasonID, String username) {
+    public boolean assignRefereeThroughRepresentative(String refUsername, String leagueName, int seasonID, String username) {
 
         if (refUsername != null && leagueName != null && username != null) {
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
                 return userRep.assignRefereeToSeason(refUsername, leagueName, seasonID);
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * The function receives a team's name and the representative's username from the interface layer and calls the assigning function in the business layer
+     *
+     * @param teamName
+     * @param username
+     * @return
+     */
+    public boolean confirmTeamRequestThroughRepresentative(String teamName, String username) {
+
+        if (teamName != null && username != null) {
+            Subscriber user = systemController.getSubscriberByUserName(username);
+            if (user instanceof AssociationRepresentative) {
+                AssociationRepresentative userRep = (AssociationRepresentative) user;
+                return userRep.confirmTeamRequest(teamName);
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * The function receives a stadium's identifier, number of seats and the representative's username from the interface layer and calls the creating function in the business layer
+     * @param nameStadium
+     * @param numberOfSeats
+     * @param username
+     * @return
+     */
+    public boolean createNewStadiumThroughRepresentative(String nameStadium, String numberOfSeats, String username) {
+
+        if (nameStadium != null && numberOfSeats != null && username != null) {
+            Subscriber user = systemController.getSubscriberByUserName(username);
+            if (user instanceof AssociationRepresentative) {
+                AssociationRepresentative userRep = (AssociationRepresentative) user;
+                return userRep.createNewStadium(nameStadium, numberOfSeats);
             }
         }
         return false;
