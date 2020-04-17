@@ -136,7 +136,7 @@ public class Coach extends Subscriber implements OwnerEligible {
         return true;
     }
 
-    protected TeamOwner getTeamOwner() {
+    public TeamOwner getTeamOwner() {
         return teamOwner;
     }
 

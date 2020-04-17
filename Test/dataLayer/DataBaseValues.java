@@ -50,16 +50,18 @@ public class DataBaseValues {
     static TeamOwner Shimon;
     static TeamOwner Glazers;
     static TeamOwner Nissanov;
-    static TeamOwner Alex;
-    static TeamOwner Inon;
     static TeamOwner Max;
     static TeamOwner YaelM;
+    static TeamOwner Alex;
+    static TeamOwner Inon;
     static TeamOwner Jacob;
-
+    static TeamOwner piqueF;
 
 
     //team manager
     static TeamManager itay;
+    static TeamManager klopp;
+    static TeamManager pep;
     static TeamManager Ronaldinio;
 
 
@@ -73,6 +75,7 @@ public class DataBaseValues {
     static Player Oded;
     static Player Yaniv;
     static Player Amir;
+    static Player pique;
 
     //admins
     static Admin admin;
@@ -140,6 +143,7 @@ public class DataBaseValues {
 
         systemService = new SystemService();
         systemController = SystemController.SystemController();
+        systemController.initializeSystem("admin");
         leagueController = systemController.getLeagueController();
         matchController = new MatchController(); // todo change to getter of controller
 
@@ -182,6 +186,7 @@ public class DataBaseValues {
         YaelM = new TeamOwner("YaelM", "Sunderland", "alona", systemController);
         Max = new TeamOwner("Max", "telAviv", "Max", systemController);
         Alex = new TeamOwner("Alex", "manchesterU", "glazer", systemController);
+        piqueF = new TeamOwner("piqueF", "111", "piqueF", systemController);
 
 
 
@@ -195,6 +200,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("Max", Max);
         DB.addSubscriberToDB("Alex", Alex);
         DB.addSubscriberToDB("Inon",Inon);
+        DB.addSubscriberToDB("piqueF",piqueF);
 
         //add admins
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
@@ -211,7 +217,10 @@ public class DataBaseValues {
         Yaniv = new Player("Yaniv","Yaniv123","YanivKatan", "1993","",0,null,systemController);
         Oded = new Player("Oded","Oded123","OdedShahar", "1993","",0,null,systemController);
         Amir = new Player("Amir","Amir123","AmirBenHaion", "1993","",0,null,systemController);
-
+        pique = new Player("pique","111","pique","1983","captain",0,null,systemController);
+        pique.setTeamOwner(piqueF);
+        piqueF.setOriginalObject(pique);
+        DB.addSubscriberToDB("pique",pique);
 
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
         DB.addSubscriberToDB("Tamash",Tamash);
@@ -219,6 +228,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("Yaniv",Yaniv);
         DB.addSubscriberToDB("Oded",Oded);
         DB.addSubscriberToDB("Amir",Amir);
+        DB.addSubscriberToDB("pique",pique);
 
 
         //add referee
@@ -231,6 +241,19 @@ public class DataBaseValues {
         Tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach",0, systemController);
         DB.addSubscriberToDB("efronio",Ido);
         DB.addSubscriberToDB("TomerZ",Tomer);
+
+        //add team manager
+        itay = new TeamManager("itayK", "111", "itay",null ,100, systemController);
+        itay.setPermissions(Permissions.FINANCE);
+        DB.addSubscriberToDB("itayK",itay);
+
+        klopp = new TeamManager("kloppJ", "111", "klopp",null ,100, systemController);
+        klopp.setPermissions(Permissions.FINANCE);
+        DB.addSubscriberToDB("kloppJ",klopp);
+
+        pep = new TeamManager("pepG", "111", "pep",null ,100, systemController);
+        klopp.setPermissions(Permissions.FINANCE);
+        DB.addSubscriberToDB("pepG",pep);
 
         //add fan
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
@@ -260,6 +283,8 @@ public class DataBaseValues {
         Chelsea = new Team ("Chelsea", teamOwner,1888);
         Chelsea.setStadium(s1);
         BeerSheva = new Team("BeerSheva", Barkat,1973);
+        BeerSheva.setTeamManager(itay);
+        itay.setTeam(BeerSheva);
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
@@ -273,6 +298,8 @@ public class DataBaseValues {
         m2 = new Match(BeitarJerusalem,BeerSheva,Tedi);
         m1.setNumerOfFans(70);
         m2.setNumerOfFans(100);
+
+        //setters for teams
 
         //setter team-owners and teams
         Jacob.getTeams().add(MacabiHaifa);
@@ -288,6 +315,9 @@ public class DataBaseValues {
         BeerSheva.getTeamOwners().add(Barkat);
         BeerSheva.getTeamOwners().add(Nissanov);
         LeedsUnited.getTeamOwners().add(YaelM);
+        LeedsUnited.getTeamOwners().add(Alex);
+        Tottenham.getTeamOwners().add(piqueF);
+
         YaelM.getTeams().add(Sunderland);
         YaelM.getTeams().add(LeedsUnited);
         Alex.getTeams().add(LeedsUnited);
@@ -311,6 +341,7 @@ public class DataBaseValues {
         DB.addTeamToDB("McabiHaifa",MacabiHaifa);
         DB.addTeamToDB("BeerSheva", BeerSheva);
         DB.addTeamToDB("HTA",HTA);
+        DB.addTeamToDB("LeedsUnited",LeedsUnited);
         DB.addTeamToDB("BeitarJerusalem",BeitarJerusalem);
 
         //add team manager
@@ -318,7 +349,6 @@ public class DataBaseValues {
         Ronaldinio = new TeamManager("Ronaldinio", "111", "Ronaldinio",null ,0, systemController);
         DB.addSubscriberToDB("Ronaldinio",Ronaldinio);
         DB.addSubscriberToDB("itayK",itay);
-
         //complaints
         c1 = new Complaint("My system doesn't work",fan.getUsername());
         c2 = new Complaint("I don't like this team", fan.getUsername());

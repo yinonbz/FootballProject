@@ -8,4 +8,10 @@ public interface OwnerEligible {
      */
      boolean isOwner();
 
+    /**
+     * this function return the fictive TeamOwner of the owner Eligible
+     * @return the fictive TeamOwner object of the owner eligible
+     */
+    TeamOwner getTeamOwner();
+
 }

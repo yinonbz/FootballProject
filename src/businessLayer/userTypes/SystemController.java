@@ -156,6 +156,19 @@ public class SystemController {
      */
     public Boolean initializeSystem(String password) {
         if (password.equals("admin")) {
+            leagueController = new LeagueController();
+            teamController = new TeamController();
+            matchController = new MatchController();
+
+            setLeagueController(leagueController);
+            setTeamController(teamController);
+            setMatchController(matchController);
+
+            leagueController.setSystemController(this);
+
+            matchController.setSystemController(this);
+
+            teamController.setSystemController(this);
             return true;
         }
         return false;
@@ -543,7 +556,7 @@ public class SystemController {
             return false;
         }
 
-        leagueController.removeReferee(possibleRef);
+        //leagueController.removeReferee(possibleRef);
         Referee ref = (Referee) possibleRef;
         ref.removeFromAllMatches();
         DB.removeSubscriberFromDB(username);
@@ -898,6 +911,15 @@ public class SystemController {
                 return false; //the team owner doesn't own the team
             }
         }
+        else if(possibleTeamOwner instanceof OwnerEligible){
+            OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
+            if (ownerEligible.isOwner()) {
+                TeamOwner teamOwner = ownerEligible.getTeamOwner();
+                return teamOwner.enableStatus(teamOwner.getTeam(teamName));
+            }
+            else
+                return false;
+        }
         else{
             return false; //the user isn't a team owner
         }
@@ -926,6 +948,15 @@ public class SystemController {
                 return false; //the team owner doesn't own the team
             }
         }
+        else if(possibleTeamOwner instanceof OwnerEligible){
+            OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
+            if (ownerEligible.isOwner()) {
+                TeamOwner teamOwner = ownerEligible.getTeamOwner();
+                return teamOwner.disableStatus(teamOwner.getTeam(teamName));
+            }
+            else
+                return false;
+        }
         else{
             return false; //the user isn't a team owner
         }
@@ -953,6 +984,14 @@ public class SystemController {
                 return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
             }
             else //There is no such user with the user name of 'newUserName' in the system
+                return false;
+        }
+        else if(possibleTeamOwner instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
+            if (ownerEligible.isOwner()) {
+                TeamOwner teamOwner = ownerEligible.getTeamOwner();
+                 return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
+            } else
                 return false;
         }
         else{

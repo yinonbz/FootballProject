@@ -336,57 +336,92 @@ public class TeamOwner extends Subscriber {
         //System.out.println("The team '" + team.getTeamName() + "' has already been disabled.");
         return false;
     }
-    /***todo check if this function is implemented by someone?
-     public boolean editProperties(){
-     return true;
-     }
-
-     public boolean editOwners(){
-
-     return true;
-     }
-     */
 
     /**
      * @return
      */
+    public boolean editProperties(){
+        return true;
+    }
 
-    public boolean addManager(String username, Permissions permission, Team team, int salary) {
+    /**
+     *
+     * @return
+     */
+    public boolean editOwners(){
+
+        return true;
+    }
+
+    /**
+     *
+     * @param username
+     * @param permission
+     * @param team
+     * @param salary
+     * @return
+     */
+
+    public boolean addManager(String username, Permissions permission,Team team,int salary){
         //check if user exists in out system
-        Subscriber subscriber = null;
-        if (systemController.checkUserExists(username)) {
+        Subscriber subscriber=null;
+        if(systemController.checkUserExists(username)){
             subscriber = systemController.selectUserFromDB(username);
         }
+        //verify user exists in the system, user is a team manager,user is not one of the team owners, owner indeed owns the team and team has no manager
+        if(subscriber!=null && team!=null && subscriber instanceof TeamManager){
+            TeamManager teamManager = (TeamManager)subscriber;
+            if(team.getTeamManager() ==null && teamManager.getTeam()==null){
+                if(!team.getTeamOwners().contains(subscriber) && (this.teams.contains(team))){
+                    //covert Subsriber to teamManger
 
-        //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
-        if (subscriber == null || team.getTeamManager().equals(subscriber) || team.getTeamOwners().contains(subscriber) || !(this.teams.contains(team))) {
+
+                    //assign to team manager field in the team objects
+                    teamManager.setTeam(team);
+                    team.setTeamManager(teamManager);
+
+                    //grant permissions to the new team manager
+                    teamManager.setPermissions(permission);
+
+                    //link to assigning owner
+                    teamManagers.put(team,teamManager);
+
+                    return true;
+                }
+            }
+            else if((team.getTeamManager()!=null)){
+                System.out.println("please fire current Manager before appointing a new one");
+            }
+        }
+        return false;
+
+        /*//verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
+        if(team==null ||subscriber==null||team.getTeamManager()!=null || team.getTeamOwners().contains(subscriber)|| !(this.teams.contains(team))){
             return false;
             //todo check if we should print something based on the error given
         }
 
-        if (team.getTeamManager() == null) {
+        if(subscriber instanceof TeamManager && team.getTeamManager() ==null || ){
 
             //covert Subsriber to teamManger
 
-            TeamManager newTeamManger = new TeamManager(subscriber.getUsername(),
-                    subscriber.getPassword(), subscriber.getName(), team, salary, this.getSystemController());
-            systemController.addSubscriberToDB(username, newTeamManger);
-            subscriber = newTeamManger;
+            TeamManager teamManager = (TeamManager)subscriber;
 
             //assign to team manager field in the team objects
-            team.setTeamManager((TeamManager) subscriber);
+            teamManager.setTeam(team);
+            team.setTeamManager(teamManager);
 
             //grant permissions to the new team manager
-            newTeamManger.setPermissions(permission);
+            teamManager.setPermissions(permission);
 
             //link to assigning owner
-            teamManagers.put(team, newTeamManger);
+            teamManagers.put(team,teamManager);
 
             return true;
         }
 
         System.out.println("please fire current Manager before appointing a new one");
-        return false;
+        return false;*/
 
     }
     /*
@@ -423,7 +458,7 @@ public class TeamOwner extends Subscriber {
         }
 
         //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
-        if (subscriber == null || !(this.teams.contains(team)) || teamManagers.containsValue(subscriber) || !(subscriber instanceof TeamManager) || !(team.getTeamManager().equals(subscriber))) {
+        if(subscriber==null|| !(this.teams.contains(team))||!teamManagers.containsValue(subscriber) || !(subscriber instanceof TeamManager) || !(team.getTeamManager().equals(subscriber))){
             return false;
             //todo check if we should print something based on the error given
         }

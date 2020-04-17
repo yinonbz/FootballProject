@@ -3,6 +3,7 @@ package serviceLayer;
 
 import businessLayer.Team.TeamController;
 import businessLayer.userTypes.SystemController;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class TeamService {
     private TeamController teamController;
@@ -70,6 +71,22 @@ public class TeamService {
         return systemController.disableTeamStatus(teamName,userName);
     }
 
+    /**
+     * UC 6.4
+     * @param username manager user name
+     * @param permission permission granted
+     * @param teamName team name
+     * @param salary
+     * @return action was successful or failed.
+     */
+
+    public Boolean addManager(String teamOwner,String username,String permission,String teamName, String salary){
+        return teamController.addManager(teamOwner,username,permission,teamName,salary);
+    }
+
+    public boolean fireManager(String ownerUser,String username,String teamName) {
+        return teamController.fireManager(ownerUser,username,teamName);
+    }
 
     public int reportExpanse(String teamOwnerUser, String teamName) {
         return teamController.reportExpanse(teamOwnerUser,teamName);
