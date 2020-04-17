@@ -179,7 +179,11 @@ public class TestSystemController {
     }
 
     @Test
-    public void UC_1_1() {
+    public void UC_1_1_a() {
+    }
+
+    @Test
+    public void UC_1_1_b() {
         assertTrue(systemService.insertInfo("admin","admin"));
         assertTrue(systemService.initializeSystem("admin"));
         assertTrue(systemService.changePassword("ad123456","admin"));
