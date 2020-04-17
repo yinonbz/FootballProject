@@ -267,26 +267,37 @@ public class TestTeamOwner {
     }
 
     @Test
-    public void UC6_6_a(){
+    public void UC6_6_1_a(){
         //Test - 1 - Disable successfully
         assertTrue(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
     }
 
     @Test
-    public void UC6_6() {
-
+    public void UC6_6_1_b(){
         //Test - 2 - Try to disable a Team status which does not exists in the DB
         assertFalse(teamService.disableTeamStatus("Barca","Glazers"));
+    }
 
+    @Test
+    public void UC6_6_1_c() {
         //Test - 3 - Try to disable an already disabled team
         assertFalse(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
+    }
 
+    @Test
+    public void UC6_6_2_a() {
         //Test - 4 - Enable successfully
         assertTrue(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
+    }
 
+    @Test
+    public void UC6_6_2_b(){
         //Test - 5 - Try to enable a Team status which does not exists in the DB
         assertFalse(teamService.enableTeamStatus("Barca","Glazers"));
+    }
 
+    @Test
+    public void UC6_6_2_c(){
         //Test - 6 - Try to enable an already disabled team
         assertFalse(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
     }
