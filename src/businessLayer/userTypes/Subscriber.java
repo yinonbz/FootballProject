@@ -136,7 +136,7 @@ public abstract class Subscriber {
      * @param value the string
      * @return true if it an integer
      */
-    protected boolean tryParseInt(String value) {
+    public boolean tryParseInt(String value) {
         try {
             Integer.parseInt(value);
             return true;

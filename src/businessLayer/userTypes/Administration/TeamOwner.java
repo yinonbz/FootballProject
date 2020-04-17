@@ -357,6 +357,10 @@ public class TeamOwner extends Subscriber {
 
     /**
      *
+     * @param username
+     * @param permission
+     * @param team
+     * @param salary
      * @return
      */
 
@@ -373,7 +377,7 @@ public class TeamOwner extends Subscriber {
             //todo check if we should print something based on the error given
         }
 
-        if(team.getTeamManager() ==null){
+        if(subscriber instanceof TeamManager && team.getTeamManager() ==null){
 
             //covert Subsriber to teamManger
 

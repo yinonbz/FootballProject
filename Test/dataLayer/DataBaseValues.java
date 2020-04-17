@@ -57,6 +57,7 @@ public class DataBaseValues {
 
     //team manager
     static TeamManager itay;
+    static TeamManager klopp;
 
     //referee
     static Referee Alon;
@@ -221,6 +222,12 @@ public class DataBaseValues {
         itay = new TeamManager("itayK", "111", "itay",null ,100, systemController);
         itay.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("itayK",itay);
+
+        klopp = new TeamManager("kloppJ", "111", "klopp",null ,100, systemController);
+        klopp.setPermissions(Permissions.FINANCE);
+        DB.addSubscriberToDB("kloppJ",klopp);
+
+
 
         //add fan
         fan = new Fan ("Gate13","aviNimni","avi",systemController);

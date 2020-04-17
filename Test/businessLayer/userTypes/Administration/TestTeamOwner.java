@@ -18,6 +18,8 @@ public class TestTeamOwner {
     static TeamOwner Glazers;
     static TeamOwner Inon;
 
+    static TeamManager klopp;
+
 
     static Player Buzaglo;
     static Player Tamash;
@@ -55,6 +57,9 @@ public class TestTeamOwner {
 
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
         HTA = DB.selectTeamFromDB("HTA");
+
+        klopp= (TeamManager)DB.selectSubscriberFromDB("kloppJ");
+
         teamService = new TeamService();
 
     }
@@ -142,12 +147,14 @@ public class TestTeamOwner {
     }
     @Test
     public void UC6_1() {
-    teamService.addAsset("AlonaBarkat",123, "Player", "Buzaglo");
+        teamService.addAsset("AlonaBarkat",123, "Player", "Buzaglo");
 
     }
 
     @Test
     public void UC6_4(){
+        assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
 
     }
 
