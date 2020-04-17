@@ -37,7 +37,7 @@ public class TeamManagerTest {
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
         Ido = (Coach) DB.selectSubscriberFromDB("efronio");
 
-        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
+        BeerSheva = DB.selectTeamFromDB("BeerSheva");
         teamService = new TeamService();
 
 
@@ -54,7 +54,7 @@ public class TeamManagerTest {
     @Test
     public void isOwner() {
         assertFalse(itay.isOwner());
-        Barkat.appointToOwner(itay,"Beer Sheva");
+        Barkat.appointToOwner(itay,"BeerSheva");
         assertTrue(itay.isOwner());
     }
 
@@ -126,11 +126,11 @@ public class TeamManagerTest {
         //no permission
         assertFalse(itay.addCoach("efronio"));
         //Coach already in team
-        Barkat.addAsset(BeerSheva.getTeamId(),"Coach","efronio");
+        Barkat.addAsset("BeerSheva","Coach","efronio");
         itay.setPermissions(Permissions.COACHORIENTED);
         assertFalse(itay.addCoach("efronio"));
         //all good
-        Barkat.deleteAsset(BeerSheva.getTeamId(),"Coach","efronio");
+        Barkat.deleteAsset("BeerSheva","Coach","efronio");
         assertTrue(itay.addCoach("efronio"));
     }
 
@@ -142,14 +142,14 @@ public class TeamManagerTest {
         itay.setPermissions(Permissions.COACHORIENTED);
         assertFalse(itay.deleteCoach("efronio"));
         //all good
-        Barkat.addAsset(BeerSheva.getTeamId(),"Coach","efronio");
+        Barkat.addAsset("BeerSheva","Coach","efronio");
         assertTrue(itay.deleteCoach("efronio"));
 
     }
 
     @Test
     public void editCoach() {
-        Barkat.addAsset(BeerSheva.getTeamId(),"Coach","efronio");
+        Barkat.addAsset("BeerSheva","Coach","efronio");
         //no permissions
         assertFalse(itay.editCoach("efronio","training","fitness"));
         //has wrong permissions

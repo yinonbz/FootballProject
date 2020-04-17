@@ -7,6 +7,11 @@ public interface OwnerEligible {
      * @return true if also an owner, false if only coach
      */
      boolean isOwner();
-     TeamOwner getTeamOwner();
+
+    /**
+     * this function return the fictive TeamOwner of the owner Eligible
+     * @return the fictive TeamOwner object of the owner eligible
+     */
+    TeamOwner getTeamOwner();
 
 }

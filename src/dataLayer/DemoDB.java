@@ -523,5 +523,7 @@ public class DemoDB {
         this.stadiums = stadiums;
     }
 
-
+    public HashMap<Integer, Match> getMatches() {
+        return matches;
+    }
 }

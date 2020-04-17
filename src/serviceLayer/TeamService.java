@@ -16,16 +16,40 @@ public class TeamService {
 
     /**
      * this function add the asset to the chosen team
-     *
-     * @param teamId
+     *uc-6.1.1
+     * @param teamName
      * @param assetType
      * @param assetUserName
      * @return
      */
-    public boolean addAsset(String userOwner,int teamId, String assetType, String assetUserName) {
-        return teamController.addAsset(userOwner, teamId,assetType,assetUserName);
+    public boolean addAsset(String userOwner,String teamName, String assetType, String assetUserName) {
+        return teamController.addAsset(userOwner, teamName,assetType,assetUserName);
     }
 
+    /**
+     * this function delete the asset from a team of a team owner
+     * @param userOwner
+     * @param teamName
+     * @param assetType
+     * @param assetUserName
+     * @return
+     */
+    public boolean deleteAsset(String userOwner,String teamName, String assetType, String assetUserName){
+        return teamController.removeAsset(userOwner, teamName,assetType,assetUserName);
+    }
+
+    public boolean editPlayer(String userOwner,String teamName, String playerUser, String typeEdit, String edit){
+        return teamController.editPlayer(userOwner,teamName,playerUser,typeEdit,edit);
+    }
+    public boolean editCoach(String userOwner,String teamName, String coachUser, String typeEdit, String edit){
+        return teamController.editCoach(userOwner,teamName,coachUser,typeEdit,edit);
+    }
+    public boolean editTeamManager(String userOwner,String teamName, String teamManagerUser, String typeEdit, int edit){
+        return teamController.editTeamManager(userOwner,teamName,teamManagerUser,typeEdit,edit);
+    }
+    public boolean editStadium(String userOwner,String teamName, String editStadiumName, String typeEdit, int edit){
+        return teamController.editStadium(userOwner,teamName,editStadiumName,typeEdit,edit);
+    }
        /**
      *  UC 6.6
      * @param teamName the team's name
@@ -60,18 +84,15 @@ public class TeamService {
         return teamController.addManager(teamOwner,username,permission,teamName,salary);
     }
 
+    public boolean fireManager(String ownerUser,String username,String teamName) {
+        return teamController.fireManager(ownerUser,username,teamName);
+    }
 
-    /**
-     *
+    public int reportExpanse(String teamOwnerUser, String teamName) {
+        return teamController.reportExpanse(teamOwnerUser,teamName);
+    }
 
-     public boolean confirmAssetAdd(String userowner,int teamId, String assetType, String assetUserName){
-     if(systemController.selectUserFromDB(userowner) instanceof TeamOwner){
-     TeamOwner owner = (TeamOwner)systemController.selectUserFromDB(userowner);
-     return owner.addAsset(teamId,assetType,assetUserName);
-     }
-     return false;
-     }
-     */
-
-
+    public int reportIncome(String teamOwnerUser, String teamName) {
+        return teamController.reportIncome(teamOwnerUser,teamName);
+    }
 }

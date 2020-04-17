@@ -10,6 +10,7 @@ public class Stadium {
     private HashMap <Integer,Match> previousMatches;
     private int numberOfSeats;
     private HashMap <String, Team> owners;
+    private int ticketCost;
 
     //private Team currentPlayingTeam1;
     //private Team currentPlayingTeam2;
@@ -31,9 +32,11 @@ public class Stadium {
         this.owners=owners;
         if(this.owners ==null){
             this.owners = new HashMap<>();
-
         }
+        this.ticketCost = 75;//default price todo check with tomer
     }
+
+
 
     /**
      * the function creates a new stadium in the system
@@ -115,5 +118,26 @@ public class Stadium {
 
     public void addTeam(Team team) {
         this.owners.put(team.getTeamName(),team);
+    }
+
+    public int getTicketCost() {
+        return ticketCost;
+    }
+
+    public void setTicketCost(int ticketCost) {
+        this.ticketCost = ticketCost;
+    }
+    public int calculateIncome(Team team) {
+        int sum=0;
+        if(owners.containsKey(team.getTeamName())){
+            for (Integer i:previousMatches.keySet()) {
+                Match match = previousMatches.get(i);
+                if(match.getHomeTeam().getTeamName().equals(team.getTeamName())){
+                    sum = sum+(match.getNumerOfFans()/2)*ticketCost;
+                }
+            }
+            return sum;
+        }
+        return -1;
     }
 }
