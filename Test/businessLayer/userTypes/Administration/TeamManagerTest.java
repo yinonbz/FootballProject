@@ -38,6 +38,7 @@ public class TeamManagerTest {
         Ido = (Coach) DB.selectSubscriberFromDB("efronio");
 
         BeerSheva = DB.selectTeamFromDB("BeerSheva");
+        itay.setTeam(BeerSheva);
         teamService = new TeamService();
 
 
@@ -160,9 +161,6 @@ public class TeamManagerTest {
         itay.setPermissions(Permissions.GENERAL);
         assertTrue(itay.editCoach("efronio","training","fitness"));
         assertTrue(itay.editCoach("efronio","teamJob","assistentManager"));
-
-
-
 
     }
 }
