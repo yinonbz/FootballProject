@@ -66,7 +66,7 @@ public class TestTeamOwner {
         LeedsUnited = DB.selectTeamFromDB("LeedsUnited");
         Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
 
-        BeerSheva = DB.selectTeamFromDB("Beer Sheva");
+        BeerSheva = DB.selectTeamFromDB("BeerSheva");
         HTA = DB.selectTeamFromDB("HTA");
         klopp= (TeamManager)DB.selectSubscriberFromDB("kloppJ");
         teamService = new TeamService();
