@@ -211,7 +211,7 @@ public class TestTeamOwner {
      * Unit Test - enterMember(String userName))
      */
     @Test
-    public void enterMemberUT() {
+    public void UT_enterMember() {
         assertEquals(Barkat.enterMember("Glazers"), Glazers); //Try to search a subscriber
         assertNull(Barkat.enterMember("Itay")); //Search a team member which in not exist in the system.
 
@@ -221,7 +221,7 @@ public class TestTeamOwner {
      * Unit Test - enterMember(String teamName))
      */
     @Test
-    public void appointToOwnerUT() {
+    public void UT_appointToOwner() {
         assertFalse(Barkat.appointToOwner(Buzaglo, "Manchester")); //Try and Fail to add to a team which you don't own.
         assertTrue(Barkat.appointToOwner(Buzaglo, "Beer Sheva")); //Try to add successfully.
         assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva")); //Try and Fail to add someone which is already a team owner.
@@ -245,7 +245,7 @@ public class TestTeamOwner {
      * Unit Test - getTeam(String teamName)
      */
     @Test
-    public void getTeamUT() {
+    public void UT_getTeam() {
         assertEquals(Inon.getTeam("Beer Sheva"),BeerSheva);
         assertNull(Inon.getTeam("NAS"));
         assertEquals(Inon.getTeam("HTA"),HTA);
@@ -256,7 +256,7 @@ public class TestTeamOwner {
      * Unit Test - changeStatus(Team team)
      */
     @Test
-    public void changeStatusUT() {
+    public void UT_changeStatus() {
         //enabled to disabled
         Inon.disableStatus(BeerSheva);
         assertFalse(BeerSheva.getActive());
@@ -267,9 +267,13 @@ public class TestTeamOwner {
     }
 
     @Test
-    public void UC6_6() {
+    public void UC6_6_a(){
         //Test - 1 - Disable successfully
         assertTrue(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
+    }
+
+    @Test
+    public void UC6_6() {
 
         //Test - 2 - Try to disable a Team status which does not exists in the DB
         assertFalse(teamService.disableTeamStatus("Barca","Glazers"));
