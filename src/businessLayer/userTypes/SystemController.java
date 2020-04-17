@@ -556,7 +556,7 @@ public class SystemController {
             return false;
         }
 
-        leagueController.removeReferee(possibleRef);
+        //leagueController.removeReferee(possibleRef);
         Referee ref = (Referee) possibleRef;
         ref.removeFromAllMatches();
         DB.removeSubscriberFromDB(username);
