@@ -25,20 +25,6 @@ public abstract class Subscriber {
         this.systemController=systemController;
     }
 
-    /**
-     * the function creates the complaint and adds it to the system
-     * @param content the content of the complaint
-     * @return the complaint, null if the content is not valid
-     */
-    public Complaint createComplaint(String content){
-        if(content!=null) {
-            if(!content.isEmpty()) {
-                Complaint complaint = new Complaint(this.username, content);
-                return complaint;
-            }
-        }
-        return null;
-    }
 
     /**
      * add the complaint to the user's private complaints box

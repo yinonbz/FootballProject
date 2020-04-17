@@ -21,4 +21,9 @@ public class RedCard extends Event {
     public String toString(){
         return "Red card: "+playerSubject.getName();
     }
+
+    @Override
+    Player getSecondPlayer() {
+        return null;
+    }
 }

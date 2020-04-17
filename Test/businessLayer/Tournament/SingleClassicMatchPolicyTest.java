@@ -2,6 +2,8 @@ package businessLayer.Tournament;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
+import businessLayer.userTypes.SystemController;
+import serviceLayer.*;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.BeforeClass;
@@ -9,14 +11,16 @@ import org.junit.Test;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestSingleClassicMatchPolicy {
+public class SingleClassicMatchPolicyTest {
 
     static DemoDB DB;
 
+    static SystemService systemService;
     static HashMap <Integer, Match> singleMatchTable;
     static HashMap <Integer, Match> classicTable;
     static SingleMatchPolicy singleMatchPolicy;
@@ -28,21 +32,29 @@ public class TestSingleClassicMatchPolicy {
     static Season currSeason;
     static DataBaseValues dataBaseValues;
     static HashMap <String, Team> tempTeams;
+    static SystemController systemController;
+
 
     @BeforeClass
     public static void defineValues(){
+        systemService = new SystemService();
+        systemService.initializeSystem("admin");
+        systemController = SystemController.SystemController();
+        leagueController = systemController.getLeagueController();
         dataBaseValues = new DataBaseValues();
-
         //add leagues
         DB = dataBaseValues.getDB();
         primerLeague = new League("PriemerLeague");
         startDate = new Date();
         endDate = new Date ();
         currSeason = new Season(2,startDate,endDate, primerLeague);
-        HashMap tempTeams = DB.getTeams();
+        tempTeams = new HashMap<>();
+        String [] teamNames = new String [] {"Arsenal","ManchesterUnited","ManchesterCity","Everton","Liverpool",
+        "Wolves","Tottenham","Southhampton","NewCastle"};
+
+
         singleMatchPolicy = new SingleMatchPolicy(tempTeams, primerLeague,currSeason);
         classicMatchPolicy = new ClassicMatchPolicy(tempTeams, primerLeague,currSeason);
-
 
 
     }

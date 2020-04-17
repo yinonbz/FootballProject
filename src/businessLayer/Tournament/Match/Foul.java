@@ -19,7 +19,13 @@ public class Foul extends Event {
     }
 
     @Override
+    Player getSecondPlayer() {
+        return inFavor;
+    }
+
+    @Override
     public String toString(){
         return "Foul By: "+playerSubject.getName()+" "+ "against: "+" "+inFavor.getName();
     }
 }
+

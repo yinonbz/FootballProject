@@ -56,7 +56,8 @@ public class Referee extends Subscriber {
      */
     public boolean isSubmittedToAGame (String matchID){
         if(tryParseInt(matchID)){
-            return matches.containsKey(matchID);
+            int id = Integer.parseInt(matchID);
+            return matches.containsKey(id);
         }
         return false;
     }
@@ -71,7 +72,7 @@ public class Referee extends Subscriber {
             Match toDisplay = matches.get(matchID);
             return toDisplay.toString();
         }
-        return null;
+        return "";
     }
 
     /**
@@ -138,6 +139,13 @@ public class Referee extends Subscriber {
         return true;
     }
 
+    /**
+     * getter of the matches that belongs to the referee
+     * @return
+     */
+    public HashMap <Integer, Match> getRefMatches(){
+        return matches;
+    }
 
     public MatchController getMatchController() {
         return matchController;

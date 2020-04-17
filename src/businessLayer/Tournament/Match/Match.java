@@ -66,6 +66,7 @@ public class Match {
         this.stadium=stadium;
         this.matchId=index;
         eventRecord = new EventRecord(this);
+        this.isFinished=false;
         index++;
     }
 
@@ -270,9 +271,17 @@ public class Match {
 
     @Override
     public String toString(){
+        String ref="No information";
+        String dateS = "No information";
+        if(mainReferee!=null){
+            ref=mainReferee.getName();
+        }
+        if(date!=null){
+            dateS=date.toString();
+        }
         return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
                 + awayTeam.getTeamName() + "\n" +
-                "Stadium: " + stadium.getName() + "\n" + "Date: " + date +"\n";
+                "Stadium: " + stadium.getName() + "\n" + "Date: " + dateS +"\n" + "Referee: "+ref;
     }
 
     /**

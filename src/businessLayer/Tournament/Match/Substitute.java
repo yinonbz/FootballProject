@@ -2,7 +2,7 @@ package businessLayer.Tournament.Match;
 
 import businessLayer.userTypes.Administration.Player;
 
-public class Substitue extends Event {
+public class Substitute extends Event {
     Player in;
     Player out;
 
@@ -12,7 +12,7 @@ public class Substitue extends Event {
      * @param out
      * @param matchController
      */
-    public Substitue(Player in, Player out, MatchController matchController) {
+    public Substitute(Player in, Player out, MatchController matchController) {
         super(matchController,in);
         this.in= in;
         this.out = out;
@@ -21,5 +21,10 @@ public class Substitue extends Event {
     @Override
     public String toString(){
         return "Substitute On: "+playerSubject.getName()+" "+ "Off: "+" "+out.getName();
+    }
+
+    @Override
+    Player getSecondPlayer() {
+        return out;
     }
 }
