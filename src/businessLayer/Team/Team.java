@@ -25,7 +25,6 @@ public class Team {
     private HashSet<Season> seasons;
     private Stadium stadium;
     private String teamName;
-    private int teamId;
     private int establishedYear;
     private Boolean isActive;
     private Boolean closedByAdmin; //refers to UC 8.1 - can be changed only once
@@ -40,11 +39,10 @@ public class Team {
      * @param seasons
      * @param stadium
      * @param teamName
-     * @param teamId
      * @param establishedYear
      * @param isActive
      */
-    public Team(HashSet<Player> players, HashSet coaches, TeamManager teamManagers, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, HashSet<Match> matches, HashSet<Season> seasons, Stadium stadium, String teamName, int teamId, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
+    public Team(HashSet<Player> players, HashSet coaches, TeamManager teamManagers, HashSet<TeamOwner> teamOwners, FinancialMonitoring financialMonitoring, HashSet<Match> matches, HashSet<Season> seasons, Stadium stadium, String teamName, int establishedYear, Boolean isActive, Boolean closedByAdmin) {
         this.players = players;
         this.coaches = coaches;
         this.teamManager = teamManagers;
@@ -60,7 +58,6 @@ public class Team {
         this.seasons = seasons;
         this.stadium = stadium;
         this.teamName = teamName;
-        this.teamId = teamId; //todo need to check if we still need this id
         this.establishedYear = establishedYear;
         this.isActive = isActive;
         this.closedByAdmin=closedByAdmin;
@@ -163,12 +160,6 @@ public class Team {
         return teamName;
     }
 
-    /**
-     * @return
-     */
-    public int getTeamId() {
-        return teamId;
-    }
 
     /**
      * @return
@@ -242,12 +233,6 @@ public class Team {
         this.teamName = teamName;
     }
 
-    /**
-     * @param teamId
-     */
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
 
     /**
      * @param establishedYear
@@ -361,4 +346,23 @@ public class Team {
     }
 
 
+    public int calculateExpanse() {
+        int sum=0;
+        for (Player player:players) {
+            sum = sum + player.getSalary();
+        }
+        for (Coach coach:coaches) {
+            sum = sum + coach.getSalary();
+        }
+        if(teamManager!=null) {
+            sum = sum + teamManager.getSalary();
+        }
+        return sum;
+    }
+
+    public int calculateIncome() {
+        int sum = 0;
+        this.stadium.getNumberOfSeats();
+        return stadium.calculateIncome(this);
+    }
 }
