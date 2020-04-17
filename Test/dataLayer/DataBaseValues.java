@@ -150,7 +150,8 @@ public class DataBaseValues {
     static YellowCard e1;
     static  RedCard e2;
     static  Injury e3;
-
+    static TeamManager valverde;
+    static TeamOwner gerrard;
 
 
     public DataBaseValues() {
@@ -205,9 +206,11 @@ public class DataBaseValues {
 
         Jimmy = new TeamOwner("Jimmy","jj","jimmy",systemController);
         Harry = new TeamOwner("Harry","jj","Harry",systemController);
+        gerrard = new TeamOwner("gerrard","jj","Harry",systemController);
 
 
         DB.addSubscriberToDB("Tomer", teamOwner);
+        DB.addSubscriberToDB("gerrard", gerrard);
         DB.addSubscriberToDB("AlonaBarkat", Barkat);
         DB.addSubscriberToDB("Shimon", Shimon);
         DB.addSubscriberToDB("Glazers", Glazers);
@@ -239,8 +242,8 @@ public class DataBaseValues {
         pique = new Player("pique","111","pique","1983","captain",0,null,systemController);
         pique.setTeamOwner(piqueF);
         piqueF.setOriginalObject(pique);
-        DB.addSubscriberToDB("pique",pique);
 
+        DB.addSubscriberToDB("pique",pique);
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
         DB.addSubscriberToDB("Tamash",Tamash);
         DB.addSubscriberToDB("yosi",yosi);
@@ -273,7 +276,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("kloppJ",klopp);
 
         pep = new TeamManager("pepG", "111", "pep",null ,100, systemController);
-        klopp.setPermissions(Permissions.FINANCE);
+        pep.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("pepG",pep);
 
         //add fan
@@ -306,8 +309,6 @@ public class DataBaseValues {
         Chelsea = new Team ("Chelsea", teamOwner,1888);
         Chelsea.setStadium(s1);
         BeerSheva = new Team("BeerSheva", Barkat,1973);
-        BeerSheva.setTeamManager(itay);
-        itay.setTeam(BeerSheva);
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
@@ -340,6 +341,8 @@ public class DataBaseValues {
         LeedsUnited.getTeamOwners().add(YaelM);
         LeedsUnited.getTeamOwners().add(Alex);
         Tottenham.getTeamOwners().add(piqueF);
+        Liverpool.getTeamOwners().add(gerrard);
+        gerrard.getTeams().add(Liverpool);
 
         YaelM.getTeams().add(Sunderland);
         YaelM.getTeams().add(LeedsUnited);
@@ -404,8 +407,14 @@ public class DataBaseValues {
         //add team manager
         itay = new TeamManager("itayK", "111", "itay",null ,0, systemController);
         Ronaldinio = new TeamManager("Ronaldinio", "111", "Ronaldinio",null ,0, systemController);
-        DB.addSubscriberToDB("Ronaldinio",Ronaldinio);
+        valverde = new TeamManager("valverde","111","valverde",Liverpool,100,systemController);
+        DB.addSubscriberToDB("Ronaldinio",Ronaldinio);;
         DB.addSubscriberToDB("itayK",itay);
+        DB.addSubscriberToDB("valverde",valverde);
+        Liverpool.setTeamManager(valverde);
+        gerrard.getTeamManagers().put(Liverpool,valverde);
+
+
         //complaints
         c1 = new Complaint("My system doesn't work",fan.getUsername());
         c2 = new Complaint("I don't like this team", fan.getUsername());

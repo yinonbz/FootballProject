@@ -24,11 +24,13 @@ public class TeamOwnerTest {
     private TeamOwner Jimmy;
     private TeamOwner Alex;
     private TeamOwner teamOwner;
+    private TeamOwner gerrard;
 
     //private TeamOwner Alex;
     private TeamOwner piqueF;
     private TeamManager klopp;
     private TeamManager pep;
+    private TeamManager valverde;
 
 
     private Player Buzaglo;
@@ -43,6 +45,7 @@ public class TeamOwnerTest {
     private Team BeerSheva;
     private Team Barca; //This Team will not be in the DB
     private Team Arsenal;
+    private Team Liverpool;
 
     private Team LeedsUnited; //This Team will not be in the DB
 
@@ -72,7 +75,7 @@ public class TeamOwnerTest {
         Jimmy = (TeamOwner) DB.selectSubscriberFromDB("Jimmy");
         Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
         teamOwner = (TeamOwner) DB.selectSubscriberFromDB("Tomer");
-
+        gerrard = (TeamOwner) DB.selectSubscriberFromDB("gerrard");
 
         BeerSheva = DB.selectTeamFromDB("BeerSheva");
         pep = (TeamManager) DB.selectSubscriberFromDB("pepG");
@@ -82,8 +85,10 @@ public class TeamOwnerTest {
         BeerSheva = DB.selectTeamFromDB("BeerSheva");
         HTA = DB.selectTeamFromDB("HTA");
         klopp= (TeamManager)DB.selectSubscriberFromDB("kloppJ");
+        valverde=(TeamManager)DB.selectSubscriberFromDB("valverde");
 
         Arsenal = DB.selectTeamFromDB("Arsenal");
+        Liverpool = DB.selectTeamFromDB("Liverpool");
 
         teamService = new TeamService();
         systemService = new SystemService();
@@ -219,13 +224,13 @@ public class TeamOwnerTest {
     @Test
     public void UC6_5(){
         //all good
-        assertTrue(teamService.fireManager("Inon","kloppJ","HTA"));
+        assertTrue(teamService.fireManager("gerrard","valverde","Liverpool"));
         //fire teamowner
-        assertFalse(teamService.fireManager("Inon","AlonaBarkat","HTA"));
+        assertFalse(teamService.fireManager("gerrard","AlonaBarkat","Liverpool"));
         //wrong username
-        assertFalse(teamService.fireManager("Inon","kloppJU","HTA"));
+        assertFalse(teamService.fireManager("gerrard","kloppJ","Liverpool"));
         //try fire the same manager again
-        assertFalse(teamService.fireManager("Inon","kloppJ","HTA"));
+        assertFalse(teamService.fireManager("gerrard","valverde","Liverpool"));
     }
 
 
@@ -397,6 +402,9 @@ public class TeamOwnerTest {
 
     @Test
     public void addManager() {
+        TeamManager itay= (TeamManager) DB.selectSubscriberFromDB("itayK");
+        BeerSheva.setTeamManager(itay);
+        itay.setTeam(BeerSheva);
         //try assign manager to a team that not belong to me
         assertFalse(Alex.addManager("pepG",Permissions.GENERAL,BeerSheva,200));
         //manager already has team
@@ -410,11 +418,17 @@ public class TeamOwnerTest {
 
     @Test
     public void fireManager() {
+
         //try fire manager from team that not belong to me
         assertFalse(Alex.fireManager("itayK",BeerSheva));
         //not my manager
         assertFalse(Alex.fireManager("itayK",LeedsUnited));
+        //try delete pep withut assigning him via Alex
+        LeedsUnited.setTeamManager(pep);
+        pep.setTeam(LeedsUnited);
+        assertFalse(Alex.fireManager("pepG",LeedsUnited));
         //all good
+        Alex.getTeamManagers().put(LeedsUnited,pep);
         assertTrue(Alex.fireManager("pepG",LeedsUnited));
         //manager has no team
         assertFalse(Alex.fireManager("pepG",LeedsUnited));
