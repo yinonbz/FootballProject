@@ -1,10 +1,13 @@
 package businessLayer.Tournament.Match;
 
+import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
+import java.sql.Time;
+import java.util.Date;
 
 
 public class MatchController {
@@ -37,8 +40,10 @@ public class MatchController {
             Player playerA = getPlayerFromDB(playerAgainst);
             Player playerO= getPlayerFromDB(playerOn);
             if (playerA != null && playerO != null) {
-                Foul foul = new Foul(playerA,playerO,this);
-                return handleEvent(foul, time, matchID);
+                if(!checkSameTeam(playerA,playerO)) {
+                    Foul foul = new Foul(playerA, playerO, this);
+                    return handleEvent(foul, time, matchID);
+                }
             }
         }
         return false;
@@ -58,8 +63,10 @@ public class MatchController {
             Player playerG = getPlayerFromDB(PlayerGoal);
             Player playerA= getPlayerFromDB(playerAssist);
             if (playerG != null && playerA != null) {
-                Goal goal = new Goal(playerG,playerA,this);
-                return handleEvent(goal, time, matchID);
+                if(checkSameTeam(playerG,playerA)) {
+                    Goal goal = new Goal(playerG, playerA, this);
+                    return handleEvent(goal, time, matchID);
+                }
             }
         }
         return false;
@@ -135,10 +142,25 @@ public class MatchController {
         if(checkPermissionOfReferee(username,matchID)){
             Player playerO = getPlayerFromDB(playerOn);
             Player playerOf= getPlayerFromDB(playerOff);
-            if (playerO != null && playerOf != null) {
-                Substitue sub = new Substitue(playerO,playerOf,this);
-                return handleEvent(sub, time, matchID);
+            if (playerO != null && playerOf != null && !playerO.equals(playerOf)) {
+                if(checkSameTeam(playerO,playerOf)) {
+                    Substitute sub = new Substitute(playerO, playerOf, this);
+                    return handleEvent(sub, time, matchID);
+                }
             }
+        }
+        return false;
+    }
+
+    /**
+     * the function checks that the substitute is legal
+     * @param p1
+     * @param p2
+     * @return
+     */
+    private boolean checkSameTeam(Player p1, Player p2){
+        if(p1.getTeam().equals(p2.getTeam())){
+            return true;
         }
         return false;
     }
@@ -177,23 +199,7 @@ public class MatchController {
         }
         return false;
     }
-    
-    /*
-    private boolean handleEvent(Event event, String time, String matchID, String username) {
-        if (matchID != null && username != null) {
-            Subscriber user = systemController.getSubscriberByUserName(username);
-            if (user instanceof Referee) {
-                Referee userReferee = (Referee) user;
-                if(userReferee.isSubmittedToAGame(matchID)){
 
-                }
-
-                return true;
-            }
-        }
-        return false;
-    }
-    */
 
     /**
      * the function that add an event to the event recorder
@@ -206,10 +212,35 @@ public class MatchController {
         int id = Integer.parseInt(matchID);
         Match match = systemController.findMatch(id);
         if(match!=null){
-            EventRecord eventRecord = match.getEventRecord();
-            eventRecord.addEvent(time,event);
+            Player player1 = event.getFirstPlayer();
+            Player player2 = event.getSecondPlayer();
+            //here we will check events that have two player, we will check each one of the player participates in the game
+            if(player2!=null){
+                if(!checkPlayerParticipates(player2,match)){
+                    return false;
+                }
+            }
+            //we will always check that the player that is involved actually plays in one of the teams
+            if(checkPlayerParticipates(player1,match)) {
+                EventRecord eventRecord = match.getEventRecord();
+                eventRecord.addEvent(time, event);
+                return true;
+            }
         }
         return false;
+    }
+
+    /**
+     * private function that checks the player plays in the game
+     * @param player
+     * @param match
+     * @return
+     */
+    private Boolean checkPlayerParticipates(Player player, Match match){
+        if(!match.getAwayTeam().containPlayer(player) && !match.getHomeTeam().containPlayer(player)){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -250,13 +281,15 @@ public class MatchController {
      * @param matchID the match id we want to choose
      * @return
      */
-    public boolean chooseMainReferee (String username, String matchID){
+    public boolean chooseMainReferee (String username, int matchID, String requester){
         Subscriber subscriber = systemController.getSubscriberByUserName(username);
-        if(subscriber instanceof Referee){
-            int id = Integer.parseInt(matchID);
-            Match match = systemController.findMatch(id);
+        Subscriber AR = systemController.getSubscriberByUserName(requester);
+        if(subscriber instanceof Referee && AR instanceof AssociationRepresentative){
+            //int id = Integer.parseInt(matchID);
+            Match match = systemController.findMatch(matchID);
             if(match!=null){
                 match.chooseMainReferee((Referee)subscriber);
+                ((Referee) subscriber).getRefMatches().put(matchID,match);
                 return true;
             }
         }
@@ -273,16 +306,20 @@ public class MatchController {
      */
     public boolean removeEventByMainReferee(int matchID, String usernameRequested, String timeOfEvent, int eventId){
         Match match = systemController.findMatch(matchID);
-        if(match!=null){
-            Subscriber subscriber = systemController.getSubscriberByUserName(usernameRequested);
-            if(subscriber instanceof Referee){
-                if(match.isMainReferee((Referee)subscriber)){
-                    return match.getEventRecord().removeEvent(timeOfEvent,eventId);
+        if(match!=null) {
+            if (match.getFinished()) {
+                Subscriber subscriber = systemController.getSubscriberByUserName(usernameRequested);
+                if (subscriber instanceof Referee) {
+                    if (match.isMainReferee((Referee) subscriber)) {
+                        return match.getEventRecord().removeEvent(timeOfEvent, eventId);
+                    }
                 }
             }
         }
         return false;
     }
+
+
 
 
 }

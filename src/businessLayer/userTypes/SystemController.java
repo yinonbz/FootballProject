@@ -87,6 +87,14 @@ public class SystemController {
         return leagueController;
     }
 
+    /**
+     * Getter function for the match controller
+     * @return
+     */
+    public MatchController getMatchController(){
+        return matchController;
+    }
+
 
     /**
      * @param subscriber
@@ -395,24 +403,26 @@ public class SystemController {
         return false;
     }
 
-    //-------------------Subscriber--------------------//
+    //-------------------Fan--------------------//
 
     /**
      * the function lets the subscriber to upload a complaint
      *  @param content    the content of the complaint
      * @param username the subscriber who wants to complain
      */
-    public void addComplaint(String content, String username) {
+    public boolean addComplaint(String content, String username) {
         Subscriber subscriber = getSubscriberByUserName(username);
-        if(subscriber!=null){
-            Complaint complaint = subscriber.createComplaint(content);
+        if(subscriber instanceof Fan){
+            Complaint complaint = ((Fan) subscriber).createComplaint(content);
             if (complaint != null) {
                 int id = DB.countComplaintsInDB();
             complaint.setId(id);
                 DB.addComplaintToDB(id, complaint);
                 subscriber.addComplaint(complaint);
+                return true;
             }
         }
+        return false;
     }
 
     //-------------------Admin--------------------//

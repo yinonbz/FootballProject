@@ -2,9 +2,7 @@ package dataLayer;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.*;
-import businessLayer.Tournament.Match.Match;
-import businessLayer.Tournament.Match.MatchController;
-import businessLayer.Tournament.Match.Stadium;
+import businessLayer.Tournament.Match.*;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Administration.*;
@@ -13,7 +11,11 @@ import businessLayer.userTypes.viewers.Fan;
 import dataLayer.DemoDB;
 import serviceLayer.SystemService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class DataBaseValues {
@@ -61,9 +63,17 @@ public class DataBaseValues {
 
     //referee
     static Referee Alon;
+    static Referee Rayola;
 
     //players
     static Player Buzaglo;
+    static Player Scholes;
+    static Player Pickford;
+    static Player Mane;
+    static Player Son;
+    static Player Salah;
+    static Player Firmino;
+    static Player Rose;
 
     //admins
     static Admin admin;
@@ -118,6 +128,19 @@ public class DataBaseValues {
     static private AssociationRepresentative dor;
     static private AssociationRepresentative tali;
     static private AssociationRepresentative EliLuzon;
+
+    //Matches
+    static Match m1;
+    static Match m2;
+    static Match m3;
+    static Match m4;
+
+    //events
+    static YellowCard e1;
+    static  RedCard e2;
+    static  Injury e3;
+
+
 
     public DataBaseValues() {
         DB = new DemoDB();
@@ -203,13 +226,17 @@ public class DataBaseValues {
         DB.addSubscriberToDB("ItaiKatz",admin2);
 
         //add player
-        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
+//        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
+//        Scholes = new Player("Scholes","ssss","Scholes","2222","midfild",300,ManchesterUnited,systemController);
+//        Pickford = new Player("Pickford","ssss","Pickford","2222","goalkeeper",300,Everton,systemController);
 
-        DB.addSubscriberToDB("Buzaglo",Buzaglo);
+
 
         //add referee
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
         DB.addSubscriberToDB("Alon",Alon);
+        Rayola = new Referee ("Rayola", "1223", "Rayola","main",leagueController,systemController);
+        DB.addSubscriberToDB("Rayola",Rayola);
 
         //add coach
         //6.1
@@ -260,6 +287,7 @@ public class DataBaseValues {
         Sunderland = new Team("Sunderland", YaelM, 1973);
 
 
+
         //setters for teams
         BeerSheva.setTeamId(123); //todo delete and change this fields
         ManchesterUnited.setTeamId(456);
@@ -285,6 +313,36 @@ public class DataBaseValues {
         Jimmy.getTeams().add(Arsenal);
         Arsenal.getTeamOwners().add(Jimmy);
         Arsenal.getTeamOwners().add(Alex);
+
+        //add player
+        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
+        Scholes = new Player("Scholes","ssss","Scholes","2222","midfild",300,ManchesterUnited,systemController);
+        Pickford = new Player("Pickford","ssss","Pickford","2222","goalkeeper",300,Everton,systemController);
+        Son = new Player("Son","ssss","Son","2222","striker",300,Tottenham,systemController);
+        Mane = new Player("Mane","ssss","Son","2222","striker",300,Liverpool,systemController);
+        Salah = new Player("Salah","ssss","Salah","2222","striker",400,Liverpool,systemController);
+        Firmino = new Player("Firmino","ssss","Firmino","2222","striker",400,Liverpool,systemController);
+        Rose = new Player("Rose","ssss","Rose","2222","striker",400,Tottenham,systemController);
+
+
+        ManchesterUnited.getPlayers().add(Scholes);
+        Everton.getPlayers().add(Pickford);
+        Liverpool.getPlayers().add(Salah);
+        Liverpool.getPlayers().add(Mane);
+        Liverpool.getPlayers().add(Firmino);
+        Tottenham.getPlayers().add(Son);
+        Tottenham.getPlayers().add(Rose);
+
+
+
+        DB.addSubscriberToDB("Buzaglo",Buzaglo);
+        DB.addSubscriberToDB("Scholes",Scholes);
+        DB.addSubscriberToDB("Pickford",Pickford);
+        DB.addSubscriberToDB("Son",Son);
+        DB.addSubscriberToDB("Mane",Mane);
+        DB.addSubscriberToDB("Salah",Salah);
+        DB.addSubscriberToDB("Rose",Rose);
+        DB.addSubscriberToDB("Firmino",Firmino);
 
 
         //teams
@@ -313,7 +371,37 @@ public class DataBaseValues {
         DB.addComplaintToDB(0,c1);
         DB.addComplaintToDB(1,c2);
 
+
+        //matches
+        m1 = new Match(Chelsea,Liverpool,s1);
+        m2 = new Match (ManchersterCity,ManchesterUnited,s2);
+        m3 = new Match (ManchesterUnited,Everton,s3);
+        m4 = new Match (Liverpool,Tottenham,s2);
+        //m3.setDate(startDate);
+        Rayola.getRefMatches().put(3,m3);
+        m3.chooseMainReferee(Rayola);
+        m4.chooseMainReferee(Alon);
+        Alon.getRefMatches().put(4,m4);
+
+        e1 = new YellowCard(Son,matchController);
+        e2 = new RedCard(Salah,matchController);
+        e3 = new Injury(Rose,matchController);
+        m4.getEventRecord().addEvent("5",e1);
+        m4.getEventRecord().addEvent("6",e2);
+        m4.getEventRecord().addEvent("5",e3);
+        m4.setFinished(true);
+        m4.chooseMainReferee(Alon);
+        m3.getEventRecord().addEvent("5",e3);
+        m3.chooseMainReferee(Rayola);
+
+
+        DB.addMatchToDB(1,m1);
+        DB.addMatchToDB(2,m2);
+        DB.addMatchToDB(3,m3);
+        DB.addMatchToDB(4,m4);
+
         systemController.connectToDB(DB);
+
     }
 
     /**

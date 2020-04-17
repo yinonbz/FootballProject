@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestSingleClassicMatchPolicy {
+public class SingleClassicMatchPolicyTest {
 
     static DemoDB DB;
 

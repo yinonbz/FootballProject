@@ -81,9 +81,8 @@ public class SystemService {
      * UC 3.4
      */
 
-    public void addComplaint(String content, String username) {
-
-        systemController.addComplaint(content,username);
+    public boolean addComplaint(String content, String username) {
+        return systemController.addComplaint(content,username);
     }
 
     /**

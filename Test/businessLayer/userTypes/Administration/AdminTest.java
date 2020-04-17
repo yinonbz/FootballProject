@@ -26,22 +26,30 @@ public class AdminTest {
     }
 
     @Test
-    public void UC8_1(){
+    public void UC8_1_a(){
+        assertTrue(systemService.closeTeamByAdmin("Chelsea","TomerSein"));
         //1
         //checks if we can close the team successfully
-        assertTrue(systemService.closeTeamByAdmin("Chelsea","TomerSein"));
         Team Chelsea = DB.selectTeamFromDB("Chelsea");
 
         //check the field has changed
         assertTrue(Chelsea.getClosedByAdmin());
-        //2
-        //checks if we can close a team that doesn't exists
-        assertFalse(systemService.closeTeamByAdmin("ddd","TomerSein"));
+    }
 
+    @Test
+    public void UC8_1_b(){
         //3
         //checks if we can close a team that is already closed
+        Team Chealse = DB.selectTeamFromDB("Chelsea");
+        Chealse.closeTeamPermanently();
         assertFalse(systemService.closeTeamByAdmin("Chelsea","TomerSein"));
+    }
 
+    @Test
+    public void UC8_1_c(){
+        //2
+        //checks if we can close a team that doesn't exists
+        assertFalse(systemService.closeTeamByAdmin("","TomerSein"));
     }
 
     @Test
