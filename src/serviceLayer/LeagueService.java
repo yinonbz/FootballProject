@@ -1,10 +1,6 @@
 package serviceLayer;
 
-import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
-import businessLayer.userTypes.Administration.AssociationRepresentative;
-import businessLayer.userTypes.Administration.Referee;
-import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
 import java.util.Date;
@@ -102,12 +98,41 @@ public class LeagueService {
      * @param username
      * @return
      */
-    public boolean assignRefereeThroughRepresentation(String refUsername, String leagueName, int seasonID, String username) {
+    public boolean assignRefereeThroughRepresentative(String refUsername, String leagueName, int seasonID, String username) {
 
         if (refUsername != null && leagueName != null && username != null) {
-            return leagueController.assignRefereeThroughRepresentation(refUsername, leagueName, seasonID, username);
+            return leagueController.assignRefereeThroughRepresentative(refUsername, leagueName, seasonID, username);
         }
         return false;
     }
 
+    /**
+     * The function receives a team's name and the representative's username from the interface layer and calls the assigning function in the business layer
+     *
+     * @param teamName
+     * @param username
+     * @return
+     */
+    public boolean confirmTeamRequestThroughRepresentative(String teamName, String username) {
+
+        if (teamName != null && username != null) {
+            return leagueController.confirmTeamRequestThroughRepresentative(teamName, username);
+        }
+        return false;
+    }
+
+    /**
+     * The function receives a stadium's identifier, number of seats and the representative's username from the interface layer and calls the creating function in the business layer
+     *
+     * @param nameStadium
+     * @param numberOfSeats
+     * @return
+     */
+    public boolean createNewStadiumThroughRepresentative(String nameStadium, String numberOfSeats, String username) {
+
+        if (nameStadium != null && numberOfSeats != null && username != null) {
+            return leagueController.createNewStadiumThroughRepresentative(nameStadium, numberOfSeats, username);
+        }
+        return false;
+    }
 }
