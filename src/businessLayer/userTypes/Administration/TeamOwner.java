@@ -95,6 +95,7 @@ public class TeamOwner extends Subscriber {
     public boolean addAsset(int teamId, String assetType, String assetUserName) {
         boolean isAdded = false;
         Team team = findTeam(teamId);
+        int k =0;
         SystemController systemController = this.getSystemController();
         if (team != null && team.getActive()) {
             switch (assetType) {
