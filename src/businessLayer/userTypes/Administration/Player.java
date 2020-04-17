@@ -116,7 +116,7 @@ public class Player extends Subscriber implements OwnerEligible {
         return teamOwner;
     }
 
-    protected void setTeamOwner(TeamOwner teamOwner) {
+    public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
     }
 }

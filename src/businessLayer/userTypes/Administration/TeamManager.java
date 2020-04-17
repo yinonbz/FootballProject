@@ -22,10 +22,16 @@ public class TeamManager extends Subscriber implements OwnerEligible {
      */
     public TeamManager(String username, String password, String name, Team team,int salary, SystemController systemController) {
         super(username, password,name, systemController);
-        this.team = team;
         this.teamOwner =null;
         this.salary = salary;
         permissions= null;
+        if(team!=null &&systemController!=null && systemController.getTeamByName(team.getTeamName())!=null) {
+            this.team = team;
+            team.setTeamManager(this);
+        }else{
+            team = null;
+        }
+
     }
 
 
@@ -129,7 +135,11 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         return false;
     }
 
-    public boolean editPlayer(String playerUser,String typeEdit, String edit){
+    public int getSalary() {
+        return salary;
+    }
+
+    public boolean editPlayer(String playerUser, String typeEdit, String edit){
         if(permissions == Permissions.PLAYERORIENTED || permissions == Permissions.GENERAL) {
             if (playerUser != null && typeEdit != null && edit != null) {
                 Player player = team.getPlayerByUser(playerUser);
