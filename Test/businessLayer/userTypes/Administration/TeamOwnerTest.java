@@ -3,6 +3,7 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Team.Team;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
@@ -15,45 +16,45 @@ import static org.junit.Assert.*;
 public class TeamOwnerTest {
 
 
-    static TeamOwner Barkat;
-    static TeamOwner Nissanov;
-    static TeamOwner Jacob;
-    static TeamOwner Glazers;
-    static TeamOwner Inon;
-    static TeamOwner Jimmy;
-    static TeamOwner Alex;
-    static TeamOwner teamOwner;
+    private TeamOwner Barkat;
+    private TeamOwner Nissanov;
+    private TeamOwner Jacob;
+    private TeamOwner Glazers;
+    private TeamOwner Inon;
+    private TeamOwner Jimmy;
+    private TeamOwner Alex;
+    private TeamOwner teamOwner;
 
-    //static TeamOwner Alex;
-    static TeamOwner piqueF;
-    static TeamManager klopp;
-    static TeamManager pep;
-
-
-    static Player Buzaglo;
-    static Player Tamash;
-    static Player Roso; //This Player will not be in the DB
-    static Player yosi;
-    static Player pique;
-
-    static Referee Alon;
-
-    static Team HTA;
-    static Team BeerSheva;
-    static Team Barca; //This Team will not be in the DB
-    static Team Arsenal;
-
-    static Team LeedsUnited; //This Team will not be in the DB
-
-    static DemoDB DB;
-    static DataBaseValues tDB;
+    //private TeamOwner Alex;
+    private TeamOwner piqueF;
+    private TeamManager klopp;
+    private TeamManager pep;
 
 
-    static TeamService teamService;
-    static SystemService systemService;
+    private Player Buzaglo;
+    private Player Tamash;
+    private Player Roso; //This Player will not be in the DB
+    private Player yosi;
+    private Player pique;
 
-    @BeforeClass
-    public static void createTestValues() {
+    private Referee Alon;
+
+    private Team HTA;
+    private Team BeerSheva;
+    private Team Barca; //This Team will not be in the DB
+    private Team Arsenal;
+
+    private Team LeedsUnited; //This Team will not be in the DB
+
+    private DemoDB DB;
+    private DataBaseValues tDB;
+
+
+    private TeamService teamService;
+    private SystemService systemService;
+
+    @Before
+    public void createTestValues() {
        // systemController = SystemController.SystemController();
         tDB = new DataBaseValues();
         DB = tDB.getDB();
