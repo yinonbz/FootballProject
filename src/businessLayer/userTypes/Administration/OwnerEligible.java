@@ -7,5 +7,6 @@ public interface OwnerEligible {
      * @return true if also an owner, false if only coach
      */
      boolean isOwner();
+     TeamOwner getTeamOwner();
 
 }

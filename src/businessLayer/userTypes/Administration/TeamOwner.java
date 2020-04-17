@@ -309,16 +309,34 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     * @param team team to be enabled/disabled.
+     * @param team team team to be enabled.
+     * @return true if the team has been enabled
+     *         false if already enabled
      */
-    public void changeStatus(Team team) {
+    public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
             team.setActive(true);
+            return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
-        } else {
-            team.setActive(false);
-            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not active.");
         }
+        //System.out.println("The team '" + team.getTeamName() + "' has already been enabled.");
+        return false;
+    }
+
+
+    /**
+     * @param team team to be disabled.
+     * @return true if the team has been disabled
+     *         false if already disabled
+     */
+    public Boolean disableStatus(Team team) {
+        if (team.getActive()) {
+            team.setActive(false);
+            return true;
+            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not-active.");
+        }
+        //System.out.println("The team '" + team.getTeamName() + "' has already been disabled.");
+        return false;
     }
 
     /**
@@ -339,6 +357,10 @@ public class TeamOwner extends Subscriber {
 
     /**
      *
+     * @param username
+     * @param permission
+     * @param team
+     * @param salary
      * @return
      */
 
@@ -350,28 +372,26 @@ public class TeamOwner extends Subscriber {
         }
 
         //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
-        if(subscriber==null||team.getTeamManager().equals(subscriber)|| team.getTeamOwners().contains(subscriber)|| !(this.teams.contains(team))){
+        if(subscriber==null||(team.getTeamManager()!=null  && team.getTeamManager().equals(subscriber))|| team.getTeamOwners().contains(subscriber)|| !(this.teams.contains(team))){
             return false;
             //todo check if we should print something based on the error given
         }
 
-        if(team.getTeamManager() ==null){
+        if(subscriber instanceof TeamManager && team.getTeamManager() ==null){
 
             //covert Subsriber to teamManger
 
-            TeamManager newTeamManger = new TeamManager(subscriber.getUsername(),
-                    subscriber.getPassword(),subscriber.getName(),team,salary,this.getSystemController());
-             systemController.addSubscriberToDB(username,newTeamManger);
-            subscriber= newTeamManger;
+            TeamManager teamManager = (TeamManager)subscriber;
 
             //assign to team manager field in the team objects
-            team.setTeamManager((TeamManager)subscriber);
+            teamManager.setTeam(team);
+            team.setTeamManager(teamManager);
 
             //grant permissions to the new team manager
-            newTeamManger.setPermissions(permission);
+            teamManager.setPermissions(permission);
 
             //link to assigning owner
-            teamManagers.put(team,newTeamManger);
+            teamManagers.put(team,teamManager);
 
             return true;
         }
@@ -496,7 +516,8 @@ public class TeamOwner extends Subscriber {
      *          false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
      */
     public Boolean appointToOwner(Subscriber subscriber, String teamName){
-
+        if(subscriber == null)
+            return false; //subscriber doesn't exist in the DB
         if(subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner){
             if(!(subscriber instanceof TeamOwner) && ((OwnerEligible) subscriber).isOwner() == false){
                 if(getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
@@ -574,17 +595,5 @@ public class TeamOwner extends Subscriber {
             }
         }
         return false;
-    }
-
-    private boolean isNumeric(String str){
-        if(str == null || str.length() ==0){
-            return false;
-        }
-        for(char c : str.toCharArray()){
-            if(!Character.isDigit(c)){
-                return false;
-            }
-        }
-        return  true;
     }
 }

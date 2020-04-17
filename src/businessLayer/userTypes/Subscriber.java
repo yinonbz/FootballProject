@@ -47,10 +47,14 @@ public abstract class Subscriber {
         }
     }
 
+
     /**
      * @return
      */
+
     abstract public Boolean editDetails();
+
+
 
     /**
      * @return
@@ -118,12 +122,23 @@ public abstract class Subscriber {
      * @param value the string
      * @return true if it an integer
      */
-    protected boolean tryParseInt(String value) {
+    public boolean tryParseInt(String value) {
         try {
             Integer.parseInt(value);
             return true;
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+    protected boolean isNumeric(String str){
+        if(str == null || str.length() ==0){
+            return false;
+        }
+        for(char c : str.toCharArray()){
+            if(!Character.isDigit(c)){
+                return false;
+            }
+        }
+        return  true;
     }
 }

@@ -25,19 +25,7 @@ public class SystemService {
      */
     public SystemService(){
         this.systemController = SystemController.SystemController();
-        leagueController = new LeagueController();
-        teamController = new TeamController();
-        matchController = new MatchController();
 
-        systemController.setLeagueController(leagueController);
-        systemController.setTeamController(teamController);
-        systemController.setMatchController(matchController);
-
-        leagueController.setSystemController(systemController);
-
-        matchController.setSystemController(systemController);
-
-        teamController.setSystemController(systemController);
     }
 
     /**
@@ -60,6 +48,31 @@ public class SystemService {
      */
     public Boolean insertInfo(String userName, String password) {
         return systemController.insertInfo(userName,password);
+
+    }
+
+    /**
+     * UC 1.1 - Initialize System
+     * @param password the password of the temporary admin
+     * @return true if the system has initialized successfully
+     *          false else
+     */
+    public Boolean initializeSystem(String password){
+        return systemController.initializeSystem(password);
+    }
+
+    /**
+     * @param newPassword The new password of the user
+     * @param userName the user's user name
+     * @return true if the passsword has been changed
+     *          false else
+     */
+    public Boolean changePassword(String newPassword, String userName){
+        return systemController.changePassword(newPassword, userName);
+    }
+
+    public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName){
+        return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
     }
 
     /**
@@ -73,6 +86,8 @@ public class SystemService {
     public boolean closeTeamByAdmin(String teamName, String username) {
         return systemController.closeTeamByAdmin(teamName,username);
     }
+
+
 
     /**
      * the function lets the subscriber to upload a complaint via the presentation layer, and execute the command.

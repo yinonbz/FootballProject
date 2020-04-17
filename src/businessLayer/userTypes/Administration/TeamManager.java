@@ -59,7 +59,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
 
     @Override
     public Boolean editDetails() {
-        return null;
+        return false;
     }
 
     public void setSalary(int edit) {
@@ -118,6 +118,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                 if (player != null && player.getTeam() != null && player.getTeam() == team && team.containPlayer(player)) {
                     player.setTeam(null);
                     team.removePlayer(player);
+                    return true;
                 }
                 return false;
             }
@@ -125,7 +126,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         else{
             System.out.println("Invalid permissions");
         }
-        return true;
+        return false;
     }
 
     public boolean editPlayer(String playerUser,String typeEdit, String edit){
@@ -142,12 +143,21 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                         player.setFieldJob(edit);
                         team.addPlayer(player);
                     }
+                    else if(typeEdit.equals("salary")){
+                        if(isNumeric(edit)){
+                            int salary = Integer.parseInt(edit);
+                            team.removePlayer(player);
+                            player.setSalary(salary);
+                            team.addPlayer(player);
+                        }
+                    }
                     return true;
                 }
             }
-            else{
-                System.out.println("Invalid permissions");
-            }
+
+        }
+        else{
+            System.out.println("Invalid permissions");
         }
         return false;
     }

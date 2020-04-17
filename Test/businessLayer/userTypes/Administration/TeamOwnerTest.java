@@ -1,10 +1,8 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
-import businessLayer.Tournament.Match.Stadium;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import businessLayer.Tournament.Match.MatchController;
@@ -26,13 +24,18 @@ public class TeamOwnerTest {
     static TeamOwner Alex;
     static TeamOwner teamOwner;
 
+    static TeamManager klopp;
+
 
     static Player Buzaglo;
+    static Player Tamash;
+    static Player Roso; //This Player will not be in the DB
 
     static Referee Alon;
 
     static Team HTA;
     static Team BeerSheva;
+    static Team Barca; //This Team will not be in the DB
     static Team Arsenal;
 
 
@@ -55,6 +58,7 @@ public class TeamOwnerTest {
         Glazers = (TeamOwner) DB.selectSubscriberFromDB("Glazers");
         Inon = (TeamOwner) DB.selectSubscriberFromDB("Inon");
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
+        Tamash = (Player) DB.selectSubscriberFromDB("Tamash");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
         Jimmy = (TeamOwner) DB.selectSubscriberFromDB("Jimmy");
         Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
@@ -63,6 +67,9 @@ public class TeamOwnerTest {
 
         BeerSheva = DB.selectTeamFromDB("Beer Sheva");
         HTA = DB.selectTeamFromDB("HTA");
+
+        klopp= (TeamManager)DB.selectSubscriberFromDB("kloppJ");
+
         Arsenal = DB.selectTeamFromDB("Arsenal");
 
         teamService = new TeamService();
@@ -153,12 +160,16 @@ public class TeamOwnerTest {
     }
     @Test
     public void UC6_1() {
-    teamService.addAsset("AlonaBarkat",123, "Player", "Buzaglo");
+        teamService.addAsset("AlonaBarkat",123, "Player", "Buzaglo");
 
     }
 
+    @Test
+    public void UC6_4(){
+        assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
 
-
+    }
 
 
     @Test
@@ -205,6 +216,7 @@ public class TeamOwnerTest {
 
     }
 
+    /*
     @Test
     public void isFictive() {
 
@@ -229,35 +241,85 @@ public class TeamOwnerTest {
 
     }
 
+*/
 
+    /**
+     * Unit Test - enterMember(String userName))
+     */
     @Test
-    public void UC_6_2() {
-        //1 - Test enterMember(String userName)
+    public void enterMemberUT() {
         assertEquals(Barkat.enterMember("Glazers"), Glazers); //Try to search a subscriber
         assertNull(Barkat.enterMember("Itay")); //Search a team member which in not exist in the system.
 
-        //2 - Test
+    }
+
+    /**
+     * Unit Test - enterMember(String teamName))
+     */
+    @Test
+    public void appointToOwnerUT() {
         assertFalse(Barkat.appointToOwner(Buzaglo, "Manchester")); //Try and Fail to add to a team which you don't own.
         assertTrue(Barkat.appointToOwner(Buzaglo, "Beer Sheva")); //Try to add successfully.
         assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva")); //Try and Fail to add someone which is already a team owner.
         assertFalse(Barkat.appointToOwner(Alon,"Beer Sheva")); //Try and Fail to add someone, when you are not a Player, a Coach or a Team Manager.
+    }
+
+    @Test
+    public void UC_6_2() {
+        //Test 1 - add Successfully
+        assertTrue(Barkat.appointToOwner(Tamash, "Beer Sheva"));
+
+        //Test - 2 - Try to add a Player which does not exists in the DB
+        assertFalse(Barkat.appointToOwner(Roso, "Beer Sheva"));
+
+        //Test - 3 -Try and Fail to add someone which is already a team owner.
+        assertFalse(Barkat.appointToOwner(Glazers,"Beer Sheva"));
 
     }
-    @Test
-    public void UC6_6() {
 
-        //1 - test getTeam
+    /**
+     * Unit Test - getTeam(String teamName)
+     */
+    @Test
+    public void getTeamUT() {
         assertEquals(Inon.getTeam("Beer Sheva"),BeerSheva);
         assertNull(Inon.getTeam("NAS"));
         assertEquals(Inon.getTeam("HTA"),HTA);
         assertNotEquals(Inon.getTeam("HTA"),BeerSheva);
+    }
 
-        //2 - test changeStatus - enabled to disabled
-        Inon.changeStatus(BeerSheva);
+    /**
+     * Unit Test - changeStatus(Team team)
+     */
+    @Test
+    public void changeStatusUT() {
+        //enabled to disabled
+        Inon.disableStatus(BeerSheva);
         assertFalse(BeerSheva.getActive());
 
-        //3 - test changeStatus - disabled to enabled
-        Inon.changeStatus(BeerSheva);
+        //disabled to enabled
+        Inon.enableStatus(BeerSheva);
         assertTrue(BeerSheva.getActive());
+    }
+
+    @Test
+    public void UC6_6() {
+        //Test - 1 - Disable successfully
+        assertTrue(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
+
+        //Test - 2 - Try to disable a Team status which does not exists in the DB
+        assertFalse(teamService.disableTeamStatus("Barca","Glazers"));
+
+        //Test - 3 - Try to disable an already disabled team
+        assertFalse(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
+
+        //Test - 4 - Enable successfully
+        assertTrue(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
+
+        //Test - 5 - Try to enable a Team status which does not exists in the DB
+        assertFalse(teamService.enableTeamStatus("Barca","Glazers"));
+
+        //Test - 6 - Try to enable an already disabled team
+        assertFalse(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
     }
 }

@@ -11,11 +11,7 @@ import businessLayer.userTypes.viewers.Fan;
 import dataLayer.DemoDB;
 import serviceLayer.SystemService;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class DataBaseValues {
@@ -60,6 +56,7 @@ public class DataBaseValues {
 
     //team manager
     static TeamManager itay;
+    static TeamManager klopp;
 
     //referee
     static Referee Alon;
@@ -74,6 +71,7 @@ public class DataBaseValues {
     static Player Salah;
     static Player Firmino;
     static Player Rose;
+    static Player Tamash;
 
     //admins
     static Admin admin;
@@ -147,6 +145,7 @@ public class DataBaseValues {
 
         systemService = new SystemService();
         systemController = SystemController.SystemController();
+        systemController.initializeSystem("admin");
         leagueController = systemController.getLeagueController();
         matchController = new MatchController(); // todo change to getter of controller
 
@@ -224,13 +223,14 @@ public class DataBaseValues {
 
         DB.addSubscriberToDB("TomerSein",admin);
         DB.addSubscriberToDB("ItaiKatz",admin2);
+        DB.addSubscriberToDB("Inon",Inon);
 
         //add player
-//        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
-//        Scholes = new Player("Scholes","ssss","Scholes","2222","midfild",300,ManchesterUnited,systemController);
-//        Pickford = new Player("Pickford","ssss","Pickford","2222","goalkeeper",300,Everton,systemController);
+        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
+        Tamash = new Player("Tamash","Tamash123","Tamash","1983","captain",0,null,systemController);
 
-
+        DB.addSubscriberToDB("Buzaglo",Buzaglo);
+        DB.addSubscriberToDB("Tamash",Tamash);
 
         //add referee
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
@@ -246,8 +246,15 @@ public class DataBaseValues {
         DB.addSubscriberToDB("TomerZ",Ido);
 
         //add team manager
-        itay = new TeamManager("itayK", "111", "itay",BeerSheva ,100, systemController);
+        itay = new TeamManager("itayK", "111", "itay",null ,100, systemController);
+        itay.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("itayK",itay);
+
+        klopp = new TeamManager("kloppJ", "111", "klopp",null ,100, systemController);
+        klopp.setPermissions(Permissions.FINANCE);
+        DB.addSubscriberToDB("kloppJ",klopp);
+
+
 
         //add fan
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
@@ -279,13 +286,14 @@ public class DataBaseValues {
         Chelsea = new Team ("Chelsea", teamOwner,1888);
         Chelsea.setStadium(s1);
         BeerSheva = new Team("Beer Sheva", Barkat,1973);
+        BeerSheva.setTeamManager(itay);
+        itay.setTeam(BeerSheva);
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
         HTA = new Team("HTA", Inon,1990);
         LeedsUnited = new Team("LeedsUnited", Alex, 1899);
         Sunderland = new Team("Sunderland", YaelM, 1973);
-
 
 
         //setters for teams
@@ -401,7 +409,6 @@ public class DataBaseValues {
         DB.addMatchToDB(4,m4);
 
         systemController.connectToDB(DB);
-
     }
 
     /**
