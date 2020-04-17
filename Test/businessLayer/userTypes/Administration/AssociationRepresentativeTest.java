@@ -35,6 +35,7 @@ public class AssociationRepresentativeTest {
     public void createTestValues() {
 
         testingSystemService = new SystemService();
+        testingSystemService.initializeSystem("admin");
         testingLeagueService = new LeagueService();
         testingDBValues = new DataBaseValues();
         testingDB = testingDBValues.getDB();
