@@ -294,13 +294,13 @@ public class TeamOwnerTest {
     @Test
     public void UC_6_3_b(){
         assertFalse(teamService.removeOwner("AlonaBarkat","BeerSheva","Roso"));
+        assertFalse(teamService.removeOwner("AlonaBarkat","BeerSheva","Yosi"));
     }
 
     @Test
     public void UC6_4_a(){
         //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
-
     }
 
     @Test
