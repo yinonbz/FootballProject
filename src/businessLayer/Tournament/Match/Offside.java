@@ -19,4 +19,9 @@ public class Offside extends Event {
     public String toString(){
         return "Offside By: "+playerSubject.getName();
     }
+
+    @Override
+    Player getSecondPlayer() {
+        return null;
+    }
 }

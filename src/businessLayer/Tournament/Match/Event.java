@@ -26,4 +26,14 @@ public abstract class Event {
         this.id=id;
     }
 
+    /**
+     * the first player
+     * @return
+     */
+    public Player getFirstPlayer(){
+        return playerSubject;
+    }
+
+    abstract Player getSecondPlayer();
+
 }

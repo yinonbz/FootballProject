@@ -20,4 +20,9 @@ public class Injury extends Event {
     public String toString(){
         return "Injured: "+playerSubject.getName();
     }
+
+    @Override
+    Player getSecondPlayer() {
+        return null;
+    }
 }

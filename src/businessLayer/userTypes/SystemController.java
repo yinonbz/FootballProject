@@ -87,6 +87,14 @@ public class SystemController {
         return leagueController;
     }
 
+    /**
+     * Getter function for the match controller
+     * @return
+     */
+    public MatchController getMatchController(){
+        return matchController;
+    }
+
 
     /**
      * @param subscriber
@@ -408,24 +416,26 @@ public class SystemController {
         return false;
     }
 
-    //-------------------Subscriber--------------------//
+    //-------------------Fan--------------------//
 
     /**
      * the function lets the subscriber to upload a complaint
      *  @param content    the content of the complaint
      * @param username the subscriber who wants to complain
      */
-    public void addComplaint(String content, String username) {
+    public boolean addComplaint(String content, String username) {
         Subscriber subscriber = getSubscriberByUserName(username);
-        if(subscriber!=null){
-            Complaint complaint = subscriber.createComplaint(content);
+        if(subscriber instanceof Fan){
+            Complaint complaint = ((Fan) subscriber).createComplaint(content);
             if (complaint != null) {
                 int id = DB.countComplaintsInDB();
             complaint.setId(id);
                 DB.addComplaintToDB(id, complaint);
                 subscriber.addComplaint(complaint);
+                return true;
             }
         }
+        return false;
     }
 
     //-------------------Admin--------------------//
@@ -441,27 +451,30 @@ public class SystemController {
 
     public String removeSubscriber(String subscriberName, String userType) {
         Subscriber subscriber = getSubscriberByUserName(userType);
-        if (subscriberName != null && (subscriber instanceof Admin)) {
-            if (DB.containsInSystemSubscribers(subscriberName)) {
-                Subscriber tempSubscriber = DB.selectSubscriberFromDB(subscriberName);
-                if (tempSubscriber instanceof Admin) {
-                    if (subscriber.getUsername().equals(subscriberName)) {
-                        return "Admin can't remove his own user";
+        if ((subscriber instanceof Admin)) {
+            if(subscriberName != null) {
+                if (DB.containsInSystemSubscribers(subscriberName)) {
+                    Subscriber tempSubscriber = DB.selectSubscriberFromDB(subscriberName);
+                    if (tempSubscriber instanceof Admin) {
+                        if (subscriber.getUsername().equals(subscriberName)) {
+                            return "Admin can't remove his own user";
+                        }
+                    } else if (tempSubscriber instanceof TeamOwner) {
+                        if (((TeamOwner) tempSubscriber).isExclusiveTeamOwner()) {
+                            return "Can't remove an exclusive team owner";
+                        }
                     }
-                } else if (tempSubscriber instanceof TeamOwner) {
-                    if (((TeamOwner) tempSubscriber).isExclusiveTeamOwner()) {
-                        return "Can't remove an exclusive team owner";
+                    DB.removeSubscriberFromDB(subscriberName);
+                    //remove from notifications
+                    if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
+                        DB.removeNotificationFromDB(tempSubscriber.getUsername());
                     }
+                    return "The User " + subscriberName + " was removed";
                 }
-                DB.removeSubscriberFromDB(subscriberName);
-                //remove from notifications
-                if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
-                    DB.removeNotificationFromDB(tempSubscriber.getUsername());
-                }
-                return "The User " + subscriberName + " was removed";
+                return "User doesn't exist in the system";
             }
         }
-        return "User doesn't exist in the system";
+        return "Access denied";
     }
 
     /**

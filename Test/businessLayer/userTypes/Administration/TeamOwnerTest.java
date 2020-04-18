@@ -3,49 +3,61 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Team.Team;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import businessLayer.Tournament.Match.MatchController;
+import businessLayer.userTypes.SystemController;
+import serviceLayer.SystemService;
 import serviceLayer.TeamService;
 
 import static org.junit.Assert.*;
 
-public class TestTeamOwner {
+public class TeamOwnerTest {
 
 
-    static TeamOwner Barkat;
-    static TeamOwner Nissanov;
-    static TeamOwner Jacob;
-    static TeamOwner Glazers;
-    static TeamOwner Inon;
-    static TeamOwner Alex;
-    static TeamOwner piqueF;
-    static TeamManager klopp;
-    static TeamManager pep;
+    private TeamOwner Barkat;
+    private TeamOwner Nissanov;
+    private TeamOwner Jacob;
+    private TeamOwner Glazers;
+    private TeamOwner Inon;
+    private TeamOwner Jimmy;
+    private TeamOwner Alex;
+    private TeamOwner teamOwner;
+    private TeamOwner gerrard;
+
+    //private TeamOwner Alex;
+    private TeamOwner piqueF;
+    private TeamManager klopp;
+    private TeamManager pep;
+    private TeamManager valverde;
 
 
-    static Player Buzaglo;
-    static Player Tamash;
-    static Player Roso; //This Player will not be in the DB
-    static Player yosi;
-    static Player pique;
+    private Player Buzaglo;
+    private Player Tamash;
+    private Player Roso; //This Player will not be in the DB
+    private Player yosi;
+    private Player pique;
 
-    static Referee Alon;
+    private Referee Alon;
 
-    static Team HTA;
-    static Team BeerSheva;
-    static Team Barca; //This Team will not be in the DB
-    static Team LeedsUnited; //This Team will not be in the DB
+    private Team HTA;
+    private Team BeerSheva;
+    private Team Barca; //This Team will not be in the DB
+    private Team Arsenal;
+    private Team Liverpool;
+
+    private Team LeedsUnited; //This Team will not be in the DB
+
+    private DemoDB DB;
+    private DataBaseValues tDB;
 
 
-    //private SystemController systemController;
-    static DemoDB DB;
-    static DataBaseValues tDB;
+    private TeamService teamService;
+    private SystemService systemService;
 
-
-    static TeamService teamService;
-
-    @BeforeClass
-    public static void createTestValues() {
+    @Before
+    public void createTestValues() {
         // systemController = SystemController.SystemController();
         tDB = new DataBaseValues();
         DB = tDB.getDB();
@@ -60,6 +72,10 @@ public class TestTeamOwner {
         yosi = (Player) DB.selectSubscriberFromDB("yosi");
         pique = (Player) DB.selectSubscriberFromDB("pique");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
+        Jimmy = (TeamOwner) DB.selectSubscriberFromDB("Jimmy");
+        Alex = (TeamOwner) DB.selectSubscriberFromDB("Alex");
+        teamOwner = (TeamOwner) DB.selectSubscriberFromDB("Tomer");
+        gerrard = (TeamOwner) DB.selectSubscriberFromDB("gerrard");
 
         BeerSheva = DB.selectTeamFromDB("BeerSheva");
         pep = (TeamManager) DB.selectSubscriberFromDB("pepG");
@@ -68,8 +84,14 @@ public class TestTeamOwner {
 
         BeerSheva = DB.selectTeamFromDB("BeerSheva");
         HTA = DB.selectTeamFromDB("HTA");
-        klopp= (TeamManager)DB.selectSubscriberFromDB("kloppJ");
+        klopp = (TeamManager) DB.selectSubscriberFromDB("kloppJ");
+        valverde = (TeamManager) DB.selectSubscriberFromDB("valverde");
+
+        Arsenal = DB.selectTeamFromDB("Arsenal");
+        Liverpool = DB.selectTeamFromDB("Liverpool");
+
         teamService = new TeamService();
+        systemService = new SystemService();
 
     }
 
@@ -186,45 +208,47 @@ public class TestTeamOwner {
     }
 
     @Test
-    public void UC6_4(){
+    public void UC6_4() {
         //all good
-        assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        assertTrue(teamService.addManager("Inon", "kloppJ", "GENERAL", "HTA", "100"));
         //add same manager again and adding manager to occupied team
-        assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        assertFalse(teamService.addManager("Inon", "kloppJ", "GENERAL", "HTA", "100"));
         //wrong username
-        assertFalse(teamService.addManager("Inon","kloppJU","GENERAL","HTA","100"));
+        assertFalse(teamService.addManager("Inon", "kloppJU", "GENERAL", "HTA", "100"));
         //try assign a teamOwner
-        assertFalse(teamService.addManager("Inon","AlonaBarkat","GENERAL","HTA","100"));
+        assertFalse(teamService.addManager("Inon", "AlonaBarkat", "GENERAL", "HTA", "100"));
 
 
     }
 
     @Test
-    public void UC6_5(){
+    public void UC6_5() {
         //all good
-        assertTrue(teamService.fireManager("Inon","kloppJ","HTA"));
+        assertTrue(teamService.fireManager("gerrard", "valverde", "Liverpool"));
         //fire teamowner
-        assertFalse(teamService.fireManager("Inon","AlonaBarkat","HTA"));
+        assertFalse(teamService.fireManager("gerrard", "AlonaBarkat", "Liverpool"));
         //wrong username
-        assertFalse(teamService.fireManager("Inon","kloppJU","HTA"));
+        assertFalse(teamService.fireManager("gerrard", "kloppJ", "Liverpool"));
         //try fire the same manager again
-        assertFalse(teamService.fireManager("Inon","kloppJ","HTA"));
+        assertFalse(teamService.fireManager("gerrard", "valverde", "Liverpool"));
     }
 
 
     @Test
-    public void UC8_2() {
+    //UNIT TEST
+    public void checkExclusiveTeamOwner() {
         //1 - UNIT
         //check if Alona who has 2 teams is exclusive
 
-        assertFalse(Barkat.isExclusiveTeamOwner());
+        assertFalse(Jimmy.isExclusiveTeamOwner());
 
         //2
         //check if Alona is now Exclusive
-        BeerSheva.getTeamOwners().remove(Nissanov);
-        Nissanov.getTeams().remove(BeerSheva);
+        Arsenal.getTeamOwners().remove(Alex);
+        Arsenal.getTeamOwners().remove(teamOwner);
+        Alex.getTeams().remove(Arsenal);
 
-        assertTrue(Barkat.isExclusiveTeamOwner());
+        assertTrue(Jimmy.isExclusiveTeamOwner());
 
         //3
         //check what happens without any teams
@@ -233,7 +257,27 @@ public class TestTeamOwner {
         assertFalse(Nissanov.isExclusiveTeamOwner());
     }
 
-    /*
+    @Test
+    public void UC8_2() {
+        //1
+        //check if removing a regular user is possible
+        assertEquals("The User Ben was removed", systemService.removeSubscriber("Ben", "TomerSein"));
+
+        //2
+        //check if it is possible to remove an exclusive team owner from the system
+        assertEquals("Can't remove an exclusive team owner", systemService.removeSubscriber("Harry", "TomerSein"));
+
+        //3
+        //check if admin can delete himself
+        assertEquals("Admin can't remove his own user", systemService.removeSubscriber("TomerSein", "TomerSein"));
+
+        //4
+        //check if you can delete user that doesn't exists
+        assertEquals("User doesn't exist in the system", systemService.removeSubscriber("dddddd", "TomerSein"));
+
+
+    }
+
     @Test
     public void isFictive() {
 
@@ -257,8 +301,6 @@ public class TestTeamOwner {
         assertFalse(Barkat.sendRequestForTeam("", "2004"));
 
     }
-
-*/
 
     /**
      * Unit Test - enterMember(String userName))
@@ -320,90 +362,102 @@ public class TestTeamOwner {
     }
 
     @Test
-    public void UC6_6_1_a(){
+    public void UC6_6_1_a() {
         //Test - 1 - Disable successfully
-        assertTrue(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
+        assertTrue(teamService.disableTeamStatus("ManchesterUnited", "Glazers"));
     }
 
     @Test
-    public void UC6_6_1_b(){
+    public void UC6_6_1_b() {
         //Test - 2 - Try to disable a Team status which does not exists in the DB
-        assertFalse(teamService.disableTeamStatus("Barca","Glazers"));
+        assertFalse(teamService.disableTeamStatus("Barca", "Glazers"));
     }
 
     @Test
     public void UC6_6_1_c() {
         //Test - 3 - Try to disable an already disabled team
-        assertFalse(teamService.disableTeamStatus("ManchesterUnited","Glazers"));
+        teamService.disableTeamStatus("ManchesterUnited", "Glazers");
+        assertFalse(teamService.disableTeamStatus("ManchesterUnited", "Glazers"));
     }
 
     @Test
     public void UC6_6_2_a() {
         //Test - 4 - Enable successfully
-        assertTrue(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
+        teamService.disableTeamStatus("ManchesterUnited","Glazers");
+        assertTrue(teamService.enableTeamStatus("ManchesterUnited", "Glazers"));
     }
 
     @Test
-    public void UC6_6_2_b(){
+    public void UC6_6_2_b() {
         //Test - 5 - Try to enable a Team status which does not exists in the DB
-        assertFalse(teamService.enableTeamStatus("Barca","Glazers"));
+        assertFalse(teamService.enableTeamStatus("Barca", "Glazers"));
     }
 
     @Test
-    public void UC6_6_2_c(){
+    public void UC6_6_2_c() {
         //Test - 6 - Try to enable an already disabled team
-        assertFalse(teamService.enableTeamStatus("ManchesterUnited","Glazers"));
+        assertFalse(teamService.enableTeamStatus("ManchesterUnited", "Glazers"));
     }
 
     @Test
     public void addManager() {
+        TeamManager itay = (TeamManager) DB.selectSubscriberFromDB("itayK");
+        BeerSheva.setTeamManager(itay);
+        itay.setTeam(BeerSheva);
         //try assign manager to a team that not belong to me
-        assertFalse(Alex.addManager("pepG",Permissions.GENERAL,BeerSheva,200));
+        assertFalse(Alex.addManager("pepG", Permissions.GENERAL, BeerSheva, 200));
         //manager already has team
-        assertFalse(Alex.addManager("itayK",Permissions.GENERAL,LeedsUnited,200));
+        assertFalse(Alex.addManager("itayK", Permissions.GENERAL, LeedsUnited, 200));
         //all good
-        assertTrue(Alex.addManager("pepG",Permissions.GENERAL,LeedsUnited,1000));
+        assertTrue(Alex.addManager("pepG", Permissions.GENERAL, LeedsUnited, 1000));
         //add again same manager
-        assertFalse(Alex.addManager("pepG",Permissions.GENERAL,LeedsUnited,1000));
+        assertFalse(Alex.addManager("pepG", Permissions.GENERAL, LeedsUnited, 1000));
 
     }
 
     @Test
     public void fireManager() {
+
         //try fire manager from team that not belong to me
-        assertFalse(Alex.fireManager("itayK",BeerSheva));
+        assertFalse(Alex.fireManager("itayK", BeerSheva));
         //not my manager
-        assertFalse(Alex.fireManager("itayK",LeedsUnited));
+        assertFalse(Alex.fireManager("itayK", LeedsUnited));
+        //try delete pep withut assigning him via Alex
+        LeedsUnited.setTeamManager(pep);
+        pep.setTeam(LeedsUnited);
+        assertFalse(Alex.fireManager("pepG", LeedsUnited));
         //all good
-        assertTrue(Alex.fireManager("pepG",LeedsUnited));
+        Alex.getTeamManagers().put(LeedsUnited, pep);
+        assertTrue(Alex.fireManager("pepG", LeedsUnited));
         //manager has no team
-        assertFalse(Alex.fireManager("pepG",LeedsUnited));
+        assertFalse(Alex.fireManager("pepG", LeedsUnited));
         //add again same manager
 
     }
 
     @Test
     public void getOriginalObject() {
-        assertEquals(piqueF.getOriginalObject(),DB.selectSubscriberFromDB("pique"));
+        assertEquals(piqueF.getOriginalObject(), DB.selectSubscriberFromDB("pique"));
     }
 
     @Test
     public void setOriginalObject() {
         piqueF.setOriginalObject(null);
-        assertEquals(piqueF.getOriginalObject(),null);
+        assertEquals(piqueF.getOriginalObject(), null);
     }
 
     @Test
     public void equals() {
         assertTrue(piqueF.equals(DB.selectSubscriberFromDB("piqueF")));
-        assertTrue(piqueF.equals((TeamOwner)DB.selectSubscriberFromDB("piqueF")));
+        assertTrue(piqueF.equals((TeamOwner) DB.selectSubscriberFromDB("piqueF")));
         assertFalse(piqueF.equals(DB.selectSubscriberFromDB("pepG")));
         assertFalse(piqueF.equals(DB.selectSubscriberFromDB("Alex")));
         assertFalse(piqueF.equals(null));
 
     }
+
     @Test
-    public void UC6_7(){
+    public void UC6_7() {
         //add all pf the asset and set their salary
         assertTrue(teamService.addAsset("JacobS", "McabiHaifa", "TeamManager", "Ronaldinio"));
         assertTrue(teamService.addAsset("JacobS", "McabiHaifa", "Player", "Amir"));
@@ -416,16 +470,15 @@ public class TestTeamOwner {
         assertTrue(teamService.editCoach("JacobS", "McabiHaifa", "TomerZ", "salary", "15500"));
         assertTrue(teamService.editTeamManager("JacobS", "McabiHaifa", "Ronaldinio", "salary", 20000));
         //check all of the salary off all the asset and sum tham
-        assertEquals(teamService.reportExpanse("JacobS","McabiHaifa"),70500);
+        assertEquals(teamService.reportExpanse("JacobS", "McabiHaifa"), 70500);
         //check if a teamOwner enter a wrong team
-        assertEquals(teamService.reportExpanse("JacobS","BeerSheva"),-1);
+        assertEquals(teamService.reportExpanse("JacobS", "BeerSheva"), -1);
 
         assertTrue(Jacob.addAsset("BeitarJerusalem", "Stadium", "Tedi"));
-        assertEquals(teamService.reportIncome("JacobS","BeitarJerusalem"),6375);
-        assertEquals(teamService.reportIncome("JacobS","BeerSheva"),-1);
+//        assertEquals(teamService.reportIncome("JacobS","BeitarJerusalem"),6375);
+        assertEquals(teamService.reportIncome("JacobS", "BeerSheva"), -1);
 
         //assertTrue(Jacob.deleteAsset("BeitarJerusalem", "Stadium", "Tedi"));
-
 
 
     }

@@ -7,6 +7,7 @@ import dataLayer.DemoDB;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.CORBA.PERSIST_STORE;
 import serviceLayer.TeamService;
 
 import java.awt.*;
@@ -38,6 +39,7 @@ public class TeamManagerTest {
         Ido = (Coach) DB.selectSubscriberFromDB("efronio");
 
         BeerSheva = DB.selectTeamFromDB("BeerSheva");
+        itay.setTeam(BeerSheva);
         teamService = new TeamService();
 
 
@@ -118,7 +120,9 @@ public class TeamManagerTest {
         itay.setPermissions(Permissions.GENERAL);
         assertTrue(itay.editPlayer(Buzaglo.getUsername(),"fieldJob","foward"));
         assertTrue(itay.editPlayer(Buzaglo.getUsername(),"salary","200"));
+        assertTrue(itay.editPlayer(Buzaglo.getUsername(),"salary","d200d"));
         assertTrue(itay.editPlayer(Buzaglo.getUsername(),"birthDate","19042000"));
+        assertFalse(itay.editPlayer(Buzaglo.getUsername(),"height","182"));
 
     }
 
@@ -139,12 +143,16 @@ public class TeamManagerTest {
     public void deleteCoach() {
         //no permission
         assertFalse(itay.deleteCoach("efronio"));
+        itay.setPermissions(Permissions.PLAYERORIENTED);
+        assertFalse(itay.deleteCoach("efronio"));
         //Coach has no team
         itay.setPermissions(Permissions.COACHORIENTED);
         assertFalse(itay.deleteCoach("efronio"));
         //all good
+        itay.setPermissions(Permissions.GENERAL);
         Barkat.addAsset("BeerSheva","Coach","efronio");
         assertTrue(itay.deleteCoach("efronio"));
+        assertFalse(itay.deleteCoach("efronio"));
 
     }
 
@@ -152,6 +160,7 @@ public class TeamManagerTest {
     public void editCoach() {
         Barkat.addAsset("BeerSheva","Coach","efronio");
         //no permissions
+        itay.setPermissions(Permissions.FINANCE);
         assertFalse(itay.editCoach("efronio","training","fitness"));
         //has wrong permissions
         itay.setPermissions(Permissions.PLAYERORIENTED);
@@ -161,9 +170,56 @@ public class TeamManagerTest {
         itay.setPermissions(Permissions.GENERAL);
         assertTrue(itay.editCoach("efronio","training","fitness"));
         assertTrue(itay.editCoach("efronio","teamJob","assistentManager"));
+        assertFalse(itay.editCoach("efronio","project","10"));
+        assertFalse(itay.editCoach(null,null,null));
+        assertFalse(itay.editCoach("blahblah","training","physical"));
+        assertTrue(itay.editCoach("efronio","training","physical"));
 
 
+    }
 
 
+    @Test
+    public void getName() {
+        assertFalse(itay.getName().equals("itayk"));
+        assertTrue(itay.getName().equals("itay"));
+    }
+
+    @Test
+    public void getTeam() {
+        assertTrue(itay.getTeam().equals(BeerSheva));
+        assertFalse(itay.getTeam().equals(DB.selectTeamFromDB("Liverpool")));
+    }
+
+    @Test
+    public void setName() {
+        itay.setName("itai");
+        assertFalse(itay.getName().equals("itayk"));
+        assertTrue(itay.getName().equals("itai"));
+    }
+
+    @Test
+    public void setSalary() {
+        assertFalse(itay.getSalary()==500);
+        itay.setSalary(500);
+        assertTrue(itay.getSalary()==500);
+    }
+
+    @Test
+    public void getTeamOwner() {
+        assertTrue(itay.getTeamOwner() ==null);
+    }
+
+    @Test
+    public void getPermissions() {
+        assertEquals(itay.getPermissions() ,null);
+        itay.setPermissions(Permissions.GENERAL);
+        assertEquals(itay.getPermissions() ,Permissions.GENERAL);
+    }
+
+    @Test
+    public void getSalary() {
+        assertFalse(itay.getSalary()==500);
+        assertEquals(itay.getSalary(),0);
     }
 }
