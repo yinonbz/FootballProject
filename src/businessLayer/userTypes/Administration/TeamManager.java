@@ -72,6 +72,11 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         this.salary = edit;
     }
 
+    @Override
+    public String getType() {
+        return "TeamManager";
+    }
+
     /**
      * this function determine if the coach is also an Owner
      * @return true if also an owner, false if only coach

@@ -12,7 +12,7 @@ public class TeamOwner extends Subscriber {
 
     private OwnerEligible originalObject; // points to player/Coach/Manager of current fictive team owner
     private HashSet<Team> teams;
-    private HashMap<Team, ArrayList<TeamOwner>> teamOwners; // owners assigned by current owner
+    private HashMap<Team, LinkedList<TeamOwner>> teamOwners; // owners assigned by current owner
     private HashMap<Team, TeamManager> teamManagers; // managers assigned by current owner
 
     public static int newTeamOwnerCounter = 0;
@@ -340,21 +340,19 @@ public class TeamOwner extends Subscriber {
     /**
      * @return
      */
-    public boolean editProperties(){
+    public boolean editProperties() {
         return true;
     }
 
     /**
-     *
      * @return
      */
-    public boolean editOwners(){
+    public boolean editOwners() {
 
         return true;
     }
 
     /**
-     *
      * @param username
      * @param permission
      * @param team
@@ -362,17 +360,17 @@ public class TeamOwner extends Subscriber {
      * @return
      */
 
-    public boolean addManager(String username, Permissions permission,Team team,int salary){
+    public boolean addManager(String username, Permissions permission, Team team, int salary) {
         //check if user exists in out system
-        Subscriber subscriber=null;
-        if(systemController.checkUserExists(username)){
+        Subscriber subscriber = null;
+        if (systemController.checkUserExists(username)) {
             subscriber = systemController.selectUserFromDB(username);
         }
         //verify user exists in the system, user is a team manager,user is not one of the team owners, owner indeed owns the team and team has no manager
-        if(subscriber!=null && team!=null && subscriber instanceof TeamManager){
-            TeamManager teamManager = (TeamManager)subscriber;
-            if(team.getTeamManager() ==null && teamManager.getTeam()==null){
-                if(!team.getTeamOwners().contains(subscriber) && (this.teams.contains(team))){
+        if (subscriber != null && team != null && subscriber instanceof TeamManager) {
+            TeamManager teamManager = (TeamManager) subscriber;
+            if (team.getTeamManager() == null && teamManager.getTeam() == null) {
+                if (!team.getTeamOwners().contains(subscriber) && (this.teams.contains(team))) {
                     //covert Subsriber to teamManger
 
 
@@ -384,12 +382,11 @@ public class TeamOwner extends Subscriber {
                     teamManager.setPermissions(permission);
 
                     //link to assigning owner
-                    teamManagers.put(team,teamManager);
+                    teamManagers.put(team, teamManager);
 
                     return true;
                 }
-            }
-            else if((team.getTeamManager()!=null)){
+            } else if ((team.getTeamManager() != null)) {
                 System.out.println("please fire current Manager before appointing a new one");
             }
         }
@@ -457,9 +454,9 @@ public class TeamOwner extends Subscriber {
             subscriber = systemController.selectUserFromDB(username);
         }
 
-        if(subscriber!=null && team!=null){
-            if(this.teams.contains(team) && teamManagers.containsValue(subscriber) ){
-                if(subscriber instanceof TeamManager && team.getTeamManager().equals(subscriber)){
+        if (subscriber != null && team != null) {
+            if (this.teams.contains(team) && teamManagers.containsValue(subscriber)) {
+                if (subscriber instanceof TeamManager && team.getTeamManager().equals(subscriber)) {
                     //fire manager from team and delete links
                     team.setTeamManager(null);
                     TeamManager tm = (TeamManager) subscriber;
@@ -497,11 +494,11 @@ public class TeamOwner extends Subscriber {
         return false;
     }
     /***todo check if this function is implemented by someone?
-    public boolean editTeams() {
+     public boolean editTeams() {
 
-        return true;
-    }
-    */
+     return true;
+     }
+     */
     /**
      * a getter of teams of a team owner
      *
@@ -557,9 +554,9 @@ public class TeamOwner extends Subscriber {
      * false if: the subscriber is already a team owner, or the subscriber isn't a Player, a Coach or a Team Manager.
      */
     public Boolean appointToOwner(Subscriber subscriber, String teamName) {
-        if (subscriber == null)
+        Team team = getSystemController().getTeamByName(teamName);
+        if (subscriber == null || team == null)
             return false; //subscriber doesn't exist in the DB
-        Team team =  getSystemController().getTeamByName(teamName);
         if (subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner) {
             if (!(subscriber instanceof TeamOwner) && team.getTeamOwners().contains(subscriber) == false) {
                 if (getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
@@ -589,34 +586,92 @@ public class TeamOwner extends Subscriber {
      * false if: the subscriber isn't one of the team owners
      */
     public Boolean removeOwner(Subscriber subscriber, String teamName) {
-        if (subscriber == null)
+        if (subscriber == null || teamName == null)
             return false; //subscriber doesn't exist in the DB
-        Team team =  getSystemController().getTeamByName(teamName);
-        if (subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner) {
-            if (!(subscriber instanceof TeamOwner) && team.getTeamOwners().contains(subscriber) == true) {
-                if (getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
-                    TeamOwner teamOwnerToRemove = ((TeamOwner)subscriber);
-                    team.getTeamOwners().remove(teamOwnerToRemove);
+        Team team = getSystemController().getTeamByName(teamName);
+        if (getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
 
-                    ArrayList<TeamOwner> list = teamOwnerToRemove.getTeamOwners().get(team);
-                    for(TeamOwner teamOwner:list){
-                        team.getTeamOwners().remove(teamOwner);
+            TeamOwner teamOwnerToRemove = null;
+            if (subscriber instanceof TeamOwner) {
+                teamOwnerToRemove = ((TeamOwner) subscriber);
+                if (team.getTeamOwners().contains(teamOwnerToRemove)) {
+
+                    if (team.getTeamOwners().contains(teamOwnerToRemove)) {
+                        if (teamOwners.get(team).contains(teamOwnerToRemove)) {
+                            LinkedList<TeamOwner> list = teamOwnerToRemove.getTeamOwners().get(team);
+                            if (list != null) {
+                                while (!list.isEmpty()) {
+                                    TeamOwner teamOwner = list.peek();
+                                    teamOwnerToRemove.removeOwner(teamOwner, teamName);
+                                    //team.getTeamOwners().remove(teamOwner);
+                                }
+                            }
+                            team.getTeamOwners().remove(teamOwnerToRemove);
+                            teamOwnerToRemove.getTeams().remove(team);
+                        }
+
+                        teamOwners.get(team).remove(teamOwnerToRemove);
+                        return true;
                     }
-
-                    return true;
-                } else {
-                    //System.out.println("You cannot remove a team owner from a team which you do not own.");
-                    return false;
                 }
-            } else {
-                //System.out.println("The user " + subscriber.getUsername() + " doesn't own the team.");
+            } else if (subscriber instanceof OwnerEligible) {
+
+                OwnerEligible OEowner = (OwnerEligible) subscriber;
+                if (OEowner.isOwner()) {
+                    teamOwnerToRemove = OEowner.getTeamOwner();
+
+                    if (team.getTeamOwners().contains(teamOwnerToRemove)) {
+                        if(teamOwners.get(team).contains(teamOwnerToRemove)){
+                            LinkedList<TeamOwner> list = teamOwnerToRemove.getTeamOwners().get(team);
+                            if(list != null) {
+                                while (!list.isEmpty()) {
+                                    TeamOwner teamOwner = list.peek();
+                                    if(teamOwner.isFictive()){
+                                        Subscriber sub= null;
+                                        if(teamOwner.getOriginalObject().getType().equals("Player")){
+                                            sub = (Player)teamOwner.getOriginalObject();
+                                        }
+                                        else if(teamOwner.getOriginalObject().getType().equals("Coach")){
+                                            sub = (Coach)teamOwner.getOriginalObject();
+                                        }
+                                        if(teamOwner.getOriginalObject().getType().equals("TeamManager")){
+                                            sub = (TeamManager)teamOwner.getOriginalObject();
+                                        }
+                                        teamOwnerToRemove.removeOwner(sub,teamName);
+                                    }
+                                    else{
+                                        teamOwnerToRemove.removeOwner(teamOwner,teamName);
+                                    }
+                                    //team.getTeamOwners().remove(teamOwner);
+                                }
+                            }
+                            team.getTeamOwners().remove(teamOwnerToRemove);
+                            teamOwnerToRemove.getTeams().remove(team);
+                        }
+
+                        if (teamOwnerToRemove.getTeams().size() == 0) {
+                            OEowner.setTeamOwner(null);
+                            teamOwnerToRemove.setOriginalObject(null);
+                        }
+                        teamOwners.get(team).remove(teamOwnerToRemove);
+                        return true;
+                        }
+                }
+
                 return false;
+
+            } else {
+                System.out.println("user is not teamOwner");
             }
         } else {
-            //System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
+            //System.out.println("You cannot remove a team owner from a team which you do not own.");
             return false;
         }
+        return false;
     }
+        //System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
+        //return false;
+
 
     /**
      * //UC - 6.2
@@ -645,24 +700,25 @@ public class TeamOwner extends Subscriber {
         }
 
         Team team = getSystemController().getTeamByName(teamName);
-        subscriber.getSystemController().getTeamByName(teamName).getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
+        team.getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
         newTeamOwner.getTeams().add(getSystemController().getTeamByName(teamName));
-        if(teamOwners.containsKey(team)==false){
-            teamOwners.put(team,new ArrayList<>());
+        if (teamOwners.containsKey(team) == false) {
+            teamOwners.put(team, new LinkedList<>());
         }
         teamOwners.get(team).add(newTeamOwner);
+        newTeamOwner.getTeams().add(team);
+        team.getTeamOwners().add(newTeamOwner);
         //todo - add complaints to newTeamOwner? if not, complaints needs to be added manually to the newTeamOwner from the original object
         //System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
     }
 
 
     /**
-     *
      * @param teamName
      * @return
      */
     public int reportIncome(String teamName) {
-        if(teamName!=null) {
+        if (teamName != null) {
             Team team = findTeam(teamName);
             if (team != null) {
                 return team.calculateIncome();
@@ -672,12 +728,11 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @param teamName
      * @return
      */
     public int reportExpanse(String teamName) {
-        if(teamName!=null) {
+        if (teamName != null) {
             Team team = findTeam(teamName);
             if (team != null) {
                 return team.calculateExpanse();
@@ -714,7 +769,7 @@ public class TeamOwner extends Subscriber {
         return teamManagers;
     }
 
-    public HashMap<Team, ArrayList<TeamOwner>> getTeamOwners() {
+    public HashMap<Team, LinkedList<TeamOwner>> getTeamOwners() {
         return teamOwners;
     }
 }

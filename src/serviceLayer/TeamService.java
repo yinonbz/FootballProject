@@ -100,6 +100,10 @@ public class TeamService {
         return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
     }
 
+    public Boolean removeOwner(String userName,String teamName, String newUserName){
+        return systemController.removeOwnerFromTeam(userName,teamName,newUserName);
+    }
+
 
 
 }

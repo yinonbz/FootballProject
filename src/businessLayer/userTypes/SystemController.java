@@ -1018,6 +1018,35 @@ public class SystemController {
         }
     }
 
+    public Boolean removeOwnerFromTeam(String userName, String teamName, String newUserName){
+        if (userName == null || teamName == null || newUserName == null) {
+            return false;
+        }
+        if (!DB.containsInSystemSubscribers(userName) || !DB.containsInTeamsDB(teamName)) {
+            return false;
+        }
+        Subscriber possibleTeamOwner = DB.selectSubscriberFromDB(userName);
+        if(possibleTeamOwner instanceof TeamOwner) { //check if the user is a team owner
+            TeamOwner teamOwner = ((TeamOwner)possibleTeamOwner);
+            if(teamOwner.enterMember(newUserName) != null) {
+                return teamOwner.removeOwner(teamOwner.enterMember(newUserName), teamName);
+            }
+            else //There is no such user with the user name of 'newUserName' in the system
+                return false;
+        }
+        else if(possibleTeamOwner instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
+            if (ownerEligible.isOwner()) {
+                TeamOwner teamOwner = ownerEligible.getTeamOwner();
+                return teamOwner.removeOwner(teamOwner.enterMember(newUserName), teamName);
+            } else
+                return false;
+        }
+        else{
+            return false; //the user isn't a team owner
+        }
+    }
+
 
     /**
      * finds a match in the DB

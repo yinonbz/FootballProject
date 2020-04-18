@@ -83,6 +83,11 @@ public class Player extends Subscriber implements OwnerEligible {
         return fieldJob;
     }
 
+    @Override
+    public String getType() {
+        return "Player";
+    }
+
     /**
      * @return
      */
