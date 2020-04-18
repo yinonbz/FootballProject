@@ -117,9 +117,19 @@ public class Player extends Subscriber implements OwnerEligible {
         return true;
     }
 
+    /**
+     * get team owner
+     * @return team owner
+     */
+
     public TeamOwner getTeamOwner() {
         return teamOwner;
     }
+
+    /**
+     * set team owner
+     * @param teamOwner team owner to be set
+     */
 
     public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
