@@ -850,12 +850,12 @@ public class SystemController {
     */
 
     /**
-     * UC 2.2
+     * UC 2.2 todo - Next Iteration
      * @param guest the guest who requests a registration form from the system
      * @return true if the system created a registration form
      *          false else
      */
-    public Boolean createRegistrationForm(Guest guest) {
+ /*   public Boolean createRegistrationForm(Guest guest) {
         String userNameInput = null;
         String passwordInput = null;
         guest.enterUserDetails(userNameInput, passwordInput);
@@ -877,7 +877,7 @@ public class SystemController {
         DB.addSubscriberToDB(userNameInput, newFan);
 
         return false;
-    }
+    }*/
 
     /**
      * FUNCTION OF IDO, MAYBE NEEDS TO BE REMOVED

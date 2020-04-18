@@ -12,7 +12,7 @@ public class TeamOwner extends Subscriber {
 
     private OwnerEligible originalObject; // points to player/Coach/Manager of current fictive team owner
     private HashSet<Team> teams;
-    private HashMap<Team, TeamOwner> teamOwners; // owners assigned by current owner
+    private HashMap<Team, ArrayList<TeamOwner>> teamOwners; // owners assigned by current owner
     private HashMap<Team, TeamManager> teamManagers; // managers assigned by current owner
 
     public static int newTeamOwnerCounter = 0;
@@ -559,8 +559,9 @@ public class TeamOwner extends Subscriber {
     public Boolean appointToOwner(Subscriber subscriber, String teamName) {
         if (subscriber == null)
             return false; //subscriber doesn't exist in the DB
+        Team team =  getSystemController().getTeamByName(teamName);
         if (subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner) {
-            if (!(subscriber instanceof TeamOwner) && ((OwnerEligible) subscriber).isOwner() == false) {
+            if (!(subscriber instanceof TeamOwner) && team.getTeamOwners().contains(subscriber) == false) {
                 if (getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
                     String newUserName = subscriber.getUsername();
                     updateFictiveOwner(newUserName, subscriber, teamName);
@@ -570,7 +571,45 @@ public class TeamOwner extends Subscriber {
                     return false;
                 }
             } else {
-                //System.out.println("The user " + subscriber.getUsername() + " is already an owner of a team.");
+                //System.out.println("The user " + subscriber.getUsername() + " is already an owner of team team.");
+                return false;
+            }
+        } else {
+            //System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
+            return false;
+        }
+    }
+
+    /**
+     * //UC-6.2
+     *
+     * @param subscriber the subscriber that the user wants to remove to the team's owners
+     * @param teamName   the team name that the user wants to remove a team owner frp,
+     * @return true if the new team owner has been removed successfully.
+     * false if: the subscriber isn't one of the team owners
+     */
+    public Boolean removeOwner(Subscriber subscriber, String teamName) {
+        if (subscriber == null)
+            return false; //subscriber doesn't exist in the DB
+        Team team =  getSystemController().getTeamByName(teamName);
+        if (subscriber instanceof OwnerEligible || subscriber instanceof TeamOwner) {
+            if (!(subscriber instanceof TeamOwner) && team.getTeamOwners().contains(subscriber) == true) {
+                if (getTeams().contains(systemController.getTeamByName(teamName))) { //if the user is the team owner of the team with the name 'teamName'
+                    TeamOwner teamOwnerToRemove = ((TeamOwner)subscriber);
+                    team.getTeamOwners().remove(teamOwnerToRemove);
+
+                    ArrayList<TeamOwner> list = teamOwnerToRemove.getTeamOwners().get(team);
+                    for(TeamOwner teamOwner:list){
+                        team.getTeamOwners().remove(teamOwner);
+                    }
+
+                    return true;
+                } else {
+                    //System.out.println("You cannot remove a team owner from a team which you do not own.");
+                    return false;
+                }
+            } else {
+                //System.out.println("The user " + subscriber.getUsername() + " doesn't own the team.");
                 return false;
             }
         } else {
@@ -608,10 +647,14 @@ public class TeamOwner extends Subscriber {
         Team team = getSystemController().getTeamByName(teamName);
         subscriber.getSystemController().getTeamByName(teamName).getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
         newTeamOwner.getTeams().add(getSystemController().getTeamByName(teamName));
-        teamOwners.put(team, newTeamOwner);
+        if(teamOwners.containsKey(team)==false){
+            teamOwners.put(team,new ArrayList<>());
+        }
+        teamOwners.get(team).add(newTeamOwner);
         //todo - add complaints to newTeamOwner? if not, complaints needs to be added manually to the newTeamOwner from the original object
         //System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
     }
+
 
     /**
      *
@@ -669,5 +712,9 @@ public class TeamOwner extends Subscriber {
 
     public HashMap<Team, TeamManager> getTeamManagers() {
         return teamManagers;
+    }
+
+    public HashMap<Team, ArrayList<TeamOwner>> getTeamOwners() {
+        return teamOwners;
     }
 }

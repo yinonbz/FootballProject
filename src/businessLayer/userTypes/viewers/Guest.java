@@ -16,29 +16,29 @@ public class Guest {
         this.systemController=systemController;
     }
 
-    /** UC - 2.1
+    /** UC - 2.1 todo - Next Iteration
      *   * This function will be called from the UI controller.
      *   * It will start the registration procedure in the business layer.
      * @returntrue if the registration was successful
      *  false else
      */
-    public Boolean register(){
+ /*   public Boolean register(){
         if(systemController.createRegistrationForm(this) == null)
             return false;
         return true;
     }
-
-    /** UC - 2.2
+*/
+    /** UC - 2.2 todo-Next Iteration
      * This function will be called from the UI controller.
      * It will start the login procedure in the business layer.
      * @return true if the login was successful
      * false else
      */
-    public Boolean login(){
+ /*   public Boolean login(){
         if(systemController.createLoginForm(this) == null)
             return false;
         return true;
-    }
+    }*/
 
     /**
      * @param searchInput
