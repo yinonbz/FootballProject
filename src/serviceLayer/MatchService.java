@@ -12,7 +12,7 @@ public class MatchService {
     public MatchService(){
         systemController = SystemController.SystemController();
         leagueController = systemController.getLeagueController();
-        //todo add matchController as singelton?
+        matchController = systemController.getMatchController();
     }
 
 
@@ -172,6 +172,21 @@ public class MatchService {
             int id = Integer.parseInt(matchID);
             int evID = Integer.parseInt(eventID);
             return matchController.removeEventByMainReferee(id,usernameRequested,time,evID);
+        }
+        return false;
+    }
+
+    /**
+     * the function lets an AR to choose a referee to a game
+     * @param username
+     * @param matchID
+     * @param requester
+     * @return
+     */
+    public boolean chooseMainReferee (String username, String matchID, String requester){
+        if(tryParseInt(matchID)){
+            int id =Integer.parseInt(matchID);
+            return matchController.chooseMainReferee(username,id,requester);
         }
         return false;
     }

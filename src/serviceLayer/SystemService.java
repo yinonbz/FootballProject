@@ -71,10 +71,6 @@ public class SystemService {
         return systemController.changePassword(newPassword, userName);
     }
 
-    public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName){
-        return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
-    }
-
     /**
      * the function get closing team request from presentation layer and closes a team Permanently by the admin
      *
@@ -96,9 +92,8 @@ public class SystemService {
      * UC 3.4
      */
 
-    public void addComplaint(String content, String username) {
-
-        systemController.addComplaint(content,username);
+    public boolean addComplaint(String content, String username) {
+        return systemController.addComplaint(content,username);
     }
 
     /**

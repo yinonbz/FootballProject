@@ -25,18 +25,19 @@ public class EventRecord {
      */
     public void addEvent (String time, Event event){
         //if the game has already an event in the current minute
-        if(gameEvents.containsKey(time)){
-            LinkedList <Event> temp = gameEvents.get(time);
-            event.setID(temp.size());
-            temp.add(event);
-            gameEvents.remove(time);
-            gameEvents.put(time,temp);
-        }
-        else{
-          LinkedList<Event> newList = new LinkedList<>();
-          event.setID(0);
-          newList.add(event);
-          gameEvents.put(time,newList);
+        if(event!=null) {
+            if (gameEvents.containsKey(time)) {
+                LinkedList<Event> temp = gameEvents.get(time);
+                event.setID(temp.size());
+                temp.add(event);
+                gameEvents.remove(time);
+                gameEvents.put(time, temp);
+            } else {
+                LinkedList<Event> newList = new LinkedList<>();
+                event.setID(0);
+                newList.add(event);
+                gameEvents.put(time, newList);
+            }
         }
     }
 

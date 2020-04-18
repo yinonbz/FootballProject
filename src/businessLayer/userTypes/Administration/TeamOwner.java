@@ -457,6 +457,25 @@ public class TeamOwner extends Subscriber {
             subscriber = systemController.selectUserFromDB(username);
         }
 
+        if(subscriber!=null && team!=null){
+            if(this.teams.contains(team) && teamManagers.containsValue(subscriber) ){
+                if(subscriber instanceof TeamManager && team.getTeamManager().equals(subscriber)){
+                    //fire manager from team and delete links
+                    team.setTeamManager(null);
+                    TeamManager tm = (TeamManager) subscriber;
+                    tm.setTeam(null);
+
+                    //cancel permissions
+                    tm.setPermissions(null);
+
+                    //delete assignment from owner
+                    teamManagers.remove(team);
+
+                    return true;
+                }
+            }
+        }
+/*
         //verify user exists in the system, user is not the team manager,user is not one of the team owners, owner indeed owns the team/
         if(subscriber==null|| !(this.teams.contains(team))||!teamManagers.containsValue(subscriber) || !(subscriber instanceof TeamManager) || !(team.getTeamManager().equals(subscriber))){
             return false;
@@ -474,7 +493,8 @@ public class TeamOwner extends Subscriber {
         //delete assignment from owner
         teamManagers.remove(team);
 
-        return true;
+        return true;*/
+        return false;
     }
     /***todo check if this function is implemented by someone?
     public boolean editTeams() {
@@ -575,7 +595,6 @@ public class TeamOwner extends Subscriber {
             Player player = (Player) subscriber;
             player.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(player);
-
         } else if (subscriber instanceof Coach) {
             Coach coach = (Coach) subscriber;
             coach.setTeamOwner(newTeamOwner);
@@ -646,5 +665,9 @@ public class TeamOwner extends Subscriber {
             }
         }
         return false;
+    }
+
+    public HashMap<Team, TeamManager> getTeamManagers() {
+        return teamManagers;
     }
 }

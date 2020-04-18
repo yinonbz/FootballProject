@@ -20,4 +20,9 @@ public class YellowCard extends Event {
     public String toString(){
         return "Yellow card: "+playerSubject.getName();
     }
+
+    @Override
+    Player getSecondPlayer() {
+        return null;
+    }
 }

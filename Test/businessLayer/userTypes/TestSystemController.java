@@ -1,6 +1,7 @@
 package businessLayer.userTypes;
 
 import businessLayer.Team.Team;
+import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
@@ -48,10 +49,11 @@ public class TestSystemController {
     }
 
     @Test
-    public void UC8_1(){
+    //unit test
+    public void UT_checkCloseTeam(){
         //1
         //close a team 1st time
-        assertTrue(admin.closeTeam("Beer Sheva"));
+        assertTrue(admin.closeTeam("LeedsUnited"));
 
         //2
         //close team that doesn't exist
@@ -64,7 +66,8 @@ public class TestSystemController {
     }
 
     @Test
-    public void UC8_2(){
+    //unit
+    public void IT_checkDeleteSubscriber(){
         //1
         //checks if we can delete a fan from the system
 
@@ -90,7 +93,8 @@ public class TestSystemController {
     }
 
     @Test
-    public void UC8_3_1(){
+    //unit
+    public void IT_checkDisplayComplaints(){
 
         //1
         //check if the complaints are displayed
@@ -100,11 +104,18 @@ public class TestSystemController {
 
 
     @Test
-    public void UC8_3_2(){
+    //unit
+    public void IT_checkReplyComments(){
 
         //1
         //regular test add a comment
         assertTrue(admin.replyComplaints("0",admin.getUsername(), "Solved"));
+
+        //1.1 check the field were updated
+        Complaint c1 = DB.selectComplaintFromDB(0);
+        assertEquals("Solved",c1.getComment());
+        assertEquals("TomerSein",c1.getHandler());
+
  //       System.out.println(systemController.getSystemComplaints().get(0).toString());
 
         //2
@@ -180,12 +191,13 @@ public class TestSystemController {
 
     @Test
     public void UC_1_1_a() {
+        assertTrue(systemService.insertInfo("admin","admin"));
+        assertTrue(systemService.initializeSystem("admin"));
+        assertTrue(systemService.changePassword("ad123456","admin"));
     }
 
     @Test
     public void UC_1_1_b() {
-        assertTrue(systemService.insertInfo("admin","admin"));
-        assertTrue(systemService.initializeSystem("admin"));
-        assertTrue(systemService.changePassword("ad123456","admin"));
+        //will be tested after the login implementation
     }
 }
