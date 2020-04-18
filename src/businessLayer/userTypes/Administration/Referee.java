@@ -117,11 +117,13 @@ public class Referee extends Subscriber {
         this.leagueController = leaguesController;
     }
 
+    /*
     @Override
     public Boolean editDetails() {
         return null;
     }
 
+*/
 
     /**
      * The function receives order from the system controller to remove the referee from every match he's registered to

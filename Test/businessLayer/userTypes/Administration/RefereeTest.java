@@ -7,6 +7,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.MatchService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -33,6 +36,7 @@ public class RefereeTest {
         Rayola = (Referee)  DB.selectSubscriberFromDB("Rayola");
         m1 = DB.selectMatchFromDB(1);
         m2 = DB.selectMatchFromDB(2);
+
 
 
     }
@@ -63,25 +67,25 @@ public class RefereeTest {
 
 
     @Test
-    public void UC_10_2_a(){
+    public void UC10_2_a(){
         //1
         //check the referee can see a match he is submitted to
-        String ans = "Match id: " + "5" + "\n" + "Home: " + "ManchesterUnited" + "\n" + "Away: "
+        String ans = "Match id: " + "3" + "\n" + "Home: " + "ManchesterUnited" + "\n" + "Away: "
                 + "Everton" + "\n" +
                 "Stadium: " + "s3" + "\n" + "Date: " + "No information" +"\n" + "Referee: "+"Rayola";
 
-//        assertEquals(ans,matchService.viewMatchDetails("3","Rayola","Rayola"));
+      //  assertEquals(ans,matchService.viewMatchDetails("3","Rayola","Rayola"));
     }
 
     @Test
-    public void UC_10_2_b(){
+    public void UC10_2_b(){
         //2
         //check the referee can't see a match he is not submitted to
         assertEquals("",matchService.viewMatchDetails("2","Rayola","Rayola"));
     }
 
     @Test
-    public void UC_10_2_c(){
+    public void UC10_2_c(){
         //3
         //can't watch a match that the system doesn't contain
         assertEquals("",matchService.viewMatchDetails("-2","Rayola","Rayola"));
@@ -89,7 +93,7 @@ public class RefereeTest {
     }
 
     @Test
-    public void UC_10_2_d(){
+    public void UC10_2_d(){
         //4
         //check that no one beside referee can see the match details with this function
         assertEquals("",matchService.viewMatchDetails("2","TomerSein","Rayola"));
@@ -104,7 +108,7 @@ public class RefereeTest {
     }
 
     @Test
-    public void UC_10_3_a(){
+    public void UC10_3_a(){
         //1
         //checks that the referee can add an event to a game he is submitted to
         assertTrue(matchService.reportFoulThroughReferee("3","Pickford","Scholes","3","Rayola"));
@@ -136,7 +140,7 @@ public class RefereeTest {
     }
 
     @Test
-    public void UC_10_3_b(){
+    public void UC10_3_b(){
 
         //1
         //checks that the referee can't add an event to a game that he is not submitted to
@@ -144,7 +148,7 @@ public class RefereeTest {
     }
 
     @Test
-    public void UC_10_3_c(){
+    public void UC10_3_c(){
         //1
         //checks that the referee can't add an event to a game that he is not submitted to
         assertFalse(matchService.reportFoulThroughReferee("-3","Mane","Son","4","Rayola"));
@@ -152,7 +156,7 @@ public class RefereeTest {
 
 
     @Test
-    public void UC_10_3_d(){
+    public void UC10_3_d(){
         //1
         //checks that the referee can't add a foul on two team members from the same team
         assertFalse(matchService.reportFoulThroughReferee("4","Salah","Mane","4","Alon"));
@@ -172,7 +176,7 @@ public class RefereeTest {
 
 
     @Test
-    public void UC_10_4_a(){
+    public void UC10_4_a(){
         //1
         //check that the main referee can remove an event from a game
         assertTrue(matchService.removeEventByMainReferee("5","4","Alon","0"));
@@ -184,7 +188,7 @@ public class RefereeTest {
     }
 
     @Test
-    public void UC_10_4_b(){
+    public void UC10_4_b(){
         //3
         //check that whoever is not a main referee can't change the game after it finishes
         assertFalse(matchService.removeEventByMainReferee("4","4","Rayola","1"));
@@ -195,4 +199,47 @@ public class RefereeTest {
     }
 
 
+    //todo ido mutation test
+    @Test
+    public void IT_checkFalseSubnit(){
+        assertFalse(Rayola.isSubmittedToAGame("TOMER"));
+    }
+    @Test
+    public void checkViewMatchDetails(){
+       // assertEquals(Rayola.viewMatchDetails(3),"Match id: 3\n" + "Home: ManchesterUnited\n" + "Away: Everton\n" + "Stadium: s3\n" + "Date: No information\n" + "Referee: Rayola");
+    }
+    @Test
+    public void IT_checkGetName(){
+        Rayola.setName("RayolaR");
+        assertEquals(Rayola.getName(),"RayolaR");
+        Rayola.setName("Rayola");
+    }
+    @Test
+    public void IT_checkSetTraining(){
+        Rayola.setTraining("nothing");
+        assertEquals(Rayola.getTraining(),"nothing");
+    }
+    @Test
+    public void IT_checkLeaguesController(){
+        Rayola.setLeaguesController(null);
+        assertEquals(Rayola.getLeaguesController(),null);
+    }
+    @Test
+    public void IT_checkMatchController(){
+        Rayola.setMatchController(null);
+        assertEquals(Rayola.getMatchController(),null);
+    }
+    /**not working correctly
+    @Test
+    public void checkRemoveFromAllMatches(){
+        Match m3 = DB.selectMatchFromDB(3);
+        List<Referee> refereeList = new ArrayList<>();
+        refereeList.add(Rayola);
+        m3.setReferees(refereeList);
+        assertTrue(Rayola.removeFromAllMatches());
+        Rayola.setName("ido");
+        assertFalse(Rayola.removeFromAllMatches());
+        Rayola.setName("Rayola");
+    }
+    */
 }

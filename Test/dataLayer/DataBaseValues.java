@@ -11,8 +11,10 @@ import businessLayer.userTypes.viewers.Fan;
 import dataLayer.DemoDB;
 import serviceLayer.SystemService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class DataBaseValues {
 
@@ -449,6 +451,9 @@ public class DataBaseValues {
         //m3.setDate(startDate);
         Rayola.getRefMatches().put(3,m3);
         m3.chooseMainReferee(Rayola);
+        //List<Referee> RefereeList = new ArrayList<>();
+        //RefereeList.add(Rayola);
+        //m3.setReferees(RefereeList);
         m4.chooseMainReferee(Alon);
         Alon.getRefMatches().put(4,m4);
 

@@ -61,16 +61,20 @@ public class Season {
     /**
      * @return
      */
+    /*
     public int getSeasonId() {
         return seasonId;
     }
+    */
 
     /**
      * @param seasonId
      */
+    /*
     public void setSeasonId(int seasonId) {
         this.seasonId = seasonId;
     }
+    */
 
     /**
      * @return
@@ -82,24 +86,30 @@ public class Season {
     /**
      * @param startDate
      */
+    /*
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+    */
 
     /**
      * @return
      */
+    /*
     public Date getEndDate() {
         return endDate;
     }
+    */
 
     /**
      * @param endDate
      */
 
+    /*
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+    */
 
     /**
      * @return
@@ -136,33 +146,35 @@ public class Season {
     /**
      * @return
      */
-
+    /*
     public MatchingPolicy getMatchingPolicy() {
         return matchingPolicy;
     }
-
+    */
     /**
      * @param matchingPolicy
      */
-
+/*
     public void setMatchingPolicy(MatchingPolicy matchingPolicy) {
         this.matchingPolicy = matchingPolicy;
     }
-
+*/
     /**
      * @return
      */
-
+/*
     public RankingPolicy getRankingPolicy() {
         return rankingPolicy;
     }
-
+*/
     /**
      * @param rankingPolicy
      */
+    /*
     public void setRankingPolicy(RankingPolicy rankingPolicy) {
         this.rankingPolicy = rankingPolicy;
     }
+    */
 
     /**
      * @return

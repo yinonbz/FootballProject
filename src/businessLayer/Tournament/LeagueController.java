@@ -49,10 +49,12 @@ public class LeagueController {
      * @param alerts
      * @return
      */
+    /*
     public boolean sendAlerts(List<String> alerts) {
 
         return true;
     }
+    */
 
     /**
      * @param logs

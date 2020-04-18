@@ -47,13 +47,13 @@ public abstract class Subscriber {
         }
     }
 
-
+/*
     /**
      * @return
      */
-
+/*
     abstract public Boolean editDetails();
-
+*/
 
 
     /**
