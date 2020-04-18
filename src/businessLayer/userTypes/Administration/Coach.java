@@ -53,11 +53,12 @@ public class Coach extends Subscriber implements OwnerEligible {
      *
      * @return
      */
+    /*todo not implemented
     public boolean post(String post){
 
         return true;
     }
-
+    */
     /**
      *
      * @return

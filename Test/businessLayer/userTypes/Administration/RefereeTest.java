@@ -7,6 +7,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.MatchService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -208,6 +211,7 @@ public class RefereeTest {
     public void checkGetName(){
         Rayola.setName("RayolaR");
         assertEquals(Rayola.getName(),"RayolaR");
+        Rayola.setName("Rayola");
     }
     @Test
     public void checkSetTraining(){
@@ -224,4 +228,17 @@ public class RefereeTest {
         Rayola.setMatchController(null);
         assertEquals(Rayola.getMatchController(),null);
     }
+    /**not working correctly
+    @Test
+    public void checkRemoveFromAllMatches(){
+        Match m3 = DB.selectMatchFromDB(3);
+        List<Referee> refereeList = new ArrayList<>();
+        refereeList.add(Rayola);
+        m3.setReferees(refereeList);
+        assertTrue(Rayola.removeFromAllMatches());
+        Rayola.setName("ido");
+        assertFalse(Rayola.removeFromAllMatches());
+        Rayola.setName("Rayola");
+    }
+    */
 }
