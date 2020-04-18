@@ -519,10 +519,12 @@ public class TeamOwner extends Subscriber {
         this.teams = teams;
     }
 
+    /*
     @Override
     public Boolean editDetails() {
         return null;
     }
+    */
 
     /**
      * @return true if fictive (ex: player is also a team owner = fictive)
