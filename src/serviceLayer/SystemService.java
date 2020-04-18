@@ -71,10 +71,6 @@ public class SystemService {
         return systemController.changePassword(newPassword, userName);
     }
 
-    public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName){
-        return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
-    }
-
     /**
      * the function get closing team request from presentation layer and closes a team Permanently by the admin
      *
