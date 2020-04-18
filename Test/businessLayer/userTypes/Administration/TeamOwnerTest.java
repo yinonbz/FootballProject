@@ -479,7 +479,10 @@ public class TeamOwnerTest {
         assertEquals(teamService.reportIncome("JacobS", "BeerSheva"), -1);
 
         //assertTrue(Jacob.deleteAsset("BeitarJerusalem", "Stadium", "Tedi"));
+    }
 
-
+    @Test
+    public void UT_updateFictiveOwner(){
+        
     }
 }

@@ -71,10 +71,6 @@ public class SystemService {
         return systemController.changePassword(newPassword, userName);
     }
 
-    public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName){
-        return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
-    }
-
     /**
      * the function get closing team request from presentation layer and closes a team Permanently by the admin
      *
@@ -159,18 +155,6 @@ public class SystemService {
      */
     public boolean requestForNewTeam(LinkedList<String> details, String username) {
         return systemController.addToTeamConfirmList(details,username);
-    }
-
-    /**
-     * the function approves the request by the AR and updates the new team in the system and in the team owner
-     *
-     * @param teamName   the name of the team
-     * @param username the subscriber who tries to confirm the request
-     * @return true if it done successfully
-     * Not a UC - A function of Association Represntative
-     */
-    public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        return systemController.confirmTeamByAssociationRepresntative(teamName,username);
     }
 
 }

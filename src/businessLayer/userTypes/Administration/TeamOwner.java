@@ -595,7 +595,6 @@ public class TeamOwner extends Subscriber {
             Player player = (Player) subscriber;
             player.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(player);
-
         } else if (subscriber instanceof Coach) {
             Coach coach = (Coach) subscriber;
             coach.setTeamOwner(newTeamOwner);
