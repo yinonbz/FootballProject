@@ -195,4 +195,33 @@ public class RefereeTest {
     }
 
 
+    //todo ido mutation test
+    @Test
+    public void checkFalseSubnit(){
+        assertFalse(Rayola.isSubmittedToAGame("TOMER"));
+    }
+    @Test
+    public void checkViewMatchDetails(){
+        assertEquals(Rayola.viewMatchDetails(3),"Match id: 3\n" + "Home: ManchesterUnited\n" + "Away: Everton\n" + "Stadium: s3\n" + "Date: No information\n" + "Referee: Rayola");
+    }
+    @Test
+    public void checkGetName(){
+        Rayola.setName("RayolaR");
+        assertEquals(Rayola.getName(),"RayolaR");
+    }
+    @Test
+    public void checkSetTraining(){
+        Rayola.setTraining("nothing");
+        assertEquals(Rayola.getTraining(),"nothing");
+    }
+    @Test
+    public void checkLeaguesController(){
+        Rayola.setLeaguesController(null);
+        assertEquals(Rayola.getLeaguesController(),null);
+    }
+    @Test
+    public void checkMatchController(){
+        Rayola.setMatchController(null);
+        assertEquals(Rayola.getMatchController(),null);
+    }
 }

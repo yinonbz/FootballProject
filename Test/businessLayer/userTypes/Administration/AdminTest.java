@@ -112,6 +112,9 @@ public class AdminTest {
         //2
         //reply a comment that doesn't exist
         assertFalse(systemService.replyComplaints("4","TomerSein","Solved"));
+
+        //todo ido added but their is a problem delete this comment
+        //assertFalse(systemService.replyComplaints("tomer","TomerSein","Solved"));
     }
 
     @Test
@@ -128,6 +131,13 @@ public class AdminTest {
         assertFalse(systemService.replyComplaints("0","Gate13","Solved"));
     }
 
+    //TODO IDO ADDED TESTS TO MUTATION
 
+    @Test
+    public void setAndGetTest(){
+        Admin admin = (Admin) DB.selectSubscriberFromDB("TomerSein");
+        admin.setName("TomerKatz");
+        assertEquals(admin.getName(),"TomerKatz");
+    }
 }
 

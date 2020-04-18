@@ -17,7 +17,7 @@ public class TeamOwner extends Subscriber {
 
     public static int newTeamOwnerCounter = 0;
 
-    /**
+    /**this is the constructor of team owner
      * @param username
      * @param password
      * @param name
@@ -87,10 +87,10 @@ public class TeamOwner extends Subscriber {
     /**
      * this function add the asset to the chosen team
      *
-     * @param teamName
-     * @param assetType
-     * @param assetUserName
-     * @return
+     * @param teamName the team name
+     * @param assetType the asset type
+     * @param assetUserName the user name of the asset
+     * @return true or false if the asset was added
      */
     public boolean addAsset(String teamName, String assetType, String assetUserName) {
         boolean isAdded = false;
@@ -140,6 +140,13 @@ public class TeamOwner extends Subscriber {
         return isAdded;
     }
 
+    /**
+     * this function return true or false if the team owner can delete a asset from the team
+     * @param teamName the team name
+     * @param assetType the asset type
+     * @param assetUserName the asset user name
+     * @return true or false if the asset was remove from the team
+     */
     public boolean deleteAsset(String teamName, String assetType, String assetUserName) {
         boolean isDeleted = false;
         Team team = findTeam(teamName);
@@ -187,7 +194,14 @@ public class TeamOwner extends Subscriber {
         return isDeleted;
     }
 
-
+    /**
+     * this function return true or false if a team owner manage to edit a player information
+     * @param teamName the team name
+     * @param playerUser the player user name
+     * @param typeEdit the info type to be edit
+     * @param edit what the edit info
+     * @return true or false if the team owner manage to edit the player info
+     */
     public boolean editPlayer(String teamName, String playerUser, String typeEdit, String edit) {
         Team team = findTeam(teamName);
         if (playerUser != null && typeEdit != null && edit != null) {
@@ -217,6 +231,15 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
+    /**
+     *
+     * this function return true or false if a team owner manage to edit a coach information
+     * @param teamName the team name
+     * @param CoachUser the coach user name
+     * @param typeEdit the info type to be edit
+     * @param edit what the edit info
+     * @return true or false if the team owner manage to edit the coach info
+     */
     public boolean editCoach(String teamName, String CoachUser, String typeEdit, String edit) {
         Team team = findTeam(teamName);
         if (CoachUser != null && typeEdit != null && edit != null) {
@@ -246,6 +269,14 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
+    /**
+     * this function return true or false if a team owner manage to edit a teamManager information
+     * @param teamName the team name
+     * @param teamManagerUser the teamManager user name
+     * @param typeEdit the info type to be edit
+     * @param edit what the edit info
+     * @return true or false if the team owner manage to edit the teamManager info
+     */
     public boolean editTeamManager(String teamName, String teamManagerUser, String typeEdit, int edit) {
         Team team = findTeam(teamName);
         if (teamManagerUser != null && typeEdit != null && team != null) {
@@ -262,6 +293,14 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
+    /**
+     * this function return true or false if a team owner manage to edit a Stadium information
+     * @param teamName the team name
+     * @param editStadiumName the Stadium user name
+     * @param typeEdit the info type to be edit
+     * @param edit what the edit info
+     * @return true or false if the team owner manage to edit the Stadium info
+     */
     public Boolean editStadium(String teamName, String editStadiumName, String typeEdit, int edit) {
         Team team = findTeam(teamName);
         if (editStadiumName != null && typeEdit != null && team != null) {
@@ -278,6 +317,11 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
+    /**
+     * this function find the team that the owner own according to the team name and return the certain team
+     * @param teamName the team name
+     * @return the team according to the name
+     */
     private Team findTeam(String teamName) {
         for (Team team : teams) {
             if (team.getTeamName().equals(teamName)) {
@@ -361,7 +405,6 @@ public class TeamOwner extends Subscriber {
      * @param salary
      * @return
      */
-
     public boolean addManager(String username, Permissions permission,Team team,int salary){
         //check if user exists in out system
         Subscriber subscriber=null;
@@ -514,7 +557,10 @@ public class TeamOwner extends Subscriber {
     /**
      * @param teams
      */
-
+    /**
+     * this function set the team hash set
+     * @param teams
+     */
     public void setTeams(HashSet<Team> teams) {
         this.teams = teams;
     }
@@ -643,14 +689,27 @@ public class TeamOwner extends Subscriber {
         return -1;
     }
 
+    /**
+     *
+     * @param teamName
+     * @return
+     */
     public int calculateFinancial(String teamName) {
         return reportIncome(teamName) - reportExpanse(teamName);
     }
 
+    /**
+     *
+     * @return
+     */
     public OwnerEligible getOriginalObject() {
         return originalObject;
     }
 
+    /**
+     *
+     * @param originalObject
+     */
     public void setOriginalObject(OwnerEligible originalObject) {
         this.originalObject = originalObject;
     }
@@ -667,6 +726,10 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public HashMap<Team, TeamManager> getTeamManagers() {
         return teamManagers;
     }

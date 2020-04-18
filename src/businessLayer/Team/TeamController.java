@@ -35,20 +35,32 @@ public class TeamController {
      * @param assetUserName
      * @return
      */
-    public boolean addAsset(String userOwner,String teamName, String assetType, String assetUserName) {
+    public boolean addAsset(String userOwner, String teamName, String assetType, String assetUserName) {
         Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
-        if(subscriber instanceof TeamOwner && subscriber!=null){
-            TeamOwner teamOwner = (TeamOwner)subscriber;
-            return teamOwner.addAsset(teamName,assetType,assetUserName);
+        if (subscriber instanceof TeamOwner && subscriber != null) {
+            TeamOwner teamOwner = (TeamOwner) subscriber;
+            return teamOwner.addAsset(teamName, assetType, assetUserName);
+        } else if (subscriber instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+            if (ownerEligible.isOwner()) {
+                TeamOwner owner = ownerEligible.getTeamOwner();
+                return owner.addAsset(teamName, assetType, assetUserName);
+            }
         }
         return false;
     }
 
-    public boolean removeAsset(String userOwner,String teamName, String assetType, String assetUserName){
+    public boolean removeAsset(String userOwner, String teamName, String assetType, String assetUserName) {
         Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
-        if(subscriber instanceof TeamOwner && subscriber!=null){
-            TeamOwner teamOwner = (TeamOwner)subscriber;
-            return teamOwner.deleteAsset(teamName,assetType,assetUserName);
+        if (subscriber instanceof TeamOwner && subscriber != null) {
+            TeamOwner teamOwner = (TeamOwner) subscriber;
+            return teamOwner.deleteAsset(teamName, assetType, assetUserName);
+        } else if (subscriber instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+            if (ownerEligible.isOwner()) {
+                TeamOwner owner = ownerEligible.getTeamOwner();
+                return owner.deleteAsset(teamName, assetType, assetUserName);
+            }
         }
         return false;
     }
@@ -56,32 +68,51 @@ public class TeamController {
 
     public boolean editPlayer(String userOwner, String teamName, String playerUser, String typeEdit, String edit) {
         Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
-        if(subscriber instanceof TeamOwner && subscriber!=null){
-            TeamOwner teamOwner = (TeamOwner)subscriber;
-            return teamOwner.editPlayer(teamName,playerUser,typeEdit,edit);
+        if (subscriber instanceof TeamOwner && subscriber != null) {
+            TeamOwner teamOwner = (TeamOwner) subscriber;
+            return teamOwner.editPlayer(teamName, playerUser, typeEdit, edit);
+        } else if (subscriber instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+            if (ownerEligible.isOwner()) {
+                TeamOwner owner = ownerEligible.getTeamOwner();
+                return owner.editPlayer(teamName, playerUser, typeEdit, edit);
+            }
         }
         return false;
     }
 
     public boolean editCoach(String userOwner, String teamName, String coachUser, String typeEdit, String edit) {
         Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
-        if(subscriber instanceof TeamOwner && subscriber!=null){
-            TeamOwner teamOwner = (TeamOwner)subscriber;
-            return teamOwner.editCoach(teamName,coachUser,typeEdit,edit);
+        if (subscriber instanceof TeamOwner && subscriber != null) {
+            TeamOwner teamOwner = (TeamOwner) subscriber;
+            return teamOwner.editCoach(teamName, coachUser, typeEdit, edit);
+        } else if (subscriber instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+            if (ownerEligible.isOwner()) {
+                TeamOwner owner = ownerEligible.getTeamOwner();
+                return owner.editCoach(teamName, coachUser, typeEdit, edit);
+            }
         }
         return false;
     }
 
     public boolean editTeamManager(String userOwner, String teamName, String teamManagerUser, String typeEdit, int edit) {
         Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
-        if(subscriber instanceof TeamOwner && subscriber!=null){
-            TeamOwner teamOwner = (TeamOwner)subscriber;
-            return teamOwner.editTeamManager(teamName,teamManagerUser,typeEdit,edit);
+        if (subscriber instanceof TeamOwner && subscriber != null) {
+            TeamOwner teamOwner = (TeamOwner) subscriber;
+            return teamOwner.editTeamManager(teamName, teamManagerUser, typeEdit, edit);
+        } else if (subscriber instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+            if (ownerEligible.isOwner()) {
+                TeamOwner owner = ownerEligible.getTeamOwner();
+                return owner.editTeamManager(teamName, teamManagerUser, typeEdit, edit);
+            }
         }
         return false;
     }
+
     public Boolean addManager(String teamOwner, String username, String permission, String teamName, String salary) {
-        if (teamOwner!=null && username != null && teamName != null && salary != null) {
+        if (teamOwner != null && username != null && teamName != null && salary != null) {
             Subscriber subscriber = systemController.getSubscriberByUserName(teamOwner);
             if (subscriber.tryParseInt(salary)) {
                 if (subscriber instanceof TeamOwner) {
@@ -99,7 +130,7 @@ public class TeamController {
         return false;
     }
 
-    public boolean fireManager(String ownerUser,String username,String teamName) {
+    public boolean fireManager(String ownerUser, String username, String teamName) {
         if (ownerUser != null && username != null && teamName != null) {
             Subscriber subscriber = systemController.getSubscriberByUserName(ownerUser);
             if (subscriber instanceof TeamOwner) {
@@ -118,30 +149,48 @@ public class TeamController {
 
     public boolean editStadium(String userOwner, String teamName, String editStadiumName, String typeEdit, int edit) {
         Subscriber subscriber = systemController.getSubscriberByUserName(userOwner);
-        if(subscriber instanceof TeamOwner && subscriber!=null){
-            TeamOwner teamOwner = (TeamOwner)subscriber;
-            return teamOwner.editStadium(teamName,editStadiumName,typeEdit,edit);
+        if (subscriber instanceof TeamOwner && subscriber != null) {
+            TeamOwner teamOwner = (TeamOwner) subscriber;
+            return teamOwner.editStadium(teamName, editStadiumName, typeEdit, edit);
+        } else if (subscriber instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+            if (ownerEligible.isOwner()) {
+                TeamOwner owner = ownerEligible.getTeamOwner();
+                return owner.editStadium(teamName, editStadiumName, typeEdit, edit);
+            }
         }
         return false;
     }
 
     public int reportExpanse(String teamOwnerUser, String teamName) {
-        if(teamOwnerUser !=null && teamName!=null) {
+        if (teamOwnerUser != null && teamName != null) {
             Subscriber subscriber = systemController.getSubscriberByUserName(teamOwnerUser);
             if (subscriber != null && subscriber instanceof TeamOwner) {
-                TeamOwner teamOwner = (TeamOwner)subscriber;
+                TeamOwner teamOwner = (TeamOwner) subscriber;
                 return teamOwner.reportExpanse(teamName);
+            } else if (subscriber instanceof OwnerEligible) {
+                OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+                if (ownerEligible.isOwner()) {
+                    TeamOwner owner = ownerEligible.getTeamOwner();
+                    return owner.reportExpanse(teamName);
+                }
             }
         }
         return -1;
     }
 
     public int reportIncome(String teamOwnerUser, String teamName) {
-        if(teamOwnerUser !=null && teamName!=null) {
+        if (teamOwnerUser != null && teamName != null) {
             Subscriber subscriber = systemController.getSubscriberByUserName(teamOwnerUser);
             if (subscriber != null && subscriber instanceof TeamOwner) {
-                TeamOwner teamOwner = (TeamOwner)subscriber;
+                TeamOwner teamOwner = (TeamOwner) subscriber;
                 return teamOwner.reportIncome(teamName);
+            } else if (subscriber instanceof OwnerEligible) {
+                OwnerEligible ownerEligible = (OwnerEligible) subscriber;
+                if (ownerEligible.isOwner()) {
+                    TeamOwner owner = ownerEligible.getTeamOwner();
+                    return owner.reportIncome(teamName);
+                }
             }
         }
         return -1;
