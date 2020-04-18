@@ -21,34 +21,34 @@ public class CoachTest {
     }
 
     @Test
-    public void isOwner(){
+    public void IT_isOwner(){
         assertFalse(henry.isOwner());
         henry.setTeamOwner(teamOwner);
         assertTrue(henry.isOwner());
     }
 
     @Test
-    public void checkSetGetName(){
+    public void IT_checkSetGetName(){
         henry.setName("ido");
         assertEquals(henry.getName(),"ido");
         henry.setName("Henrys");
     }
     @Test
-    public void checkGetTeamOwner(){
+    public void IT_checkGetTeamOwner(){
         henry.setTeamOwner(teamOwner);
         assertEquals(henry.getTeamOwner(),teamOwner);
 
     }
     @Test
-    public void checkGetTraining(){
+    public void IT_checkGetTraining(){
         assertEquals(henry.getTraining(),"manager");
     }
     @Test
-    public void checkGetTeamJob(){
+    public void IT_checkGetTeamJob(){
         assertEquals(henry.getTeamJob(),"assistent manager");
     }
     @Test
-    public void checkSetGetTeams(){
+    public void IT_checkSetGetTeams(){
         HashSet<Team> teams = new HashSet<>();
         Team team = new Team("Hpoel",teamOwner,0);
         teams.add(team);
