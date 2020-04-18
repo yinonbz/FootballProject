@@ -119,10 +119,12 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.teams = teamS;
     }
 
+    /*
     @Override
     public Boolean editDetails() {
         return null;
     }
+    */
 
     /**
      * this function determine if the coach is also an Owner

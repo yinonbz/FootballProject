@@ -89,12 +89,12 @@ public class Player extends Subscriber implements OwnerEligible {
     public Team getTeam() {
         return team;
     }
-
+/*
     @Override
     public Boolean editDetails() {
         return null;
     }
-
+*/
 
     public void setTeam(Team team) {
         this.team = team;

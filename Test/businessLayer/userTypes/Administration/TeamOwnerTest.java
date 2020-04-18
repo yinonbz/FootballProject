@@ -281,6 +281,8 @@ public class TeamOwnerTest {
     public void UC6_4_a(){
         //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        //check if add succeeded
+        assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
 
     }
 
@@ -300,13 +302,16 @@ public class TeamOwnerTest {
 
     @Test
     public void UC6_4_d(){
-        //try assign a teamOwner
+        //try assign a teamManager
         assertFalse(teamService.addManager("Inon","AlonaBarkat","GENERAL","HTA","100"));
     }
 
     @Test
     public void UC6_5_a(){
         //all good
+        assertTrue(teamService.fireManager("gerrard","valverde","Liverpool"));
+
+        //check
         assertTrue(teamService.fireManager("gerrard","valverde","Liverpool"));
 
     }

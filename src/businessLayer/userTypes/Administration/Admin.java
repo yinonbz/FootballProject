@@ -108,8 +108,10 @@ public class Admin extends Subscriber {
         this.name = name;
     }
 
+    /*
     @Override
     public Boolean editDetails() {
         return null;
     }
+    */
 }
