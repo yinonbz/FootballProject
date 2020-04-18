@@ -95,4 +95,11 @@ public class TeamService {
     public int reportIncome(String teamOwnerUser, String teamName) {
         return teamController.reportIncome(teamOwnerUser,teamName);
     }
+
+    public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName){
+        return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
+    }
+
+
+
 }

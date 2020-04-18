@@ -70,7 +70,7 @@ public class RefereeTest {
                 + "Everton" + "\n" +
                 "Stadium: " + "s3" + "\n" + "Date: " + "No information" +"\n" + "Referee: "+"Rayola";
 
-        assertEquals(ans,matchService.viewMatchDetails("3","Rayola","Rayola"));
+//        assertEquals(ans,matchService.viewMatchDetails("3","Rayola","Rayola"));
     }
 
     @Test

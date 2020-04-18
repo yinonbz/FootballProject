@@ -145,12 +145,15 @@ public class DataBaseValues {
     static Match m2;
     static Match m3;
     static Match m4;
+    static Match m5;
+    static Match m6;
 
     //events
     static YellowCard e1;
     static  RedCard e2;
     static  Injury e3;
-
+    static TeamManager valverde;
+    static TeamOwner gerrard;
 
 
     public DataBaseValues() {
@@ -205,9 +208,11 @@ public class DataBaseValues {
 
         Jimmy = new TeamOwner("Jimmy","jj","jimmy",systemController);
         Harry = new TeamOwner("Harry","jj","Harry",systemController);
+        gerrard = new TeamOwner("gerrard","jj","Harry",systemController);
 
 
         DB.addSubscriberToDB("Tomer", teamOwner);
+        DB.addSubscriberToDB("gerrard", gerrard);
         DB.addSubscriberToDB("AlonaBarkat", Barkat);
         DB.addSubscriberToDB("Shimon", Shimon);
         DB.addSubscriberToDB("Glazers", Glazers);
@@ -239,8 +244,8 @@ public class DataBaseValues {
         pique = new Player("pique","111","pique","1983","captain",0,null,systemController);
         pique.setTeamOwner(piqueF);
         piqueF.setOriginalObject(pique);
-        DB.addSubscriberToDB("pique",pique);
 
+        DB.addSubscriberToDB("pique",pique);
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
         DB.addSubscriberToDB("Tamash",Tamash);
         DB.addSubscriberToDB("yosi",yosi);
@@ -273,7 +278,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("kloppJ",klopp);
 
         pep = new TeamManager("pepG", "111", "pep",null ,100, systemController);
-        klopp.setPermissions(Permissions.FINANCE);
+        pep.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("pepG",pep);
 
         //add fan
@@ -306,8 +311,6 @@ public class DataBaseValues {
         Chelsea = new Team ("Chelsea", teamOwner,1888);
         Chelsea.setStadium(s1);
         BeerSheva = new Team("BeerSheva", Barkat,1973);
-        BeerSheva.setTeamManager(itay);
-        itay.setTeam(BeerSheva);
         Natanya = new Team("Natanya", Shimon, 1973);
         Bnei_Yehuda = new Team("Bnei Yehuda", Shimon, 1899);
         MacabiHaifa = new Team("McabiHaifa", Jacob, 1913);
@@ -316,11 +319,6 @@ public class DataBaseValues {
         Sunderland = new Team("Sunderland", YaelM, 1973);
         BeitarJerusalem = new Team("BeitarJerusalem",Jacob,1960);
 
-        //match
-        m1 = new Match(BeitarJerusalem,BeerSheva,Tedi);
-        m2 = new Match(BeitarJerusalem,BeerSheva,Tedi);
-        m1.setNumerOfFans(70);
-        m2.setNumerOfFans(100);
 
         //setters for teams
 
@@ -340,6 +338,8 @@ public class DataBaseValues {
         LeedsUnited.getTeamOwners().add(YaelM);
         LeedsUnited.getTeamOwners().add(Alex);
         Tottenham.getTeamOwners().add(piqueF);
+        Liverpool.getTeamOwners().add(gerrard);
+        gerrard.getTeams().add(Liverpool);
 
         YaelM.getTeams().add(Sunderland);
         YaelM.getTeams().add(LeedsUnited);
@@ -404,8 +404,14 @@ public class DataBaseValues {
         //add team manager
         itay = new TeamManager("itayK", "111", "itay",null ,0, systemController);
         Ronaldinio = new TeamManager("Ronaldinio", "111", "Ronaldinio",null ,0, systemController);
-        DB.addSubscriberToDB("Ronaldinio",Ronaldinio);
+        valverde = new TeamManager("valverde","111","valverde",Liverpool,100,systemController);
+        DB.addSubscriberToDB("Ronaldinio",Ronaldinio);;
         DB.addSubscriberToDB("itayK",itay);
+        DB.addSubscriberToDB("valverde",valverde);
+        Liverpool.setTeamManager(valverde);
+        gerrard.getTeamManagers().put(Liverpool,valverde);
+
+
         //complaints
         c1 = new Complaint("My system doesn't work",fan.getUsername());
         c2 = new Complaint("I don't like this team", fan.getUsername());
@@ -413,10 +419,6 @@ public class DataBaseValues {
         DB.addComplaintToDB(0,c1);
         DB.addComplaintToDB(1,c2);
 
-        //add match
-        //DB.addMatchToDB(1,m1);
-        //DB.addMatchToDB(2,m2);
-        Tedi.setPreviousMatches(DB.getMatches());
 
         //add Stadium todo ido move this code to this line need to be careful in merge!!!!!!
         DB.addStadiumToDB("Tedi",Tedi);
@@ -436,6 +438,11 @@ public class DataBaseValues {
         m2 = new Match (ManchersterCity,ManchesterUnited,s2);
         m3 = new Match (ManchesterUnited,Everton,s3);
         m4 = new Match (Liverpool,Tottenham,s2);
+        m5 = new Match(BeitarJerusalem,BeerSheva,Tedi);
+        m6 = new Match(BeitarJerusalem,BeerSheva,Tedi);
+        m5.setNumerOfFans(70);
+        m6.setNumerOfFans(100);
+
         //m3.setDate(startDate);
         Rayola.getRefMatches().put(3,m3);
         m3.chooseMainReferee(Rayola);
@@ -458,6 +465,10 @@ public class DataBaseValues {
         DB.addMatchToDB(2,m2);
         DB.addMatchToDB(3,m3);
         DB.addMatchToDB(4,m4);
+        DB.addMatchToDB(5,m5);
+        DB.addMatchToDB(6,m6);
+        Tedi.setPreviousMatches(DB.getMatches());
+
 
         systemController.connectToDB(DB);
     }

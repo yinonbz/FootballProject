@@ -148,10 +148,12 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                         team.removePlayer(player);
                         player.setBirthDate(edit);
                         team.addPlayer(player);
+                        return true;
                     } else if (typeEdit.equals("fieldJob")) {
                         team.removePlayer(player);
                         player.setFieldJob(edit);
                         team.addPlayer(player);
+                        return true;
                     }
                     else if(typeEdit.equals("salary")){
                         if(isNumeric(edit)){
@@ -160,8 +162,9 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                             player.setSalary(salary);
                             team.addPlayer(player);
                         }
+                        return true;
                     }
-                    return true;
+                    return false;
                 }
             }
 
@@ -218,12 +221,16 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                         team.removeCoach(coach);
                         coach.setTraining(edit);
                         team.addCoach(coach);
+                        return true;
                     } else if (typeEdit.equals("teamJob")) {
                         team.removeCoach(coach);
                         coach.setTeamJob(edit);
                         team.addCoach(coach);
+                        return true;
                     }
-                    return true;
+                    else{
+                        return false;
+                    }
                 }
             }
         }
