@@ -145,6 +145,8 @@ public class DataBaseValues {
     static Match m2;
     static Match m3;
     static Match m4;
+    static Match m5;
+    static Match m6;
 
     //events
     static YellowCard e1;
@@ -317,11 +319,6 @@ public class DataBaseValues {
         Sunderland = new Team("Sunderland", YaelM, 1973);
         BeitarJerusalem = new Team("BeitarJerusalem",Jacob,1960);
 
-        //match
-        m1 = new Match(BeitarJerusalem,BeerSheva,Tedi);
-        m2 = new Match(BeitarJerusalem,BeerSheva,Tedi);
-        m1.setNumerOfFans(70);
-        m2.setNumerOfFans(100);
 
         //setters for teams
 
@@ -422,10 +419,6 @@ public class DataBaseValues {
         DB.addComplaintToDB(0,c1);
         DB.addComplaintToDB(1,c2);
 
-        //add match
-        //DB.addMatchToDB(1,m1);
-        //DB.addMatchToDB(2,m2);
-        Tedi.setPreviousMatches(DB.getMatches());
 
         //add Stadium todo ido move this code to this line need to be careful in merge!!!!!!
         DB.addStadiumToDB("Tedi",Tedi);
@@ -445,6 +438,11 @@ public class DataBaseValues {
         m2 = new Match (ManchersterCity,ManchesterUnited,s2);
         m3 = new Match (ManchesterUnited,Everton,s3);
         m4 = new Match (Liverpool,Tottenham,s2);
+        m5 = new Match(BeitarJerusalem,BeerSheva,Tedi);
+        m6 = new Match(BeitarJerusalem,BeerSheva,Tedi);
+        m5.setNumerOfFans(70);
+        m6.setNumerOfFans(100);
+
         //m3.setDate(startDate);
         Rayola.getRefMatches().put(3,m3);
         m3.chooseMainReferee(Rayola);
@@ -467,6 +465,10 @@ public class DataBaseValues {
         DB.addMatchToDB(2,m2);
         DB.addMatchToDB(3,m3);
         DB.addMatchToDB(4,m4);
+        DB.addMatchToDB(5,m5);
+        DB.addMatchToDB(6,m6);
+        Tedi.setPreviousMatches(DB.getMatches());
+
 
         systemController.connectToDB(DB);
     }
