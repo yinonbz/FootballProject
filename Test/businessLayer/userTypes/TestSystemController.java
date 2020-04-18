@@ -50,10 +50,10 @@ public class TestSystemController {
 
     @Test
     //unit test
-    public void checkCloseTeam(){
+    public void UT_checkCloseTeam(){
         //1
         //close a team 1st time
-        assertTrue(admin.closeTeam("Beer Sheva"));
+        assertTrue(admin.closeTeam("LeedsUnited"));
 
         //2
         //close team that doesn't exist
@@ -67,7 +67,7 @@ public class TestSystemController {
 
     @Test
     //unit
-    public void checkDeleteSubscriber(){
+    public void IT_checkDeleteSubscriber(){
         //1
         //checks if we can delete a fan from the system
 
@@ -94,7 +94,7 @@ public class TestSystemController {
 
     @Test
     //unit
-    public void checkDisplayComplaints(){
+    public void IT_checkDisplayComplaints(){
 
         //1
         //check if the complaints are displayed
@@ -105,7 +105,7 @@ public class TestSystemController {
 
     @Test
     //unit
-    public void checkReplyComments(){
+    public void IT_checkReplyComments(){
 
         //1
         //regular test add a comment

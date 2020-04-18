@@ -25,7 +25,7 @@ public class TestMatch {
 
     @Test
 
-    public void checkMainReferee(){
+    public void UT_checkMainReferee(){
         Referee Rayola = (Referee)DB.selectSubscriberFromDB("Rayola");
         Referee Alon = (Referee)DB.selectSubscriberFromDB("Alon");
         Match m1 = DB.selectMatchFromDB(1);

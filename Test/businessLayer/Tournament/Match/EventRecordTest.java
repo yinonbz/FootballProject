@@ -43,7 +43,7 @@ public class EventRecordTest {
     }
 
     @Test
-    public void checkAddEvent(){
+    public void UT_checkAddEvent(){
         eventRecord.addEvent("5",yellowCard);
         eventRecord.addEvent("7",substitute);
         eventRecord.addEvent("5",injury);
@@ -52,7 +52,7 @@ public class EventRecordTest {
     }
 
     @Test
-    public void checkRemoveEvent(){
+    public void UT_checkRemoveEvent(){
         eventRecord.addEvent("5",yellowCard);
         eventRecord.addEvent("7",substitute);
         eventRecord.addEvent("5",injury);

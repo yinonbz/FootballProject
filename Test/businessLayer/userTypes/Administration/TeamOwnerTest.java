@@ -230,7 +230,7 @@ public class TeamOwnerTest {
 
     @Test
     //UNIT TEST
-    public void checkExclusiveTeamOwner(){
+    public void UT_checkExclusiveTeamOwner(){
         //1 - UNIT
         //check if Alona who has 2 teams is exclusive
 
@@ -251,26 +251,7 @@ public class TeamOwnerTest {
         assertFalse(Nissanov.isExclusiveTeamOwner());
     }
 
-    @Test
-    public void UC8_2(){
-        //1
-        //check if removing a regular user is possible
-        assertEquals("The User Ben was removed",systemService.removeSubscriber("Ben","TomerSein"));
 
-        //2
-        //check if it is possible to remove an exclusive team owner from the system
-        assertEquals("Can't remove an exclusive team owner",systemService.removeSubscriber("Harry","TomerSein"));
-
-        //3
-        //check if admin can delete himself
-        assertEquals("Admin can't remove his own user",systemService.removeSubscriber("TomerSein","TomerSein"));
-
-        //4
-        //check if you can delete user that doesn't exists
-        assertEquals("User doesn't exist in the system",systemService.removeSubscriber("dddddd","TomerSein"));
-
-
-    }
 
     /*
     @Test
