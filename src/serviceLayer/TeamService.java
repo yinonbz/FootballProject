@@ -100,16 +100,6 @@ public class TeamService {
         return systemController.appoinTeamOwnerToTeam(teamName, newUserName,userName);
     }
 
-    /**
-     * the function approves the request by the AR and updates the new team in the system and in the team owner
-     *
-     * @param teamName   the name of the team
-     * @param username the subscriber who tries to confirm the request
-     * @return true if it done successfully
-     * Not a UC - A function of Association Represntative
-     */
-    public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        return systemController.confirmTeamByAssociationRepresntative(teamName,username);
-    }
+
 
 }
