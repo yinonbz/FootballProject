@@ -795,14 +795,14 @@ public class SystemController {
 
     }
 
-    /**
+    /** todo-Next Iteration
      * This function will create variables for the user to enter for the login procedure, and will send them (via enterUserDetails(userNameInput, passwordInput) to be filled by the guest in the UI/GUI.
      *
      * @param guest The guest which started the login procedure.
      * @return the instance of Subscriber from systemSubscribers, if the login details were correct.
      * NULL if the login form wasn't filled properly, or one of the user details wasn't correct.
      */
-    public Subscriber createLoginForm(Guest guest) {
+/*    public Subscriber createLoginForm(Guest guest) {
         String userNameInput = null;
         String passwordInput = null;
         guest.enterUserDetails(userNameInput, passwordInput);
@@ -817,7 +817,7 @@ public class SystemController {
         }
         System.out.println("Wrong Password or User Name.");
         return null;
-    }
+    }*/
 
     /**
      * @param userName the user name that the user searches it's user instance
@@ -849,6 +849,12 @@ public class SystemController {
     }
     */
 
+    /**
+     * UC 2.2
+     * @param guest the guest who requests a registration form from the system
+     * @return true if the system created a registration form
+     *          false else
+     */
     public Boolean createRegistrationForm(Guest guest) {
         String userNameInput = null;
         String passwordInput = null;
