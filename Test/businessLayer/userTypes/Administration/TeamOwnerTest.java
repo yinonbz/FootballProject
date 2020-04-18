@@ -133,8 +133,59 @@ public class TeamOwnerTest {
         //failed to a teamOwner to a team that was already assign to a different team
         assertFalse(teamService.addAsset("JacobS","McabiHaifa", "Stadium", "samiOfer"));
     }
+
     @Test
     public void UC6_1_2_a() {
+        Barkat.addAsset("BeerSheva", "Player", "Buzaglo");
+        Barkat.addAsset("BeerSheva", "Coach", "efronio");
+        Jacob.addAsset("McabiHaifa", "TeamManager", "itayK");
+        Jacob.addAsset("McabiHaifa", "Stadium", "samiOfer");
+
+        //edit a player from the team successfully
+        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "birthDate", "9/11"));
+        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "fieldJob", "attacker"));
+        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "salary", "10000"));
+
+        //edit a Coach from the team successfully
+        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "training", "attacker"));
+        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "teamJob", "mainCoach"));
+        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "salary", "10000"));
+
+        //edit a TeamManager from the team successfully
+        assertTrue(teamService.editTeamManager("JacobS","McabiHaifa", "itayK", "salary", 100000));
+
+        //edit a Stadium from the team successfully
+        assertTrue(teamService.editStadium("JacobS","McabiHaifa", "samiOfer", "numberOfSeats", 50));
+
+    }
+    @Test
+    public void UC6_1_2_b() {
+        Barkat.addAsset("BeerSheva", "Player", "Buzaglo");
+        Barkat.addAsset("BeerSheva", "Coach", "efronio");
+        Jacob.addAsset("McabiHaifa", "TeamManager", "itayK");
+        Jacob.addAsset("McabiHaifa", "Stadium", "samiOfer");
+
+        //fail to edit Asset that was deleted
+
+        Barkat.deleteAsset("BeerSheva", "Player", "Buzaglo");
+        assertFalse(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "birthDate", "9/20"));
+        assertFalse(teamService.editPlayer("AlonaBarkat","BeerSheva", "ido", "birthDate", "9/20"));
+
+        Barkat.deleteAsset("BeerSheva", "Coach", "efronio");
+        assertFalse(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "teamJob", "SubCoach"));
+        assertFalse(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "training", "attacker"));
+
+        Jacob.deleteAsset("McabiHaifa", "TeamManager", "itayK");
+        assertFalse(teamService.editTeamManager("JacobS","McabiHaifa", "itayK", "salary", 20));
+
+        Jacob.deleteAsset("McabiHaifa", "Stadium", "samiOfer");
+        assertFalse(teamService.editStadium("JacobS","McabiHaifa", "samiOfer", "numberOfSeats", 50));
+        //a stadium that doesnt exist in the system
+        assertFalse(teamService.editStadium("JacobS","McabiHaifa", "natania", "numberOfSeats", 50));
+    }
+
+    @Test
+    public void UC6_1_3_a() {
         Barkat.addAsset("BeerSheva", "Player", "Buzaglo");
         Barkat.addAsset("BeerSheva", "Coach", "efronio");
         Barkat.addAsset("BeerSheva", "TeamManager", "itayK");
@@ -153,7 +204,7 @@ public class TeamOwnerTest {
         assertTrue(teamService.deleteAsset("JacobS","McabiHaifa", "Stadium", "samiOfer"));
     }
     @Test
-    public void UC6_1_2_b() {
+    public void UC6_1_3_b() {
         Barkat.addAsset("BeerSheva", "Player", "Buzaglo");
         Barkat.addAsset("BeerSheva", "Coach", "efronio");
         Barkat.addAsset("BeerSheva", "TeamManager", "itayK");
@@ -182,56 +233,6 @@ public class TeamOwnerTest {
         assertFalse(teamService.deleteAsset("JacobS","McabiHaifa", "Stadium", "samiOfer"));
         //fail to delete a Stadium that doesnt exist in the team
         assertFalse(teamService.deleteAsset("AlonaBarkat","BeerSheva", "Stadium", "samiOfer"));
-    }
-
-    @Test
-    public void UC6_1_3_a() {
-        Barkat.addAsset("BeerSheva", "Player", "Buzaglo");
-        Barkat.addAsset("BeerSheva", "Coach", "efronio");
-        Jacob.addAsset("McabiHaifa", "TeamManager", "itayK");
-        Jacob.addAsset("McabiHaifa", "Stadium", "samiOfer");
-
-        //edit a player from the team successfully
-        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "birthDate", "9/11"));
-        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "fieldJob", "attacker"));
-        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "salary", "10000"));
-
-        //edit a Coach from the team successfully
-        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "training", "attacker"));
-        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "teamJob", "mainCoach"));
-        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "salary", "10000"));
-
-        //edit a TeamManager from the team successfully
-        assertTrue(teamService.editTeamManager("JacobS","McabiHaifa", "itayK", "salary", 100000));
-
-        //edit a Stadium from the team successfully
-        assertTrue(teamService.editStadium("JacobS","McabiHaifa", "samiOfer", "numberOfSeats", 50));
-
-    }
-    @Test
-    public void UC6_1_3_b() {
-        Barkat.addAsset("BeerSheva", "Player", "Buzaglo");
-        Barkat.addAsset("BeerSheva", "Coach", "efronio");
-        Jacob.addAsset("McabiHaifa", "TeamManager", "itayK");
-        Jacob.addAsset("McabiHaifa", "Stadium", "samiOfer");
-
-        //fail to edit Asset that was deleted
-
-        Barkat.deleteAsset("BeerSheva", "Player", "Buzaglo");
-        assertFalse(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "birthDate", "9/20"));
-        assertFalse(teamService.editPlayer("AlonaBarkat","BeerSheva", "ido", "birthDate", "9/20"));
-
-        Barkat.deleteAsset("BeerSheva", "Coach", "efronio");
-        assertFalse(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "teamJob", "SubCoach"));
-        assertFalse(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "training", "attacker"));
-
-        Jacob.deleteAsset("McabiHaifa", "TeamManager", "itayK");
-        assertFalse(teamService.editTeamManager("JacobS","McabiHaifa", "itayK", "salary", 20));
-
-        Jacob.deleteAsset("McabiHaifa", "Stadium", "samiOfer");
-        assertFalse(teamService.editStadium("JacobS","McabiHaifa", "samiOfer", "numberOfSeats", 50));
-        //a stadium that doesnt exist in the system
-        assertFalse(teamService.editStadium("JacobS","McabiHaifa", "natania", "numberOfSeats", 50));
     }
 
     // a flow of the uc 6_1
