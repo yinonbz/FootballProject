@@ -554,9 +554,7 @@ public class TeamOwner extends Subscriber {
         return teams;
     }
 
-    /**
-     * @param teams
-     */
+
     /**
      * this function set the team hash set
      * @param teams
