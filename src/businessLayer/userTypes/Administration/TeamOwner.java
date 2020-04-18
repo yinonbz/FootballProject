@@ -610,7 +610,7 @@ public class TeamOwner extends Subscriber {
         Team team = getSystemController().getTeamByName(teamName);
         subscriber.getSystemController().getTeamByName(teamName).getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
         newTeamOwner.getTeams().add(getSystemController().getTeamByName(teamName));
-        teamOwners.put(team, newTeamOwner);
+        teamOwners.put(team,newTeamOwner);
         //todo - add complaints to newTeamOwner? if not, complaints needs to be added manually to the newTeamOwner from the original object
         //System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
     }
