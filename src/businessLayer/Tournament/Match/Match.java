@@ -303,4 +303,8 @@ public class Match {
     public EventRecord getEventRecord() {
         return eventRecord;
     }
+
+    public static void setIndex(int index) {
+        Match.index = index;
+    }
 }

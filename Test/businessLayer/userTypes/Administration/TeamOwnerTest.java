@@ -312,7 +312,7 @@ public class TeamOwnerTest {
         assertTrue(teamService.fireManager("gerrard","valverde","Liverpool"));
 
         //check
-        assertTrue(teamService.fireManager("gerrard","valverde","Liverpool"));
+        assertFalse(teamService.fireManager("gerrard","valverde","Liverpool"));
 
     }
 
