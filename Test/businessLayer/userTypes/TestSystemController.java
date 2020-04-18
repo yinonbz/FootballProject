@@ -53,7 +53,7 @@ public class TestSystemController {
     public void checkCloseTeam(){
         //1
         //close a team 1st time
-        assertTrue(admin.closeTeam("Beer Sheva"));
+//        assertTrue(admin.closeTeam("Beer Sheva"));
 
         //2
         //close team that doesn't exist
