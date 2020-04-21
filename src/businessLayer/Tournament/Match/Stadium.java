@@ -104,7 +104,11 @@ public class Stadium {
         this.owners = owners;
     }
 
-
+    /**
+     * this function check if a team owns the stadium
+     * @param team the team that need to be check if in a owner map
+     * @return true if false if a team contain in the map
+     */
     public boolean containTeam(Team team) {
         if(owners.containsKey(team.getTeamName())){
             return true;
@@ -112,21 +116,43 @@ public class Stadium {
         return false;
     }
 
+    /**
+     * remove the team from the owners map
+     * @param team that need to be removed
+     */
     public void removeTeam(Team team) {
         this.owners.remove(team.getTeamName());
     }
 
+    /**
+     * add team to owners map
+     * @param team that need to be added
+     */
     public void addTeam(Team team) {
         this.owners.put(team.getTeamName(),team);
     }
 
+    /**
+     * this function get the cost of the ticket
+     * @return the cost of the ticket
+     */
     public int getTicketCost() {
         return ticketCost;
     }
 
+    /**
+     * this function is a setter that set the cost of the ticket
+     * @param ticketCost the ticket cost
+     */
     public void setTicketCost(int ticketCost) {
         this.ticketCost = ticketCost;
     }
+
+    /**
+     * this function calculate the income of the stadium according to the tea, that played and own the stadium
+     * @param team the team that own the stadium
+     * @return the income of the team
+     */
     public int calculateIncome(Team team) {
         int sum=0;
         if(owners.containsKey(team.getTeamName())){

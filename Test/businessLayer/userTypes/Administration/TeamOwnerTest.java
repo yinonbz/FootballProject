@@ -35,6 +35,7 @@ public class TeamOwnerTest {
 
     private Player Buzaglo;
     private Player Tamash;
+    private Player Jovani;
     private Player Roso; //This Player will not be in the DB
     private Player yosi;
     private Player pique;
@@ -69,6 +70,7 @@ public class TeamOwnerTest {
         piqueF = (TeamOwner) DB.selectSubscriberFromDB("piqueF");
         Buzaglo = (Player) DB.selectSubscriberFromDB("Buzaglo");
         Tamash = (Player) DB.selectSubscriberFromDB("Tamash");
+        Jovani = (Player) DB.selectSubscriberFromDB("Jovani");
         yosi = (Player) DB.selectSubscriberFromDB("yosi");
         pique = (Player) DB.selectSubscriberFromDB("pique");
         Alon = (Referee) DB.selectSubscriberFromDB("Alon");
@@ -265,22 +267,42 @@ public class TeamOwnerTest {
     }
 
     @Test
-    public void UC_6_2() {
+    public void UC_6_2_a() {
         //Test 1 - add Successfully
-        assertTrue(Barkat.appointToOwner(Tamash, "BeerSheva"));
+        assertTrue(teamService.appoinTeamOwnerToTeam("BeerSheva","Tamash","AlonaBarkat"));
+    }
 
+    @Test
+    public void UC_6_2_b() {
         //Test - 2 - Try to add a Player which does not exists in the DB
-        assertFalse(Barkat.appointToOwner(Roso, "BeerSheva"));
+        assertFalse(teamService.appoinTeamOwnerToTeam("BeerSheva","Roso","AlonaBarkat"));
+    }
 
+    @Test
+    public void UC_6_2_c(){
         //Test - 3 -Try and Fail to add someone which is already a team owner.
-        assertFalse(Barkat.appointToOwner(Glazers, "BeerSheva"));
+        assertFalse(teamService.appoinTeamOwnerToTeam("BeerSheva","Glazers","AlonaBarkat"));
+    }
 
+
+    @Test
+    public void UC_6_3_a(){
+        Barkat.appointToOwner(Tamash, "BeerSheva");
+        assertTrue(teamService.removeOwner("AlonaBarkat","BeerSheva","Tamash"));
+    }
+
+    @Test
+    public void UC_6_3_b(){
+        assertFalse(teamService.removeOwner("AlonaBarkat","BeerSheva","Roso"));
+        assertFalse(teamService.removeOwner("AlonaBarkat","BeerSheva","Yosi"));
     }
 
     @Test
     public void UC6_4_a(){
         //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        //check if add succeeded
+        assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
 
     }
 
@@ -300,7 +322,7 @@ public class TeamOwnerTest {
 
     @Test
     public void UC6_4_d(){
-        //try assign a teamOwner
+        //try assign a teamManager
         assertFalse(teamService.addManager("Inon","AlonaBarkat","GENERAL","HTA","100"));
     }
 
@@ -308,6 +330,9 @@ public class TeamOwnerTest {
     public void UC6_5_a(){
         //all good
         assertTrue(teamService.fireManager("gerrard","valverde","Liverpool"));
+
+        //check
+        assertFalse(teamService.fireManager("gerrard","valverde","Liverpool"));
 
     }
 
@@ -519,8 +544,23 @@ public class TeamOwnerTest {
         assertFalse(piqueF.equals(DB.selectSubscriberFromDB("pepG")));
         assertFalse(piqueF.equals(DB.selectSubscriberFromDB("Alex")));
         assertFalse(piqueF.equals(null));
-
     }
+
+   @Test
+   public void UT_testRemoveOwner(){
+    /*   Barkat.appointToOwner(Tamash, "BeerSheva");
+       assertTrue(Tamash.getTeamOwner().getTeams().contains(BeerSheva));
+       assertTrue(Barkat.removeOwner(Tamash,"BeerSheva"));
+*/
+       Barkat.appointToOwner(Tamash, "BeerSheva");
+       Tamash.getTeamOwner().appointToOwner(Jovani,"BeerSheva");
+       assertTrue(Tamash.getTeamOwner().getTeams().contains(BeerSheva));
+       assertTrue(Jovani.getTeamOwner().getTeams().contains(BeerSheva));
+       assertTrue(Barkat.removeOwner(Tamash,"BeerSheva"));
+       assertNull(Tamash.getTeamOwner());
+       assertNull(Jovani.getTeamOwner());
+   }
+
     @Test
     public void UC6_7_a() {
         //add all pf the asset and set their salary
@@ -568,6 +608,7 @@ public class TeamOwnerTest {
         assertEquals(teamService.reportIncome("JacobS", "BeerSheva"), -1);
 
         //assertTrue(Jacob.deleteAsset("BeitarJerusalem", "Stadium", "Tedi"));
-
     }
+
+
 }

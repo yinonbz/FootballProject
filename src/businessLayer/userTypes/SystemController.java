@@ -795,14 +795,14 @@ public class SystemController {
 
     }
 
-    /**
+    /** todo-Next Iteration
      * This function will create variables for the user to enter for the login procedure, and will send them (via enterUserDetails(userNameInput, passwordInput) to be filled by the guest in the UI/GUI.
      *
      * @param guest The guest which started the login procedure.
      * @return the instance of Subscriber from systemSubscribers, if the login details were correct.
      * NULL if the login form wasn't filled properly, or one of the user details wasn't correct.
      */
-    public Subscriber createLoginForm(Guest guest) {
+/*    public Subscriber createLoginForm(Guest guest) {
         String userNameInput = null;
         String passwordInput = null;
         guest.enterUserDetails(userNameInput, passwordInput);
@@ -817,7 +817,7 @@ public class SystemController {
         }
         System.out.println("Wrong Password or User Name.");
         return null;
-    }
+    }*/
 
     /**
      * @param userName the user name that the user searches it's user instance
@@ -849,7 +849,13 @@ public class SystemController {
     }
     */
 
-    public Boolean createRegistrationForm(Guest guest) {
+    /**
+     * UC 2.2 todo - Next Iteration
+     * @param guest the guest who requests a registration form from the system
+     * @return true if the system created a registration form
+     *          false else
+     */
+ /*   public Boolean createRegistrationForm(Guest guest) {
         String userNameInput = null;
         String passwordInput = null;
         guest.enterUserDetails(userNameInput, passwordInput);
@@ -871,7 +877,7 @@ public class SystemController {
         DB.addSubscriberToDB(userNameInput, newFan);
 
         return false;
-    }
+    }*/
 
     /**
      * FUNCTION OF IDO, MAYBE NEEDS TO BE REMOVED
@@ -1004,6 +1010,35 @@ public class SystemController {
             if (ownerEligible.isOwner()) {
                 TeamOwner teamOwner = ownerEligible.getTeamOwner();
                  return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
+            } else
+                return false;
+        }
+        else{
+            return false; //the user isn't a team owner
+        }
+    }
+
+    public Boolean removeOwnerFromTeam(String userName, String teamName, String newUserName){
+        if (userName == null || teamName == null || newUserName == null) {
+            return false;
+        }
+        if (!DB.containsInSystemSubscribers(userName) || !DB.containsInTeamsDB(teamName)) {
+            return false;
+        }
+        Subscriber possibleTeamOwner = DB.selectSubscriberFromDB(userName);
+        if(possibleTeamOwner instanceof TeamOwner) { //check if the user is a team owner
+            TeamOwner teamOwner = ((TeamOwner)possibleTeamOwner);
+            if(teamOwner.enterMember(newUserName) != null) {
+                return teamOwner.removeOwner(teamOwner.enterMember(newUserName), teamName);
+            }
+            else //There is no such user with the user name of 'newUserName' in the system
+                return false;
+        }
+        else if(possibleTeamOwner instanceof OwnerEligible) {
+            OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
+            if (ownerEligible.isOwner()) {
+                TeamOwner teamOwner = ownerEligible.getTeamOwner();
+                return teamOwner.removeOwner(teamOwner.enterMember(newUserName), teamName);
             } else
                 return false;
         }

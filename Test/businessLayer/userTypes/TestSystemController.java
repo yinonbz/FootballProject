@@ -190,6 +190,12 @@ public class TestSystemController {
     }
 
     @Test
+    public void UT_TestgetSubscriberByUserName(){
+        SystemController systemController = SystemController.SystemController();
+        assertNull(systemController.getSubscriberByUserName("Itzik"));
+    }
+
+    @Test
     public void UC_1_1_a() {
         assertTrue(systemService.insertInfo("admin","admin"));
         assertTrue(systemService.initializeSystem("admin"));
