@@ -66,15 +66,17 @@ public class RefereeTest {
 
 
     @Test
+
     public void UC_10_2_a(){
         //1
         //check the referee can see a match he is submitted to
-        String ans = "Match id: " + "5" + "\n" + "Home: " + "ManchesterUnited" + "\n" + "Away: "
+        String ans = "Match id: " + "3" + "\n" + "Home: " + "ManchesterUnited" + "\n" + "Away: "
                 + "Everton" + "\n" +
                 "Stadium: " + "s3" + "\n" + "Date: " + "No information" +"\n" + "Referee: "+"Rayola";
 
-//        assertEquals(ans,matchService.viewMatchDetails("3","Rayola","Rayola"));
+       assertEquals(ans,matchService.viewMatchDetails("3","Rayola","Rayola"));
     }
+
 
     @Test
     public void UC_10_2_b(){
