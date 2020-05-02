@@ -63,13 +63,20 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         this.team = team;
     }
 
+    /*
     @Override
     public Boolean editDetails() {
         return false;
     }
+    */
 
     public void setSalary(int edit) {
         this.salary = edit;
+    }
+
+    @Override
+    public String getType() {
+        return "TeamManager";
     }
 
     /**

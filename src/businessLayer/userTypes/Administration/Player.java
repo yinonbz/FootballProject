@@ -83,18 +83,23 @@ public class Player extends Subscriber implements OwnerEligible {
         return fieldJob;
     }
 
+    @Override
+    public String getType() {
+        return "Player";
+    }
+
     /**
      * @return
      */
     public Team getTeam() {
         return team;
     }
-
+/*
     @Override
     public Boolean editDetails() {
         return null;
     }
-
+*/
 
     public void setTeam(Team team) {
         this.team = team;
@@ -112,9 +117,19 @@ public class Player extends Subscriber implements OwnerEligible {
         return true;
     }
 
+    /**
+     * get team owner
+     * @return team owner
+     */
+
     public TeamOwner getTeamOwner() {
         return teamOwner;
     }
+
+    /**
+     * set team owner
+     * @param teamOwner team owner to be set
+     */
 
     public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;

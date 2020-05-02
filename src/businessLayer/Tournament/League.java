@@ -26,36 +26,43 @@ public class League {
         seasons = new HashMap<>();
         matches = new ArrayList<>();
     }
-
+/*
     /**
      * @return
      */
+/*
     public String getLeagueName() {
         return leagueName;
     }
-
+  */
+    /*
     /**
      * @param leagueName
      */
+    /*
     public void setLeagueName(String leagueName) {
         this.leagueName = leagueName;
     }
+    */
 
-
+/*
     /**
      * @return
      */
+/*
     public Map<Team, Integer> getScoreTable() {
         return scoreTable;
     }
-
+*/
+    /*
     /**
      * @param scoreTable
      */
+    /*
     public void setScoreTable(Map<Team, Integer> scoreTable) {
         this.scoreTable = scoreTable;
     }
-
+*/
     /**
      * @return
      */
@@ -69,10 +76,11 @@ public class League {
     public void setSystemController(SystemController systemController) {
         this.systemController = systemController;
     }
-
+/*
     /**
      * @return
      */
+/*
     public HashMap<Integer, Season> getSeasons() {
         return seasons;
     }
@@ -80,14 +88,16 @@ public class League {
     /**
      * @param seasons
      */
-
+/*
     public void setSeasons(HashMap<Integer, Season> seasons) {
         this.seasons = seasons;
     }
+*/
 
     /**
      * @return
      */
+
     public List<Match> getMatches() {
         return matches;
     }

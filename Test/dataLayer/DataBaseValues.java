@@ -86,6 +86,7 @@ public class DataBaseValues {
     static Player Yaniv;
     static Player Amir;
     static Player pique;
+    static Player Jovani;
 
     //admins
     static Admin admin;
@@ -239,6 +240,7 @@ public class DataBaseValues {
         //add player
         Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
         Tamash = new Player("Tamash","Tamash123","Tamash","1983","captain",0,null,systemController);
+        Jovani = new Player("Jovani","Jovani123","Jovani","1975","Captain",0,null,systemController);
         yosi = new Player("yosi","yosi123","yosiDekel", "1993","captian",0,null,systemController);
         Yaniv = new Player("Yaniv","Yaniv123","YanivKatan", "1993","",0,null,systemController);
         Oded = new Player("Oded","Oded123","OdedShahar", "1993","",0,null,systemController);
@@ -250,6 +252,7 @@ public class DataBaseValues {
         DB.addSubscriberToDB("pique",pique);
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
         DB.addSubscriberToDB("Tamash",Tamash);
+        DB.addSubscriberToDB("Jovani",Jovani);
         DB.addSubscriberToDB("yosi",yosi);
         DB.addSubscriberToDB("Yaniv",Yaniv);
         DB.addSubscriberToDB("Oded",Oded);

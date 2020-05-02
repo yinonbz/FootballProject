@@ -86,9 +86,10 @@ public class Fan extends Subscriber {
     }
 
 
-
+/*
     @Override
     public Boolean editDetails() {
         return null;
     }
+    */
 }

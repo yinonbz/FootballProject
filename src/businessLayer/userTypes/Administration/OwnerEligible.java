@@ -14,4 +14,12 @@ public interface OwnerEligible {
      */
     TeamOwner getTeamOwner();
 
+    /**
+     * this function set the fictive team owner
+     */
+    void setTeamOwner(TeamOwner teamOwner);
+
+    String getType();
+
+
 }

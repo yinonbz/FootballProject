@@ -188,10 +188,12 @@ public class AssociationRepresentative extends Subscriber {
         this.leagueController = leaguesController;
     }
 
+    /*
     @Override
     public Boolean editDetails() {
         return null;
     }
+    */
 
 
     /**

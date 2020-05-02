@@ -76,10 +76,17 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.name = name;
     }
 
+    @Override
+    public String getType() {
+        return "Coach";
+    }
+
     /**
      *
      * @return
      */
+
+
 
     public String getTraining() {
         return training;
@@ -120,10 +127,12 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.teams = teamS;
     }
 
+    /*
     @Override
     public Boolean editDetails() {
         return null;
     }
+    */
 
     /**
      * this function determine if the coach is also an Owner
@@ -141,7 +150,7 @@ public class Coach extends Subscriber implements OwnerEligible {
         return teamOwner;
     }
 
-    protected void setTeamOwner(TeamOwner teamOwner) {
+    public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
     }
 
