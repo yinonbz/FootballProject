@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class DemoDB {
+public class DemoDB{
     //------------System Controller------------//
     private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
     private HashMap<String, Team> teams; //name of the team, the team object
