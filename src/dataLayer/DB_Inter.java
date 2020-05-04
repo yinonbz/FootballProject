@@ -10,4 +10,6 @@ public interface DB_Inter {
 
     boolean addToDb(String name,Object obj);
 
+    //void queryMethod(String method);
+
 }
