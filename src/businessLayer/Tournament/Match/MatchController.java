@@ -58,15 +58,26 @@ public class MatchController {
      * @param username
      * @return
      */
-    public boolean reportGoal(String time, String PlayerGoal, String playerAssist, String matchID,String username){
+    public boolean reportGoal(String time, String PlayerGoal, String playerAssist, String isOwnGoal, String matchID,String username){
         if(checkPermissionOfReferee(username,matchID)){
             Player playerG = getPlayerFromDB(PlayerGoal);
             Player playerA= getPlayerFromDB(playerAssist);
+            boolean isOwnG;
+            if(isOwnGoal.equals("T")){
+                isOwnG = true;
+            }
+            else{
+                isOwnG=false;
+            }
             if (playerG != null && playerA != null) {
                 if(checkSameTeam(playerG,playerA)) {
-                    Goal goal = new Goal(playerG, playerA, this);
+                    Goal goal = new Goal(playerG, playerA, isOwnG, this);
                     return handleEvent(goal, time, matchID);
                 }
+            }
+            else if(playerG != null){
+                Goal goal = new Goal(playerG, isOwnG, this);
+                return handleEvent(goal, time, matchID);
             }
         }
         return false;
