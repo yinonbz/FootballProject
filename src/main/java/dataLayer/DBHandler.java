@@ -2,10 +2,11 @@ package dataLayer;
 
 import businessLayer.userTypes.Subscriber;
 
-public class SubscriberDB implements DB_Inter{
+public class DBHandler implements DB_Inter{
 
 
-    public SubscriberDB(){
+
+    public DBHandler(){
         //connect to DB and save to field in class.
     }
 
@@ -16,7 +17,7 @@ public class SubscriberDB implements DB_Inter{
      */
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String table) {
         //create sql query to search record in db using ObjectName
         //return the result
         return false;
@@ -29,7 +30,7 @@ public class SubscriberDB implements DB_Inter{
      */
 
     @Override
-    public Object selectFromDB(String objectName) {
+    public Object selectFromDB(String objectName, String table) {
         //create sql query to select record from db using ObjectName
         //saving string results from query,
         //creating new Subscriber with the details, and returning the subscriber.
@@ -43,7 +44,7 @@ public class SubscriberDB implements DB_Inter{
      * @return
      */
     @Override
-    public boolean removeFromDB(String objectName) {
+    public boolean removeFromDB(String objectName, String table) {
         //create sql query to find record in db using ObjectName and removing it
         //return the boolean result
         return false;
@@ -56,7 +57,7 @@ public class SubscriberDB implements DB_Inter{
      * @return
      */
     @Override
-    public boolean addToDb(String name, Object obj) {
+    public boolean addToDb(String name, Object obj, String table) {
         if(obj instanceof Subscriber){
             Subscriber sub = (Subscriber) obj;
             String username = sub.getUsername();
