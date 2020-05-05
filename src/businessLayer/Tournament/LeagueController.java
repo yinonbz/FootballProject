@@ -166,19 +166,26 @@ public class LeagueController {
 
     /**
      * The function creates a season within league and returns whether the season was created successfully or not
-     *
-     * @param leagueID
+      * @param leagueID
      * @param seasonID
      * @param startingDate
+     * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @return
      */
-    public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate) {
+    public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
 
         League leagueToAdd = systemController.getLeagueFromDB(leagueID);
         if (leagueToAdd == null) {
             return false;
         }
-        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate);
+        if(matchingPolicy == null) {
+           return false;
+        }
+        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy);
         //todo: check if when you pull out a complex object from a hashmap, the changes you do to it are registered in the hashmap
     }
 
@@ -273,21 +280,24 @@ public class LeagueController {
 
     /**
      * The function receives username, leagueID, seasonID and dates from the interface layer and calls the creation function in the business layer
-     *
      * @param leagueID
      * @param seasonID
      * @param startingDate
      * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param username
      * @return
      */
-    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, String username) {
+    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
-        if (leagueID != null && username != null) {
+        if (leagueID != null && username != null && matchingPolicy != null) {
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
-                return userRep.createSeason(leagueID, seasonID, startingDate, endingDate);
+                return userRep.createSeason(leagueID, seasonID, startingDate, win, lose, tie, matchingPolicy, endingDate);
             }
         }
         return false;

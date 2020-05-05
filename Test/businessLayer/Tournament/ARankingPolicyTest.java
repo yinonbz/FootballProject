@@ -53,7 +53,7 @@ public class ARankingPolicyTest {
         Date d1 = new Date();
         Date d2 = new Date();
         League l1 = new League ("1st League");
-        s = new Season (2020,d1,d2,l1);
+        s = new Season (2020,d1,d2,l1, 3, 0, 1, "ClassicMatchPolicy");
         s.setTeams(teams);
         int [] score1 = new int [] {1,2};
         int [] score2 = new int [] {0,0};

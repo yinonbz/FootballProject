@@ -19,7 +19,7 @@ public class AssociationRepresentative extends Subscriber {
      * @param leaguesController
      */
     public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeagueController leaguesController, SystemController systemController) {
-        super(username, password,name,systemController);
+        super(username, password, name, systemController);
         this.name = name;
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leaguesController;
@@ -29,26 +29,28 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * constructor
+     *
      * @param username
      * @param password
      * @param name
      * @param systemController
      */
-    public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
-        super(username, password,name, systemController);
-        this.systemController=systemController;
+    public AssociationRepresentative(String username, String password, String name, SystemController systemController) {
+        super(username, password, name, systemController);
+        this.systemController = systemController;
     }
 
     /**
      * the function gets the name of the stadium and the number of seats it has
-     * @param nameStadium the name of the stadium
+     *
+     * @param nameStadium   the name of the stadium
      * @param numberOfSeats the number of seats in the stadium
      * @return true if the stadium was added successfully
      */
-    public boolean createNewStadium(String nameStadium, String numberOfSeats){
-        if(!nameStadium.isEmpty() && !numberOfSeats.isEmpty()){
-            if(tryParseInt(numberOfSeats)){
-                return systemController.addNewStadium(nameStadium,numberOfSeats);
+    public boolean createNewStadium(String nameStadium, String numberOfSeats) {
+        if (!nameStadium.isEmpty() && !numberOfSeats.isEmpty()) {
+            if (tryParseInt(numberOfSeats)) {
+                return systemController.addNewStadium(nameStadium, numberOfSeats);
             }
         }
         return false;
@@ -73,21 +75,26 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * The function creates a season within a league and returns whether the creation was successful or not
-     *
      * @param leagueName
      * @param seasonID
      * @param startingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param endingDate
-     * @return true/false
+     * @return
      */
-    public Boolean createSeason(String leagueName, int seasonID, Date startingDate, Date endingDate) {
+    public Boolean createSeason(String leagueName, int seasonID, Date startingDate, int win, int lose, int tie, String matchingPolicy, Date endingDate) {
 
         if (!leagueController.doesLeagueExist(leagueName)) {
             return false;
         }
-        return leagueController.addSeasonToLeague(leagueName, seasonID, startingDate, endingDate);
+        if (matchingPolicy == null) {
+            return false;
+        }
+        return leagueController.addSeasonToLeague(leagueName, seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy);
     }
-
     /**
      * The function creates a new referee in the system, returns whether the creation was successful or not
      *
@@ -198,13 +205,13 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * the function lets the AR to confirm new teams in the system
+     *
      * @param teamName the team the AR wants to approve
      * @return true if the team was approved
      */
-    public boolean confirmTeamRequest(String teamName){
-        return systemController.confirmTeamByAssociationRepresntative(teamName,this.getUsername());
+    public boolean confirmTeamRequest(String teamName) {
+        return systemController.confirmTeamByAssociationRepresntative(teamName, this.getUsername());
     }
-
 
 
 }

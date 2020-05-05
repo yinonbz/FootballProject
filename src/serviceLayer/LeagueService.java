@@ -40,18 +40,23 @@ public class LeagueService {
 
     /**
      * The function receives username, leagueID, seasonID and dates from the interface layer and calls the creation function in the business layer
-     *
      * @param leagueID
      * @param seasonID
      * @param startingDate
      * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param username
      * @return
      */
-    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, String username) {
+    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, String win, String lose, String tie, String matchingPolicy, String username) {
 
-        if (leagueID != null && username != null) {
-            return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, username);
+        if (leagueID != null && username != null && matchingPolicy != null) {
+            if(tryParseInt(win) && tryParseInt(tie) && tryParseInt(lose)) {
+                return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, Integer.parseInt(win),  Integer.parseInt(lose),  Integer.parseInt(tie), matchingPolicy, username);
+            }
         }
         return false;
     }
@@ -134,5 +139,19 @@ public class LeagueService {
             return leagueController.createNewStadiumThroughRepresentative(nameStadium, numberOfSeats, username);
         }
         return false;
+    }
+
+    /**
+     * private function that checks that a string represents an interger
+     * @param value the string
+     * @return true if it an integer
+     */
+    protected boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
