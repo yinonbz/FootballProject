@@ -5,14 +5,12 @@ import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import serviceLayer.LeagueService;
 import serviceLayer.SystemService;
 
 
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AssociationRepresentativeTest {
 

@@ -8,13 +8,12 @@ import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SingleClassicMatchPolicyTest {
 

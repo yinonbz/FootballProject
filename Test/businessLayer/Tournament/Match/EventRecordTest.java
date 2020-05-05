@@ -5,9 +5,9 @@ import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import serviceLayer.SystemService;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 
 public class EventRecordTest {
