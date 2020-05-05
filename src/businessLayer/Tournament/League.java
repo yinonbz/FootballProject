@@ -118,12 +118,15 @@ public class League {
      * @param endingDate
      * @return
      */
-    public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate) {
+    public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
 
         if (seasons.containsKey(seasonID) || startingDate.after(endingDate)) {
             return false;
         }
-        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this));
+        if (matchingPolicy == null){
+            return false;
+        }
+        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy));
         return true;
     }
 

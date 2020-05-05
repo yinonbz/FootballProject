@@ -68,19 +68,19 @@ public class AssociationRepresentativeTest {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
 
         //1. gal creates a new season successfully
-        assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "gal5"));
+        assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5"));
 
         //2. dor tries to create the same season without success
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "dor12"));
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "dor12"));
 
         //3. tali tries to create a season where the starting date is after the ending date
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 1, new Date(2000, 1, 11), new Date(2000, 1, 10), "tali5"));
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 1, new Date(2000, 1, 11), new Date(2000, 1, 10), "5", "1", "3", "ClassicMatchPolicy", "tali5"));
     }
 
     @Test
     public void test_UC9_3() {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
-        testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "gal5");
+        testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
 
         //1. gal creates a new referee successfully
         assertTrue(testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5"));
@@ -107,8 +107,8 @@ public class AssociationRepresentativeTest {
     @Test
     public void test_UC9_4() {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
-        testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "gal5");
-        testingLeagueService.addSeasonThroughRepresentative("101", 2, new Date(), new Date(), "gal5");
+        testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
+        testingLeagueService.addSeasonThroughRepresentative("101", 2, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
         testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5");
         testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5");
 

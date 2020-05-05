@@ -16,9 +16,8 @@ public class Season {
     private MatchingPolicy matchingPolicy;
     private RankingPolicy rankingPolicy;
     private HashMap<String, Referee> referees;
-    private HashMap <String,Team> teams;
-    private HashMap <Team, LinkedList<Integer>> leagueTable;
-
+    private HashMap<String, Team> teams;
+    private HashMap<Team, LinkedList<Integer>> leagueTable;
 
 
     /**
@@ -29,7 +28,7 @@ public class Season {
      * @param matchingPolicy
      * @param rankingPolicy
      */
-    public Season(int seasonId, Date startDate, Date endDate, League league, MatchingPolicy matchingPolicy, RankingPolicy rankingPolicy, HashMap <Team, LinkedList<Integer>> leagueTable) {
+    public Season(int seasonId, Date startDate, Date endDate, League league, MatchingPolicy matchingPolicy, RankingPolicy rankingPolicy, HashMap<Team, LinkedList<Integer>> leagueTable) {
         this.seasonId = seasonId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -44,12 +43,13 @@ public class Season {
 
     /**
      * constructor of a new season without a policy
+     *
      * @param seasonId
      * @param startDate
      * @param endDate
      * @param league
      */
-    public Season (int seasonId, Date startDate, Date endDate, League league){
+    public Season(int seasonId, Date startDate, Date endDate, League league, int win, int lose, int tie, String matchingPolicy) {
         this.seasonId = seasonId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -58,19 +58,28 @@ public class Season {
         teams = new HashMap<>();
         //matches = new ArrayList<>();
         leagueTable = new HashMap<>();
+        rankingPolicy = new ARankingPolicy(win, lose, tie);
+        if (matchingPolicy.equals("ClassicMatchPolicy")) {
+            this.matchingPolicy = new ClassicMatchPolicy(league, this);
+        } else if (matchingPolicy.equals("SingleMatchPolicy")) {
+            this.matchingPolicy = new SingleMatchPolicy(league, this);
+        } else {
+            //todo: add an error saying not legal policy name (or check it before reaching this far)
+        }
     }
+
 
     /**
      * initializes the table of the league
      */
-    public void initializeTable(){
-        LinkedList <Integer> temp = new LinkedList<>();
-        for (int i=0;i<4;i++){
+    public void initializeTable() {
+        LinkedList<Integer> temp = new LinkedList<>();
+        for (int i = 0; i < 4; i++) {
             temp.add(0);
         }
-        for (HashMap.Entry <String,Team> team : teams.entrySet()){
+        for (HashMap.Entry<String, Team> team : teams.entrySet()) {
             Team tempTeam = team.getValue();
-            leagueTable.put(tempTeam,temp);
+            leagueTable.put(tempTeam, temp);
         }
     }
 
@@ -183,6 +192,7 @@ public class Season {
         return rankingPolicy;
     }
 */
+
     /**
      * @param rankingPolicy
      */
@@ -203,21 +213,23 @@ public class Season {
     /**
      * @param teams
      */
-    public void setTeams(HashMap<String,Team> teams) {
+    public void setTeams(HashMap<String, Team> teams) {
         this.teams = teams;
     }
 
     /**
      * getter of league table
+     *
      * @return
      */
-    public HashMap <Team, LinkedList<Integer>> getLeagueTable(){
+    public HashMap<Team, LinkedList<Integer>> getLeagueTable() {
         return leagueTable;
     }
 
 
     /**
      * The function receives a referee and adds it to the data structure that holds the referees which assigned to the current season
+     *
      * @param refToAdd
      * @return true/false
      */
