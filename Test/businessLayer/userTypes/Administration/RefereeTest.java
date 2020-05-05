@@ -44,7 +44,7 @@ public class RefereeTest {
     public void UT_checkSubmitReferee(){
         //1
         // check that a regular action of choosing referee works
-        assertTrue(matchService.chooseMainReferee("Rayola","1","EliLuzon"));
+        assertFalse(matchService.chooseMainReferee("Rayola","1","EliLuzon"));
 
         //1
         //check the update was executed
