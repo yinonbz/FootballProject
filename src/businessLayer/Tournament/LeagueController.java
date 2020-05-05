@@ -166,10 +166,14 @@ public class LeagueController {
 
     /**
      * The function creates a season within league and returns whether the season was created successfully or not
-     *
-     * @param leagueID
+      * @param leagueID
      * @param seasonID
      * @param startingDate
+     * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @return
      */
     public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
@@ -276,11 +280,14 @@ public class LeagueController {
 
     /**
      * The function receives username, leagueID, seasonID and dates from the interface layer and calls the creation function in the business layer
-     *
      * @param leagueID
      * @param seasonID
      * @param startingDate
      * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param username
      * @return
      */

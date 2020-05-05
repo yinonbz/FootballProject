@@ -112,10 +112,13 @@ public class League {
 
     /**
      * The function creates a season and adds it to the league then returns whether the creation was successful or not
-     *
      * @param seasonID
      * @param startingDate
      * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @return
      */
     public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {

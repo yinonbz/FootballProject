@@ -75,12 +75,15 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * The function creates a season within a league and returns whether the creation was successful or not
-     *
      * @param leagueName
      * @param seasonID
      * @param startingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param endingDate
-     * @return true/false
+     * @return
      */
     public Boolean createSeason(String leagueName, int seasonID, Date startingDate, int win, int lose, int tie, String matchingPolicy, Date endingDate) {
 
