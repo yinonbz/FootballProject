@@ -134,4 +134,9 @@ public class Player extends Subscriber implements OwnerEligible {
     public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
     }
+
+    @Override
+    public String toString() {
+        return "Player";
+    }
 }

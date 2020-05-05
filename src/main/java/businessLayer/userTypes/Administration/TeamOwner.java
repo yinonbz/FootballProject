@@ -839,4 +839,9 @@ public class TeamOwner extends Subscriber {
     public HashMap<Team, LinkedList<TeamOwner>> getTeamOwners() {
         return teamOwners;
     }
+
+    @Override
+    public String toString() {
+        return "TeamOwner";
+    }
 }

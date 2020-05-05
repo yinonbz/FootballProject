@@ -1,15 +1,11 @@
 package serviceLayer;
 
 import businessLayer.Team.TeamController;
-import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
-import businessLayer.userTypes.Administration.TeamOwner;
-import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.security.acl.Owner;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -167,6 +163,21 @@ public class SystemService {
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
         return systemController.confirmTeamByAssociationRepresntative(teamName,username);
+    }
+
+    /**
+     * Login UC-2.3
+     * @param userName the User Name as the user's input
+     * @param password the Password as the user's input
+     * @return the user type if the user logged in successfully
+     *         null else
+     */
+    public String enterLoginDetails(String userName, String password){
+        return systemController.enterLoginDetails(userName,password);
+    }
+
+    public String enterRegisterDetails(String userName, String password, String name, String type){
+        return systemController.enterRegisterDetails(userName,password, name, type);
     }
 
 }

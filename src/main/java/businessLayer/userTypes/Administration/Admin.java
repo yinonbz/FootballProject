@@ -114,4 +114,9 @@ public class Admin extends Subscriber {
         return null;
     }
     */
+
+    @Override
+    public String toString() {
+        return "Admin";
+    }
 }

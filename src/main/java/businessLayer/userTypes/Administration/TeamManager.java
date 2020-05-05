@@ -260,4 +260,8 @@ public class TeamManager extends Subscriber implements OwnerEligible {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "TeamManager";
+    }
 }

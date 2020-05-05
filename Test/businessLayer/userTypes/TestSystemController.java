@@ -10,7 +10,6 @@ import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 
 import org.junit.Test;
-import businessLayer.userTypes.SystemController;
 import serviceLayer.SystemService;
 
 
@@ -196,6 +195,14 @@ public class TestSystemController {
     }
 
     @Test
+    public void UT_enterUserDetails(){
+        SystemController systemController = SystemController.SystemController();
+        assertNull(systemController.enterLoginDetails("Itzik","abc123"));
+        assertNull(systemController.enterLoginDetails(null,"abc123"));
+        assertNull(systemController.enterLoginDetails("Itzik",null));
+    }
+
+    @Test
     public void UC_1_1_a() {
         assertTrue(systemService.insertInfo("admin","admin"));
         assertTrue(systemService.initializeSystem("admin"));
@@ -206,4 +213,20 @@ public class TestSystemController {
     public void UC_1_1_b() {
         //will be tested after the login implementation
     }
+
+    @Test
+    public void UC_2_3_a() {
+        assertEquals(systemService.enterUserDetails("Buzaglo","Buzaglo123"),"Player");
+    }
+
+    @Test
+    public void UC_2_3_b(){
+        assertNull(systemService.enterUserDetails("Buzaglo",null));
+    }
+
+    @Test
+    public void UC_2_3_c(){
+        assertNull(systemService.enterUserDetails("Dudidu","Dudidu123"));
+    }
+
 }
