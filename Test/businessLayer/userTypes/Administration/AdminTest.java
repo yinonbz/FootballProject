@@ -14,7 +14,7 @@ import static junit.framework.TestCase.assertTrue;
 
 public class AdminTest {
 
-    static DemoDB DB;
+    static DemoDB  DB;
     static DataBaseValues tDB;
     static SystemService systemService;
 
