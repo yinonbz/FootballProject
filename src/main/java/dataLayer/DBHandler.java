@@ -5,6 +5,7 @@ import businessLayer.userTypes.Subscriber;
 public class DBHandler implements DB_Inter{
 
 
+
     public DBHandler(){
         //connect to DB and save to field in class.
     }
