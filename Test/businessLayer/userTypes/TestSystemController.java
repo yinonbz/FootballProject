@@ -216,17 +216,17 @@ public class TestSystemController {
 
     @Test
     public void UC_2_3_a() {
-        assertEquals(systemService.enterUserDetails("Buzaglo","Buzaglo123"),"Player");
+        assertEquals(systemService.enterLoginDetails("Buzaglo","Buzaglo123"),"Player");
     }
 
     @Test
     public void UC_2_3_b(){
-        assertNull(systemService.enterUserDetails("Buzaglo",null));
+        assertNull(systemService.enterLoginDetails("Buzaglo",null));
     }
 
     @Test
     public void UC_2_3_c(){
-        assertNull(systemService.enterUserDetails("Dudidu","Dudidu123"));
+        assertNull(systemService.enterLoginDetails("Dudidu","Dudidu123"));
     }
 
 }
