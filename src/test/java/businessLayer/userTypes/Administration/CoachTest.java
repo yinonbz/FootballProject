@@ -16,7 +16,7 @@ public class CoachTest {
 
     @Before
     public void createTestValues() {
-        henry = new Coach("Henry", "Henry123", "Henry", "manager", "assistent manager",0,systemController);
+        henry = new Coach("Henry", "Henry123", "Henry", TRAINING.valueOf("GENERAL"), "assistent manager",0,systemController);
         teamOwner = new TeamOwner("HenryFictive", "HenryF123", "HenryF", systemController);
     }
 
@@ -41,7 +41,7 @@ public class CoachTest {
     }
     @Test
     public void IT_checkGetTraining(){
-        assertEquals(henry.getTraining(),"manager");
+        assertEquals(henry.getTraining(),TRAINING.valueOf("GENERAL"));
     }
     @Test
     public void IT_checkGetTeamJob(){
