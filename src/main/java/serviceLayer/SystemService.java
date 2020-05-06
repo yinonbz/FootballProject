@@ -169,4 +169,20 @@ public class SystemService {
         return systemController.confirmTeamByAssociationRepresntative(teamName,username);
     }
 
+
+    /**
+     * Login UC-2.3
+     * @param userName the User Name as the user's input
+     * @param password the Password as the user's input
+     * @return the user type if the user logged in successfully
+     *         null else
+     */
+    public String enterLoginDetails(String userName, String password){
+        return systemController.enterLoginDetails(userName,password);
+    }
+
+    public String enterRegisterDetails(String userName, String password, String name, String type){
+        return systemController.enterRegisterDetails(userName,password, name, type);
+    }
+
 }
