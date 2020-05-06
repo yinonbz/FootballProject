@@ -1,6 +1,7 @@
 package businessLayer.userTypes.Administration;
 
 
+import businessLayer.Tournament.League;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import serviceLayer.SystemService;
 
 
 import java.util.Date;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,6 +23,7 @@ public class AssociationRepresentativeTest {
     private AssociationRepresentative tali;
     private LeagueService testingLeagueService;
     private SystemService testingSystemService;
+    private League l1;
 
     static private DataBaseValues testingDBValues;
     static private DemoDB testingDB;
@@ -47,6 +50,7 @@ public class AssociationRepresentativeTest {
         Barkat.sendRequestForTeam("HapoelBeerSheva", "1888");
         EliLuzon = (AssociationRepresentative) testingDB.selectSubscriberFromDB("EliLuzon");
 
+        l1 = testingDB.selectLeagueFromDB("11");
 
     }
 
@@ -133,6 +137,62 @@ public class AssociationRepresentativeTest {
         //7. tali assigns Bob to a non-existing league
         assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "102", 1, "tali5"));
     }
+
+    @Test
+    public void UC9_5_a(){
+        Date d1 = new Date();
+        Date d2 = new Date();
+        assertTrue(testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,"3","0","1", "ClassicMatchPolicy","gal5"));
+    }
+
+    @Test
+    public void UC9_5_b(){
+        Date d1 = new Date();
+        Date d2 = new Date();
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("11",2021,d1,d2,"3","0","1", "ClassicMatchPolicy","gal15"));
+    }
+
+    @Test
+    public void UC9_5_c(){
+        Date d1 = new Date();
+        Date d2 = new Date();
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,"3","0","1", "ClassicMatchPolicy","Alon"));
+    }
+
+    @Test
+    public void UC9_6_a(){
+        Date d1 = new Date();
+        Date d2 = new Date();
+        assertTrue(testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,"3","0","1", "SingleMatchPolicy","gal5"));
+        LinkedList<String> teamsName = new LinkedList<>();
+        teamsName.add("ManchesterUnited");
+        teamsName.add("Everton");
+        teamsName.add("Liverpool");
+        teamsName.add("Chelsea");
+        testingLeagueService.chooseTeamForSeason(teamsName,"12","2020","gal5");
+        assertTrue(testingLeagueService.activateMatchPolicyForSeason("12","2020","gal5"));
+    }
+
+    @Test
+    public void UC9_6_b(){
+        Date d1 = new Date();
+        Date d2 = new Date();
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,"3","0","1", "Hello","gal5"));
+        assertFalse(testingLeagueService.activateMatchPolicyForSeason("12","2020","gal5"));
+    }
+
+    @Test
+    public void UT_checkAddTeams(){
+        LinkedList<String> teamsName = new LinkedList<>();
+        teamsName.add("ManchesterUnited");
+        teamsName.add("Everton");
+        teamsName.add("Liverpool");
+        teamsName.add("Chelsea");
+        assertTrue(testingLeagueService.chooseTeamForSeason(teamsName,"12","2020","gal5"));
+    }
+
+
+
 
     @Test
     public void checkTeamConfirmation() {
