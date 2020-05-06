@@ -104,6 +104,9 @@ public class TeamService {
         return systemController.removeOwnerFromTeam(userName,teamName,newUserName);
     }
 
-
+    @Override
+    public String toString() {
+        return "TeamOwner";
+    }
 
 }

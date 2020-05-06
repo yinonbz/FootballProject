@@ -205,6 +205,9 @@ public class AssociationRepresentative extends Subscriber {
         return systemController.confirmTeamByAssociationRepresntative(teamName,this.getUsername());
     }
 
-
+    @Override
+    public String toString() {
+        return "AssociationRepresentative";
+    }
 
 }

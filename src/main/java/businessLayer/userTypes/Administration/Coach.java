@@ -165,4 +165,9 @@ public class Coach extends Subscriber implements OwnerEligible {
     public void removeTeam(Team team) {
         this.teams.remove(team);
     }
+
+    @Override
+    public String toString() {
+        return "Coach";
+    }
 }

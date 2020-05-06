@@ -1056,4 +1056,59 @@ public class SystemController {
     public Match findMatch(int matchID){
         return DB.selectMatchFromDB(matchID);
     }
+
+    /**
+     * Login UC-2.3
+     * @param userName the User Name as the user's input
+     * @param password the Password as the user's input
+     * @return the user type if there is a Subscriber in the DB with the @userName and the @password
+     *         null - else, or one of the inputs are null
+     */
+    public String enterLoginDetails(String userName, String password) {
+
+        if(userName == null || password == null){
+            return null;
+        }
+
+        Subscriber subscriber = selectUserFromDB(userName);
+
+        if(subscriber==null)
+            return null;
+
+        if(subscriber.getPassword().equals(password))
+            return subscriber.toString();
+
+        return null;
+    }
+
+    public String enterRegisterDetails(String userName, String password, String name, String type) {
+        if(userName == null || password == null || name == null || type == null){
+            return null;
+        }
+
+        Subscriber subscriber = selectUserFromDB(userName);
+
+        if(subscriber!=null) //user name is already exists in the database
+            return null;
+
+        switch (type){
+            case "Admin":
+                break;
+            case "AssociationRepresentative":
+                break;
+            case "Referee":
+                break;
+            case "Player":
+                break;
+            case "TeamOwner":
+                break;
+            case "TeamManager":
+                break;
+            case "Fan":
+                break;
+        }
+
+        return null;
+    }
+
 }
