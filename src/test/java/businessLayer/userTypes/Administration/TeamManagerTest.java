@@ -114,7 +114,7 @@ public class TeamManagerTest {
         assertFalse(itay.editPlayer(Buzaglo.getUsername(),"fieldJob","foward"));
         //all good
         itay.setPermissions(Permissions.GENERAL);
-        assertTrue(itay.editPlayer(Buzaglo.getUsername(),"fieldJob","foward"));
+        assertTrue(itay.editPlayer(Buzaglo.getUsername(),"fieldJob","AM"));
         assertTrue(itay.editPlayer(Buzaglo.getUsername(),"salary","200"));
         assertTrue(itay.editPlayer(Buzaglo.getUsername(),"salary","d200d"));
         assertTrue(itay.editPlayer(Buzaglo.getUsername(),"birthDate","19042000"));
@@ -164,12 +164,12 @@ public class TeamManagerTest {
 
         //all good
         itay.setPermissions(Permissions.GENERAL);
-        assertTrue(itay.editCoach("efronio","training","fitness"));
+        assertTrue(itay.editCoach("efronio","training","FITNESS"));
         assertTrue(itay.editCoach("efronio","teamJob","assistentManager"));
         assertFalse(itay.editCoach("efronio","project","10"));
         assertFalse(itay.editCoach(null,null,null));
-        assertFalse(itay.editCoach("blahblah","training","physical"));
-        assertTrue(itay.editCoach("efronio","training","physical"));
+        assertFalse(itay.editCoach("blahblah","training","GK"));
+        assertTrue(itay.editCoach("efronio","training","GENERAL"));
 
 
     }
