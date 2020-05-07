@@ -11,10 +11,6 @@ import serviceLayer.MatchService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
 
 public class RefereeTest {
 

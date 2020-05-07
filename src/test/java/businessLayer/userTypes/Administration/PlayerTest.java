@@ -3,7 +3,7 @@ package businessLayer.userTypes.Administration;
 import org.junit.Before;
 import org.junit.Test;
 import businessLayer.userTypes.SystemController;
-
+import static org.junit.Assert.*;
 import static org.junit.Assert.*;
 
 public class PlayerTest {

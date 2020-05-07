@@ -1,7 +1,11 @@
-package main.java.businessLayer.userTypes.Administration;
+package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
+//import businessLayer.Utilities.Page;
 import businessLayer.Utilities.Page;
+import businessLayer.userTypes.Administration.FIELDJOB;
+import businessLayer.userTypes.Administration.OwnerEligible;
+import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
@@ -136,7 +140,9 @@ public class Player extends Subscriber implements OwnerEligible {
     public String toString() {
         return "Player";
     }
+
     public boolean addUpdate(String update){
         return playerPage.update(update);
     }
+
 }
