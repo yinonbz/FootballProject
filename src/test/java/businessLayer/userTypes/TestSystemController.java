@@ -236,13 +236,11 @@ public class TestSystemController {
         assertFalse(systemController.handleAdminApprovalRequest("Buzaglo","NewAR",true));;
         assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAR",true));
         assertTrue(((AssociationRepresentative)systemController.selectUserFromDB("NewAR")).isApproved());
-        assertEquals(DB.selectAllAdminApprovalRequests().size(),0);
 
         assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR2","abc123","b"));
         assertFalse(((AssociationRepresentative)systemController.selectUserFromDB("NewAR2")).isApproved());
         assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAR2",false));
         assertFalse(((AssociationRepresentative)systemController.selectUserFromDB("NewAR2")).isApproved());
-        assertEquals(DB.selectAllAdminApprovalRequests().size(),0);
     }
 
     @Test
