@@ -98,7 +98,7 @@ public class DBHandler implements DB_Inter{
      * @return
      */
     @Override
-    public boolean removeFromDB(String objectName, String tableת,String where,String groupby) {
+    public boolean removeFromDB(String objectName, String table,String where,String groupby) {
         //create sql query to find record in db using ObjectName and removing it
         //return the boolean result
         return false;
