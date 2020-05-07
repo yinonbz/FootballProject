@@ -3,6 +3,7 @@ package businessLayer.userTypes;
 import businessLayer.Team.Team;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
+import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.viewers.Fan;
 import dataLayer.DataBaseValues;
@@ -16,6 +17,7 @@ import serviceLayer.SystemService;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 public class TestSystemController {
 
@@ -201,6 +203,46 @@ public class TestSystemController {
         assertNull(systemController.enterLoginDetails("Itzik","abc123"));
         assertNull(systemController.enterLoginDetails(null,"abc123"));
         assertNull(systemController.enterLoginDetails("Itzik",null));
+    }
+
+    @Test
+    public void UT_enterRegisterDetails_Admin(){
+        SystemController systemController = SystemController.SystemController();
+        assertFalse(systemController.enterRegisterDetails_Admin(null,"a","a"));
+        assertFalse(systemController.enterRegisterDetails_Admin("a",null,"a"));
+        assertFalse(systemController.enterRegisterDetails_Admin("a","a",null));
+
+        assertFalse(systemController.enterRegisterDetails_Admin("TomerSein","a","a")); //already exist userName
+
+        assertTrue(systemController.enterRegisterDetails_Admin("AlonGolo","abc123","b"));
+        assertNotNull(DB.selectAdminToApproveFromDB("AlonGolo"));
+        assertFalse(((Admin)DB.selectAdminToApproveFromDB("AlonGolo")).isApproved());
+        assertTrue(systemController.enterRegisterDetails_Admin("Roni","abc123","b"));
+        assertEquals(DB.selectAllAdminApprovalRequests().size(),2);
+    }
+
+    @Test
+    public void UT_handleAdminApprovalRequest(){
+        SystemController systemController = SystemController.SystemController();
+        assertTrue(systemController.enterRegisterDetails_Admin("NewAdmin","abc123","b"));
+        assertFalse(((Admin)systemController.selectUserFromDB("NewAdmin")).isApproved());
+        assertFalse(systemController.handleAdminApprovalRequest("Buzaglo","NewAdmin",true));
+        assertFalse(systemController.handleAdminApprovalRequest("TomerSein","Buzaglo",true));
+        assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAdmin",true));
+        assertTrue(((Admin)systemController.selectUserFromDB("NewAdmin")).isApproved());
+
+        assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR","abc123","b"));
+        assertFalse(((AssociationRepresentative)systemController.selectUserFromDB("NewAR")).isApproved());
+        assertFalse(systemController.handleAdminApprovalRequest("Buzaglo","NewAR",true));;
+        assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAR",true));
+        assertTrue(((AssociationRepresentative)systemController.selectUserFromDB("NewAR")).isApproved());
+        assertEquals(DB.selectAllAdminApprovalRequests().size(),0);
+
+        assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR2","abc123","b"));
+        assertFalse(((AssociationRepresentative)systemController.selectUserFromDB("NewAR2")).isApproved());
+        assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAR2",false));
+        assertFalse(((AssociationRepresentative)systemController.selectUserFromDB("NewAR2")).isApproved());
+        assertEquals(DB.selectAllAdminApprovalRequests().size(),0);
     }
 
     @Test

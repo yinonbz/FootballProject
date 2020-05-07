@@ -4,6 +4,7 @@ import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
+import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
 import java.util.HashMap;
@@ -33,6 +34,10 @@ public class SystemService {
      */
     public HashMap<Integer, Complaint> displayComplaints(String username) {
         return systemController.displayComplaints(username);
+    }
+
+    public HashMap<String, Subscriber> displayAdminApprovalRequests(String username) {
+        return systemController.displayAdminApprovalRequests(username);
     }
 
 
@@ -91,6 +96,7 @@ public class SystemService {
     public boolean addComplaint(String content, String username) {
         return systemController.addComplaint(content,username);
     }
+
 
     /**
      * the functiong gets from the UI a request to removes a user from the system by the admin
@@ -177,16 +183,94 @@ public class SystemService {
         return systemController.enterLoginDetails(userName,password);
     }
 
-    public String enterRegisterDetails_Player(String userName, String password, String name, String birthDate, String fieldJob, String teamName){
+    /**
+     * Registration procedure for Admin
+     * @param userName
+     * @param password
+     * @param name the real name of the new admin
+     * @return true if the admin was successfully created in the DB
+     */
+    public boolean enterRegisterDetails_Admin(String userName, String password, String name){
+        return systemController.enterRegisterDetails_Admin(userName,password,name);
+    }
+
+    /**
+     * Registration procedure for Association Representative
+     * @param userName
+     * @param password
+     * @param name the real name of the new admin
+     * @return true if the Association Representative was successfully created in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_AssociationRepresentative(String userName, String password, String name){
+        return systemController.enterRegisterDetails_AssociationRepresentative(userName,password,name);
+    }
+
+
+    /**
+     * Registration procedure for Player
+     * @param userName
+     * @param password
+     * @param name the real name of the new player
+     * @param birthDate the date of birth of the player
+     * @param fieldJob the field job of the new player
+     * @param teamName the name of the team which the player plays in
+     * @return true true if the Player was successfully created in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_Player(String userName, String password, String name, String birthDate, String fieldJob, String teamName){
         return systemController.enterRegisterDetails_Player(userName,password, name, birthDate,fieldJob,teamName);
     }
 
-    public String enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJon){
-        return systemController.enterRegisterDetails_Coach(userName,password,name,training,teamJon);
+    /**
+     * Registration procedure for Coach
+     * @param userName
+     * @param password
+     * @param name the real name of the coach
+     * @param training the training of the coach
+     * @param teamJob the team job of the coach
+     * @return true if the Coach was successfully created in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJob){
+        return systemController.enterRegisterDetails_Coach(userName,password,name,training,teamJob);
     }
 
-    public String enterRegisterDetails_Referee(String userName, String password, String name, String training){
-        return systemController.enterRegisterDetails_Referee(userName,password,name,training);
+    /**
+     * Registration procedure for Team Owner
+     * @param userName
+     * @param password
+     * @param name the real name of the Team Owner
+     * @return true if the Team Owner was successfully created in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_TeamOwner(String userName, String password, String name){
+        return systemController.enterRegisterDetails_TeamOwner(userName,password,name);
     }
 
+    /**
+     * Registration procedure for Team Manager
+     * @param userName
+     * @param password
+     * @param name the real name of the Team Owner
+     * @param teamName the name of the team which the team-manager manages
+     * @returntrue if the Team Manager was successfully created in the DB
+     *            false else
+     */
+    public boolean enterRegisterDetails_TeamManager(String userName, String password, String name, String teamName){
+        return systemController.enterRegisterDetails_TeamManager(userName,password,name,teamName);
+    }
+
+
+    /**
+     * This function handles the operation of approving a new AR or Admin user by an already-approved admin.
+     * @param userName the user name of the user which approves
+     * @param userNameToApprove the user name of the user which is being approved
+     * @param approve approve = true, disapprove = false
+     * @return true if the userNameToApprove was approved/disapproved by userName
+     *         false else
+     */
+    public boolean handleAdminApprovalRequest(String userName, String userNameToApprove, boolean approve){
+        return systemController.handleAdminApprovalRequest(userName, userNameToApprove, approve);
+    }
 }

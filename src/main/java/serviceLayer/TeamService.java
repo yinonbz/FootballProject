@@ -103,10 +103,4 @@ public class TeamService {
     public Boolean removeOwner(String userName,String teamName, String newUserName){
         return systemController.removeOwnerFromTeam(userName,teamName,newUserName);
     }
-
-    @Override
-    public String toString() {
-        return "TeamOwner";
-    }
-
 }
