@@ -14,7 +14,7 @@ public class Match {
     private Team homeTeam;
     private Team awayTeam;
     private List<Referee> referees;
-    private String score;
+    private int [] score; //first cell is the home team goals and second is the away
     private String time;
     private Date date;
     private Boolean isFinished;
@@ -36,7 +36,7 @@ public class Match {
      * @param isFinished
      * @param numberOfFans
      */
-    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, String score, String time, Date date, Boolean isFinished, Stadium stadium, int numberOfFans, EventRecord eventRecord, Referee mainReferee) {
+    public Match(League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, int [] score, String time, Date date, Boolean isFinished, Stadium stadium, int numberOfFans, EventRecord eventRecord, Referee mainReferee) {
         this.league = league;
         this.season = season;
         this.homeTeam = homeTeam;
@@ -67,6 +67,7 @@ public class Match {
         this.matchId=index;
         eventRecord = new EventRecord(this);
         this.isFinished=false;
+        score = new int [] {0,0};
         index++;
     }
 
@@ -149,7 +150,7 @@ public class Match {
     /**
      * @return
      */
-    public String getScore() {
+    public int [] getScore() {
         return score;
     }
 
@@ -212,7 +213,7 @@ public class Match {
     /**
      * @param score
      */
-    public void setScore(String score) {
+    public void setScore(int [] score) {
         this.score = score;
     }
 

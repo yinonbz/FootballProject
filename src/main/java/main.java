@@ -6,7 +6,10 @@ public class main {
         SystemController systemController = SystemController.SystemController();
         systemController.setAlertSystem(new AlertSystem());
         SystemController systemController1 = SystemController.SystemController();
+
+
         int a = 2;
+
 
 
     }

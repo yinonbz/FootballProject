@@ -4,6 +4,7 @@ import businessLayer.Tournament.LeagueController;
 import businessLayer.userTypes.SystemController;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 public class LeagueService {
 
@@ -40,18 +41,23 @@ public class LeagueService {
 
     /**
      * The function receives username, leagueID, seasonID and dates from the interface layer and calls the creation function in the business layer
-     *
      * @param leagueID
      * @param seasonID
      * @param startingDate
      * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param username
      * @return
      */
-    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, String username) {
+    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, String win, String lose, String tie, String matchingPolicy, String username) {
 
-        if (leagueID != null && username != null) {
-            return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, username);
+        if (leagueID != null && username != null && matchingPolicy != null) {
+            if(tryParseInt(win) && tryParseInt(tie) && tryParseInt(lose)) {
+                return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, Integer.parseInt(win),  Integer.parseInt(lose),  Integer.parseInt(tie), matchingPolicy, username);
+            }
         }
         return false;
     }
@@ -135,4 +141,50 @@ public class LeagueService {
         }
         return false;
     }
+
+    /**
+     * the function lets the AR to choose teams and add them to the season
+     * @param teamsNames the teams the AR wants to add
+     * @param leagueID the league ID
+     * @param seasonID the season ID
+     * @param username the username
+     * @return true if it done successfully
+     */
+    public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID , String seasonID, String username){
+        if(teamsNames!=null && teamsNames.size()>0 && tryParseInt(seasonID) && username!=null){
+            return leagueController.chooseTeamForSeason(teamsNames,leagueID,seasonID,username);
+        }
+        return false;
+    }
+
+    /**
+     * the function lets the AR to activate the match policy of a season
+     * @param leagueID
+     * @param seasonID
+     * @param userName
+     * @return
+     */
+    public boolean activateMatchPolicyForSeason(String leagueID, String seasonID, String userName){
+        if(tryParseInt(leagueID) && tryParseInt(seasonID) && userName!=null){
+            return leagueController.activateMatchPolicy(leagueID,seasonID,userName);
+        }
+        return false;
+    }
+
+
+    /**
+     * private function that checks that a string represents an interger
+     * @param value the string
+     * @return true if it an integer
+     */
+    protected boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+
 }
