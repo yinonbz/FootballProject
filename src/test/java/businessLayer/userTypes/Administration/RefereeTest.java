@@ -125,7 +125,7 @@ public class RefereeTest {
 
         //5
         //checks goal
-        assertTrue(matchService.reportGoalThroughReferee("4","Mane","Salah","4","Alon"));
+        assertTrue(matchService.reportGoalThroughReferee("4","Mane","Salah", "T","4","Alon"));
 
         //6
         //check substitute
@@ -165,11 +165,16 @@ public class RefereeTest {
 
         //3
         //checks a player from other team can't assist in a goal
-        assertFalse(matchService.reportGoalThroughReferee("4","Mane","Rose","4","Alon"));
+        assertFalse(matchService.reportGoalThroughReferee("4","Mane","Rose", "T","4","Alon"));
 
         //4
         //check two players from dif teams can't be substitute
         assertFalse(matchService.reportOnSubstitute("4","Firmino","Rose","4","Alon"));
+
+        //5
+
+        //checks a player from other team can't assist in a goal
+        assertFalse(matchService.reportGoalThroughReferee("4","Mane","Rose", "G","4","Alon"));
     }
 
 

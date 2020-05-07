@@ -4,6 +4,7 @@ import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
+import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.AssociationRepresentative;
@@ -525,7 +526,30 @@ public class DemoDB{
         return true;
     }
 
+    //Season
 
+    /**
+     * demo function to find a season in a league
+     * @param leagueID
+     * @param seasonID
+     * @return
+     */
+    public boolean containsInSystemSeason(String leagueID, String seasonID){
+        League league = selectLeagueFromDB(leagueID);
+        return league.containsSeason(seasonID);
+    }
+
+    /**
+     * demo function to get a season from a league
+     * @param leagueID
+     * @param seasonID
+     * @return
+     */
+    public Season selectSeasonFromDB(String leagueID, String seasonID){
+        League league = selectLeagueFromDB(leagueID);
+        Season s = league.getSeasonFromLeague(seasonID);
+        return s;
+    }
 
 
     //-------------------------GETTERS AND SETTERS-------------------------//

@@ -104,6 +104,8 @@ public class DataBaseValues {
     //leagues and seasons
     static League primerLeague;
     static Season currSeason;
+    static Season season1;
+    static League league1;
     static SystemController systemController;
     static Date startDate;
     static Date endDate;
@@ -111,6 +113,7 @@ public class DataBaseValues {
     static SingleMatchPolicy singleMatchPolicy;
     static ClassicMatchPolicy classicMatchPolicy;
     static LeagueController leagueController;
+    static RankingPolicy rankingPolicy;
 
     //stadiums
     static Stadium s1;
@@ -158,6 +161,10 @@ public class DataBaseValues {
     static TeamManager valverde;
     static TeamOwner gerrard;
 
+
+    //season
+    static Season season11;
+    static League league2;
 
     public DataBaseValues() {
         DB = new DemoDB();
@@ -483,7 +490,15 @@ public class DataBaseValues {
         DB.addMatchToDB(6,m6);
         Tedi.setPreviousMatches(DB.getMatches());
 
-
+        startDate = new Date();
+        endDate = new Date();
+        //seasons
+        rankingPolicy = new ARankingPolicy(3,0,1);
+        league1 = new League("11");
+        DB.addLeagueToDB("11" ,league1);
+        league2 = new League("12");
+        league2.addSeasonToLeague(2020,startDate,endDate,3,0,1,"SingleMatchPolicy");
+        DB.addLeagueToDB("12" ,league2);
         systemController.connectToDB(DB);
     }
 
