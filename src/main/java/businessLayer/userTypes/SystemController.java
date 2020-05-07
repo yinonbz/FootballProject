@@ -1100,9 +1100,21 @@ public class SystemController {
         if(subscriber==null)
             return null;
 
-        if(subscriber.getPassword().equals(password))
+        if(subscriber.getPassword().equals(password)) {
+            if(subscriber instanceof Admin){
+                Admin userCheckIfAprroved = ((Admin)subscriber);
+                if(userCheckIfAprroved.isApproved() == false){
+                    return null;
+                }
+            }
+            else if(subscriber instanceof AssociationRepresentative){
+                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative)subscriber);
+                if(userCheckIfAprroved.isApproved() == false){
+                    return null;
+                }
+            }
             return subscriber.toString();
-
+        }
         return null;
     }
 
