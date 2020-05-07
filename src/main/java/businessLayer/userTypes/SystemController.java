@@ -196,6 +196,10 @@ public class SystemController {
         return true;
     }
 
+    public Boolean validateUserName(String userName){
+        return userName.matches("/^[a-z0-9]+$/i");
+    }
+
     /**
      * @param password the password from the user's input
      * @param userName the userName from the user's input (to check that the password does not contain the user name)
@@ -1138,6 +1142,16 @@ public class SystemController {
             return false;
         }
 
+        if(validateUserName(userName)){
+            return false;
+        }
+
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+
+
+
         Subscriber subscriber = selectUserFromDB(userName);
 
         if(subscriber!=null) //user name is already exists in the database
@@ -1167,6 +1181,12 @@ public class SystemController {
         if(userName == null || password == null || name == null || training==null|| teamJob==null){
             return false;
         }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
             return false;
         Subscriber newCoach = new Coach(userName,password,name,TRAINING.valueOf(training),teamJob,0,this);
@@ -1185,6 +1205,12 @@ public class SystemController {
      */
     public boolean enterRegisterDetails_TeamOwner(String userName, String password, String name){
         if(userName == null || password == null || name == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
             return false;
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
@@ -1206,6 +1232,12 @@ public class SystemController {
      */
     public boolean enterRegisterDetails_TeamManager(String userName, String password, String name, String teamName){
         if(userName == null || password == null || name == null || teamName == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
             return false;
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
@@ -1232,6 +1264,12 @@ public class SystemController {
         if(userName == null || password == null || name == null){
             return false;
         }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
             return false;
         Subscriber newAdmin = new Admin(userName,password,name,this);
@@ -1253,6 +1291,12 @@ public class SystemController {
     public boolean enterRegisterDetails_AssociationRepresentative(String userName, String password, String name) {
 
         if(userName == null || password == null || name == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
             return false;
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database

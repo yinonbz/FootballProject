@@ -269,6 +269,31 @@ public class TestSystemController {
         //will be tested after the login implementation
     }
 
+    @Test
+    public void UC_2_2_a(){
+        assertTrue(systemService.enterRegisterDetails_Player("Tomer1","abc123","Tomer","1.1.1993","GK","BeerSheva"));
+        assertTrue(DB.containsInSystemSubscribers("Tomer1"));
+    }
+
+    @Test
+    public void UC_2_2_b(){
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer2",null,"Tomer","1.1.1993","GK","BeerSheva"));
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer3","","Tomer","1.1.1993","GK","BeerSheva"));
+        assertFalse(DB.containsInSystemSubscribers("Tomer2"));
+        assertFalse(DB.containsInSystemSubscribers("Tomer3"));
+    }
+
+    @Test
+    public void UC_2_2_c(){
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer@",null,"Tomer","1.1.1993","GK","BeerSheva"));
+        assertFalse(DB.containsInSystemSubscribers("Tomer@"));
+    }
+
+    @Test
+    public void UC_2_2_d(){
+        systemService.enterRegisterDetails_Player("Tomer4","abc123","Tomer","1.1.1993","GK","BeerSheva");
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer4","abc123","Tomer","1.1.1993","GK","BeerSheva"));
+    }
 
     @Test
     public void UC_2_3_a() {
