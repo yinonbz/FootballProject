@@ -24,6 +24,7 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param salary
      * @param systemController
      */
+
     public Coach(String username, String password, String name,String training, String teamJob,int salary, SystemController systemController) {
         super(username, password,name, systemController);
         this.training=training;
