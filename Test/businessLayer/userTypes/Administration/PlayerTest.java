@@ -23,4 +23,18 @@ public class PlayerTest {
         messi.setTeamOwner(teamOwner);
         assertTrue(messi.isOwner());
     }
+
+    @Test
+    public void updatePage(){
+        assertTrue(messi.addUpdate("today i played against machbi haifa"));
+        assertFalse(messi.addUpdate(""));
+        assertFalse(messi.addUpdate(null));
+    }
+    @Test
+    public void updateDetails(){
+        messi.setName("leoMessi");
+        assertEquals(messi.getName(),"leoMessi");
+        messi.setBirthDate("11/9/93");
+        assertEquals(messi.getBirthDate(),"11/9/93");
+    }
 }

@@ -1,6 +1,7 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
+import businessLayer.Utilities.Page;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
@@ -11,6 +12,7 @@ public class Player extends Subscriber implements OwnerEligible {
     private String fieldJob;
     private Team team;
     private int salary;
+    private Page playerPage;
 
     /**
      *
@@ -30,6 +32,7 @@ public class Player extends Subscriber implements OwnerEligible {
         this.team = team;
         this.teamOwner =null;
         this.salary= salary;
+        playerPage = new Page(username,name,birthDate);
     }
 
     public int getSalary() {
@@ -133,5 +136,8 @@ public class Player extends Subscriber implements OwnerEligible {
 
     public void setTeamOwner(TeamOwner teamOwner) {
         this.teamOwner = teamOwner;
+    }
+    public boolean addUpdate(String update){
+        return playerPage.update(update);
     }
 }

@@ -827,6 +827,13 @@ public class TeamOwner extends Subscriber {
         }
         return false;
     }
+    public boolean addUpdate(String teamName , String update){
+        Team team = findTeam(teamName);
+        if(team!=null){
+            return team.upatePage(update);
+        }
+        return false;
+    }
 
     /**
      *
