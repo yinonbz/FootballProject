@@ -25,7 +25,7 @@ public class SystemController {
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private LoggingSystem loggingSystem;
-    private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
+    private Subscriber temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private LeagueController leagueController;
     private TeamController teamController;
     private MatchController matchController;
@@ -151,7 +151,8 @@ public class SystemController {
     public Boolean insertInfo(String userName, String password) {
         if (userName.equals("admin") && password.equals("admin")) {
             temporaryAdmin = new Admin(userName, password, "tempAdmin", this);
-            temporaryAdmin.setApproved(true);
+            ((Admin) temporaryAdmin).setApproved(true);
+            DB.addSubscriberToDB("admin",temporaryAdmin);
             //System.out.println("The temporary admin has been created successfully.");
             return true;
         }
@@ -194,6 +195,10 @@ public class SystemController {
             return false;
         temporaryAdmin.setPassword(newPassword);
         return true;
+    }
+
+    public Boolean validateUserName(String userName){
+        return userName.matches("/^[a-z0-9]+$/i");
     }
 
     /**
@@ -1100,9 +1105,21 @@ public class SystemController {
         if(subscriber==null)
             return null;
 
-        if(subscriber.getPassword().equals(password))
+        if(subscriber.getPassword().equals(password)) {
+            if(subscriber instanceof Admin){
+                Admin userCheckIfAprroved = ((Admin)subscriber);
+                if(userCheckIfAprroved.isApproved() == false){
+                    return null;
+                }
+            }
+            else if(subscriber instanceof AssociationRepresentative){
+                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative)subscriber);
+                if(userCheckIfAprroved.isApproved() == false){
+                    return null;
+                }
+            }
             return subscriber.toString();
-
+        }
         return null;
     }
 
@@ -1125,6 +1142,16 @@ public class SystemController {
         if(userName == null || password == null || name == null || birthDate == null || fieldJob == null || teamName == null){
             return false;
         }
+
+        if(validateUserName(userName)){
+            return false;
+        }
+
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+
+
 
         Subscriber subscriber = selectUserFromDB(userName);
 
@@ -1155,6 +1182,12 @@ public class SystemController {
         if(userName == null || password == null || name == null || training==null|| teamJob==null){
             return false;
         }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
             return false;
         Subscriber newCoach = new Coach(userName,password,name,TRAINING.valueOf(training),teamJob,0,this);
@@ -1173,6 +1206,12 @@ public class SystemController {
      */
     public boolean enterRegisterDetails_TeamOwner(String userName, String password, String name){
         if(userName == null || password == null || name == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
             return false;
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
@@ -1194,6 +1233,12 @@ public class SystemController {
      */
     public boolean enterRegisterDetails_TeamManager(String userName, String password, String name, String teamName){
         if(userName == null || password == null || name == null || teamName == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
             return false;
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
@@ -1220,6 +1265,12 @@ public class SystemController {
         if(userName == null || password == null || name == null){
             return false;
         }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
             return false;
         Subscriber newAdmin = new Admin(userName,password,name,this);
@@ -1241,6 +1292,12 @@ public class SystemController {
     public boolean enterRegisterDetails_AssociationRepresentative(String userName, String password, String name) {
 
         if(userName == null || password == null || name == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
             return false;
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
