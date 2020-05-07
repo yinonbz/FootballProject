@@ -73,19 +73,25 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * The function creates a season within a league and returns whether the creation was successful or not
-     *
      * @param leagueName
      * @param seasonID
      * @param startingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param endingDate
-     * @return true/false
+     * @return
      */
-    public Boolean createSeason(String leagueName, int seasonID, Date startingDate, Date endingDate) {
+    public Boolean createSeason(String leagueName, int seasonID, Date startingDate, int win, int lose, int tie, String matchingPolicy, Date endingDate) {
 
         if (!leagueController.doesLeagueExist(leagueName)) {
             return false;
         }
-        return leagueController.addSeasonToLeague(leagueName, seasonID, startingDate, endingDate);
+        if (matchingPolicy == null) {
+            return false;
+        }
+        return leagueController.addSeasonToLeague(leagueName, seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy);
     }
 
     /**
@@ -107,7 +113,7 @@ public class AssociationRepresentative extends Subscriber {
      * @param username
      * @return true/false
      */
-    public boolean removeRefree(String username) {
+    public boolean removeReferee(String username) {
 
         if (username == null) {
             return false;

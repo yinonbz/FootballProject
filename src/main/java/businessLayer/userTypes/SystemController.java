@@ -7,6 +7,7 @@ import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Tournament.Match.Stadium;
+import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -47,7 +48,7 @@ public class SystemController {
 
 
     private SystemController() {
-         DB = new DemoDB();
+        DB = new DemoDB();
     }
 
     public void setLeagueController(LeagueController leagueController) {
@@ -429,7 +430,7 @@ public class SystemController {
             Complaint complaint = ((Fan) subscriber).createComplaint(content);
             if (complaint != null) {
                 int id = DB.countComplaintsInDB();
-            complaint.setId(id);
+                complaint.setId(id);
                 DB.addComplaintToDB(id, complaint);
                 subscriber.addComplaint(complaint);
                 return true;
@@ -505,7 +506,7 @@ public class SystemController {
     public boolean replyComplaints(String complaintID, String username, String comment) {
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof Admin && !comment.isEmpty()) {
-                int compID = Integer.parseInt(complaintID);
+            int compID = Integer.parseInt(complaintID);
             if (DB.containsInComplaintDB(compID)) {
                 Complaint complaint = DB.selectComplaintFromDB(compID);
                 //Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
@@ -1009,7 +1010,7 @@ public class SystemController {
             OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
             if (ownerEligible.isOwner()) {
                 TeamOwner teamOwner = ownerEligible.getTeamOwner();
-                 return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
+                return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
             } else
                 return false;
         }
@@ -1109,6 +1110,16 @@ public class SystemController {
         }
 
         return null;
+    }
+
+    /**
+     * function that asks from the DB to get a Season
+     * @param leagueID
+     * @param seasonID
+     * @return
+     */
+    public Season selectSeasonFromDB(String leagueID, String seasonID){
+        return DB.selectSeasonFromDB(leagueID,seasonID);
     }
 
 }

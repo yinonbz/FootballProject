@@ -46,7 +46,7 @@ public class SingleClassicMatchPolicyTest {
         primerLeague = new League("PriemerLeague");
         startDate = new Date();
         endDate = new Date ();
-        currSeason = new Season(2,startDate,endDate, primerLeague);
+        currSeason = new Season(2,startDate,endDate, primerLeague, 3, 0, 1, "ClassicMatchPolicy");
         tempTeams = new HashMap<>();
         String [] teamNames = new String [] {"Arsenal","ManchesterUnited","ManchesterCity","Everton","Liverpool",
         "Wolves","Tottenham","Southhampton","NewCastle","AstonVilla","Chelsea","Watford"};
