@@ -32,6 +32,7 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.teamOwner =null;
         this.salary = salary;
         this.teams = new HashSet<>();
+        coachPage = new Page(username,name,"");
     }
 
     /**
@@ -165,5 +166,9 @@ public class Coach extends Subscriber implements OwnerEligible {
 
     public void removeTeam(Team team) {
         this.teams.remove(team);
+    }
+
+    public boolean addUpdate(String update){
+        return coachPage.update(update);
     }
 }
