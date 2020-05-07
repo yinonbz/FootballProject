@@ -112,18 +112,24 @@ public class League {
 
     /**
      * The function creates a season and adds it to the league then returns whether the creation was successful or not
-     *
      * @param seasonID
      * @param startingDate
      * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @return
      */
-    public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate) {
+    public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
 
         if (seasons.containsKey(seasonID) || startingDate.after(endingDate)) {
             return false;
         }
-        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this));
+        if (matchingPolicy == null){
+            return false;
+        }
+        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy));
         return true;
     }
 
@@ -141,5 +147,25 @@ public class League {
         }
         Season seasonToAddRef = seasons.get(seasonID);
         return seasonToAddRef.addReferee(refereeToAdd);
+    }
+
+    /**
+     * function that checks if a league contains a season
+     * @param seasonID
+     * @return
+     */
+    public boolean containsSeason(String seasonID){
+        int id = Integer.parseInt(seasonID);
+        return (seasons.containsKey(id));
+    }
+
+    /**
+     * function
+     * @param seasonID
+     * @return
+     */
+    public Season getSeasonFromLeague (String seasonID){
+        int id = Integer.parseInt(seasonID);
+        return seasons.get(id);
     }
 }

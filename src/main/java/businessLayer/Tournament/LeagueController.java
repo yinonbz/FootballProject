@@ -1,5 +1,6 @@
 package businessLayer.Tournament;
 
+import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -7,12 +8,8 @@ import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
-import dataLayer.DemoDB;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class LeagueController {
 
@@ -166,19 +163,26 @@ public class LeagueController {
 
     /**
      * The function creates a season within league and returns whether the season was created successfully or not
-     *
      * @param leagueID
      * @param seasonID
      * @param startingDate
+     * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @return
      */
-    public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate) {
+    public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
 
         League leagueToAdd = systemController.getLeagueFromDB(leagueID);
         if (leagueToAdd == null) {
             return false;
         }
-        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate);
+        if(matchingPolicy == null || (!matchingPolicy.equals("SingleMatchPolicy") && !matchingPolicy.equals("ClassicMatchPolicy"))) {
+            return false;
+        }
+        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy);
         //todo: check if when you pull out a complex object from a hashmap, the changes you do to it are registered in the hashmap
     }
 
@@ -273,21 +277,24 @@ public class LeagueController {
 
     /**
      * The function receives username, leagueID, seasonID and dates from the interface layer and calls the creation function in the business layer
-     *
      * @param leagueID
      * @param seasonID
      * @param startingDate
      * @param endingDate
+     * @param win
+     * @param lose
+     * @param tie
+     * @param matchingPolicy
      * @param username
      * @return
      */
-    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, String username) {
+    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
-        if (leagueID != null && username != null) {
+        if (leagueID != null && username != null && matchingPolicy != null) {
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
-                return userRep.createSeason(leagueID, seasonID, startingDate, endingDate);
+                return userRep.createSeason(leagueID, seasonID, startingDate, win, lose, tie, matchingPolicy, endingDate);
             }
         }
         return false;
@@ -325,7 +332,7 @@ public class LeagueController {
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
-                return userRep.removeRefree(refUsername);
+                return userRep.removeReferee(refUsername);
             }
         }
         return false;
@@ -387,6 +394,58 @@ public class LeagueController {
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
                 return userRep.createNewStadium(nameStadium, numberOfSeats);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * add the teams to the season in order to activate the season match policy in the future
+     * @param teamsNames all of the teams the user wants to add
+     * @param leagueID the league id
+     * @param seasonID the season
+     * @param userName the requester
+     * @return true if at least one team was added
+     */
+    public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID, String seasonID, String userName) {
+        if (seasonID != null && userName != null && leagueID!=null) {
+            Subscriber user = systemController.getSubscriberByUserName(userName);
+            if(user instanceof AssociationRepresentative){
+                Season season = systemController.selectSeasonFromDB(leagueID,seasonID);
+                if(season!=null){
+                    for(String teamName : teamsNames){
+                        Team team = systemController.getTeamByName(teamName);
+                        if(team!=null){
+                            season.addTeamToSeason(team);
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * the function activates the match policy of the season
+     * @param leagueID
+     * @param seasonID
+     * @param userName
+     * @return
+     */
+    public boolean activateMatchPolicy(String leagueID, String seasonID, String userName){
+        if (seasonID != null && userName != null && leagueID!=null) {
+            Subscriber user = systemController.getSubscriberByUserName(userName);
+            if (user instanceof AssociationRepresentative) {
+                Season season = systemController.selectSeasonFromDB(leagueID, seasonID);
+                if (season != null) {
+                    if (season.getTeams() != null) {
+                        if (season.getTeams().size() > 1) {
+                            return season.activateMatchPolicy(this);
+                        }
+                    }
+                }
             }
         }
         return false;

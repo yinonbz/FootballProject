@@ -1,5 +1,7 @@
 package businessLayer.Tournament.Match;
 
+import businessLayer.Team.Team;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -37,6 +39,28 @@ public class EventRecord {
                 event.setID(0);
                 newList.add(event);
                 gameEvents.put(time, newList);
+            }
+            //here we will update the score of the game
+            if(event instanceof Goal){
+                Team home = match.getHomeTeam();
+                int numGoalsHome = match.getScore()[0];
+                int numGoalsAway = match.getScore()[1];
+                if(home.containPlayer(event.getFirstPlayer()) && !((Goal) event).isOwnGoal){
+                    int [] newScore = {numGoalsHome+1,numGoalsAway};
+                    match.setScore(newScore);
+                }
+                else if(home.containPlayer(event.getFirstPlayer()) && ((Goal) event).isOwnGoal){
+                    int [] newScore = {numGoalsHome,numGoalsAway+1};
+                    match.setScore(newScore);
+                }
+                else if(((Goal) event).isOwnGoal){
+                    int [] newScore = {numGoalsHome+1,numGoalsAway};
+                    match.setScore(newScore);
+                }
+                else{
+                    int [] newScore = {numGoalsHome,numGoalsAway+1};
+                    match.setScore(newScore);
+                }
             }
         }
     }

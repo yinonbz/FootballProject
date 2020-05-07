@@ -3,8 +3,9 @@ package businessLayer.Tournament.Match;
 import businessLayer.userTypes.Administration.Player;
 
 public class Goal extends Event {
-    Player scorer;
+
     Player assist;
+    boolean isOwnGoal;
 
     /**
      * constructor
@@ -12,9 +13,21 @@ public class Goal extends Event {
      * @param assist
      * @param matchController
      */
-    public Goal(Player scorer, Player assist, MatchController matchController) {
+    public Goal(Player scorer, Player assist, boolean isOwnGoal, MatchController matchController) {
         super(matchController,scorer);
         this.assist = assist;
+        this.isOwnGoal = isOwnGoal;
+    }
+
+    /**
+     * constructor for a goal without assist
+     * @param scorer
+     * @param matchController
+     */
+    public Goal (Player scorer,  boolean isOwnGoal, MatchController matchController ){
+        super(matchController,scorer);
+        this.assist = null;
+        this.isOwnGoal = isOwnGoal;
     }
 
 
