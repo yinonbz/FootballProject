@@ -7,6 +7,7 @@ import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Tournament.Match.Stadium;
+import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -14,7 +15,6 @@ import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.DemoDB;
-import businessLayer.Tournament.Match.Match;
 
 import java.util.*;
 
@@ -25,7 +25,7 @@ public class SystemController {
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private LoggingSystem loggingSystem;
-    private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
+    private Subscriber temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private LeagueController leagueController;
     private TeamController teamController;
     private MatchController matchController;
@@ -47,7 +47,7 @@ public class SystemController {
 
 
     private SystemController() {
-         DB = new DemoDB();
+        DB = new DemoDB();
     }
 
     public void setLeagueController(LeagueController leagueController) {
@@ -151,6 +151,8 @@ public class SystemController {
     public Boolean insertInfo(String userName, String password) {
         if (userName.equals("admin") && password.equals("admin")) {
             temporaryAdmin = new Admin(userName, password, "tempAdmin", this);
+            ((Admin) temporaryAdmin).setApproved(true);
+            DB.addSubscriberToDB("admin",temporaryAdmin);
             //System.out.println("The temporary admin has been created successfully.");
             return true;
         }
@@ -193,6 +195,10 @@ public class SystemController {
             return false;
         temporaryAdmin.setPassword(newPassword);
         return true;
+    }
+
+    public Boolean validateUserName(String userName){
+        return userName.matches("/^[a-z0-9]+$/i");
     }
 
     /**
@@ -429,7 +435,7 @@ public class SystemController {
             Complaint complaint = ((Fan) subscriber).createComplaint(content);
             if (complaint != null) {
                 int id = DB.countComplaintsInDB();
-            complaint.setId(id);
+                complaint.setId(id);
                 DB.addComplaintToDB(id, complaint);
                 subscriber.addComplaint(complaint);
                 return true;
@@ -494,6 +500,21 @@ public class SystemController {
     }
 
     /**
+     * the function displays the admin approval requests in the system to the admin
+     *
+     * @param username the user who wants to see the admin approval requests
+     * @return the admin approval requests in the system
+     */
+    public HashMap<String, Subscriber> displayAdminApprovalRequests(String username) {
+        Subscriber subscriber = getSubscriberByUserName(username);
+        if (subscriber instanceof Admin) {
+            return DB.selectAllAdminApprovalRequests();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * the function lets the admin to respond the the comments in the system
      *
      * @param complaintID the complain's id the admin wants to respond to
@@ -505,7 +526,7 @@ public class SystemController {
     public boolean replyComplaints(String complaintID, String username, String comment) {
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof Admin && !comment.isEmpty()) {
-                int compID = Integer.parseInt(complaintID);
+            int compID = Integer.parseInt(complaintID);
             if (DB.containsInComplaintDB(compID)) {
                 Complaint complaint = DB.selectComplaintFromDB(compID);
                 //Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
@@ -516,6 +537,15 @@ public class SystemController {
                 DB.addComplaintToDB(compID, complaint);
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean addAdminApprovalRequest(String userName, Subscriber admin) {
+        Subscriber subscriber = getSubscriberByUserName(userName);
+        if (subscriber instanceof Admin){
+            DB.addAdminApprovalRequest(userName,admin);
+            return true;
         }
         return false;
     }
@@ -1009,7 +1039,7 @@ public class SystemController {
             OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
             if (ownerEligible.isOwner()) {
                 TeamOwner teamOwner = ownerEligible.getTeamOwner();
-                 return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
+                return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
             } else
                 return false;
         }
@@ -1056,4 +1086,274 @@ public class SystemController {
     public Match findMatch(int matchID){
         return DB.selectMatchFromDB(matchID);
     }
+
+    /**
+     * Login UC-2.3
+     * @param userName the User Name as the user's input
+     * @param password the Password as the user's input
+     * @return the user type if there is a Subscriber in the DB with the @userName and the @password
+     *         null - else, or one of the inputs are null
+     */
+    public String enterLoginDetails(String userName, String password) {
+
+        if(userName == null || password == null){
+            return null;
+        }
+
+        Subscriber subscriber = selectUserFromDB(userName);
+
+        if(subscriber==null)
+            return null;
+
+        if(subscriber.getPassword().equals(password)) {
+            if(subscriber instanceof Admin){
+                Admin userCheckIfAprroved = ((Admin)subscriber);
+                if(userCheckIfAprroved.isApproved() == false){
+                    return null;
+                }
+            }
+            else if(subscriber instanceof AssociationRepresentative){
+                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative)subscriber);
+                if(userCheckIfAprroved.isApproved() == false){
+                    return null;
+                }
+            }
+            return subscriber.toString();
+        }
+        return null;
+    }
+
+
+    // -------------------Guest--------------------//
+
+    /**
+     * Registration for player:
+     * Creates a new player in the DB
+     * @param userName the user name of the subscriber
+     * @param password the password of the subscriber
+     * @param name the name of the player
+     * @param birthDate the player's date of birth
+     * @param fieldJob the field job of the player
+     * @param teamName the team name of the player
+     * @return true if the new player was created successfully in the DB
+     *          false else
+     */
+    public boolean enterRegisterDetails_Player(String userName, String password, String name, String birthDate, String fieldJob, String teamName) {
+        if(userName == null || password == null || name == null || birthDate == null || fieldJob == null || teamName == null){
+            return false;
+        }
+
+        if(validateUserName(userName)){
+            return false;
+        }
+
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+
+
+
+        Subscriber subscriber = selectUserFromDB(userName);
+
+        if(subscriber!=null) //user name is already exists in the database
+            return false;
+
+        Team team = getTeamByName(teamName);
+        if(team == null){ //no such team in the DB
+            return false;
+        }
+        Subscriber newPlayer = new Player(userName,password,name,birthDate,FIELDJOB.valueOf(fieldJob),0,team,this);
+        addSubscriberToDB(userName,newPlayer);
+        return true;
+    }
+
+    /**
+     * Registration for Coach:
+     * Creates a new coach in the DB
+     * @param userName the user name of the subscriber
+     * @param password the password of the subscriber
+     * @param name the name of the coach
+     * @param training the training of the new coach
+     * @param teamJob the team job of the new coach
+     * @return true if the new coach was created successfully in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJob){
+        if(userName == null || password == null || name == null || training==null|| teamJob==null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+        if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
+            return false;
+        Subscriber newCoach = new Coach(userName,password,name,TRAINING.valueOf(training),teamJob,0,this);
+        addSubscriberToDB(userName,newCoach);
+        return true;
+    }
+
+    /**
+     * Registration for Team Owner:
+     * Creates a new team owner in the DB
+     * @param userName the user name of the subscriber
+     * @param password the password of the subscriber
+     * @param name the name of the team owner
+     * @return true if the new team owner was created successfully in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_TeamOwner(String userName, String password, String name){
+        if(userName == null || password == null || name == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+        if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
+            return false;
+        Subscriber newTeamOwner = new TeamOwner(userName,password,name,this);
+        addSubscriberToDB(userName,newTeamOwner);
+        return true;
+    }
+
+    /**
+     * Registration for Team Manager:
+     * Creates a new team manager in the DB
+     * @param userName the user name of the subscriber
+     * @param password the password of the subscriber
+     * @param name the name of the team manager
+     * @param teamName the team name of the team owner
+     * @return true if the new team manager was created successfully in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_TeamManager(String userName, String password, String name, String teamName){
+        if(userName == null || password == null || name == null || teamName == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+        if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
+            return false;
+        Team team = getTeamByName(teamName);
+        if(team == null){ //no such team in the DB
+            return false;
+        }
+        Subscriber newTeamManager = new TeamManager(userName,password,name,team,0,this);
+        addSubscriberToDB(userName,newTeamManager);
+        return true;
+    }
+
+    /**
+     * Registration for Admin:
+     * Creates a new Admin in the DB
+     * @param userName the user name of the subscriber
+     * @param password the password of the subscriber
+     * @param name the name of the admin
+     * @return true if the new admin was created successfully in the DB
+     *         false else
+     */
+    public boolean enterRegisterDetails_Admin(String userName, String password, String name) {
+        if(userName == null || password == null || name == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+        if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
+            return false;
+        Subscriber newAdmin = new Admin(userName,password,name,this);
+        addSubscriberToDB(userName,newAdmin);
+        addAdminApprovalRequest(userName,newAdmin);
+        return true;
+    }
+
+    /**
+     * Registration for AR:
+     * Creates a new AR in the DB
+     * @param userName the user name of the subscriber
+     * @param password the password of the subscriber
+     * @param name the name of the AR
+     * @return true if the new AR was created successfully in the DB
+     *         false else
+     *
+     */
+    public boolean enterRegisterDetails_AssociationRepresentative(String userName, String password, String name) {
+
+        if(userName == null || password == null || name == null){
+            return false;
+        }
+        if(validateUserName(userName)){
+            return false;
+        }
+        if(checkPasswordStrength(password,userName) == false){
+            return false;
+        }
+        if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
+            return false;
+        Subscriber newAssociationRepresentative = new AssociationRepresentative(userName,password,name,this);
+        addSubscriberToDB(userName,newAssociationRepresentative);
+        addAdminApprovalRequest(userName,newAssociationRepresentative);
+        return true;
+    }
+
+    /**
+     * @param userName the user name to be checked
+     * @return true if the user name exists in the DB
+     *         false else
+     */
+    private boolean checkIfUserNameExistsInDB(String userName){
+        Subscriber subscriber = selectUserFromDB(userName);
+
+        if(subscriber!=null) //user name is already exists in the database
+            return true;
+
+        return false;
+    }
+
+
+    /**
+     * This function handles the operation of approving a new AR or Admin user by an already-approved admin.
+     * @param userName the user name of the user which approves
+     * @param userNameToApprove the user name of the user which is being approved
+     * @param approve = true, disapprove = false
+     * @return true if the userNameToApprove was approved/disapproved by userName
+     *         false else
+     */
+    public boolean handleAdminApprovalRequest(String userName, String userNameToApprove, boolean approve) {
+        Subscriber approver = selectUserFromDB(userName);
+        if(!(approver instanceof Admin)){
+            return false;
+        }
+        Admin adminApprover = ((Admin)approver);
+        return adminApprover.approveAdminRequest(userNameToApprove,approve);
+    }
+
+    public boolean removeAdminRequest(String userNameToApprove) {
+        DB.removeAdminRequest(userNameToApprove);
+        return true;
+    }
+
+
+    /**
+     * function that asks from the DB to get a Season
+     * @param leagueID
+     * @param seasonID
+     * @return
+     */
+    public Season selectSeasonFromDB(String leagueID, String seasonID){
+        return DB.selectSeasonFromDB(leagueID,seasonID);
+    }
+
 }

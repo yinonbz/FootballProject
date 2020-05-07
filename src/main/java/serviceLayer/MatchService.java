@@ -46,12 +46,13 @@ public class MatchService {
      * @param username
      * @return
      */
-    public boolean reportGoalThroughReferee(String time, String PlayerGoal, String playerAssist, String matchID, String username){
-
-        if (!PlayerGoal.isEmpty() && !playerAssist.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            int timeEvent = Integer.parseInt(time);
-            if (timeEvent > 0 && timeEvent < 121) {
-                return matchController.reportGoal(time, PlayerGoal, playerAssist,matchID,username);
+    public boolean reportGoalThroughReferee(String time, String PlayerGoal, String playerAssist, String isOwnGoal, String matchID, String username){
+        if (!PlayerGoal.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
+            if (isOwnGoal.equals("F") || isOwnGoal.equals("T")) {
+                int timeEvent = Integer.parseInt(time);
+                if (timeEvent > 0 && timeEvent < 121) {
+                    return matchController.reportGoal(time, PlayerGoal, playerAssist, isOwnGoal, matchID, username);
+                }
             }
         }
         return false;

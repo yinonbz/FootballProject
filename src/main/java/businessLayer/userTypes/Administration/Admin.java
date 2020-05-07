@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class Admin extends Subscriber {
     private SystemController systemController;
+    private boolean approved; // Approved by another admin after registration
 
     /**
      * @param username
@@ -16,6 +17,7 @@ public class Admin extends Subscriber {
     public Admin(String username, String password, String name, SystemController systemController) {
         super(username, password,name,systemController);
         this.systemController=systemController;
+        approved = false;
     }
 
     /**
@@ -23,6 +25,8 @@ public class Admin extends Subscriber {
      * @return a hash map of the complaints
      */
     public HashMap<Integer, Complaint> displayComplaints(){
+        if(isApproved()==false)
+            return null;
         return systemController.displayComplaints(this.getUsername());
     }
 
@@ -35,6 +39,8 @@ public class Admin extends Subscriber {
      * UC 8.3.2
      */
     public boolean replyComplaints(String complaintID,String subscriber, String comment){
+        if(isApproved()==false)
+            return false;
         if(!tryParseInt(complaintID)){
             return false;
         }
@@ -68,6 +74,8 @@ public class Admin extends Subscriber {
      * @return the string of the result
      */
     public String deleteSubscriber(String subscriberUserName){
+        if(isApproved()==false)
+            return null;
         return systemController.removeSubscriber(subscriberUserName, this.getUsername());
     }
 
@@ -77,6 +85,8 @@ public class Admin extends Subscriber {
      * @return true if it done successfully
      */
     public Boolean closeTeam(String teamName){
+        if(isApproved()==false)
+            return false;
         return systemController.closeTeamByAdmin(teamName, this.getUsername());
     }
 
@@ -114,4 +124,41 @@ public class Admin extends Subscriber {
         return null;
     }
     */
+
+    @Override
+    public String toString() {
+        return "Admin";
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    /**
+     * @param userNameToApprove the user name of the AR or Admin to approve
+     * @param approve approve = true, disapprove = false
+     * @return true if the userNameToApprove was approved/disapproved
+     *         false else
+     */
+    public boolean approveAdminRequest(String userNameToApprove, boolean approve) {
+        if(this.isApproved()==false) //This Admin can approve only if it is approved
+            return false;
+        Subscriber subscriberToApprove = systemController.selectUserFromDB(userNameToApprove);
+        if(subscriberToApprove instanceof Admin){
+            Admin adminToApprove = ((Admin)subscriberToApprove);
+            adminToApprove.setApproved(approve);
+            return systemController.removeAdminRequest(userNameToApprove);
+        }
+        else if(subscriberToApprove instanceof AssociationRepresentative){
+            AssociationRepresentative adminToApprove = ((AssociationRepresentative)subscriberToApprove);
+            adminToApprove.setApproved(approve);
+            return systemController.removeAdminRequest(userNameToApprove);
+        }
+
+        return false;
+    }
 }

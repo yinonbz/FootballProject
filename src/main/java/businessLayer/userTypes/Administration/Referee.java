@@ -156,4 +156,10 @@ public class Referee extends Subscriber {
     public void setMatchController(MatchController matchController) {
         this.matchController = matchController;
     }
+
+    @Override
+    public String toString() {
+        return "Referee";
+    }
+
 }

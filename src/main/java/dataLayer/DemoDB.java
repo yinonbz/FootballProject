@@ -4,7 +4,9 @@ import businessLayer.Team.Team;
 import businessLayer.Tournament.League;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
+import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Complaint;
+import businessLayer.userTypes.Administration.Admin;
 import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
@@ -20,6 +22,7 @@ public class DemoDB{
     private HashMap<String, Team> teams; //name of the team, the team object
     private HashMap <String, LinkedList<String>> userNotifications;
     private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
+    private HashMap<String, Subscriber> systemAdminApprovalRequests; //name of the username, subscriber (Admin/AR) to approve/disapprove
     private HashMap<String, LinkedList<String>> unconfirmedTeams; //name of the team, details on the team
     private HashMap<String, Stadium> stadiums;
 
@@ -38,6 +41,7 @@ public class DemoDB{
         teams = new HashMap<>();
         userNotifications = new HashMap<>();
         systemComplaints = new HashMap<>();
+        systemAdminApprovalRequests = new HashMap<>();
         unconfirmedTeams = new HashMap<>();
         leagues = new HashMap<>();
         associationRepresentatives = new HashMap<>();
@@ -175,11 +179,25 @@ public class DemoDB{
     }
 
     /**
+     * count the number of Admin Approval Requests in the DB
+     * @return
+     */
+    public int countAdminApprovalRequestsInDB(){ return systemAdminApprovalRequests.size();}
+
+    /**
      * demo function to display all of the complaints in the system
      * @return
      */
     public HashMap <Integer, Complaint> selectAllComplaints(){
         return systemComplaints;
+    }
+
+    /**
+     *  * demo function to display all of the admin approval requests in the system
+     * @return all of the admin approval requests in the DB
+     */
+    public HashMap<String, Subscriber> selectAllAdminApprovalRequests() {
+        return systemAdminApprovalRequests;
     }
 
     /**
@@ -192,12 +210,30 @@ public class DemoDB{
     }
 
     /**
+     * demo function to search in db for an admin approval by username
+     * @param userName the subscriber's username
+     * @return true if there is a request for the subscriber with the username
+     */
+    public boolean containsInAdminApprovalRequestsDB(String userName){
+        return systemAdminApprovalRequests.containsKey(userName);
+    }
+
+    /**
      * demo function to get a notification object from data base
      * @param complaintID
      * @return
      */
     public Complaint selectComplaintFromDB(int complaintID){
         return systemComplaints.get(complaintID);
+    }
+
+    /**
+     * select an admin to approve/disapprove by username
+     * @param userName
+     * @return the subscriber to be approve/disapprove
+     */
+    public Subscriber selectAdminToApproveFromDB(String userName){
+        return systemAdminApprovalRequests.get(userName);
     }
 
     /**
@@ -211,6 +247,16 @@ public class DemoDB{
     }
 
     /**
+     * demo function to remove a admin approval request from DB
+     * @param userName
+     * @return true
+     */
+    public boolean removeAdminRequest(String userName){
+        systemAdminApprovalRequests.remove(userName);
+        return true;
+    }
+
+    /**
      * demo function to add a complaint to DB
      * @param id
      * @param complaint
@@ -218,6 +264,17 @@ public class DemoDB{
      */
     public boolean addComplaintToDB(int id, Complaint complaint){
         systemComplaints.put(id,complaint);
+        return true;
+    }
+
+    /**
+     * demo function to add an admin approval request to DB
+     * @param userName
+     * @param admin
+     * @return true
+     */
+    public boolean addAdminApprovalRequest(String userName, Subscriber admin){
+        systemAdminApprovalRequests.put(userName,admin);
         return true;
     }
 
@@ -469,7 +526,30 @@ public class DemoDB{
         return true;
     }
 
+    //Season
 
+    /**
+     * demo function to find a season in a league
+     * @param leagueID
+     * @param seasonID
+     * @return
+     */
+    public boolean containsInSystemSeason(String leagueID, String seasonID){
+        League league = selectLeagueFromDB(leagueID);
+        return league.containsSeason(seasonID);
+    }
+
+    /**
+     * demo function to get a season from a league
+     * @param leagueID
+     * @param seasonID
+     * @return
+     */
+    public Season selectSeasonFromDB(String leagueID, String seasonID){
+        League league = selectLeagueFromDB(leagueID);
+        Season s = league.getSeasonFromLeague(seasonID);
+        return s;
+    }
 
 
     //-------------------------GETTERS AND SETTERS-------------------------//

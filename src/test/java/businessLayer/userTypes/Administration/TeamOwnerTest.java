@@ -145,11 +145,11 @@ public class TeamOwnerTest {
 
         //edit a player from the team successfully
         assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "birthDate", "9/11"));
-        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "fieldJob", "attacker"));
+        assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "fieldJob", "DM"));
         assertTrue(teamService.editPlayer("AlonaBarkat","BeerSheva", "Buzaglo", "salary", "10000"));
 
         //edit a Coach from the team successfully
-        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "training", "attacker"));
+        assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "training", "GK"));
         assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "teamJob", "mainCoach"));
         assertTrue(teamService.editCoach("AlonaBarkat","BeerSheva", "efronio", "salary", "10000"));
 
@@ -256,7 +256,7 @@ public class TeamOwnerTest {
         //test if the team owner successfully able to edit a detail of a asset
         teamService.addAsset("AlonaBarkat", "BeerSheva", "Player", "Buzaglo");
         assertTrue(teamService.editPlayer("AlonaBarkat", "BeerSheva", "Buzaglo", "birthDate", "11/9/93"));
-        assertTrue(teamService.editPlayer("AlonaBarkat", "BeerSheva", "Buzaglo", "fieldJob", "attacker"));
+        assertTrue(teamService.editPlayer("AlonaBarkat", "BeerSheva", "Buzaglo", "fieldJob", "DM"));
         assertTrue(teamService.editPlayer("AlonaBarkat", "BeerSheva", "Buzaglo", "salary", "20000"));
         //test if the
         assertFalse(teamService.editPlayer("AlonaBarkat", "BeerSheva", "Buzaglo", "training", "20000"));
