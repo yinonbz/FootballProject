@@ -178,9 +178,13 @@ public class DataBaseValues {
 
         //add Association-Representatives
         gal = new AssociationRepresentative("gal5", "1111", "Gal", new FinancialMonitoring("empty for now"), leagueController, systemController);
+        gal.setApproved(true);
         dor = new AssociationRepresentative("dor12", "1111", "Dor", new FinancialMonitoring("empty for now"), leagueController, systemController);
+        dor.setApproved(true);
         tali = new AssociationRepresentative("tali5", "1111", "Tali", new FinancialMonitoring("empty for now"), leagueController, systemController);
+        tali.setApproved(true);
         EliLuzon = new AssociationRepresentative("EliLuzon", "abcd", "Eli", systemController);
+        EliLuzon.setApproved(true);
 
 
         DB.addSubscriberToDB("gal5", gal);
@@ -239,6 +243,8 @@ public class DataBaseValues {
         //add admins
         admin = new Admin("TomerSein", "helloWorld", "tomer",systemController);
         admin2 = new Admin ("ItaiKatz", "helloWorld", "itai",systemController);
+        admin.setApproved(true);
+        admin2.setApproved(true);
 
         DB.addSubscriberToDB("TomerSein",admin);
         DB.addSubscriberToDB("ItaiKatz",admin2);
