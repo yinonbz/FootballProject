@@ -10,7 +10,7 @@ import java.util.HashSet;
 public class Coach extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
-    private TRAINING training;
+    private String training;
     private String teamJob;
     private int salary;
     private HashSet<Team> teams;
@@ -25,14 +25,13 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param salary
      * @param systemController
      */
-    public Coach(String username, String password, String name,TRAINING training, String teamJob,int salary, SystemController systemController) {
+    public Coach(String username, String password, String name,String training, String teamJob,int salary, SystemController systemController) {
         super(username, password,name, systemController);
         this.training=training;
         this.teamJob=teamJob;
         this.teamOwner =null;
         this.salary = salary;
         this.teams = new HashSet<>();
-        coachPage = new Page(username,name,"");
     }
 
     /**
@@ -90,7 +89,7 @@ public class Coach extends Subscriber implements OwnerEligible {
 
 
 
-    public TRAINING getTraining() {
+    public String getTraining() {
         return training;
     }
 
@@ -99,7 +98,7 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param training
      */
 
-    public void setTraining(TRAINING training) {
+    public void setTraining(String training) {
         this.training = training;
     }
 
@@ -166,14 +165,5 @@ public class Coach extends Subscriber implements OwnerEligible {
 
     public void removeTeam(Team team) {
         this.teams.remove(team);
-    }
-
-    @Override
-    public String toString() {
-        return "Coach";
-    }
-
-    public boolean addUpdate(String update){
-        return coachPage.update(update);
     }
 }
