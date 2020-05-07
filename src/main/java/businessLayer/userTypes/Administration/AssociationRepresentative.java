@@ -10,6 +10,7 @@ import java.util.Date;
 public class AssociationRepresentative extends Subscriber {
     private FinancialMonitoring financialMonitoring;
     private LeagueController leagueController;
+    private boolean approved; // Approved by an admin after registration
 
     /**
      * @param username
@@ -24,7 +25,7 @@ public class AssociationRepresentative extends Subscriber {
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leaguesController;
         leaguesController.addAssociationRepToController(this);
-
+        approved = false;
     }
 
     /**
@@ -37,6 +38,7 @@ public class AssociationRepresentative extends Subscriber {
     public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
         super(username, password,name, systemController);
         this.systemController=systemController;
+        approved = false;
     }
 
     /**
@@ -46,6 +48,8 @@ public class AssociationRepresentative extends Subscriber {
      * @return true if the stadium was added successfully
      */
     public boolean createNewStadium(String nameStadium, String numberOfSeats){
+        if(!isApproved())
+            return false;
         if(!nameStadium.isEmpty() && !numberOfSeats.isEmpty()){
             if(tryParseInt(numberOfSeats)){
                 return systemController.addNewStadium(nameStadium,numberOfSeats);
@@ -61,7 +65,8 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public Boolean createLeague(String newLeagueID) {
-
+        if(!isApproved())
+            return false;
         if (newLeagueID == null) {
             return false;
         }
@@ -84,7 +89,8 @@ public class AssociationRepresentative extends Subscriber {
      * @return
      */
     public Boolean createSeason(String leagueName, int seasonID, Date startingDate, int win, int lose, int tie, String matchingPolicy, Date endingDate) {
-
+        if(!isApproved())
+            return false;
         if (!leagueController.doesLeagueExist(leagueName)) {
             return false;
         }
@@ -101,6 +107,8 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public boolean createReferee(String username) {
+        if(!isApproved())
+            return false;
         if (username == null) {
             return false;
         }
@@ -114,7 +122,8 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public boolean removeReferee(String username) {
-
+        if(!isApproved())
+            return false;
         if (username == null) {
             return false;
         }
@@ -131,7 +140,8 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public boolean assignRefereeToSeason(String username, String leagueName, int seasonID) {
-
+        if(!isApproved())
+            return false;
         if (username == null || leagueName == null) {
             return false;
         }
@@ -208,6 +218,8 @@ public class AssociationRepresentative extends Subscriber {
      * @return true if the team was approved
      */
     public boolean confirmTeamRequest(String teamName){
+        if(!approved)
+            return false;
         return systemController.confirmTeamByAssociationRepresntative(teamName,this.getUsername());
     }
 
@@ -216,4 +228,11 @@ public class AssociationRepresentative extends Subscriber {
         return "AssociationRepresentative";
     }
 
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 }

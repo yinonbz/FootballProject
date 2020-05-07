@@ -312,7 +312,6 @@ public class TeamOwner extends Subscriber {
                     return true;
                 }
             }
-
         }
         return false;
     }
