@@ -266,7 +266,10 @@ public class TestSystemController {
 
     @Test
     public void UC_1_1_b() {
-        //will be tested after the login implementation
+        systemService.insertInfo("admin","admin");
+        systemService.initializeSystem("admin");
+        systemService.changePassword("ad123456","admin");
+        assertEquals(systemService.enterLoginDetails("admin","ad123456"),"Admin");
     }
 
     @Test

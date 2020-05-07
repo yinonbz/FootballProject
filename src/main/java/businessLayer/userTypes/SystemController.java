@@ -25,7 +25,7 @@ public class SystemController {
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private LoggingSystem loggingSystem;
-    private Admin temporaryAdmin; //instance of the temporary admin, which is initializing the system
+    private Subscriber temporaryAdmin; //instance of the temporary admin, which is initializing the system
     private LeagueController leagueController;
     private TeamController teamController;
     private MatchController matchController;
@@ -151,7 +151,8 @@ public class SystemController {
     public Boolean insertInfo(String userName, String password) {
         if (userName.equals("admin") && password.equals("admin")) {
             temporaryAdmin = new Admin(userName, password, "tempAdmin", this);
-            temporaryAdmin.setApproved(true);
+            ((Admin) temporaryAdmin).setApproved(true);
+            DB.addSubscriberToDB("admin",temporaryAdmin);
             //System.out.println("The temporary admin has been created successfully.");
             return true;
         }
