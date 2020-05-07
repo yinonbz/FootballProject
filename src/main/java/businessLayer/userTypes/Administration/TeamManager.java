@@ -158,7 +158,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                         return true;
                     } else if (typeEdit.equals("fieldJob")) {
                         team.removePlayer(player);
-                        player.setFieldJob(edit);
+                        player.setFieldJob(FIELDJOB.valueOf(edit));
                         team.addPlayer(player);
                         return true;
                     }
@@ -226,7 +226,7 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                 if (coach != null) {
                     if (typeEdit.equals("training")) {
                         team.removeCoach(coach);
-                        coach.setTraining(edit);
+                        coach.setTraining(TRAINING.valueOf(edit));
                         team.addCoach(coach);
                         return true;
                     } else if (typeEdit.equals("teamJob")) {

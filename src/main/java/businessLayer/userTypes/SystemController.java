@@ -15,7 +15,6 @@ import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.DemoDB;
-import businessLayer.Tournament.Match.Match;
 
 import java.util.*;
 
@@ -1082,8 +1081,23 @@ public class SystemController {
         return null;
     }
 
-    public String enterRegisterDetails(String userName, String password, String name, String type) {
-        if(userName == null || password == null || name == null || type == null){
+
+    // -------------------Guest--------------------//
+
+    /**
+     * Registration for player:
+     * Creates a new player in the DB
+     * @param userName the user name of the subscriber
+     * @param password the password of the subscriber
+     * @param name the name of the player
+     * @param birthDate the player's date of birth
+     * @param fieldJob the field job of the player
+     * @param teamName the team name of the player
+     * @return "Player" if the new player was created successfully in the DB
+     *          null else.
+     */
+    public String enterRegisterDetails_Player(String userName, String password, String name, String birthDate, String fieldJob, String teamName) {
+        if(userName == null || password == null || name == null || birthDate == null || fieldJob == null || teamName == null){
             return null;
         }
 
@@ -1092,24 +1106,52 @@ public class SystemController {
         if(subscriber!=null) //user name is already exists in the database
             return null;
 
-        switch (type){
-            case "Admin":
-                break;
-            case "AssociationRepresentative":
-                break;
-            case "Referee":
-                break;
-            case "Player":
-                break;
-            case "TeamOwner":
-                break;
-            case "TeamManager":
-                break;
-            case "Fan":
-                break;
+        Team team = getTeamByName(teamName);
+
+        if(team == null){ //no such team in the DB
+            return null;
         }
 
-        return null;
+        Subscriber newPlayer = new Player(userName,password,name,birthDate,FIELDJOB.valueOf(fieldJob),0,team,this);
+        addSubscriberToDB(userName,newPlayer);
+
+        return "Player";
+    }
+
+    public String enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJob){
+
+        if(userName == null || password == null || name == null || name == null || training==null|| teamJob==null){
+            return null;
+        }
+
+        Subscriber subscriber = selectUserFromDB(userName);
+
+        if(subscriber!=null) //user name is already exists in the database
+            return null;
+
+        Subscriber newCoach = new Coach(userName,password,name,TRAINING.valueOf(training),teamJob,0,this);
+        addSubscriberToDB(userName,newCoach);
+
+        return "Coach";
+
+    }
+
+    public String enterRegisterDetails_Referee(String userName, String password, String name, String training){
+
+        if(userName == null || password == null || name == null || training==null){
+            return null;
+        }
+
+        Subscriber subscriber = selectUserFromDB(userName);
+
+        if(subscriber!=null) //user name is already exists in the database
+            return null;
+
+        Subscriber newReferee = new Referee(userName,password,name,training,leagueController,this,matchController);
+        addSubscriberToDB(userName,newReferee);
+
+        return "Referee";
+
     }
 
     /**

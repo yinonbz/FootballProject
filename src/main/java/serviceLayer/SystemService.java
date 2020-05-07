@@ -1,15 +1,11 @@
 package serviceLayer;
 
 import businessLayer.Team.TeamController;
-import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
-import businessLayer.userTypes.Administration.TeamOwner;
-import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.security.acl.Owner;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -181,8 +177,16 @@ public class SystemService {
         return systemController.enterLoginDetails(userName,password);
     }
 
-    public String enterRegisterDetails(String userName, String password, String name, String type){
-        return systemController.enterRegisterDetails(userName,password, name, type);
+    public String enterRegisterDetails_Player(String userName, String password, String name, String birthDate, String fieldJob, String teamName){
+        return systemController.enterRegisterDetails_Player(userName,password, name, birthDate,fieldJob,teamName);
+    }
+
+    public String enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJon){
+        return systemController.enterRegisterDetails_Coach(userName,password,name,training,teamJon);
+    }
+
+    public String enterRegisterDetails_Referee(String userName, String password, String name, String training){
+        return systemController.enterRegisterDetails_Referee(userName,password,name,training);
     }
 
 }

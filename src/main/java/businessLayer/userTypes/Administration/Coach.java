@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class Coach extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
-    private String training;
+    private TRAINING training;
     private String teamJob;
     private int salary;
     private HashSet<Team> teams;
@@ -24,7 +24,7 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param salary
      * @param systemController
      */
-    public Coach(String username, String password, String name,String training, String teamJob,int salary, SystemController systemController) {
+    public Coach(String username, String password, String name,TRAINING training, String teamJob,int salary, SystemController systemController) {
         super(username, password,name, systemController);
         this.training=training;
         this.teamJob=teamJob;
@@ -88,7 +88,7 @@ public class Coach extends Subscriber implements OwnerEligible {
 
 
 
-    public String getTraining() {
+    public TRAINING getTraining() {
         return training;
     }
 
@@ -97,7 +97,7 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param training
      */
 
-    public void setTraining(String training) {
+    public void setTraining(TRAINING training) {
         this.training = training;
     }
 

@@ -245,14 +245,14 @@ public class DataBaseValues {
         DB.addSubscriberToDB("Inon",Inon);
 
         //add player
-        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
-        Tamash = new Player("Tamash","Tamash123","Tamash","1983","captain",0,null,systemController);
-        Jovani = new Player("Jovani","Jovani123","Jovani","1975","Captain",0,null,systemController);
-        yosi = new Player("yosi","yosi123","yosiDekel", "1993","captian",0,null,systemController);
-        Yaniv = new Player("Yaniv","Yaniv123","YanivKatan", "1993","",0,null,systemController);
-        Oded = new Player("Oded","Oded123","OdedShahar", "1993","",0,null,systemController);
-        Amir = new Player("Amir","Amir123","AmirBenHaion", "1993","",0,null,systemController);
-        pique = new Player("pique","111","pique","1983","captain",0,null,systemController);
+        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", FIELDJOB.valueOf("RB"),0, null, systemController);
+        Tamash = new Player("Tamash","Tamash123","Tamash","1983",FIELDJOB.valueOf("CF"),0,null,systemController);
+        Jovani = new Player("Jovani","Jovani123","Jovani","1975",FIELDJOB.valueOf("CF"),0,null,systemController);
+        yosi = new Player("yosi","yosi123","yosiDekel", "1993",FIELDJOB.valueOf("CF"),0,null,systemController);
+        Yaniv = new Player("Yaniv","Yaniv123","YanivKatan", "1993",FIELDJOB.valueOf("CF"),0,null,systemController);
+        Oded = new Player("Oded","Oded123","OdedShahar", "1993",FIELDJOB.valueOf("CF"),0,null,systemController);
+        Amir = new Player("Amir","Amir123","AmirBenHaion", "1993",FIELDJOB.valueOf("CF"),0,null,systemController);
+        pique = new Player("pique","111","pique","1983",FIELDJOB.valueOf("CF"),0,null,systemController);
         pique.setTeamOwner(piqueF);
         piqueF.setOriginalObject(pique);
 
@@ -275,8 +275,8 @@ public class DataBaseValues {
 
         //add coach
         //6.1
-        Ido = new Coach("efronio", "111", "ido", "attack", "mainCoach",0, systemController);
-        Tomer = new Coach("TomerZ", "111", "tomer", "defence", "subCoach",0, systemController);
+        Ido = new Coach("efronio", "111", "ido", TRAINING.valueOf("GK"), "mainCoach",0, systemController);
+        Tomer = new Coach("TomerZ", "111", "tomer", TRAINING.valueOf("FITNESS"), "subCoach",0, systemController);
         DB.addSubscriberToDB("efronio",Ido);
         DB.addSubscriberToDB("TomerZ",Tomer);
 
@@ -362,14 +362,14 @@ public class DataBaseValues {
         Arsenal.getTeamOwners().add(Alex);
 
         //add player
-        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", "midfield",0, null, systemController);
-        Scholes = new Player("Scholes","ssss","Scholes","2222","midfild",300,ManchesterUnited,systemController);
-        Pickford = new Player("Pickford","ssss","Pickford","2222","goalkeeper",300,Everton,systemController);
-        Son = new Player("Son","ssss","Son","2222","striker",300,Tottenham,systemController);
-        Mane = new Player("Mane","ssss","Son","2222","striker",300,Liverpool,systemController);
-        Salah = new Player("Salah","ssss","Salah","2222","striker",400,Liverpool,systemController);
-        Firmino = new Player("Firmino","ssss","Firmino","2222","striker",400,Liverpool,systemController);
-        Rose = new Player("Rose","ssss","Rose","2222","striker",400,Tottenham,systemController);
+        Buzaglo = new Player("Buzaglo", "Buzaglo123", "Buzaglo", "1900", FIELDJOB.valueOf("AM"),0, null, systemController);
+        Scholes = new Player("Scholes","ssss","Scholes","2222",FIELDJOB.valueOf("DM"),300,ManchesterUnited,systemController);
+        Pickford = new Player("Pickford","ssss","Pickford","2222",FIELDJOB.valueOf("GK"),300,Everton,systemController);
+        Son = new Player("Son","ssss","Son","2222",FIELDJOB.valueOf("S"),300,Tottenham,systemController);
+        Mane = new Player("Mane","ssss","Son","2222",FIELDJOB.valueOf("S"),300,Liverpool,systemController);
+        Salah = new Player("Salah","ssss","Salah","2222",FIELDJOB.valueOf("S"),400,Liverpool,systemController);
+        Firmino = new Player("Firmino","ssss","Firmino","2222",FIELDJOB.valueOf("S"),400,Liverpool,systemController);
+        Rose = new Player("Rose","ssss","Rose","2222",FIELDJOB.valueOf("S"),400,Tottenham,systemController);
 
 
         ManchesterUnited.getPlayers().add(Scholes);

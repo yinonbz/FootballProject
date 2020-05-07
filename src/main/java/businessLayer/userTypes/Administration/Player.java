@@ -8,7 +8,7 @@ public class Player extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
     private String birthDate;
-    private String fieldJob;
+    private FIELDJOB fieldJob;
     private Team team;
     private int salary;
 
@@ -23,7 +23,7 @@ public class Player extends Subscriber implements OwnerEligible {
      * @param team
      * @param systemController
      */
-    public Player(String username, String password, String name, String birthDate, String fieldJob,int salary, Team team, SystemController systemController) {
+    public Player(String username, String password, String name, String birthDate, FIELDJOB fieldJob ,int salary, Team team, SystemController systemController) {
         super(username, password,name,systemController);
         this.birthDate = birthDate;
         this.fieldJob = fieldJob;
@@ -54,10 +54,7 @@ public class Player extends Subscriber implements OwnerEligible {
         this.birthDate = birthDate;
     }
 
-    /**
-     * @param fieldJob
-     */
-    public void setFieldJob(String fieldJob) {
+    public void setFieldJob(FIELDJOB fieldJob) {
         this.fieldJob = fieldJob;
     }
 
@@ -76,10 +73,7 @@ public class Player extends Subscriber implements OwnerEligible {
         return birthDate;
     }
 
-    /**
-     * @return
-     */
-    public String getFieldJob() {
+    public FIELDJOB getFieldJob() {
         return fieldJob;
     }
 
