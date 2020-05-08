@@ -4,6 +4,7 @@ import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
+import businessLayer.Utilities.Page;
 import businessLayer.userTypes.Administration.Coach;
 import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamManager;
@@ -28,7 +29,7 @@ public class Team {
     private int establishedYear;
     private Boolean isActive;
     private Boolean closedByAdmin; //refers to UC 8.1 - can be changed only once
-
+    private Page teamPage;
     /**a
      * @param players
      * @param coaches
@@ -61,6 +62,7 @@ public class Team {
         this.establishedYear = establishedYear;
         this.isActive = isActive;
         this.closedByAdmin=closedByAdmin;
+        teamPage = new Page(teamOwners,teamName,establishedYear);
 
     }
     //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited
@@ -83,6 +85,8 @@ public class Team {
         this.seasons=new HashSet<>();
         this.matches = new HashSet<>();
         this.teamManager =null;
+        teamPage = new Page(teamOwners,teamName,establishedYear);
+
 
     }
 
@@ -364,5 +368,9 @@ public class Team {
         int sum = 0;
         this.stadium.getNumberOfSeats();
         return stadium.calculateIncome(this);
+    }
+
+    public boolean updatePage(String update) {
+        return teamPage.update(update);
     }
 }

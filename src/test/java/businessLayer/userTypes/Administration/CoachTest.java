@@ -55,4 +55,17 @@ public class CoachTest {
         henry.setTeamS(teams);
         assertEquals(henry.getTeamS(),teams);
     }
+
+    @Test
+    public void updatePage(){
+        assertTrue(henry.addUpdate("today i coached my team"));
+        assertFalse(henry.addUpdate(""));
+        assertFalse(henry.addUpdate(null));
+    }
+    @Test
+    public void updateDetails(){
+        henry.setName("herryOsborn");
+        assertEquals(henry.getName(),"herryOsborn");
+
+    }
 }

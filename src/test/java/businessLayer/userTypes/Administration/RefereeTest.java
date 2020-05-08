@@ -245,4 +245,9 @@ public class RefereeTest {
         Rayola.setName("Rayola");
     }
     */
+    @Test
+    public void updateDetails(){
+        Rayola.setName("RayolaL");
+        assertEquals(Rayola.getName(),"RayolaL");
+    }
 }

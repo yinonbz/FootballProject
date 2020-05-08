@@ -610,5 +610,14 @@ public class TeamOwnerTest {
         //assertTrue(Jacob.deleteAsset("BeitarJerusalem", "Stadium", "Tedi"));
     }
 
+    @Test
+    public void updatePage(){
+        assertTrue(Jacob.addUpdate("McabiHaifa","that is my new team"));
+        assertFalse(Jacob.addUpdate("McabiHaifa",""));
+        assertFalse(Jacob.addUpdate("McabiHaifa",null));
+        assertFalse(Jacob.addUpdate("BeerSheva","that is my new team"));
+
+    }
+
 
 }
