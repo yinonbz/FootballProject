@@ -21,14 +21,14 @@ import static org.junit.Assert.assertFalse;
 
 public class TestSystemController {
 
-     static Team LeedsUnited;
-     static Team Sunderland;
-     static TeamOwner Alex;
-     static TeamOwner Max;
-     static TeamOwner YaelM;
-     static Admin admin;
-     static Admin admin2;
-     static Fan fan;
+    static Team LeedsUnited;
+    static Team Sunderland;
+    static TeamOwner Alex;
+    static TeamOwner Max;
+    static TeamOwner YaelM;
+    static Admin admin;
+    static Admin admin2;
+    static Fan fan;
     static DemoDB DB;
     static DataBaseValues tDB;
     static SystemService systemService;
@@ -73,7 +73,7 @@ public class TestSystemController {
         //1
         //checks if we can delete a fan from the system
 
-        assertEquals("The User Gate13 was removed",admin.deleteSubscriber("Gate13"));
+        assertEquals("The User Gate13 was  removed",admin.deleteSubscriber("Gate13"));
 
         //2 checks that the user was deleted from the list
         assertFalse(DB.containsInSystemSubscribers("Gate13"));
@@ -118,7 +118,7 @@ public class TestSystemController {
         assertEquals("Solved",c1.getComment());
         assertEquals("TomerSein",c1.getHandler());
 
- //       System.out.println(systemController.getSystemComplaints().get(0).toString());
+        //       System.out.println(systemController.getSystemComplaints().get(0).toString());
 
         //2
         //can't add an empty comment
@@ -247,8 +247,8 @@ public class TestSystemController {
         assertTrue(((AssociationRepresentative) systemController.selectUserFromDB("NewAR")).isApproved());
         assertEquals(systemController.enterLoginDetails("NewAR", "abc123"), "AssociationRepresentative");
     }
-        @Test
-        public void UT_handleAdminApprovalRequest_3() {
+    @Test
+    public void UT_handleAdminApprovalRequest_3() {
         //check AR disapproval request
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR2","abc123","b"));
