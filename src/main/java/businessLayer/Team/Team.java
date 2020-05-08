@@ -370,7 +370,7 @@ public class Team {
         return stadium.calculateIncome(this);
     }
 
-    public boolean upatePage(String update) {
+    public boolean updatePage(String update) {
         return teamPage.update(update);
     }
 }
