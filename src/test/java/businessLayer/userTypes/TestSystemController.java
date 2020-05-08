@@ -222,21 +222,35 @@ public class TestSystemController {
     }
 
     @Test
-    public void UT_handleAdminApprovalRequest(){
+    public void UT_handleAdminApprovalRequest_1() {
+        //check Admin approval request
         SystemController systemController = SystemController.SystemController();
-        assertTrue(systemController.enterRegisterDetails_Admin("NewAdmin","abc123","b"));
-        assertFalse(((Admin)systemController.selectUserFromDB("NewAdmin")).isApproved());
-        assertFalse(systemController.handleAdminApprovalRequest("Buzaglo","NewAdmin",true));
-        assertFalse(systemController.handleAdminApprovalRequest("TomerSein","Buzaglo",true));
-        assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAdmin",true));
-        assertTrue(((Admin)systemController.selectUserFromDB("NewAdmin")).isApproved());
+        assertTrue(systemController.enterRegisterDetails_Admin("NewAdmin", "abc123", "b"));
+        assertFalse(((Admin) systemController.selectUserFromDB("NewAdmin")).isApproved());
+        assertNull(systemController.enterLoginDetails("NewAdmin", "abc123"));
+        assertFalse(systemController.handleAdminApprovalRequest("Buzaglo", "NewAdmin", true));
+        assertFalse(systemController.handleAdminApprovalRequest("TomerSein", "Buzaglo", true));
+        assertTrue(systemController.handleAdminApprovalRequest("TomerSein", "NewAdmin", true));
+        assertTrue(((Admin) systemController.selectUserFromDB("NewAdmin")).isApproved());
+        assertEquals(systemController.enterLoginDetails("NewAdmin", "abc123"), "Admin");
+    }
 
-        assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR","abc123","b"));
-        assertFalse(((AssociationRepresentative)systemController.selectUserFromDB("NewAR")).isApproved());
-        assertFalse(systemController.handleAdminApprovalRequest("Buzaglo","NewAR",true));;
-        assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAR",true));
-        assertTrue(((AssociationRepresentative)systemController.selectUserFromDB("NewAR")).isApproved());
-
+    @Test
+    public void UT_handleAdminApprovalRequest_2() {
+        //check AR approval request
+        SystemController systemController = SystemController.SystemController();
+        assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR", "abc123", "b"));
+        assertFalse(((AssociationRepresentative) systemController.selectUserFromDB("NewAR")).isApproved());
+        assertNull(systemController.enterLoginDetails("NewAR", "abc123"));
+        assertFalse(systemController.handleAdminApprovalRequest("Buzaglo", "NewAR", true));
+        assertTrue(systemController.handleAdminApprovalRequest("TomerSein", "NewAR", true));
+        assertTrue(((AssociationRepresentative) systemController.selectUserFromDB("NewAR")).isApproved());
+        assertEquals(systemController.enterLoginDetails("NewAR", "abc123"), "AssociationRepresentative");
+    }
+        @Test
+        public void UT_handleAdminApprovalRequest_3() {
+        //check AR disapproval request
+        SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR2","abc123","b"));
         assertFalse(((AssociationRepresentative)systemController.selectUserFromDB("NewAR2")).isApproved());
         assertTrue(systemController.handleAdminApprovalRequest("TomerSein","NewAR2",false));
@@ -252,9 +266,37 @@ public class TestSystemController {
 
     @Test
     public void UC_1_1_b() {
-        //will be tested after the login implementation
+        systemService.insertInfo("admin","admin");
+        systemService.initializeSystem("admin");
+        systemService.changePassword("ad123456","admin");
+        assertEquals(systemService.enterLoginDetails("admin","ad123456"),"Admin");
     }
 
+    @Test
+    public void UC_2_2_a(){
+        assertTrue(systemService.enterRegisterDetails_Player("Tomer1","abc123","Tomer","1.1.1993","GK","BeerSheva"));
+        assertTrue(DB.containsInSystemSubscribers("Tomer1"));
+    }
+
+    @Test
+    public void UC_2_2_b(){
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer2",null,"Tomer","1.1.1993","GK","BeerSheva"));
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer3","","Tomer","1.1.1993","GK","BeerSheva"));
+        assertFalse(DB.containsInSystemSubscribers("Tomer2"));
+        assertFalse(DB.containsInSystemSubscribers("Tomer3"));
+    }
+
+    @Test
+    public void UC_2_2_c(){
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer@",null,"Tomer","1.1.1993","GK","BeerSheva"));
+        assertFalse(DB.containsInSystemSubscribers("Tomer@"));
+    }
+
+    @Test
+    public void UC_2_2_d(){
+        systemService.enterRegisterDetails_Player("Tomer4","abc123","Tomer","1.1.1993","GK","BeerSheva");
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer4","abc123","Tomer","1.1.1993","GK","BeerSheva"));
+    }
 
     @Test
     public void UC_2_3_a() {
