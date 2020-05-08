@@ -52,21 +52,21 @@
                     </configuration>
                 </plugin>
 
-                <plugin>
+              <!--  <plugin>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-maven-plugin</artifactId>
                     <version>0.0.4</version>
                     <configuration>
                         <mainClass>hellofx/org.openjfx.App</mainClass>
                     </configuration>
-                </plugin>
+                </plugin>-->
 
                 <plugin>
                     <groupId>com.zenjava</groupId>
                     <artifactId>javafx-maven-plugin</artifactId>
                     <version>8.8.3</version>
                     <configuration>
-                        <mainClass>your.package.with.Launcher</mainClass>
+                        <mainClass>main</mainClass>
                     </configuration>
                 </plugin>
             </plugins>
@@ -77,7 +77,7 @@
 
 
     <dependencies>
-
+<!--
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -88,7 +88,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>12.0.2</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>junit</groupId>
