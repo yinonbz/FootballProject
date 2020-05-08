@@ -73,7 +73,7 @@ public class TestSystemController {
         //1
         //checks if we can delete a fan from the system
 
-        assertEquals("The User Gate13 was  removed",admin.deleteSubscriber("Gate13"));
+        assertEquals("The User    Gate13 was  removed",admin.deleteSubscriber("Gate13"));
 
         //2 checks that the user was deleted from the list
         assertFalse(DB.containsInSystemSubscribers("Gate13"));
