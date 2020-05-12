@@ -1,7 +1,6 @@
 package dataLayer;
 
 import businessLayer.userTypes.Subscriber;
-import com.sun.corba.se.spi.monitoring.StatisticMonitoredAttribute;
 
 import java.sql.*;
 
