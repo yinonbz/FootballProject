@@ -365,7 +365,7 @@ public class Team {
     }
 
     public int calculateIncome() {
-        int sum = 0;
+        int sum  = 0;
         this.stadium.getNumberOfSeats();
         return stadium.calculateIncome(this);
     }
