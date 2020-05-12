@@ -11,10 +11,7 @@ import businessLayer.userTypes.viewers.Fan;
 import dataLayer.DemoDB;
 import serviceLayer.SystemService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class DataBaseValues {
 
@@ -165,6 +162,7 @@ public class DataBaseValues {
     //season
     static Season season11;
     static League league2;
+    static League league3;
 
     public DataBaseValues() {
         DB = new DemoDB();
@@ -498,8 +496,17 @@ public class DataBaseValues {
         DB.addLeagueToDB("11" ,league1);
         league2 = new League("12");
         league2.addSeasonToLeague(2020,startDate,endDate,3,0,1,"SingleMatchPolicy");
+        Season season2020 =league2.getSeasonFromLeague("2020");
+        HashMap <Integer, Match> table = new HashMap<>();
+        table.put(4,m4);
+        season2020.setMatchesOfTheSeason(table);
+        league3 = new League("13");
+        league3.addSeasonToLeague(2020,startDate,endDate,3,0,1,"SingleMatchPolicy");
+        DB.addLeagueToDB("13",league3);
+
         DB.addLeagueToDB("12" ,league2);
         systemController.connectToDB(DB);
+
     }
 
     /**

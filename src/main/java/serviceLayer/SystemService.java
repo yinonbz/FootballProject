@@ -168,7 +168,7 @@ public class SystemService {
      * Not a UC - A function of Association Represntative
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        return systemController.confirmTeamByAssociationRepresntative(teamName,username);
+        return systemController.confirmTeamByAssociationRepresentative(teamName,username);
     }
 
 
@@ -272,5 +272,12 @@ public class SystemService {
      */
     public boolean handleAdminApprovalRequest(String userName, String userNameToApprove, boolean approve){
         return systemController.handleAdminApprovalRequest(userName, userNameToApprove, approve);
+    }
+
+    public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
+        if(teamName!=null && establishedYear!=null && username!=null && !teamName.isEmpty()){
+            return systemController.sendRequestForTeam(teamName, establishedYear, username);
+        }
+        return false;
     }
 }

@@ -72,16 +72,18 @@ public class ARankingPolicy implements RankingPolicy {
                                  HashMap<Team, LinkedList<Integer>> rankTable){
         LinkedList<Integer> newInfo = new LinkedList<>();
         LinkedList<Integer> oldInfo = rankTable.get(team);
-        int numOfGames = oldInfo.get(0) + 1;
-        int numOfGoalsFor = oldInfo.get(1) + goalsFor;
-        int numOfGoalAgainst = oldInfo.get(2) + goalsAgainst;
-        int totalPoints = oldInfo.get(3) + points;
-        newInfo.add(numOfGames);
-        newInfo.add(numOfGoalsFor);
-        newInfo.add(numOfGoalAgainst);
-        newInfo.add(totalPoints);
-        rankTable.remove(team);
-        rankTable.put(team,newInfo);
+        if(oldInfo!=null) {
+            int numOfGames = oldInfo.get(0) + 1;
+            int numOfGoalsFor = oldInfo.get(1) + goalsFor;
+            int numOfGoalAgainst = oldInfo.get(2) + goalsAgainst;
+            int totalPoints = oldInfo.get(3) + points;
+            newInfo.add(numOfGames);
+            newInfo.add(numOfGoalsFor);
+            newInfo.add(numOfGoalAgainst);
+            newInfo.add(totalPoints);
+            rankTable.remove(team);
+            rankTable.put(team, newInfo);
+        }
     }
 
 

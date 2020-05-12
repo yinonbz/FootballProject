@@ -1,6 +1,7 @@
 package businessLayer.Tournament;
 
 import businessLayer.Team.Team;
+import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -448,6 +449,32 @@ public class LeagueController {
                 }
             }
         }
+        return false;
+    }
+
+    /**
+     * the function lets the AR or the Referee to update the ranking table of a season
+     * @param leagueID the league id the season belongs to
+     * @param seasonID the season id
+     * @param matchID the match we want to update on
+     * @param username the requester
+     * @return true is the action was completed
+     */
+    public boolean updateSeasonTableRank(String leagueID, String seasonID, String matchID, String username) {
+        if (seasonID != null && username != null && leagueID!=null) {
+            Subscriber user = systemController.getSubscriberByUserName(username);
+            if (user instanceof AssociationRepresentative || user instanceof Referee) {
+                Season season = systemController.selectSeasonFromDB(leagueID, seasonID);
+                if (season != null) {
+                        Match match = systemController.selectMatchFromDB(matchID);
+                            if(match!=null){
+                                if(season.seasonContainsMatch(Integer.parseInt(matchID))){
+                                    return season.updateMatchTableRank(match);
+                                }
+                            }
+                        }
+                    }
+                }
         return false;
     }
 }

@@ -10,21 +10,21 @@ import java.util.*;
 public class League {
 
     private String leagueName;
-    private Map<Team, Integer> scoreTable;
+    //private Map<Team, Integer> scoreTable;
     //private Map<Season,MatchingPolicy> matchingPolicy; // probably not needed
     //private Map<Season,RankingPolicy> rankingPolicy; // probably not needed
     private SystemController systemController;
     private HashMap<Integer, Season> seasons;
-    private List<Match> matches;
+    //private List<Match> matches;
 
     /**
      * @param leagueName
      */
     public League(String leagueName) {
         this.leagueName = leagueName;
-        scoreTable = new HashMap<>();
+        //scoreTable = new HashMap<>();
         seasons = new HashMap<>();
-        matches = new ArrayList<>();
+        //matches = new ArrayList<>();
     }
 /*
     /**
@@ -97,18 +97,20 @@ public class League {
     /**
      * @return
      */
-
+    /*
     public List<Match> getMatches() {
         return matches;
     }
+    */
 
     /**
      * @param matches
      */
+    /*
     public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
-
+    */
 
     /**
      * The function creates a season and adds it to the league then returns whether the creation was successful or not
