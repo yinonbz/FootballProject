@@ -37,6 +37,7 @@ public class TeamOwner extends Subscriber {
      * @param establishedYear the established year of the team
      * @return true if the request was send successfully
      */
+    /*
     public boolean sendRequestForTeam(String teamName, String establishedYear) {
         if (!teamName.isEmpty() && !establishedYear.isEmpty()) {
             if (tryParseInt(establishedYear)) {
@@ -51,6 +52,7 @@ public class TeamOwner extends Subscriber {
         }
         return false;
     }
+    */
 
     /**
      * this function check a string that represent a NUMBER and checks if it can be a year
