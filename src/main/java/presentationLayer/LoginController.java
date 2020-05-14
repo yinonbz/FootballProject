@@ -1,5 +1,6 @@
 package presentationLayer;
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,7 @@ public class LoginController {
         }
 
         FXMLLoader fxmlLoader = null;
-        String user = "AR";
+        String user = "TeamOwner";
         switch (user) {
             case "Admin":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Admin.fxml"));
@@ -73,7 +74,9 @@ public class LoginController {
         try {
                 root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root1,700, 700));
+            Scene scene = new Scene(root1,700, 700);
+            scene.getStylesheets().add("/resources/style.css");
+            stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
