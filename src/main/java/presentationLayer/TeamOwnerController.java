@@ -21,6 +21,9 @@ public class TeamOwnerController {
     private Spinner<Integer> yearSpinner;
 
     @FXML
+    private Label teamNameL;
+
+    @FXML
     private Label titleL;
 
     @FXML
@@ -51,5 +54,11 @@ public class TeamOwnerController {
                 1900, 10000, Integer.parseInt("1999")));
         yearSpinner.setEditable(true);
         yearSpinner.getEditor().setTextFormatter(priceFormatter);
+    }
+
+    public void submitNewTeam(ActionEvent actionEvent) {
+        if(teamNameL.getText().equals("")){
+            
+        }
     }
 }
