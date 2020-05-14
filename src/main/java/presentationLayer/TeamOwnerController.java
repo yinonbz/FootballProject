@@ -15,8 +15,11 @@ import java.util.function.UnaryOperator;
 
 
 
-public class TeamOwnerController {
+public class TeamOwnerController implements ControllerInterface{
+    @Override
+    public void setUser(String usernameL) {
 
+    }
     @FXML
     private Spinner<Integer> yearSpinner;
 

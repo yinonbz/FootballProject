@@ -1,4 +1,8 @@
 package presentationLayer;
 
-public class RefereeController {
+public class RefereeController implements ControllerInterface{
+    @Override
+    public void setUser(String usernameL) {
+
+    }
 }

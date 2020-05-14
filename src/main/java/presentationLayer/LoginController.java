@@ -77,6 +77,10 @@ public class LoginController {
             Scene scene = new Scene(root1,1166, 666);
             scene.getStylesheets().add("/resources/style.css");
             stage.setScene(scene);
+            //IDO ADD
+            ControllerInterface Controller = fxmlLoader.getController();
+            Controller.setUser(usernameL.getText());
+            //
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
@@ -89,7 +93,6 @@ public class LoginController {
         alert.setTitle("Empty Fields");
         alert.setHeaderText("Please fill all fields");
         alert.setContentText("Please fill all the fields in this form.");
-
         alert.showAndWait();
     }
 }
