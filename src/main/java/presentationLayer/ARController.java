@@ -1,6 +1,11 @@
 package presentationLayer;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
@@ -12,6 +17,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
+
+import java.util.LinkedList;
+
 
 public class ARController implements ControllerInterface,Initializable {
     private LeagueService leagueService = new LeagueService();
@@ -48,13 +56,20 @@ public class ARController implements ControllerInterface,Initializable {
     @FXML
     private DatePicker endingDate;
     @FXML
+    ListView teamsViewL;
+    @FXML
     public void switchApproveCreate(){
         approveOrCreatePane.setVisible(true);
         arHomeMenuPane.setVisible(false);
     }
     @FXML
     public void switchApprove(){
-        approveTeamPane.setVisible(true);
+        ObservableList<String> list = FXCollections.observableArrayList();
+        LinkedList<String> teamStringList = new LinkedList<>();
+        //import all unapproved team names to teamStringList from DB
+        list.addAll(teamStringList);
+        teamsViewL.setItems(list);
+        teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         createTeamPane.setVisible(false);
     }
     @FXML
@@ -63,8 +78,6 @@ public class ARController implements ControllerInterface,Initializable {
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
         createSeasonPane.setVisible(false);
-
-
     }
     @FXML
     public void switchLeaguePane(){
@@ -74,6 +87,12 @@ public class ARController implements ControllerInterface,Initializable {
         createSeasonPane.setVisible(false);
 
     }
+
+    public void clickApprove(ActionEvent actionEvent) {
+        ObservableList<String> list = teamsViewL.getSelectionModel().getSelectedItems();
+        //approve team
+    }
+
     @FXML
     public void switchSeasonPane(){
         createSeasonPane.setVisible(true);
@@ -81,9 +100,9 @@ public class ARController implements ControllerInterface,Initializable {
         createTeamPane.setVisible(false);
         approveTeamPane.setVisible(false);
     }
+
     @FXML
     public void createLeague(){
-
         String league = leagueIdField.getText();
         String arName = userLable.getText();
         if(!league.equals("") && !arName.equals("")) {
@@ -92,6 +111,7 @@ public class ARController implements ControllerInterface,Initializable {
             missingAlert();
         }
     }
+
     public void missingAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Empty Fields");
@@ -117,21 +137,13 @@ public class ARController implements ControllerInterface,Initializable {
             Date eDate = Date.from(end.atStartOfDay(defaultZoneId).toInstant());
             leagueService.addSeasonThroughRepresentative(league,season,sDate,eDate,win,lose,tie,policy,userLable.getText());
         }
-
     }
+
     @Override
     public void setUser(String usernameL) {
         userLable.setText(usernameL);
     }
 
-    public static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch(NumberFormatException e){
-            return false;
-        }
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

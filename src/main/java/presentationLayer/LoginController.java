@@ -1,5 +1,6 @@
 package presentationLayer;
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,14 +38,14 @@ public class LoginController {
         }
 
         FXMLLoader fxmlLoader = null;
-        String user = "AR";
+        String user = "TeamOwner";
         switch (user) {
             case "Admin":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Admin.fxml"));
+
                 break;
             case "AR":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/AR.fxml"));
-
                 break;
             case "Coach":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Coach.fxml"));
@@ -71,10 +72,11 @@ public class LoginController {
 
         Parent root1 = null;
         try {
-            root1 = (Parent) fxmlLoader.load();
-
+                root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root1,700, 700));
+            Scene scene = new Scene(root1,1166, 666);
+            scene.getStylesheets().add("/resources/style.css");
+            stage.setScene(scene);
             //IDO ADD
             ControllerInterface Controller = fxmlLoader.getController();
             Controller.setUser(usernameL.getText());
@@ -93,5 +95,4 @@ public class LoginController {
         alert.setContentText("Please fill all the fields in this form.");
         alert.showAndWait();
     }
-
 }
