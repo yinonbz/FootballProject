@@ -37,10 +37,11 @@ public class LoginController {
         }
 
         FXMLLoader fxmlLoader = null;
-        String user = "Guest";
+        String user = "AR";
         switch (user) {
             case "Admin":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Admin.fxml"));
+
                 break;
             case "AR":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/AR.fxml"));
@@ -72,7 +73,7 @@ public class LoginController {
         try {
                 root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root1));
+            stage.setScene(new Scene(root1,700, 700));
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
