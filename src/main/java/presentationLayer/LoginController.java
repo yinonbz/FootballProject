@@ -74,7 +74,7 @@ public class LoginController {
         try {
                 root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            Scene scene = new Scene(root1,700, 700);
+            Scene scene = new Scene(root1,1166, 666);
             scene.getStylesheets().add("/resources/style.css");
             stage.setScene(scene);
             stage.show();
