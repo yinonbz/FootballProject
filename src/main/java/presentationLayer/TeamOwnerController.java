@@ -58,7 +58,7 @@ public class TeamOwnerController {
 
     public void submitNewTeam(ActionEvent actionEvent) {
         if(teamNameL.getText().equals("")){
-            
+
         }
     }
 }
