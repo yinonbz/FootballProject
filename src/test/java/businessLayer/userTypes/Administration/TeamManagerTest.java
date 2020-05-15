@@ -1,18 +1,16 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
-import businessLayer.userTypes.Subscriber;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import serviceLayer.TeamService;
 
 import static org.junit.Assert.*;
 
 public class TeamManagerTest {
-    private  DataBaseValues tDB;
+    private DataBaseValues tDB;
     private DemoDB DB;
     private TeamOwner Barkat;
     private TeamManager itay;
