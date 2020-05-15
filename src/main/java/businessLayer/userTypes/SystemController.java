@@ -1,5 +1,7 @@
 package businessLayer.userTypes;
 
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.League;
@@ -1096,14 +1098,16 @@ public class SystemController {
      */
     public String enterLoginDetails(String userName, String password) {
 
-        if(userName == null || password == null){
-            return null;
+        if(userName == null || password == null || userName.equals("") || password.equals("")){
+            throw new MissingInputException("Missing Input");
+            //return null;
         }
 
         Subscriber subscriber = selectUserFromDB(userName);
 
         if(subscriber==null)
-            return null;
+            throw new NotFoundInDbException("No such user in the data base.");
+            //return null;
 
         if(subscriber.getPassword().equals(password)) {
             if(subscriber instanceof Admin){
@@ -1391,4 +1395,25 @@ public class SystemController {
         }
     }
 
+    public ArrayList<String> getAllUnconfirmedTeamsInDB() {
+        HashMap<String,LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();
+        ArrayList<String> teamNamesInDB = new ArrayList<>();
+        Iterator iterator = teamsInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            teamNamesInDB.add("" + me2.getKey());
+        }
+        return teamNamesInDB;
+    }
+
+    public ArrayList<String> getAllULeaguesInDB() {
+        HashMap<String,League> leaguesInDB = DB.getLeagues();
+        ArrayList<String> leagueNamesInDB = new ArrayList<>();
+        Iterator iterator = leaguesInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            leagueNamesInDB.add("" + me2.getKey());
+        }
+        return leagueNamesInDB;
+    }
 }

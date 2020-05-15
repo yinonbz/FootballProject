@@ -13,7 +13,6 @@
                <effect>
                   <ColorAdjust />
                </effect></TextField>
-            <TextField fx:id="passwordL" layoutX="93.0" layoutY="365.0" prefHeight="25.0" prefWidth="170.0" />
             <Label layoutX="93.0" layoutY="271.0" text="Username" />
             <Label layoutX="93.0" layoutY="348.0" text="Password" />
             <Label layoutX="141.0" layoutY="202.0" text="Login">
@@ -22,6 +21,7 @@
                </font>
             </Label>
             <Button fx:id="loginB" layoutX="151.0" layoutY="421.0" mnemonicParsing="false" onAction="#loginClick" text="Submit" />
+            <PasswordField fx:id="passwordL" layoutX="94.0" layoutY="365.0" prefHeight="25.0" prefWidth="170.0" />
          </children>
       </Pane>
    </center>

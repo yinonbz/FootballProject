@@ -1,5 +1,7 @@
 package businessLayer.userTypes;
 
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
@@ -10,8 +12,9 @@ import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 
+import org.junit.Rule;
 import org.junit.Test;
-import businessLayer.userTypes.SystemController;
+import org.junit.rules.ExpectedException;
 import serviceLayer.SystemService;
 
 
@@ -33,6 +36,8 @@ public class TestSystemController {
     static DataBaseValues tDB;
     static SystemService systemService;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @BeforeClass
 
@@ -200,8 +205,13 @@ public class TestSystemController {
     @Test
     public void UT_enterUserDetails(){
         SystemController systemController = SystemController.SystemController();
+
+        expectedException.expect(NotFoundInDbException.class);
         assertNull(systemController.enterLoginDetails("Itzik","abc123"));
-        assertNull(systemController.enterLoginDetails(null,"abc123"));
+
+        expectedException.expect(MissingInputException.class);
+        systemController.enterLoginDetails(null,"abc123");
+
         assertNull(systemController.enterLoginDetails("Itzik",null));
     }
 
@@ -305,11 +315,13 @@ public class TestSystemController {
 
     @Test
     public void UC_2_3_b(){
-        assertNull(systemService.enterLoginDetails("Buzaglo",null));
+        expectedException.expect(MissingInputException.class);
+        systemService.enterLoginDetails("Buzaglo",null);
     }
 
     @Test
     public void UC_2_3_c(){
+        expectedException.expect(NotFoundInDbException.class);
         assertNull(systemService.enterLoginDetails("Dudidu","Dudidu123"));
     }
 }

@@ -3,6 +3,7 @@ package serviceLayer;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.userTypes.SystemController;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -35,7 +36,7 @@ public class LeagueService {
         if (leagueID != null && username != null) {
             System.out.println(leagueID +" ,"+username);
             //need to be connected ido created stab
-            //return leagueController.addLeagueThroughRepresentative(leagueID, username);
+            return leagueController.addLeagueThroughRepresentative(leagueID, username);
         }
         return false;
     }
@@ -57,13 +58,12 @@ public class LeagueService {
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
         System.out.println("every thing are ok");
-        return true;
-        /*todo ido put it this way to create stub need to return as usual
+        //todo ido put it this way to create stub need to return as usual
         if (leagueID != null && username != null && matchingPolicy != null) {
             return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose,  tie, matchingPolicy, username);
         }
         return false;
-        */
+
     }
 
 
@@ -206,5 +206,12 @@ public class LeagueService {
         }
     }
 
+    public ArrayList<String> getAllUnconfirmedTeams(){
+        return systemController.getAllUnconfirmedTeamsInDB();
+    }
+
+    public ArrayList<String> getAllULeagues(){
+        return systemController.getAllULeaguesInDB();
+    }
 
 }
