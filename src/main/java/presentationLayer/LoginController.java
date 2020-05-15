@@ -99,15 +99,15 @@ public class LoginController implements Initializable {
                 e.printStackTrace();
             }
         } catch (MissingInputException e){
-            showAlert(e.getMessage(),"Please fill all the fields in this form.", Alert.AlertType.INFORMATION);
+            showAlert(e.getMessage(),"Please fill all the fields in this form.", Alert.AlertType.WARNING);
         } catch (NotFoundInDbException e){
-            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.INFORMATION);
+            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.WARNING);
         }catch (NotApprovedException e){
-            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.INFORMATION);
+            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.WARNING);
         }
     }
 
-    public void showAlert(String title, String text, Alert.AlertType alertType){
+    private void showAlert(String title, String text, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);

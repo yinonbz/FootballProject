@@ -24,6 +24,8 @@ public class ARController implements ControllerInterface,Initializable {
 
     private LeagueService leagueService;
 
+    private String userName;
+
     @FXML
     private Pane approveOrCreatePane;
     @FXML
@@ -113,7 +115,10 @@ public class ARController implements ControllerInterface,Initializable {
     }
     public void clickApprove(ActionEvent actionEvent) {
         ObservableList<String> list = teamsViewL.getSelectionModel().getSelectedItems();
-        //approve team
+        for(int i = 0; i < list.size(); i++){
+            String teamToApprove = list.get(i);
+            leagueService.confirmTeamRequestThroughRepresentative(teamToApprove, userName);
+        }
     }
     @FXML
     public void chooseTeam(){
@@ -183,12 +188,14 @@ public class ARController implements ControllerInterface,Initializable {
 
     @Override
     public void setUser(String usernameL) {
-        userLable.setText("Welcome " + usernameL);
+        userName=usernameL;
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        userLable.setText("Welcome " + userName);
 
         ObservableList<String> list = FXCollections.observableArrayList();
         //import all unapproved team names to teamStringList from DB

@@ -1,5 +1,6 @@
 package businessLayer.userTypes;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Exceptions.MissingInputException;
 import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Exceptions.NotFoundInDbException;
@@ -1384,6 +1385,9 @@ public class SystemController {
                         details.add(establishedYear);
                         details.add(username);
                         return DB.addUnconfirmedTeamsToDB(teamName, details);
+                    }
+                    else{
+                        throw new AlreadyExistException("There is already a team with this name in the system. Please select a different name.");
                     }
                 }
             }
