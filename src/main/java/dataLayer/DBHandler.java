@@ -1,13 +1,20 @@
 package dataLayer;
 
-import businessLayer.userTypes.Subscriber;
+import dataLayer.Tables.tables.*;
+import org.jooq.*;
+import org.jooq.Record;
+import org.jooq.impl.*;
 
 import java.sql.*;
 
+import static dataLayer.Tables.tables.Subscribers.SUBSCRIBERS;
+
 public class DBHandler implements DB_Inter{
 
-    String myDriver = "";
-    String myUrl = "";
+    String username = "root";
+    String password = "Messi1Ronaldo2";
+    String myDriver = "org.mariadb.jdbc.Driver";
+    String myUrl = "jdbc:mysql://132.72.65.33:3306/SoccerProject";
     Connection connection = null;
 
 
@@ -15,9 +22,13 @@ public class DBHandler implements DB_Inter{
     public DBHandler(){
         //connect to DB and save to field in class.
         try {
-            connection = DriverManager.getConnection(myUrl,"root","");
+            Class.forName(myDriver);
+            connection = DriverManager.getConnection(myUrl,username,password);
+            System.out.println("Successful connection to server db ");
         } catch (SQLException e) {
             System.out.println("error connecting to server. connection is now null");
+        } catch (ClassNotFoundException e) {
+            System.out.println("error connecting to driver");
         }
     }
 
@@ -28,52 +39,17 @@ public class DBHandler implements DB_Inter{
      */
 
     @Override
-    public boolean containInDB(String objectName,String table,String where,String groupby) {
+    public boolean containInDB(String objectName) {
         //create sql query to search record in db using ObjectName
-        String query = "Select" +objectName +"from" +table;
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Result<?> result = create.select().
+                from(SUBSCRIBERS)
+                .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName)).fetch();
+        if (result.isEmpty()) {
+            return false;
+        }
+        return true;
 
-        if(where !=null || where !=""){
-            query = query +where;
-        }
-        if(groupby!=null || groupby!=""){
-            query = query +"GROUPBY"+ groupby;
-        }
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(query);
-        } catch (SQLException e) {
-            System.out.println("error creting statement. statement is now null");
-        }
-        ResultSet rs = null;
-        try {
-            rs = st.executeQuery(query);
-        } catch (SQLException e) {
-            System.out.println("error executing query. result set in now null");
-        }
-
-        try{
-            while (rs.next()){
-
-                // available functions
-                /*int id = rs.getInt("id");
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                Date dateCreated = rs.getDate("date_created");
-                boolean isAdmin = rs.getBoolean("is_admin");
-                int numPoints = rs.getInt("num_points");*/
-
-                //found user
-             if(rs.getString("userName").equalsIgnoreCase(objectName)){
-                 st.close();
-                 return true;
-             }
-            }
-            st.close();
-        } catch (Exception e){
-            System.out.println("error iterating result set.");
-        }
-        //user not found
-        return false;
     }
 
     /**
@@ -83,8 +59,20 @@ public class DBHandler implements DB_Inter{
      */
 
     @Override
-    public Object selectFromDB(String objectName, String table,String where,String groupby) {
+    public Object selectFromDB(String objectName) {
         //create sql query to select record from db using ObjectName
+
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Result<?> result = create.select().
+                from(SUBSCRIBERS)
+                .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName))
+                .fetch();
+        //String type= result.get(0).get()
+        for(Record r: result){
+            //return r
+        }
+        return true;
+
         //saving string results from query,
         //creating new Subscriber with the details, and returning the subscriber.
         // if more details of subscriber needed, check for subscriber type and use its constructor.
@@ -121,5 +109,16 @@ public class DBHandler implements DB_Inter{
             // remaining details before adding.
         }
         return false;
+    }
+
+    public boolean TerminateDB(String objectName) {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("error closing connection of DB");
+            return false;
+        }
+
+        return true;
     }
 }

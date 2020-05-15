@@ -2,7 +2,7 @@ package dataLayer;
 
 public interface DB_Inter {
 
-    boolean containInDB(String objectName, String table,String where,String groupby);
+    boolean containInDB(String objectName);
 
     Object selectFromDB(String objectName,String table,String where,String groupby);
 

@@ -39,9 +39,10 @@ private String bDate;
         this.bDate = String.valueOf(establishedYear);
         owners = new HashSet<>();
         for (TeamOwner teamOwner: teamOwners) {
-        owners.add(teamOwner.getUsername());
+            owners.add(teamOwner.getUsername());
         }
     }
+
     public boolean update(String post){
         if(post!=null &&post.length()!=0){
             posts.push(post);
