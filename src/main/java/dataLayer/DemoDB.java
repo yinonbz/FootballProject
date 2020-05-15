@@ -591,9 +591,7 @@ public class DemoDB{
         return unconfirmedTeams;
     }
 
-    public void setUnconfirmedTeams(HashMap<String, LinkedList<String>> unconfirmedTeams) {
-        this.unconfirmedTeams = unconfirmedTeams;
-    }
+    public void setUnconfirmedTeams(HashMap<String, LinkedList<String>> unconfirmedTeams) { this.unconfirmedTeams = unconfirmedTeams; }
 
     public HashMap<String, Stadium> getStadiums() {
         return stadiums;
@@ -606,4 +604,6 @@ public class DemoDB{
     public HashMap<Integer, Match> getMatches() {
         return matches;
     }
+
+    public HashMap<String, League> getLeagues() { return leagues; }
 }

@@ -9,21 +9,20 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import serviceLayer.LeagueService;
-import java.awt.*;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import java.util.LinkedList;
-
 
 public class ARController implements ControllerInterface,Initializable {
-    private LeagueService leagueService = new LeagueService();
+
+    private LeagueService leagueService;
+
     @FXML
     private Pane approveOrCreatePane;
     @FXML
@@ -189,12 +188,14 @@ public class ARController implements ControllerInterface,Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         ObservableList<String> list = FXCollections.observableArrayList();
-        LinkedList<String> teamStringList = new LinkedList<>();
         //import all unapproved team names to teamStringList from DB
-        list.addAll(teamStringList);
+        leagueService = new LeagueService();
+        list.addAll(leagueService.getAllUnconfirmedTeams());
         teamsViewL.setItems(list);
         teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryTie = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
@@ -215,7 +216,7 @@ public class ARController implements ControllerInterface,Initializable {
 
 
         leagueCombo.getItems().addAll(
-          "machbiHifa"
+                leagueService.getAllULeagues()
         );
     }
 }
