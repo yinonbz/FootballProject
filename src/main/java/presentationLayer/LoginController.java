@@ -42,7 +42,6 @@ public class LoginController {
         switch (user) {
             case "Admin":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Admin.fxml"));
-
                 break;
             case "AR":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/AR.fxml"));

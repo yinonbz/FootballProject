@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.fxml.Initializable;
@@ -27,6 +28,8 @@ public class ARController implements ControllerInterface,Initializable {
     private Pane approveOrCreatePane;
     @FXML
     private Pane arHomeMenuPane;
+    @FXML
+    private Label titleL;
     @FXML
     private Pane createTeamPane;
     @FXML
@@ -58,34 +61,22 @@ public class ARController implements ControllerInterface,Initializable {
     @FXML
     ListView teamsViewL;
     @FXML
-    public void switchApproveCreate(){
-        approveOrCreatePane.setVisible(true);
-        arHomeMenuPane.setVisible(false);
-    }
-    @FXML
     public void switchApprove(){
-        ObservableList<String> list = FXCollections.observableArrayList();
-        LinkedList<String> teamStringList = new LinkedList<>();
-        //import all unapproved team names to teamStringList from DB
-        list.addAll(teamStringList);
-        teamsViewL.setItems(list);
-        teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        createTeamPane.setVisible(false);
+        titleL.setText("Approve Teams");
+        createSeasonPane.setVisible(false);
+        createLeaguePane.setVisible(false);
+        approveTeamPane.setVisible(true);
     }
     @FXML
     public void switchCreate(){
-        createTeamPane.setVisible(true);
-        approveTeamPane.setVisible(false);
-        createLeaguePane.setVisible(false);
-        createSeasonPane.setVisible(false);
+
     }
     @FXML
     public void switchLeaguePane(){
-        createLeaguePane.setVisible(true);
-        createTeamPane.setVisible(false);
-        approveTeamPane.setVisible(false);
+        titleL.setText("Create League");
         createSeasonPane.setVisible(false);
-
+        approveTeamPane.setVisible(false);
+        createLeaguePane.setVisible(true);
     }
 
     public void clickApprove(ActionEvent actionEvent) {
@@ -95,10 +86,10 @@ public class ARController implements ControllerInterface,Initializable {
 
     @FXML
     public void switchSeasonPane(){
-        createSeasonPane.setVisible(true);
+        titleL.setText("Create Season");
         createLeaguePane.setVisible(false);
-        createTeamPane.setVisible(false);
         approveTeamPane.setVisible(false);
+        createSeasonPane.setVisible(true);
     }
 
     @FXML
@@ -141,12 +132,18 @@ public class ARController implements ControllerInterface,Initializable {
 
     @Override
     public void setUser(String usernameL) {
-        userLable.setText(usernameL);
+        userLable.setText("Welcome " + usernameL);
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        LinkedList<String> teamStringList = new LinkedList<>();
+        //import all unapproved team names to teamStringList from DB
+        list.addAll(teamStringList);
+        teamsViewL.setItems(list);
+        teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryTie = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
