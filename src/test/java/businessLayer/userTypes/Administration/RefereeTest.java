@@ -8,9 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import serviceLayer.MatchService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class RefereeTest {
 

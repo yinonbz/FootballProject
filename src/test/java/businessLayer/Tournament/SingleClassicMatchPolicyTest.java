@@ -3,8 +3,8 @@ package businessLayer.Tournament;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.userTypes.SystemController;
-import serviceLayer.*;
 import dataLayer.DataBaseValues;
+import serviceLayer.*;
 import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 
 public class SingleClassicMatchPolicyTest {
