@@ -1132,10 +1132,10 @@ public class SystemController extends Observable {
         if (subscriber == null)
             return null;
 
-        if(subscriber.getPassword().equals(password)) {
-            if(subscriber instanceof Admin){
-                Admin userCheckIfApproved = ((Admin)subscriber);
-                if(userCheckIfApproved.isApproved() == false){
+        if (subscriber.getPassword().equals(password)) {
+            if (subscriber instanceof Admin) {
+                Admin userCheckIfApproved = ((Admin) subscriber);
+                if (userCheckIfApproved.isApproved() == false) {
                     return null;
                 }
             } else if (subscriber instanceof AssociationRepresentative) {
@@ -1364,11 +1364,11 @@ public class SystemController extends Observable {
      */
     public boolean handleAdminApprovalRequest(String userName, String userNameToApprove, boolean approve) {
         Subscriber approved = selectUserFromDB(userName);
-        if(!(approved instanceof Admin)){
+        if (!(approved instanceof Admin)) {
             return false;
         }
-        Admin adminApproved = ((Admin)approved);
-        return adminApproved.approveAdminRequest(userNameToApprove,approve);
+        Admin adminApproved = ((Admin) approved);
+        return adminApproved.approveAdminRequest(userNameToApprove, approve);
     }
 
     public boolean removeAdminRequest(String userNameToApprove) {
@@ -1379,6 +1379,7 @@ public class SystemController extends Observable {
 
     /**
      * function that asks from the DB to get a Season
+     *
      * @param leagueID
      * @param seasonID
      * @return
@@ -1388,28 +1389,27 @@ public class SystemController extends Observable {
     }
 
     /**
-     *
      * @param matchID
      * @return
      */
-    public Match selectMatchFromDB(String matchID){
+    public Match selectMatchFromDB(String matchID) {
         return DB.selectMatchFromDB(Integer.parseInt(matchID));
     }
 
-    public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
+    public boolean sendRequestForTeam(String teamName, String establishedYear, String username) {
         Subscriber subscriber = DB.selectSubscriberFromDB(username);
-        if(subscriber instanceof TeamOwner){
-            if(tryParseInt(establishedYear)){
+        if (subscriber instanceof TeamOwner) {
+            if (tryParseInt(establishedYear)) {
                 Team team = DB.selectTeamFromDB(teamName);
-                    if(team==null){
-                        LinkedList<String> details = new LinkedList<>();
-                        details.add(teamName);
-                        details.add(establishedYear);
-                        details.add(username);
-                        return DB.addUnconfirmedTeamsToDB(teamName, details);
-                    }
+                if (team == null) {
+                    LinkedList<String> details = new LinkedList<>();
+                    details.add(teamName);
+                    details.add(establishedYear);
+                    details.add(username);
+                    return DB.addUnconfirmedTeamsToDB(teamName, details);
                 }
             }
+        }
         return false;
     }
 
@@ -1542,7 +1542,7 @@ public class SystemController extends Observable {
         if (page != null && event != null) {
             LinkedList<String> followers = DB.getPageFollowers(page);
             followers.add(event);
-            notifyObservers();
+            notifyObservers(followers);
         }
     }
 
@@ -1574,12 +1574,13 @@ public class SystemController extends Observable {
         if (match != null && event != null) {
             LinkedList<String> followers = DB.getMatchFollowers(match);
             followers.add(event);
-            notifyObservers();
+            notifyObservers(followers);
         }
     }
 
     /**
      * The function receives a match and a referee and sends them to the DB to be connected to each other
+     *
      * @param match
      * @param ref
      * @return
@@ -1591,5 +1592,92 @@ public class SystemController extends Observable {
         return false;
     }
 
+    /**
+     * The function receives a referee's username and a match, verifies the initiation of the action is from an association representative and
+     * returns whether the operation was successful or not
+     *
+     * @param username
+     * @param matchID
+     * @param refereeUsername
+     * @return
+     */
+    public boolean addRefereeToMatchThroughRepresentative(String username, String matchID, String refereeUsername) {
 
+        if (username == null || matchID == null || refereeUsername == null) {
+            return false;
+        }
+        Subscriber user = getSubscriberByUserName(username);
+        Subscriber userRef = getSubscriberByUserName(refereeUsername);
+        int id = Integer.parseInt(matchID);
+        Match match = findMatch(id);
+        if (user instanceof AssociationRepresentative && userRef instanceof Referee && match != null) {
+            return addRefereeToMatch(match, (Referee) userRef);
+        }
+        return false;
+    }
+
+    /**
+     * The function receives a match, retrieves the referees of the match and notifies the observer about the changes
+     *
+     * @param match
+     * @param event
+     */
+    public void updateMatchChangesToReferees(Match match, String event) {
+
+        if (match != null && event != null) {
+            LinkedList<String> followers = DB.getMatchReferees(match);
+            followers.add(event);
+            notifyObservers(followers);
+        }
+    }
+
+    /**
+     * The function receives a player and a team and binds them together in the database
+     *
+     * @param player
+     * @param team
+     */
+    public void addPlayerToTeam(Player player, Team team) {
+
+        if (player != null && team != null) {
+            DB.addPlayerToTeam(player, team);
+        }
+    }
+
+    /**
+     * The function receives a team-owner and a team and binds them together in the database
+     *
+     * @param teamManager
+     * @param team
+     */
+    public void addTeamManagerToTeam(TeamManager teamManager, Team team) {
+
+        if (teamManager != null && team != null) {
+            DB.addTeamManagerToTeam(teamManager, team);
+        }
+    }
+
+    /**
+     * The function receives a coach and a team and binds them together in the database
+     * @param coach
+     * @param team
+     */
+    public void addCoachToTeam(Coach coach, Team team) {
+
+        if (coach != null && team != null) {
+            DB.addCoachToTeam(coach, team);
+        }
+    }
+
+    /**
+     * The function receives a stadium and a team and binds them together in the database
+     * @param stadium
+     * @param team
+     */
+    public void addStadiumToTeam(Stadium stadium, Team team) {
+
+        if (stadium != null && team != null) {
+            DB.addStadiumToTeam(stadium, team);
+        }
+    }
 }

@@ -232,6 +232,16 @@ public class Match {
     }
 
     /**
+     * Re-defines the date field, then returns the new date of the match
+     * @param date
+     * @return
+     */
+    public String defineDate(Date date){
+        this.date = date;
+        return "The current date of match " + matchId + " is: " + date.toString();
+    }
+
+    /**
      * @param finished
      */
     public void setFinished(Boolean finished) {
@@ -260,6 +270,16 @@ public class Match {
 
     public void setStadium(Stadium stadium) {
         this.stadium = stadium;
+    }
+
+    /**
+     * The function updates the match's stadium and returns the update of its change
+     * @param stadium
+     * @return
+     */
+    public String defineStadium(Stadium stadium){
+        this.stadium = stadium;
+        return "The match will take place in the " + stadium.getName() + " stadium";
     }
 
     public int getNumerOfFans() {

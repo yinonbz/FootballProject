@@ -7,9 +7,9 @@ import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.Page;
-import businessLayer.userTypes.Administration.AssociationRepresentative;
-import businessLayer.userTypes.Administration.Referee;
+import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.Subscriber;
+import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,6 +28,11 @@ public class DemoDB {
     private HashMap<Match, LinkedList<String>> followersOfMatch; //every match has many followers
     private HashMap<Page, LinkedList<String>> followersOfPage; //Every page (team's page, player's page or coach's page) has many followers
     private HashMap<Match, LinkedList<String>> matchReferees; //every match has referees, holds the referees for each match
+    private HashMap<Team, LinkedList<Player>> teamPlayers;
+    private HashMap<Team, LinkedList<TeamManager>> teamTeamManagers;
+    private HashMap<Team, LinkedList<Coach>> teamCoaches;
+    private HashMap<Team, LinkedList<Stadium>> teamStadiums;
+    private HashMap<Team, LinkedList<TeamOwner>> teamTeamOwners;
 
     //------------League Controller------------//
     private HashMap<String, League> leagues;
@@ -54,6 +59,10 @@ public class DemoDB {
         followersOfPage = new HashMap<>();
         followersOfMatch = new HashMap<>();
         matchReferees = new HashMap<>();
+        teamPlayers = new HashMap<>();
+        teamTeamManagers = new HashMap<>();
+        teamCoaches = new HashMap<>();
+        teamStadiums = new HashMap<>();
 
     }
 
@@ -503,6 +512,10 @@ public class DemoDB {
         return followersOfMatch.get(match);
     }
 
+    public LinkedList<String> getMatchReferees(Match match) {
+        return matchReferees.get(match);
+    }
+
     /**
      * The function receives a page and its owner's name and adds it to the DB
      *
@@ -511,6 +524,77 @@ public class DemoDB {
      */
     public void addPageToDB(String name, Page page) {
         pages.put(name, page);
+    }
+
+    /**
+     * The function receives a player and a team and adds the player to the team's players data structure
+     *
+     * @param player
+     * @param team
+     */
+    public void addPlayerToTeam(Player player, Team team) {
+        if (teamPlayers.containsKey(team)) {
+            if (!teamPlayers.get(team).contains(player)) {
+                teamPlayers.get(team).add(player);
+            }
+        } else {
+            LinkedList<Player> temp = new LinkedList<>();
+            temp.add(player);
+            teamPlayers.put(team, temp);
+        }
+    }
+
+    /**
+     * The function receives a team-manager and a team and adds the team-manager to the team's managers data structure
+     *
+     * @param teamManager
+     * @param team
+     */
+    public void addTeamManagerToTeam(TeamManager teamManager, Team team) {
+        if (teamTeamManagers.containsKey(team)) {
+            if (!teamTeamManagers.get(team).contains(teamManager)) {
+                teamTeamManagers.get(team).add(teamManager);
+            }
+        } else {
+            LinkedList<TeamManager> temp = new LinkedList<>();
+            temp.add(teamManager);
+            teamTeamManagers.put(team, temp);
+        }
+    }
+
+    /**
+     * The function receives a coach and a team and adds the coach to the team's managers data structure
+     * @param coach
+     * @param team
+     */
+    public void addCoachToTeam(Coach coach, Team team) {
+        if (teamCoaches.containsKey(team)) {
+            if (!teamCoaches.get(team).contains(coach)) {
+                teamCoaches.get(team).add(coach);
+            }
+        } else {
+            LinkedList<Coach> temp = new LinkedList<>();
+            temp.add(coach);
+            teamCoaches.put(team, temp);
+        }
+    }
+
+
+    /**
+     * The function receives a coach and a team and adds the coach to the team's managers data structure
+     * @param stadium
+     * @param team
+     */
+    public void addStadiumToTeam(Stadium stadium, Team team) {
+        if (teamStadiums.containsKey(team)) {
+            if (!teamStadiums.get(team).contains(stadium)) {
+                teamStadiums.get(team).add(stadium);
+            }
+        } else {
+            LinkedList<Stadium> temp = new LinkedList<>();
+            temp.add(stadium);
+            teamStadiums.put(team, temp);
+        }
     }
 
     //-------------------------LEAGUE CONTROLLER-------------------------//
