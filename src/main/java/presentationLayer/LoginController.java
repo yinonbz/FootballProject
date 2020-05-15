@@ -1,6 +1,7 @@
 package presentationLayer;
 
 import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.userTypes.SystemController;
 import javafx.event.ActionEvent;
@@ -100,6 +101,8 @@ public class LoginController implements Initializable {
         } catch (MissingInputException e){
             showAlert(e.getMessage(),"Please fill all the fields in this form.", Alert.AlertType.INFORMATION);
         } catch (NotFoundInDbException e){
+            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.INFORMATION);
+        }catch (NotApprovedException e){
             showAlert("Failed to log in",e.getMessage(), Alert.AlertType.INFORMATION);
         }
     }

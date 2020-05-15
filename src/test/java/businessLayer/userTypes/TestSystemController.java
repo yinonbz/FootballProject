@@ -1,6 +1,7 @@
 package businessLayer.userTypes;
 
 import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Utilities.Complaint;
@@ -205,13 +206,12 @@ public class TestSystemController {
     @Test
     public void UT_enterUserDetails(){
         SystemController systemController = SystemController.SystemController();
-
         expectedException.expect(NotFoundInDbException.class);
         assertNull(systemController.enterLoginDetails("Itzik","abc123"));
-
         expectedException.expect(MissingInputException.class);
         systemController.enterLoginDetails(null,"abc123");
-
+        expectedException.expect(NotApprovedException.class);
+        systemController.enterLoginDetails("Buzaglo","abc123");
         assertNull(systemController.enterLoginDetails("Itzik",null));
     }
 
@@ -237,6 +237,7 @@ public class TestSystemController {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.enterRegisterDetails_Admin("NewAdmin", "abc123", "b"));
         assertFalse(((Admin) systemController.selectUserFromDB("NewAdmin")).isApproved());
+        expectedException.expect(NotApprovedException.class);
         assertNull(systemController.enterLoginDetails("NewAdmin", "abc123"));
         assertFalse(systemController.handleAdminApprovalRequest("Buzaglo", "NewAdmin", true));
         assertFalse(systemController.handleAdminApprovalRequest("TomerSein", "Buzaglo", true));
@@ -251,6 +252,7 @@ public class TestSystemController {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR", "abc123", "b"));
         assertFalse(((AssociationRepresentative) systemController.selectUserFromDB("NewAR")).isApproved());
+        expectedException.expect(NotApprovedException.class);
         assertNull(systemController.enterLoginDetails("NewAR", "abc123"));
         assertFalse(systemController.handleAdminApprovalRequest("Buzaglo", "NewAR", true));
         assertTrue(systemController.handleAdminApprovalRequest("TomerSein", "NewAR", true));

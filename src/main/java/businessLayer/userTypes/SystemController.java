@@ -1,6 +1,7 @@
 package businessLayer.userTypes;
 
 import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
@@ -1113,18 +1114,21 @@ public class SystemController {
             if(subscriber instanceof Admin){
                 Admin userCheckIfApproved = ((Admin)subscriber);
                 if(userCheckIfApproved.isApproved() == false){
-                    return null;
+                    throw new NotApprovedException("You are trying to log in as an unapproved Admin. You have to be approved first by another Admin to log in.");
+                    //return null;
                 }
             }
             else if(subscriber instanceof AssociationRepresentative){
                 AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative)subscriber);
                 if(userCheckIfAprroved.isApproved() == false){
-                    return null;
+                    throw new NotApprovedException("You are trying to log in as an unapproved AR. You have to be approved first by an Admin to log in.");
+                    //return null;
                 }
             }
             return subscriber.toString();
         }
-        return null;
+        throw new NotApprovedException("Wrong password. Please try to login again.");
+        //return null;
     }
 
 
