@@ -76,6 +76,10 @@ public class ARController implements ControllerInterface,Initializable {
         createSeasonPane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(true);
+        activatePolicyPane.setVisible(false);
+        addTeamsPane.setVisible(false);
+
+
     }
     @FXML
     public void switchCreate(){
@@ -84,9 +88,12 @@ public class ARController implements ControllerInterface,Initializable {
     @FXML
     public void switchLeaguePane(){
         titleL.setText("Create League");
+        createLeaguePane.setVisible(true);
+        activatePolicyPane.setVisible(true);
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
-        createLeaguePane.setVisible(true);
+        addTeamsPane.setVisible(false);
+
     }
     @FXML
     public void switchActivatePolicyPane(){
@@ -95,6 +102,7 @@ public class ARController implements ControllerInterface,Initializable {
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
+        addTeamsPane.setVisible(false);
         leagueTeamsSpinner.getValueFactory().setValue(0);
         seasonTeamsSpinner.getValueFactory().setValue(0);
     }
@@ -121,6 +129,7 @@ public class ARController implements ControllerInterface,Initializable {
         addTeamsPane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
+        activatePolicyPane.setVisible(false);
         createSeasonPane.setVisible(true);
     }
 
@@ -131,6 +140,8 @@ public class ARController implements ControllerInterface,Initializable {
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         createSeasonPane.setVisible(false);
+        activatePolicyPane.setVisible(false);
+
     }
     @FXML
     public void createLeague(){
