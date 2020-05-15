@@ -64,7 +64,7 @@ public class MatchService {
      * @param PlayerInjury
      * @return
      */
-    public boolean reportOnInjury(String time, String PlayerInjury, String matchID,String username){
+    public boolean reportOnInjury(String time, String PlayerInjury, String matchID, String username){
         if (!PlayerInjury.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
             int timeEvent = Integer.parseInt(time);
             if (timeEvent > 0 && timeEvent < 121) {
