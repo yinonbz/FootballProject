@@ -173,6 +173,22 @@ public class LeagueService {
         return false;
     }
 
+    /**
+     * the function lets an AR or a Referee to update a ranking table of a season
+     * @param leagueID the league id the season belongs to
+     * @param seasonID the season id
+     * @param matchID the match we want to update on
+     * @param username the requester
+     * @return true is the action was completed
+     */
+    public boolean updateSeasonTableRank(String leagueID, String seasonID, String matchID, String username){
+        if(leagueID!=null && matchID!=null && username!=null && seasonID!=null){
+            if(tryParseInt(leagueID) && tryParseInt(seasonID) && tryParseInt(matchID)){
+                return leagueController.updateSeasonTableRank(leagueID,seasonID,matchID,username);
+            }
+        }
+        return false;
+    }
 
     /**
      * private function that checks that a string represents an interger

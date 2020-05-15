@@ -694,7 +694,7 @@ public class SystemController extends Observable {
      * @param username the subscriber who tries to confirm the request
      * @return true if it done successfully
      */
-    public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
+    public boolean confirmTeamByAssociationRepresentative(String teamName, String username) {
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof AssociationRepresentative) {
             if (DB.containsInUnconfirmedTeams(teamName)) {
@@ -709,7 +709,7 @@ public class SystemController extends Observable {
                             int year = Integer.parseInt(request.get(1));
                             Team team = new Team(teamName, (TeamOwner) teamOwner, year);
                             DB.addTeamToDB(teamName, team);
-                            DB.removeSubscriberFromDB(teamName);
+                            DB.removeUnconfirmedTeamsFromDB(teamName);
                             ((TeamOwner) teamOwner).getTeams().add(team);
                             //updates the structure of the updated subscriber with the team
                             DB.removeSubscriberFromDB(teamOwner.getUsername());
@@ -1132,10 +1132,10 @@ public class SystemController extends Observable {
         if (subscriber == null)
             return null;
 
-        if (subscriber.getPassword().equals(password)) {
-            if (subscriber instanceof Admin) {
-                Admin userCheckIfAprroved = ((Admin) subscriber);
-                if (userCheckIfAprroved.isApproved() == false) {
+        if(subscriber.getPassword().equals(password)) {
+            if(subscriber instanceof Admin){
+                Admin userCheckIfApproved = ((Admin)subscriber);
+                if(userCheckIfApproved.isApproved() == false){
                     return null;
                 }
             } else if (subscriber instanceof AssociationRepresentative) {
@@ -1363,12 +1363,12 @@ public class SystemController extends Observable {
      * false else
      */
     public boolean handleAdminApprovalRequest(String userName, String userNameToApprove, boolean approve) {
-        Subscriber approver = selectUserFromDB(userName);
-        if (!(approver instanceof Admin)) {
+        Subscriber approved = selectUserFromDB(userName);
+        if(!(approved instanceof Admin)){
             return false;
         }
-        Admin adminApprover = ((Admin) approver);
-        return adminApprover.approveAdminRequest(userNameToApprove, approve);
+        Admin adminApproved = ((Admin)approved);
+        return adminApproved.approveAdminRequest(userNameToApprove,approve);
     }
 
     public boolean removeAdminRequest(String userNameToApprove) {
@@ -1379,13 +1379,47 @@ public class SystemController extends Observable {
 
     /**
      * function that asks from the DB to get a Season
-     *
      * @param leagueID
      * @param seasonID
      * @return
      */
     public Season selectSeasonFromDB(String leagueID, String seasonID) {
         return DB.selectSeasonFromDB(leagueID, seasonID);
+    }
+
+    /**
+     *
+     * @param matchID
+     * @return
+     */
+    public Match selectMatchFromDB(String matchID){
+        return DB.selectMatchFromDB(Integer.parseInt(matchID));
+    }
+
+    public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
+        Subscriber subscriber = DB.selectSubscriberFromDB(username);
+        if(subscriber instanceof TeamOwner){
+            if(tryParseInt(establishedYear)){
+                Team team = DB.selectTeamFromDB(teamName);
+                    if(team==null){
+                        LinkedList<String> details = new LinkedList<>();
+                        details.add(teamName);
+                        details.add(establishedYear);
+                        details.add(username);
+                        return DB.addUnconfirmedTeamsToDB(teamName, details);
+                    }
+                }
+            }
+        return false;
+    }
+
+    protected boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 
@@ -1556,5 +1590,6 @@ public class SystemController extends Observable {
         }
         return false;
     }
+
 
 }
