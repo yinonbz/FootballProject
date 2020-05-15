@@ -38,11 +38,10 @@ public class LoginController {
         }
 
         FXMLLoader fxmlLoader = null;
-        String user = "TeamOwner";
+        String user = "AR";
         switch (user) {
             case "Admin":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Admin.fxml"));
-
                 break;
             case "AR":
                 fxmlLoader = new FXMLLoader(getClass().getResource("/resources/AR.fxml"));
