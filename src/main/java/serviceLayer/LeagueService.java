@@ -56,7 +56,9 @@ public class LeagueService {
 
         if (leagueID != null && username != null && matchingPolicy != null) {
             if(tryParseInt(win) && tryParseInt(tie) && tryParseInt(lose)) {
-                return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, Integer.parseInt(win),  Integer.parseInt(lose),  Integer.parseInt(tie), matchingPolicy, username);
+                if(seasonID >= 1970 && seasonID <= 2021) {
+                    return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, Integer.parseInt(win), Integer.parseInt(lose), Integer.parseInt(tie), matchingPolicy, username);
+                }
             }
         }
         return false;

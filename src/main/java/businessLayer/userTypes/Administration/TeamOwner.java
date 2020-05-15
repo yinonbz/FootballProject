@@ -108,10 +108,11 @@ public class TeamOwner extends Subscriber {
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && teamManager.getTeam() == null) {//ido change !teamManager.getTeam().equals(team)
+                    if (teamManager != null && teamManager.getTeam() == null) {
                         team.addTeamManager(teamManager);
                         teamManager.setTeam(team);
                         this.teamManagers.put(team, teamManager);
+                        //todo: call a function in TeamController to update the DB
                         isAdded = true;
                     }
                     break;
