@@ -9,12 +9,12 @@
    <top>
       <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#switchApprove" prefHeight="36.0" prefWidth="130.0" text="Approve Teams" textAlignment="CENTER">
+            <Button minHeight="30.0" minWidth="103.0" mnemonicParsing="false" onAction="#switchApprove" prefHeight="30.0" prefWidth="103.0" text="Approve Teams" textAlignment="CENTER">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
-            <MenuButton mnemonicParsing="false" prefHeight="32.0" prefWidth="110.0" text="Policy Settings">
+            <MenuButton minHeight="30.0" minWidth="113.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="128.0" text="Policy Settings">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#switchLeaguePane" text="Create League" />
                 <MenuItem mnemonicParsing="false" onAction="#switchSeasonPane" text="Create Season" />
@@ -22,14 +22,21 @@
                   <MenuItem mnemonicParsing="false" onAction="#switchActivatePolicyPane" text="Activate Match Policy" />
               </items>
             </MenuButton>
-            <Label fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" prefHeight="17.0" prefWidth="197.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
+            <Label fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" minWidth="173.0" prefHeight="21.0" prefWidth="173.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
                <HBox.margin>
-                  <Insets left="600.0" right="50.0" />
+                  <Insets left="650.0" />
                </HBox.margin>
                <font>
                   <Font name="System Italic" size="15.0" />
                </font>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
             </Label>
+            <Button minHeight="30.0" minWidth="65.0" mnemonicParsing="false" onAction="#logoutB" prefHeight="30.0" prefWidth="74.0" text="Logout">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin></Button>
          </children>
          <padding>
             <Insets bottom="10.0" left="20.0" top="10.0" />

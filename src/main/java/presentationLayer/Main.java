@@ -21,9 +21,10 @@ public class Main extends Application {
         //URL url = new File("Login.fxml").toURI().toURL();
         URL url =getClass().getClassLoader().getResource("Login.fxml");
         Parent root = FXMLLoader.load(url);
-
+        Scene scene = new Scene(root, 356, 700);
+        scene.getStylesheets().add("/css/login.css");
         primaryStage.setTitle("Login");
-            primaryStage.setScene(new Scene(root, 356, 700));
+        primaryStage.setScene(scene);
         primaryStage.show();
 
         ////////////////////////////////////////////////////////////////STUB!! Delete after cpnnecting the real DB

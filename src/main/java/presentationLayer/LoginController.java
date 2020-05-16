@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -25,6 +27,8 @@ public class LoginController implements Initializable {
 
     private SystemController systemController;
 
+    private boolean showPass;
+
     @FXML
     private BorderPane rootTest;
 
@@ -32,10 +36,12 @@ public class LoginController implements Initializable {
     private TextField usernameL;
 
     @FXML
-    private TextField passwordL;
+    private PasswordField passwordL;
 
     @FXML
+    private TextField passwordT;
 
+    @FXML
     public void loginClick(ActionEvent actionEvent) {
 /*
         if(usernameL.getText().equals("") || passwordL.getText().equals("")){
@@ -87,7 +93,7 @@ public class LoginController implements Initializable {
                 root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 Scene scene = new Scene(root1, 1166, 666);
-                scene.getStylesheets().add("/resources/style.css");
+                scene.getStylesheets().add("/css/style.css");
                 stage.setScene(scene);
                 //IDO ADD
                 ControllerInterface Controller = fxmlLoader.getController();
@@ -120,5 +126,25 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         systemController = SystemController.SystemController();
+        showPass = false;
+    }
+
+
+    public void showpassword(MouseEvent mouseEvent) {
+        if (showPass == false) {
+            passwordT.setText(passwordL.getText());
+            passwordT.setVisible(true);
+            passwordL.setVisible(false);
+            showPass = true;
+        }
+    }
+
+    public void hidepassword(MouseEvent mouseEvent) {
+        if(showPass == true) {
+            passwordL.setText(passwordT.getText());
+            passwordL.setVisible(true);
+            passwordT.setVisible(false);
+            showPass = false;
+        }
     }
 }
