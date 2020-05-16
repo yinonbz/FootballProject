@@ -58,31 +58,31 @@ public class LoginController implements Initializable {
             }
             switch (user) {
                 case "Admin":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Admin.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Admin.fxml"));
                     break;
                 case "AR":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/AR.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AR.fxml"));
                     break;
                 case "Coach":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Coach.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Coach.fxml"));
                     break;
                 case "Fan":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Fan.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Fan.fxml"));
                     break;
                 case "Guest":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Guest.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Guest.fxml"));
                     break;
                 case "Player":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Player.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Player.fxml"));
                     break;
                 case "Referee":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Referee.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Referee.fxml"));
                     break;
                 case "TeamManager":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/TeamManager.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TeamManager.fxml"));
                     break;
                 case "TeamOwner":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/TeamOwner.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TeamOwner.fxml"));
                     break;
                 default:
                     return;

@@ -1380,11 +1380,16 @@ public class SystemController {
             if(tryParseInt(establishedYear)){
                 Team team = DB.selectTeamFromDB(teamName);
                     if(team==null){
-                        LinkedList<String> details = new LinkedList<>();
-                        details.add(teamName);
-                        details.add(establishedYear);
-                        details.add(username);
-                        return DB.addUnconfirmedTeamsToDB(teamName, details);
+                        if(DB.selectUnconfirmedTeamsFromDB(teamName) == null) {
+                            LinkedList<String> details = new LinkedList<>();
+                            details.add(teamName);
+                            details.add(establishedYear);
+                            details.add(username);
+                            return DB.addUnconfirmedTeamsToDB(teamName, details);
+                        }
+                        else{
+                            throw new AlreadyExistException("There is already a request pending for a team with this name. Please select a different name or wait for the team to be confirmed.");
+                        }
                     }
                     else{
                         throw new AlreadyExistException("There is already a team with this name in the system. Please select a different name.");

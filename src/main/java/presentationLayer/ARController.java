@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 import serviceLayer.LeagueService;
 
 import java.io.IOException;
@@ -125,6 +126,8 @@ public class ARController implements ControllerInterface,Initializable {
             String teamToApprove = list.get(i);
             leagueService.confirmTeamRequestThroughRepresentative(teamToApprove, userName);
         }
+        showAlert("Teams Approved Successfully","Teams were confirmed successfully.", Alert.AlertType.CONFIRMATION);
+        displayUnconfirmedTeams();
     }
     @FXML
     public void chooseTeam(){
@@ -203,12 +206,7 @@ public class ARController implements ControllerInterface,Initializable {
 
         userLable.setText("Welcome " + userName);
 
-        ObservableList<String> list = FXCollections.observableArrayList();
-        //import all unapproved team names to teamStringList from DB
-        leagueService = new LeagueService();
-        list.addAll(leagueService.getAllUnconfirmedTeams());
-        teamsViewL.setItems(list);
-        teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        displayUnconfirmedTeams();
 
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
@@ -234,19 +232,37 @@ public class ARController implements ControllerInterface,Initializable {
         );
     }
 
+    public void displayUnconfirmedTeams(){
+        ObservableList<String> list = FXCollections.observableArrayList();
+        //import all unapproved team names to teamStringList from DB
+        leagueService = new LeagueService();
+        list.addAll(leagueService.getAllUnconfirmedTeams());
+        teamsViewL.setItems(list);
+        teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
+
     public void logoutB(ActionEvent actionEvent) {
         userName = null;
         Parent root1 = null;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Login.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
             root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root1, 356, 700);
+            scene.getStylesheets().add("/css/login.css");
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showAlert(String title, String text, Alert.AlertType alertType){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
     }
 }

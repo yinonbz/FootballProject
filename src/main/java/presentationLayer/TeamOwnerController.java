@@ -102,10 +102,11 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         userName = null;
         Parent root1 = null;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Login.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
             root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root1, 356, 700);
+            scene.getStylesheets().add("/css/login.css");
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
