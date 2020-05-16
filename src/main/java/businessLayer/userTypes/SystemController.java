@@ -425,6 +425,7 @@ public class SystemController extends Observable {
                 //checks what is the status of the team
                 if (chosenTeam.closeTeamPermanently()) {
                     DB.addTeamToDB(teamName, chosenTeam);
+                    updateTeamStatusToUsers(chosenTeam, "The team " + chosenTeam.getTeamName() + " was closed permanently.");
                     return true;
                 }
                 //team is already closed by admin
@@ -1541,8 +1542,10 @@ public class SystemController extends Observable {
 
         if (page != null && event != null) {
             LinkedList<String> followers = DB.getPageFollowers(page);
-            followers.add(event);
-            notifyObservers(followers);
+            if (followers != null) {
+                followers.add(event);
+                notifyObservers(followers);
+            }
         }
     }
 
@@ -1573,8 +1576,10 @@ public class SystemController extends Observable {
 
         if (match != null && event != null) {
             LinkedList<String> followers = DB.getMatchFollowers(match);
-            followers.add(event);
-            notifyObservers(followers);
+            if (followers != null) {
+                followers.add(event);
+                notifyObservers(followers);
+            }
         }
     }
 
@@ -1626,8 +1631,10 @@ public class SystemController extends Observable {
 
         if (match != null && event != null) {
             LinkedList<String> followers = DB.getMatchReferees(match);
-            followers.add(event);
-            notifyObservers(followers);
+            if (followers != null) {
+                followers.add(event);
+                notifyObservers(followers);
+            }
         }
     }
 
@@ -1659,6 +1666,7 @@ public class SystemController extends Observable {
 
     /**
      * The function receives a coach and a team and binds them together in the database
+     *
      * @param coach
      * @param team
      */
@@ -1671,6 +1679,7 @@ public class SystemController extends Observable {
 
     /**
      * The function receives a stadium and a team and binds them together in the database
+     *
      * @param stadium
      * @param team
      */
@@ -1678,6 +1687,69 @@ public class SystemController extends Observable {
 
         if (stadium != null && team != null) {
             DB.addStadiumToTeam(stadium, team);
+        }
+    }
+
+    /**
+     * The function receives a team-owner and a team and binds them together in the database
+     *
+     * @param owner
+     * @param team
+     */
+    public void addOwnerToTeam(TeamOwner owner, Team team) {
+
+        if (owner != null && team != null) {
+            DB.addOwnerToTeam(owner, team);
+        }
+    }
+
+    /**
+     * The function receives a team and an event that occurred at the team, collects the names of the team's owners and
+     * managers as well as the names of the admins of the system and updates each of them of the event
+     *
+     * @param team
+     * @param event
+     */
+    public void updateTeamStatusToUsers(Team team, String event) {
+
+        if (team != null && event != null) {
+            LinkedList<String> usersToNotify;
+            LinkedList<TeamManager> teamManagers = new LinkedList<>();
+            LinkedList<TeamOwner> teamOwners = new LinkedList<>();
+            teamManagers = DB.getTeamTeamManagers(team);
+            teamOwners = DB.getTeamTeamOwners(team);
+            usersToNotify = DB.getAdminsSubscribers();
+            if (teamManagers != null) {
+                for (TeamManager manager : teamManagers) {
+                    usersToNotify.add(manager.getUsername());
+                }
+            }
+            if (teamOwners != null) {
+                for (TeamOwner owner : teamOwners) {
+                    usersToNotify.add(owner.getUsername());
+                }
+            }
+            usersToNotify.add(event);
+            notifyObservers(usersToNotify);
+        }
+    }
+
+    /**
+     * The function receives a team and an owner and removes the owner from the team's data structures
+     *
+     * @param team
+     * @param owner
+     */
+    public void updateOwnerOfRemoval(Team team, TeamOwner owner) {
+
+        if (team != null && owner != null) {
+            LinkedList<String> adminToUpdate = new LinkedList<>();
+            String name = DB.removeOwnerFromTeam(team, owner);
+            if (name != null) {
+                adminToUpdate.add(name);
+                adminToUpdate.add("You have lost your rights as an owner for the team '" + team.getTeamName() + "'.");
+                notifyObservers(adminToUpdate);
+            }
         }
     }
 }

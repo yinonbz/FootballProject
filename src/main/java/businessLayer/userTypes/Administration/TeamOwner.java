@@ -346,8 +346,8 @@ public class TeamOwner extends Subscriber {
     public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
             team.setActive(true);
+            systemController.updateTeamStatusToUsers(team, "The team '" + team.getTeamName() + "' is now active.");
             return true;
-            //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
         }
         //System.out.println("The team '" + team.getTeamName() + "' has already been enabled.");
         return false;
@@ -362,8 +362,9 @@ public class TeamOwner extends Subscriber {
     public Boolean disableStatus(Team team) {
         if (team.getActive()) {
             team.setActive(false);
+            systemController.updateTeamStatusToUsers(team, "The team '" + team.getTeamName() + "' is now inactive.");
             return true;
-            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not-active.");
+            //System.out.println("The team '" + team.getTeamName() + "' is now inactive.");
         }
         //System.out.println("The team '" + team.getTeamName() + "' has already been disabled.");
         return false;
@@ -646,6 +647,7 @@ public class TeamOwner extends Subscriber {
                         }
 
                         teamOwners.get(team).remove(teamOwnerToRemove);
+                        systemController.updateOwnerOfRemoval(team, teamOwnerToRemove);
                         return true;
                     }
                 }
@@ -687,6 +689,7 @@ public class TeamOwner extends Subscriber {
                             teamOwnerToRemove.setOriginalObject(null);
                         }
                         teamOwners.get(team).remove(teamOwnerToRemove);
+                        systemController.updateOwnerOfRemoval(team, teamOwnerToRemove);
                         return true;
                     }
                 }
@@ -741,6 +744,7 @@ public class TeamOwner extends Subscriber {
         teamOwners.get(team).add(newTeamOwner);
         newTeamOwner.getTeams().add(team);
         team.getTeamOwners().add(newTeamOwner);
+        systemController.addOwnerToTeam(newTeamOwner, team);
         //todo - add complaints to newTeamOwner? if not, complaints needs to be added manually to the newTeamOwner from the original object
         //System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
     }

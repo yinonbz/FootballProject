@@ -63,6 +63,7 @@ public class DemoDB {
         teamTeamManagers = new HashMap<>();
         teamCoaches = new HashMap<>();
         teamStadiums = new HashMap<>();
+        teamTeamOwners = new HashMap<>();
 
     }
 
@@ -563,7 +564,8 @@ public class DemoDB {
     }
 
     /**
-     * The function receives a coach and a team and adds the coach to the team's managers data structure
+     * The function receives a coach and a team and adds the coach to the team's coaches data structure
+     *
      * @param coach
      * @param team
      */
@@ -581,7 +583,8 @@ public class DemoDB {
 
 
     /**
-     * The function receives a coach and a team and adds the coach to the team's managers data structure
+     * The function receives a coach and a team and adds the coach to the team's stadiums data structure
+     *
      * @param stadium
      * @param team
      */
@@ -595,6 +598,83 @@ public class DemoDB {
             temp.add(stadium);
             teamStadiums.put(team, temp);
         }
+    }
+
+    /**
+     * The function receives a team-owner and a team and adds the team-owner to the team's owners data structure
+     *
+     * @param owner
+     * @param team
+     */
+    public void addOwnerToTeam(TeamOwner owner, Team team) {
+        if (teamTeamOwners.containsKey(team)) {
+            if (!teamTeamOwners.get(team).contains(owner)) {
+                teamTeamOwners.get(team).add(owner);
+            }
+        } else {
+            LinkedList<TeamOwner> temp = new LinkedList<>();
+            temp.add(owner);
+            teamTeamOwners.put(team, temp);
+        }
+    }
+
+    /**
+     * The function returns the team's team-owners
+     *
+     * @param team
+     * @return
+     */
+    public LinkedList<TeamOwner> getTeamTeamOwners(Team team) {
+        return teamTeamOwners.get(team);
+    }
+
+    /**
+     * The function returns the team's team-owners
+     *
+     * @param team
+     * @return
+     */
+    public LinkedList<TeamManager> getTeamTeamManagers(Team team) {
+        return teamTeamManagers.get(team);
+    }
+
+    /**
+     * The function returns the admins user-names of the system
+     *
+     * @return
+     */
+    public LinkedList<String> getAdminsSubscribers() {
+        LinkedList<String> admins = new LinkedList<>();
+        for (Map.Entry entry : systemSubscribers.entrySet()) {
+            if (entry.getValue() instanceof Admin) {
+                admins.add((String) entry.getKey());
+            }
+        }
+        return admins;
+    }
+
+    /**
+     * The function receives a team and an owner, verifies the owner is an owner of the team, then removes him
+     * and returns his username
+     *
+     * @param team
+     * @param owner
+     * @return
+     */
+    public String removeOwnerFromTeam(Team team, TeamOwner owner) {
+
+        if (teamTeamOwners.containsKey(team)) {
+            LinkedList<TeamOwner> owners = teamTeamOwners.get(team);
+            for (TeamOwner t : owners) {
+                if (t.getUsername().equals(owner.getUsername())) {
+                    String result = t.getUsername();
+                    owners.remove(t);
+                    teamTeamOwners.put(team, owners);
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 
     //-------------------------LEAGUE CONTROLLER-------------------------//
