@@ -177,7 +177,7 @@ public class RefereeController implements ControllerInterface, Initializable {
 
     @FXML
     public void reportRedCard() {
-        String time = timeRed.getText();
+        String time =  timeRed.getText();
         String player = playerRed.getText();
         int seasonId = seasonRedId.getValue();
         matchService.reportOnRedCard(time, player, String.valueOf(seasonId), userLabel.getText());
