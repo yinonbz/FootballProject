@@ -189,7 +189,7 @@ public class ARController implements ControllerInterface, Initializable {
 
     @Override
     public void setUser(String usernameL) {
-        userName=usernameL;
+        userLable.setText("Welcome " + usernameL);
     }
 
 

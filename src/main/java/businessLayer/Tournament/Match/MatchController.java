@@ -63,7 +63,7 @@ public class MatchController {
             Player playerG = getPlayerFromDB(PlayerGoal);
             Player playerA= getPlayerFromDB(playerAssist);
             boolean isOwnG;
-            if(isOwnGoal.equals("T")){
+            if(isOwnGoal.equals("true")){
                 isOwnG = true;
             }
             else{

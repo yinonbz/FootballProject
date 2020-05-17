@@ -97,6 +97,7 @@ public class LoginController implements Initializable {
                 stage.setScene(scene);
                 //IDO ADD
                 ControllerInterface Controller = fxmlLoader.getController();
+                System.out.println(usernameL.getText());
                 Controller.setUser(usernameL.getText());
                 //
                 stage.show();
