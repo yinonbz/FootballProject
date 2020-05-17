@@ -19,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //URL url = new File("Login.fxml").toURI().toURL();
-        URL url =getClass().getClassLoader().getResource("fxml/Login.fxml");
+        URL url =getClass().getResource("/fxml/Login.fxml");
         Parent root = FXMLLoader.load(url);
         Scene scene = new Scene(root, 356, 700);
         scene.getStylesheets().add("/css/login.css");
