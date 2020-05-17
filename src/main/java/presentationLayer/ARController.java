@@ -3,7 +3,6 @@ package presentationLayer;
 import javafx.collections.*;
 import javafx.event.*;
 import javafx.fxml.*;
-import javafx.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
