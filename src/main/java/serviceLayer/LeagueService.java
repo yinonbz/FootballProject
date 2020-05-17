@@ -213,5 +213,8 @@ public class LeagueService {
     public ArrayList<String> getAllULeagues(){
         return systemController.getAllULeaguesInDB();
     }
-
+    //אtodo ido added
+    public ArrayList<String> getAllTeamsNames(){
+        return systemController.getAllTeamsNames();
+    }
 }

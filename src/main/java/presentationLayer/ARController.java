@@ -15,6 +15,7 @@ import serviceLayer.LeagueService;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -117,11 +118,13 @@ public class ARController implements ControllerInterface,Initializable {
     }
     @FXML
     public void chooseTeam(){
-        LinkedList<String> list = (LinkedList<String>) addTeamsViewL.getSelectionModel().getSelectedItems();
+        ObservableList list = addTeamsViewL.getSelectionModel().getSelectedItems();
+        LinkedList<String> linkedList = new LinkedList<>();
+        linkedList.addAll(list);
         int leagueId = leagueTeamsSpinner.getValue();
         int seasonId = seasonTeamsSpinner.getValue();
         String user = userLable.getText();
-        //leagueService.chooseTeamForSeason(list,"leagueId","seasonId",user);
+        leagueService.chooseTeamForSeason(linkedList,"leagueId","seasonId",user);
     }
     @FXML
     public void switchSeasonPane(){
@@ -191,11 +194,17 @@ public class ARController implements ControllerInterface,Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         ObservableList<String> list = FXCollections.observableArrayList();
+        ObservableList<String> listTeams = FXCollections.observableArrayList();
+
         //import all unapproved team names to teamStringList from DB
         leagueService = new LeagueService();
         list.addAll(leagueService.getAllUnconfirmedTeams());
         teamsViewL.setItems(list);
         teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        listTeams.addAll(leagueService.getAllTeamsNames());
+        addTeamsViewL.setItems(listTeams);
+        addTeamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);

@@ -82,11 +82,11 @@
                         <Spinner fx:id="leagueTeamsSpinner" layoutX="406.0" layoutY="65.0" prefHeight="31.0" prefWidth="136.0" />
                         <Spinner fx:id="seasonTeamsSpinner" layoutX="406.0" layoutY="142.0" prefHeight="31.0" prefWidth="136.0" />
                         <ListView fx:id="addTeamsViewL" layoutX="14.0" layoutY="46.0" prefHeight="191.0" prefWidth="359.0" />
-                        <Button layoutX="406.0" layoutY="206.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="136.0" text="submit" />
+                        <Button layoutX="406.0" layoutY="206.0" mnemonicParsing="false" onAction="#chooseTeam" prefHeight="31.0" prefWidth="136.0" text="submit" />
                         <Label layoutX="441.0" layoutY="121.0" text="Season ID" />
                         <Label layoutX="441.0" layoutY="46.0" text="League ID" />
                      </children></Pane>
-                  <Pane fx:id="activatePolicyPane" prefHeight="550.0" prefWidth="620.0">
+                  <Pane fx:id="activatePolicyPane" prefHeight="550.0" prefWidth="620.0" visible="false">
                      <children>
                         <Label layoutX="77.0" layoutY="70.0" text="League ID" />
                         <Label layoutX="277.0" layoutY="70.0" text="Season ID" />
@@ -108,7 +108,6 @@
                         <Spinner fx:id="winSpinner" layoutX="253.0" layoutY="143.0" prefHeight="31.0" prefWidth="123.0" />
                         <Spinner fx:id="loseSpinner" layoutX="422.0" layoutY="143.0" prefHeight="31.0" prefWidth="136.0" />
                         <Spinner fx:id="tieSpinner" layoutX="600.0" layoutY="143.0" prefHeight="31.0" prefWidth="130.0" />
-                        <Pane prefHeight="543.0" prefWidth="718.0" visible="false" />
                         <Spinner fx:id="seasonSpinner" layoutX="249.0" layoutY="51.0" prefHeight="31.0" prefWidth="128.0" />
                         <Label layoutX="281.0" layoutY="23.0" text="Season ID" />
                         <Label layoutX="262.0" layoutY="115.0" text="Win score policy" />
