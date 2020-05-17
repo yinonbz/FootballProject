@@ -69,6 +69,7 @@
                         <mainClass>main</mainClass>
                     </configuration>
                 </plugin>-->
+
             </plugins>
 
         </pluginManagement>

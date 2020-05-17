@@ -225,7 +225,7 @@ public class AssociationRepresentative extends Subscriber {
 
     @Override
     public String toString() {
-        return "AssociationRepresentative";
+        return "AR";
     }
 
     public boolean isApproved() {

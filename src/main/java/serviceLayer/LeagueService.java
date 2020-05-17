@@ -3,6 +3,7 @@ package serviceLayer;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.userTypes.SystemController;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -33,6 +34,8 @@ public class LeagueService {
     public boolean addLeagueThroughRepresentative(String leagueID, String username) {
 
         if (leagueID != null && username != null) {
+            System.out.println(leagueID +" ,"+username);
+            //need to be connected ido created stab
             return leagueController.addLeagueThroughRepresentative(leagueID, username);
         }
         return false;
@@ -52,14 +55,15 @@ public class LeagueService {
      * @param username
      * @return
      */
-    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, String win, String lose, String tie, String matchingPolicy, String username) {
+    public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
+        System.out.println("every thing are ok");
+        //todo ido put it this way to create stub need to return as usual
         if (leagueID != null && username != null && matchingPolicy != null) {
-            if(tryParseInt(win) && tryParseInt(tie) && tryParseInt(lose)) {
-                return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, Integer.parseInt(win),  Integer.parseInt(lose),  Integer.parseInt(tie), matchingPolicy, username);
-            }
+            return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose,  tie, matchingPolicy, username);
         }
         return false;
+
     }
 
 
@@ -202,5 +206,12 @@ public class LeagueService {
         }
     }
 
+    public ArrayList<String> getAllUnconfirmedTeams(){
+        return systemController.getAllUnconfirmedTeamsInDB();
+    }
+
+    public ArrayList<String> getAllULeagues(){
+        return systemController.getAllULeaguesInDB();
+    }
 
 }

@@ -48,7 +48,7 @@ public class MatchService {
      */
     public boolean reportGoalThroughReferee(String time, String PlayerGoal, String playerAssist, String isOwnGoal, String matchID, String username){
         if (!PlayerGoal.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            if (isOwnGoal.equals("F") || isOwnGoal.equals("T")) {
+            if (isOwnGoal.equals("false") || isOwnGoal.equals("true")) {
                 int timeEvent = Integer.parseInt(time);
                 if (timeEvent > 0 && timeEvent < 121) {
                     return matchController.reportGoal(time, PlayerGoal, playerAssist, isOwnGoal, matchID, username);
