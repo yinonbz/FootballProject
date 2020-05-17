@@ -122,7 +122,7 @@ public class RefereeTest {
 
         //5
         //checks goal
-        assertTrue(matchService.reportGoalThroughReferee("4","Mane","Salah", "T","4","Alon"));
+        assertTrue(matchService.reportGoalThroughReferee("4","Mane","Salah", "true","4","Alon"));
 
         //6
         //check substitute
