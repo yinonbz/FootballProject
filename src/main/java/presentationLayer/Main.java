@@ -19,11 +19,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //URL url = new File("Login.fxml").toURI().toURL();
-        URL url =getClass().getClassLoader().getResource("Login.fxml");
+        URL url =getClass().getResource("/fxml/Login.fxml");
         Parent root = FXMLLoader.load(url);
-
-        primaryStage.setTitle("Hello World");
-            primaryStage.setScene(new Scene(root, 356, 700));
+        Scene scene = new Scene(root, 356, 700);
+        scene.getStylesheets().add("/css/login.css");
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(scene);
         primaryStage.show();
 
         ////////////////////////////////////////////////////////////////STUB!! Delete after cpnnecting the real DB

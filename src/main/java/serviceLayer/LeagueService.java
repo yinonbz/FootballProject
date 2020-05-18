@@ -217,4 +217,8 @@ public class LeagueService {
     public ArrayList<String> getAllTeamsNames(){
         return systemController.getAllTeamsNames();
     }
+
+/*    public ArrayList<String> getAllSeasonsFromLeague(String League){
+
+    }*/
 }

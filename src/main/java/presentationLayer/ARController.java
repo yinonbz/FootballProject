@@ -1,17 +1,15 @@
 package presentationLayer;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.fxml.Initializable;
+import javafx.collections.*;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import serviceLayer.LeagueService;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -21,9 +19,11 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 
-public class ARController implements ControllerInterface,Initializable {
+public class ARController implements ControllerInterface, Initializable {
 
     private LeagueService leagueService;
+
+    private String userName;
 
     @FXML
     private Pane approveOrCreatePane;
@@ -42,7 +42,7 @@ public class ARController implements ControllerInterface,Initializable {
     @FXML
     private Pane activatePolicyPane;
     @FXML
-    private Pane addTeamsPane;
+    private Pane addTeamדToLeaguePane;
     @FXML
     private javafx.scene.control.Label userLable;
     @FXML
@@ -56,11 +56,13 @@ public class ARController implements ControllerInterface,Initializable {
     @FXML
     private Spinner<Integer> seasonSpinner;
     @FXML
-    private Spinner<Integer> leagueTeamsSpinner;
-    @FXML
     private Spinner<Integer> seasonTeamsSpinner;
     @FXML
     private ComboBox<String> leagueCombo;
+    @FXML
+    private ComboBox<String> leagueCombo2;
+    @FXML
+    private ComboBox<String> seasonCombo2;
     @FXML
     private ComboBox<String> policyCombo;
     @FXML
@@ -73,12 +75,15 @@ public class ARController implements ControllerInterface,Initializable {
     ListView addTeamsViewL;
     @FXML
     public void switchApprove(){
+
+        displayUnconfirmedTeams();
+
         titleL.setText("Approve Teams");
         createSeasonPane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(true);
         activatePolicyPane.setVisible(false);
-        addTeamsPane.setVisible(false);
+        addTeamדToLeaguePane.setVisible(false);
 
 
     }
@@ -93,7 +98,7 @@ public class ARController implements ControllerInterface,Initializable {
         activatePolicyPane.setVisible(true);
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
-        addTeamsPane.setVisible(false);
+        addTeamדToLeaguePane.setVisible(false);
 
     }
     @FXML
@@ -103,25 +108,30 @@ public class ARController implements ControllerInterface,Initializable {
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
-        addTeamsPane.setVisible(false);
-        leagueTeamsSpinner.getValueFactory().setValue(0);
+        addTeamדToLeaguePane.setVisible(false);
+        //leagueTeamsSpinner.getValueFactory().setValue(0);
         seasonTeamsSpinner.getValueFactory().setValue(0);
     }
     public void activatePolicy(){
-        int leagueId = leagueTeamsSpinner.getValue();
+        //int leagueId = leagueTeamsSpinner.getValue();
         int seasonId = seasonTeamsSpinner.getValue();
         //leagueService.activateMatchPolicyForSeason(leagueId,seasonId,userLable.getText());
     }
     public void clickApprove(ActionEvent actionEvent) {
         ObservableList<String> list = teamsViewL.getSelectionModel().getSelectedItems();
-        //approve team
+        for(int i = 0; i < list.size(); i++){
+            String teamToApprove = list.get(i);
+            leagueService.confirmTeamRequestThroughRepresentative(teamToApprove, userName);
+        }
+        showAlert("Teams Approved Successfully","Teams were confirmed successfully.", Alert.AlertType.CONFIRMATION);
+        displayUnconfirmedTeams();
     }
     @FXML
     public void chooseTeam(){
         ObservableList list = addTeamsViewL.getSelectionModel().getSelectedItems();
         LinkedList<String> linkedList = new LinkedList<>();
         linkedList.addAll(list);
-        int leagueId = leagueTeamsSpinner.getValue();
+        //int leagueId = leagueTeamsSpinner.getValue();
         int seasonId = seasonTeamsSpinner.getValue();
         String user = userLable.getText();
         leagueService.chooseTeamForSeason(linkedList,"leagueId","seasonId",user);
@@ -129,7 +139,7 @@ public class ARController implements ControllerInterface,Initializable {
     @FXML
     public void switchSeasonPane(){
         titleL.setText("Create Season");
-        addTeamsPane.setVisible(false);
+        addTeamדToLeaguePane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         activatePolicyPane.setVisible(false);
@@ -139,11 +149,16 @@ public class ARController implements ControllerInterface,Initializable {
     @FXML
     public void switchAddTeamPane(){
         titleL.setText("Add Teams To season");
-        addTeamsPane.setVisible(true);
+        addTeamדToLeaguePane.setVisible(true);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         createSeasonPane.setVisible(false);
         activatePolicyPane.setVisible(false);
+
+        leagueCombo2.getItems().addAll(
+                leagueService.getAllULeagues()
+        );
+
 
     }
     @FXML
@@ -193,14 +208,10 @@ public class ARController implements ControllerInterface,Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        userLable.setText("Welcome " + userName);
+
         ObservableList<String> list = FXCollections.observableArrayList();
         ObservableList<String> listTeams = FXCollections.observableArrayList();
-
-        //import all unapproved team names to teamStringList from DB
-        leagueService = new LeagueService();
-        list.addAll(leagueService.getAllUnconfirmedTeams());
-        teamsViewL.setItems(list);
-        teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         listTeams.addAll(leagueService.getAllTeamsNames());
         addTeamsViewL.setItems(listTeams);
@@ -213,7 +224,7 @@ public class ARController implements ControllerInterface,Initializable {
         SpinnerValueFactory<Integer> valueFactorySeasonTeams = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         SpinnerValueFactory<Integer> valueFactorySeasonLeague = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         seasonTeamsSpinner.setValueFactory(valueFactorySeasonTeams);
-        leagueTeamsSpinner.setValueFactory(valueFactorySeasonLeague);
+        //leagueTeamsSpinner.setValueFactory(valueFactorySeasonLeague);
         winSpinner.setValueFactory(valueFactoryWin);
         loseSpinner.setValueFactory(valueFactoryLose);
         tieSpinner.setValueFactory(valueFactoryTie);
@@ -228,5 +239,51 @@ public class ARController implements ControllerInterface,Initializable {
         leagueCombo.getItems().addAll(
                 leagueService.getAllULeagues()
         );
+
+
+
+    }
+
+    public void displayUnconfirmedTeams(){
+        ObservableList<String> list = FXCollections.observableArrayList();
+        //import all unapproved team names to teamStringList from DB
+        leagueService = new LeagueService();
+        list.addAll(leagueService.getAllUnconfirmedTeams());
+        teamsViewL.setItems(list);
+        teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
+
+    public void logoutB(ActionEvent actionEvent) {
+        userName = null;
+        Parent root1 = null;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+            root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root1, 356, 700);
+            scene.getStylesheets().add("/css/login.css");
+            stage.setScene(scene);
+            stage.show();
+            ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void selectLeague(ActionEvent actionEvent){
+        seasonCombo2.setDisable(false);
+
+    }
+
+    private void showAlert(String title, String text, Alert.AlertType alertType){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    public void leagueSelect2(ActionEvent actionEvent) {
+
     }
 }
