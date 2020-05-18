@@ -385,6 +385,7 @@ public class DataBaseValues2 {
         Tottenham.getPlayers().add(Rose);
 
 
+        DB.addSubscriberToDB("Alon",Alon);
 
         DB.addSubscriberToDB("Buzaglo",Buzaglo);
         DB.addSubscriberToDB("Scholes",Scholes);
@@ -465,6 +466,10 @@ public class DataBaseValues2 {
         //List<Referee> RefereeList = new ArrayList<>();
         //RefereeList.add(Rayola);
         //m3.setReferees(RefereeList);
+        m1.chooseMainReferee(Alon);
+        Alon.getRefMatches().put(1,m1);
+        m2.chooseMainReferee(Alon);
+        Alon.getRefMatches().put(2,m2);
         m4.chooseMainReferee(Alon);
         Alon.getRefMatches().put(4,m4);
 

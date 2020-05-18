@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -25,6 +27,8 @@ public class LoginController implements Initializable {
 
     private SystemController systemController;
 
+    private boolean showPass;
+
     @FXML
     private BorderPane rootTest;
 
@@ -32,10 +36,12 @@ public class LoginController implements Initializable {
     private TextField usernameL;
 
     @FXML
-    private TextField passwordL;
+    private PasswordField passwordL;
 
     @FXML
+    private TextField passwordT;
 
+    @FXML
     public void loginClick(ActionEvent actionEvent) {
 /*
         if(usernameL.getText().equals("") || passwordL.getText().equals("")){
@@ -52,31 +58,31 @@ public class LoginController implements Initializable {
             }
             switch (user) {
                 case "Admin":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Admin.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Admin.fxml"));
                     break;
                 case "AR":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/AR.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AR.fxml"));
                     break;
                 case "Coach":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Coach.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Coach.fxml"));
                     break;
                 case "Fan":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Fan.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Fan.fxml"));
                     break;
                 case "Guest":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Guest.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Guest.fxml"));
                     break;
                 case "Player":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Player.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Player.fxml"));
                     break;
                 case "Referee":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/Referee.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Referee.fxml"));
                     break;
                 case "TeamManager":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/TeamManager.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TeamManager.fxml"));
                     break;
                 case "TeamOwner":
-                    fxmlLoader = new FXMLLoader(getClass().getResource("/resources/TeamOwner.fxml"));
+                    fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TeamOwner.fxml"));
                     break;
                 default:
                     return;
@@ -87,7 +93,7 @@ public class LoginController implements Initializable {
                 root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 Scene scene = new Scene(root1, 1166, 666);
-                scene.getStylesheets().add("/resources/style.css");
+                scene.getStylesheets().add("/css/style.css");
                 stage.setScene(scene);
                 //IDO ADD
                 ControllerInterface Controller = fxmlLoader.getController();
@@ -100,15 +106,15 @@ public class LoginController implements Initializable {
                 e.printStackTrace();
             }
         } catch (MissingInputException e){
-            showAlert(e.getMessage(),"Please fill all the fields in this form.", Alert.AlertType.INFORMATION);
+            showAlert(e.getMessage(),"Please fill all the fields in this form.", Alert.AlertType.WARNING);
         } catch (NotFoundInDbException e){
-            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.INFORMATION);
+            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.WARNING);
         }catch (NotApprovedException e){
-            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.INFORMATION);
+            showAlert("Failed to log in",e.getMessage(), Alert.AlertType.WARNING);
         }
     }
 
-    public void showAlert(String title, String text, Alert.AlertType alertType){
+    private void showAlert(String title, String text, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -121,5 +127,25 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         systemController = SystemController.SystemController();
+        showPass = false;
+    }
+
+
+    public void showpassword(MouseEvent mouseEvent) {
+        if (showPass == false) {
+            passwordT.setText(passwordL.getText());
+            passwordT.setVisible(true);
+            passwordL.setVisible(false);
+            showPass = true;
+        }
+    }
+
+    public void hidepassword(MouseEvent mouseEvent) {
+        if(showPass == true) {
+            passwordL.setText(passwordT.getText());
+            passwordL.setVisible(true);
+            passwordT.setVisible(false);
+            showPass = false;
+        }
     }
 }
