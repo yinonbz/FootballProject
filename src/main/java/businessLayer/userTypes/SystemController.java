@@ -1429,4 +1429,15 @@ public class SystemController {
         }
         return leagueNamesInDB;
     }
+
+    public ArrayList<String> getAllTeamsNames() {
+        if(DB.getTeams()!=null &&DB.getTeams().size()>0) {
+            ArrayList<String> teamsName = new ArrayList<>();
+            teamsName.addAll(DB.getTeams().keySet());
+            return teamsName;
+        }
+        else{
+            return null;
+        }
+    }
 }
