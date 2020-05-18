@@ -73,14 +73,14 @@
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="addTeamsPane" prefHeight="550.0" prefWidth="620.0" visible="false">
+                  <Pane fx:id="addTeamדToLeaguePane" prefHeight="550.0" prefWidth="620.0">
                      <children>
-                        <Spinner fx:id="leagueTeamsSpinner" layoutX="406.0" layoutY="65.0" prefHeight="31.0" prefWidth="136.0" />
-                        <Spinner fx:id="seasonTeamsSpinner" layoutX="406.0" layoutY="142.0" prefHeight="31.0" prefWidth="136.0" />
                         <ListView fx:id="addTeamsViewL" layoutX="14.0" layoutY="46.0" prefHeight="191.0" prefWidth="359.0" />
-                        <Button layoutX="406.0" layoutY="206.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="136.0" text="submit" />
-                        <Label layoutX="441.0" layoutY="121.0" text="Season ID" />
-                        <Label layoutX="441.0" layoutY="46.0" text="League ID" />
+                        <Button layoutX="27.0" layoutY="250.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="72.0" text="Submit" />
+                        <Label layoutX="399.0" layoutY="133.0" text="Season ID" />
+                        <Label layoutX="399.0" layoutY="57.0" text="League ID" />
+                        <ComboBox fx:id="leagueCombo2" layoutX="399.0" layoutY="77.0" onAction="#leagueSelect2" prefHeight="25.0" prefWidth="151.0" />
+                        <ChoiceBox fx:id="seasonCombo2" disable="true" layoutX="400.0" layoutY="155.0" prefHeight="25.0" prefWidth="153.0" />
                      </children></Pane>
                   <Pane fx:id="activatePolicyPane" prefHeight="550.0" prefWidth="620.0" visible="false">
                      <children>

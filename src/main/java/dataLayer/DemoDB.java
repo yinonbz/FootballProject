@@ -11,10 +11,7 @@ import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DemoDB{
     //------------System Controller------------//

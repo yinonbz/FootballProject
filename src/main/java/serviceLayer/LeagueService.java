@@ -214,4 +214,7 @@ public class LeagueService {
         return systemController.getAllULeaguesInDB();
     }
 
+/*    public ArrayList<String> getAllSeasonsFromLeague(String League){
+
+    }*/
 }

@@ -41,7 +41,7 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     private Pane activatePolicyPane;
     @FXML
-    private Pane addTeamsPane;
+    private Pane addTeamדToLeaguePane;
     @FXML
     private javafx.scene.control.Label userLable;
     @FXML
@@ -55,11 +55,13 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     private Spinner<Integer> seasonSpinner;
     @FXML
-    private Spinner<Integer> leagueTeamsSpinner;
-    @FXML
     private Spinner<Integer> seasonTeamsSpinner;
     @FXML
     private ComboBox<String> leagueCombo;
+    @FXML
+    private ComboBox<String> leagueCombo2;
+    @FXML
+    private ComboBox<String> seasonCombo2;
     @FXML
     private ComboBox<String> policyCombo;
     @FXML
@@ -72,12 +74,15 @@ public class ARController implements ControllerInterface, Initializable {
     ListView addTeamsViewL;
     @FXML
     public void switchApprove(){
+
+        displayUnconfirmedTeams();
+
         titleL.setText("Approve Teams");
         createSeasonPane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(true);
         activatePolicyPane.setVisible(false);
-        addTeamsPane.setVisible(false);
+        addTeamדToLeaguePane.setVisible(false);
 
 
     }
@@ -92,7 +97,7 @@ public class ARController implements ControllerInterface, Initializable {
         activatePolicyPane.setVisible(true);
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
-        addTeamsPane.setVisible(false);
+        addTeamדToLeaguePane.setVisible(false);
 
     }
     @FXML
@@ -102,12 +107,12 @@ public class ARController implements ControllerInterface, Initializable {
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
-        addTeamsPane.setVisible(false);
-        leagueTeamsSpinner.getValueFactory().setValue(0);
+        addTeamדToLeaguePane.setVisible(false);
+        //leagueTeamsSpinner.getValueFactory().setValue(0);
         seasonTeamsSpinner.getValueFactory().setValue(0);
     }
     public void activatePolicy(){
-        int leagueId = leagueTeamsSpinner.getValue();
+        //int leagueId = leagueTeamsSpinner.getValue();
         int seasonId = seasonTeamsSpinner.getValue();
         //leagueService.activateMatchPolicyForSeason(leagueId,seasonId,userLable.getText());
     }
@@ -123,7 +128,7 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     public void chooseTeam(){
         LinkedList<String> list = (LinkedList<String>) addTeamsViewL.getSelectionModel().getSelectedItems();
-        int leagueId = leagueTeamsSpinner.getValue();
+        //int leagueId = leagueTeamsSpinner.getValue();
         int seasonId = seasonTeamsSpinner.getValue();
         String user = userLable.getText();
         //leagueService.chooseTeamForSeason(list,"leagueId","seasonId",user);
@@ -131,7 +136,7 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     public void switchSeasonPane(){
         titleL.setText("Create Season");
-        addTeamsPane.setVisible(false);
+        addTeamדToLeaguePane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         activatePolicyPane.setVisible(false);
@@ -141,11 +146,16 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     public void switchAddTeamPane(){
         titleL.setText("Add Teams To season");
-        addTeamsPane.setVisible(true);
+        addTeamדToLeaguePane.setVisible(true);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         createSeasonPane.setVisible(false);
         activatePolicyPane.setVisible(false);
+
+        leagueCombo2.getItems().addAll(
+                leagueService.getAllULeagues()
+        );
+
 
     }
     @FXML
@@ -197,7 +207,7 @@ public class ARController implements ControllerInterface, Initializable {
 
         userLable.setText("Welcome " + userName);
 
-        displayUnconfirmedTeams();
+
 
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
@@ -206,7 +216,7 @@ public class ARController implements ControllerInterface, Initializable {
         SpinnerValueFactory<Integer> valueFactorySeasonTeams = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         SpinnerValueFactory<Integer> valueFactorySeasonLeague = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         seasonTeamsSpinner.setValueFactory(valueFactorySeasonTeams);
-        leagueTeamsSpinner.setValueFactory(valueFactorySeasonLeague);
+        //leagueTeamsSpinner.setValueFactory(valueFactorySeasonLeague);
         winSpinner.setValueFactory(valueFactoryWin);
         loseSpinner.setValueFactory(valueFactoryLose);
         tieSpinner.setValueFactory(valueFactoryTie);
@@ -221,6 +231,9 @@ public class ARController implements ControllerInterface, Initializable {
         leagueCombo.getItems().addAll(
                 leagueService.getAllULeagues()
         );
+
+
+
     }
 
     public void displayUnconfirmedTeams(){
@@ -249,11 +262,20 @@ public class ARController implements ControllerInterface, Initializable {
         }
     }
 
+    public void selectLeague(ActionEvent actionEvent){
+        seasonCombo2.setDisable(false);
+
+    }
+
     private void showAlert(String title, String text, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(text);
         alert.showAndWait();
+    }
+
+    public void leagueSelect2(ActionEvent actionEvent) {
+
     }
 }
