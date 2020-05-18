@@ -32,7 +32,7 @@ public class RefereeController implements ControllerInterface, Initializable {
     @FXML
     private Pane yellowCardPane;
     @FXML
-    private TextField timeFoul;
+    private Spinner<Integer> timeFoul;
     @FXML
     private ComboBox<String> aFoulPlayer;
     @FXML
@@ -40,7 +40,7 @@ public class RefereeController implements ControllerInterface, Initializable {
     @FXML
     private ComboBox<Integer> matchFoul;
     @FXML
-    private TextField timeGoal;
+    private Spinner<Integer> timeGoal;
     @FXML
     private ComboBox<String> playerGoal;
     @FXML
@@ -50,25 +50,25 @@ public class RefereeController implements ControllerInterface, Initializable {
     @FXML
     private CheckBox isOwnGoal;
     @FXML
-    private TextField timeInjury;
+    private Spinner<Integer> timeInjury;
     @FXML
     private ComboBox<String> playerInjured;
     @FXML
     private ComboBox<Integer> matchInjuryId;
     @FXML
-    private TextField timeOffside;
+    private Spinner<Integer> timeOffside;
     @FXML
     private ComboBox<String> playerOffside;
     @FXML
     private ComboBox<Integer> matchOffsideId;
     @FXML
-    private TextField timeRed;
+    private Spinner<Integer> timeRed;
     @FXML
     private ComboBox<String> playerRed;
     @FXML
     private ComboBox<Integer> matchRedId;
     @FXML
-    private TextField timeYellow;
+    private Spinner<Integer> timeYellow;
     @FXML
     private ComboBox<String> playerYellow;
     @FXML
@@ -103,6 +103,7 @@ public class RefereeController implements ControllerInterface, Initializable {
         offsidePane.setVisible(false);
         redCardPane.setVisible(false);
         yellowCardPane.setVisible(false);
+        timeFoul.getValueFactory().setValue(0);
 
     }
 
@@ -114,6 +115,8 @@ public class RefereeController implements ControllerInterface, Initializable {
         offsidePane.setVisible(false);
         redCardPane.setVisible(false);
         yellowCardPane.setVisible(false);
+        timeInjury.getValueFactory().setValue(0);
+
 
     }
 
@@ -125,6 +128,8 @@ public class RefereeController implements ControllerInterface, Initializable {
         offsidePane.setVisible(false);
         redCardPane.setVisible(false);
         yellowCardPane.setVisible(false);
+        timeGoal.getValueFactory().setValue(0);
+
     }
 
     @FXML
@@ -135,6 +140,7 @@ public class RefereeController implements ControllerInterface, Initializable {
         offsidePane.setVisible(true);
         redCardPane.setVisible(false);
         yellowCardPane.setVisible(false);
+        timeOffside.getValueFactory().setValue(0);
     }
 
     @FXML
@@ -145,6 +151,7 @@ public class RefereeController implements ControllerInterface, Initializable {
         offsidePane.setVisible(false);
         redCardPane.setVisible(true);
         yellowCardPane.setVisible(false);
+        timeRed.getValueFactory().setValue(0);
     }
 
     @FXML
@@ -155,11 +162,12 @@ public class RefereeController implements ControllerInterface, Initializable {
         offsidePane.setVisible(false);
         redCardPane.setVisible(false);
         yellowCardPane.setVisible(true);
+        timeYellow.getValueFactory().setValue(0);
     }
 
     @FXML
     public void reportFoul() {
-        String time = timeFoul.getText();
+        int time = timeFoul.getValue();
         String aPlayer = aFoulPlayer.getValue();
         String iPlayer = iFoulPlayer.getValue();
         int seasonId = matchFoul.getValue();
@@ -170,13 +178,13 @@ public class RefereeController implements ControllerInterface, Initializable {
             alertSameTeam();
             return;
         } else {
-            matchService.reportFoulThroughReferee(time, aPlayer.split("-")[0], iPlayer.split("-")[0], String.valueOf(seasonId), this.userLabel.getText());
+            matchService.reportFoulThroughReferee(String.valueOf(time), aPlayer.split("-")[0], iPlayer.split("-")[0], String.valueOf(seasonId), this.userLabel.getText());
         }
     }
 
     @FXML
     public void reportGoal() {
-        String time = timeGoal.getText();
+        int time = timeGoal.getValue();
         String gPlayer = playerGoal.getValue();
         String aPlayer = playerAssisted.getValue();
         int seasonId = matchGoalId.getValue();
@@ -188,40 +196,40 @@ public class RefereeController implements ControllerInterface, Initializable {
             ablerDifferentTeam();
             return;
         } else {
-            matchService.reportGoalThroughReferee(time, gPlayer.split("-")[0], aPlayer.split("-")[0], Boolean.toString(isOwn), String.valueOf(seasonId), userLabel.getText());
+            matchService.reportGoalThroughReferee(String.valueOf(time), gPlayer.split("-")[0], aPlayer.split("-")[0], Boolean.toString(isOwn), String.valueOf(seasonId), userLabel.getText());
         }
     }
 
     @FXML
     public void reportInjury() {
-        String time = timeInjury.getText();
+        int time = timeInjury.getValue();
         String player = playerInjured.getValue();
         int seasonId = matchInjuryId.getValue();
-        matchService.reportOnInjury(time, player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
+        matchService.reportOnInjury(String.valueOf(time), player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
     }
 
     @FXML
     public void reportOffside() {
-        String time = timeOffside.getText();
+        int time = timeOffside.getValue();
         String player = playerOffside.getValue();
         int seasonId = matchOffsideId.getValue();
-        matchService.reportOffside(time, player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
+        matchService.reportOffside(String.valueOf(time), player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
     }
 
     @FXML
     public void reportRedCard() {
-        String time = timeRed.getText();
+        int time = timeRed.getValue();
         String player = playerRed.getValue();
         int seasonId = matchRedId.getValue();
-        matchService.reportOnRedCard(time, player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
+        matchService.reportOnRedCard(String.valueOf(time), player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
     }
 
     @FXML
     public void reportYellowCard() {
-        String time = timeYellow.getText();
+        int time = timeYellow.getValue();
         String player = playerYellow.getValue();
         int seasonId = matchYellowId.getValue();
-        matchService.yellowCard(time, player, String.valueOf(seasonId), userLabel.getText());
+        matchService.yellowCard(String.valueOf(time), player, String.valueOf(seasonId), userLabel.getText());
 
     }
 
@@ -237,8 +245,8 @@ public class RefereeController implements ControllerInterface, Initializable {
         aFoulPlayer.setVisible(true);
         ArrayList<String> players = matchService.getAllPlayerMatch(matchId, userLabel.getText());
         if (players != null && players.size() > 0) {
-            iFoulPlayer.getItems().removeAll();
-            aFoulPlayer.getItems().removeAll();
+            iFoulPlayer.getItems().clear();
+            aFoulPlayer.getItems().clear();
             iFoulPlayer.getItems().addAll(players);
             aFoulPlayer.getItems().addAll(players);
         } else {
@@ -255,7 +263,7 @@ public class RefereeController implements ControllerInterface, Initializable {
         ArrayList<String> players = matchService.getAllPlayerMatch(matchId, userLabel.getText());
         if (players != null && players.size() > 0) {
             playerGoal.getItems().addAll(players);
-            playerAssisted.getItems().removeAll();
+            playerAssisted.getItems().clear();
             playerAssisted.getItems().addAll(players);
         } else {
             noPlayerAlert();
@@ -275,17 +283,20 @@ public class RefereeController implements ControllerInterface, Initializable {
     @FXML
     public void fillPlayerRedCard() {
         fillInfo(matchRedId, playerRed);
+
     }
     @FXML
     public void fillPlayerYellowCard() {
         fillInfo(matchYellowId, playerYellow);
     }
+
     private void fillInfo(ComboBox<Integer> match, ComboBox<String> playerName) {
         int matchId = match.getValue();
         playerName.setVisible(true);
         playerName.getItems().removeAll();
         ArrayList<String> players = matchService.getAllPlayerMatch(matchId, userLabel.getText());
         if (players != null && players.size() > 0) {
+            playerName.getItems().clear();
             playerName.getItems().addAll(players);
         } else {
             noPlayerAlert();
@@ -338,6 +349,13 @@ public class RefereeController implements ControllerInterface, Initializable {
         ObservableList<String> list = FXCollections.observableArrayList();
         //import all unapproved team names to teamStringList from DB
         matchService = new MatchService();
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,121,0);
+        timeFoul.setValueFactory(valueFactory);
+        timeGoal.setValueFactory(valueFactory);
+        timeInjury.setValueFactory(valueFactory);
+        timeOffside.setValueFactory(valueFactory);
+        timeRed.setValueFactory(valueFactory);
+        timeYellow.setValueFactory(valueFactory);
     }
 
 }
