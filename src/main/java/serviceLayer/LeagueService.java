@@ -57,8 +57,6 @@ public class LeagueService {
      */
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
-        System.out.println("every thing are ok");
-        //todo ido put it this way to create stub need to return as usual
         if (leagueID != null && username != null && matchingPolicy != null) {
             return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose,  tie, matchingPolicy, username);
         }
@@ -155,10 +153,7 @@ public class LeagueService {
      * @return true if it done successfully
      */
     public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID , String seasonID, String username){
-        if(teamsNames!=null && teamsNames.size()>0 && tryParseInt(seasonID) && username!=null){
-            return leagueController.chooseTeamForSeason(teamsNames,leagueID,seasonID,username);
-        }
-        return false;
+        return leagueController.chooseTeamForSeason(teamsNames,leagueID,seasonID,username);
     }
 
     /**
@@ -218,7 +213,7 @@ public class LeagueService {
         return systemController.getAllTeamsNames();
     }
 
-/*    public ArrayList<String> getAllSeasonsFromLeague(String League){
-
-    }*/
+    public ArrayList<String> getAllSeasonsFromLeague(String league){
+        return systemController.getAllSeasonsFromLeague(league);
+    }
 }

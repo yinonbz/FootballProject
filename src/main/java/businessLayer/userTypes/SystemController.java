@@ -1440,4 +1440,19 @@ public class SystemController {
             return null;
         }
     }
+
+    public ArrayList<String> getAllSeasonsFromLeague(String league) {
+        if(DB.selectLeagueFromDB(league) != null){
+            League lg = DB.selectLeagueFromDB(league);
+            HashMap<Integer, Season> seasons = lg.getSeasons();
+            ArrayList<String> seasonsIdInLeague = new ArrayList<>();
+            Iterator iterator = seasons.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry me2 = (Map.Entry) iterator.next();
+                seasonsIdInLeague.add("" + me2.getKey());
+            }
+            return seasonsIdInLeague;
+        }
+        return null;
+    }
 }

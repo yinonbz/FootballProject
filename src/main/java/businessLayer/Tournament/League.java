@@ -170,4 +170,8 @@ public class League {
         int id = Integer.parseInt(seasonID);
         return seasons.get(id);
     }
+
+    public HashMap<Integer, Season> getSeasons() {
+        return seasons;
+    }
 }
