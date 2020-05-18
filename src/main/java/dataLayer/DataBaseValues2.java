@@ -506,7 +506,7 @@ public class DataBaseValues2 {
         table.put(4,m4);
         season2020.setMatchesOfTheSeason(table);
         league3 = new League("13");
-        league3.addSeasonToLeague(2020,startDate,endDate,3,0,1,"SingleMatchPolicy");
+        league3.addSeasonToLeague(2021,startDate,endDate,3,0,1,"SingleMatchPolicy");
         DB.addLeagueToDB("13",league3);
 
         DB.addLeagueToDB("12" ,league2);

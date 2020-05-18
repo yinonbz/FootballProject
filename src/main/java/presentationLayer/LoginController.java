@@ -90,11 +90,13 @@ public class LoginController implements Initializable {
 
             Parent root1 = null;
             try {
+
                 root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 Scene scene = new Scene(root1, 1166, 666);
                 scene.getStylesheets().add("/css/style.css");
                 stage.setScene(scene);
+
                 //IDO ADD
                 ControllerInterface Controller = fxmlLoader.getController();
                 System.out.println(usernameL.getText());

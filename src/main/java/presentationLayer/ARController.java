@@ -1,5 +1,6 @@
 package presentationLayer;
 
+import businessLayer.Exceptions.MissingInputException;
 import javafx.collections.*;
 import javafx.event.*;
 import javafx.fxml.*;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -23,7 +23,6 @@ public class ARController implements ControllerInterface, Initializable {
 
     private LeagueService leagueService;
 
-    private String userName;
 
     @FXML
     private Pane approveOrCreatePane;
@@ -42,7 +41,7 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     private Pane activatePolicyPane;
     @FXML
-    private Pane addTeamדToLeaguePane;
+    private Pane addTeamדToSeasonPane;
     @FXML
     private javafx.scene.control.Label userLable;
     @FXML
@@ -62,7 +61,11 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     private ComboBox<String> leagueCombo2;
     @FXML
+    private ComboBox<String> leagueCombo3;
+    @FXML
     private ComboBox<String> seasonCombo2;
+    @FXML
+    private ComboBox<String> seasonCombo3;
     @FXML
     private ComboBox<String> policyCombo;
     @FXML
@@ -73,6 +76,8 @@ public class ARController implements ControllerInterface, Initializable {
     ListView teamsViewL;
     @FXML
     ListView addTeamsViewL;
+
+
     @FXML
     public void switchApprove(){
 
@@ -83,7 +88,7 @@ public class ARController implements ControllerInterface, Initializable {
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(true);
         activatePolicyPane.setVisible(false);
-        addTeamדToLeaguePane.setVisible(false);
+        addTeamדToSeasonPane.setVisible(false);
 
 
     }
@@ -98,7 +103,7 @@ public class ARController implements ControllerInterface, Initializable {
         activatePolicyPane.setVisible(true);
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
-        addTeamדToLeaguePane.setVisible(false);
+        addTeamדToSeasonPane.setVisible(false);
 
     }
     @FXML
@@ -108,7 +113,7 @@ public class ARController implements ControllerInterface, Initializable {
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
-        addTeamדToLeaguePane.setVisible(false);
+        addTeamדToSeasonPane.setVisible(false);
         //leagueTeamsSpinner.getValueFactory().setValue(0);
         seasonTeamsSpinner.getValueFactory().setValue(0);
     }
@@ -121,9 +126,9 @@ public class ARController implements ControllerInterface, Initializable {
         ObservableList<String> list = teamsViewL.getSelectionModel().getSelectedItems();
         for(int i = 0; i < list.size(); i++){
             String teamToApprove = list.get(i);
-            leagueService.confirmTeamRequestThroughRepresentative(teamToApprove, userName);
+            leagueService.confirmTeamRequestThroughRepresentative(teamToApprove, userLable.getText());
         }
-        showAlert("Teams Approved Successfully","Teams were confirmed successfully.", Alert.AlertType.CONFIRMATION);
+        showAlert("Teams Approved Successfully","Teams were confirmed successfully.", Alert.AlertType.INFORMATION);
         displayUnconfirmedTeams();
     }
     @FXML
@@ -139,26 +144,35 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     public void switchSeasonPane(){
         titleL.setText("Create Season");
-        addTeamדToLeaguePane.setVisible(false);
+        addTeamדToSeasonPane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         activatePolicyPane.setVisible(false);
         createSeasonPane.setVisible(true);
+
+        leagueCombo3.getItems().setAll(
+                leagueService.getAllULeagues()
+        );
+
     }
 
     @FXML
     public void switchAddTeamPane(){
-        titleL.setText("Add Teams To season");
-        addTeamדToLeaguePane.setVisible(true);
+        titleL.setText("Add Teams To Season");
+        addTeamדToSeasonPane.setVisible(true);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         createSeasonPane.setVisible(false);
         activatePolicyPane.setVisible(false);
 
-        leagueCombo2.getItems().addAll(
+        leagueCombo2.getItems().setAll(
                 leagueService.getAllULeagues()
         );
 
+        ObservableList<String> listTeams = FXCollections.observableArrayList();
+        listTeams.setAll(leagueService.getAllTeamsNames());
+        addTeamsViewL.setItems(listTeams);
+        addTeamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
     }
     @FXML
@@ -188,7 +202,7 @@ public class ARController implements ControllerInterface, Initializable {
         int lose = loseSpinner.getValue();
         int tie = tieSpinner.getValue();
         int season = seasonSpinner.getValue();
-        String league = leagueCombo.getValue();
+        String league = leagueCombo3.getValue();
         String policy = policyCombo.getValue();
         if(start==null||end==null||league.equals("")||league==null||policy.equals("")||policy==null||userLable.getText().equals("")){
             missingAlert();
@@ -208,14 +222,7 @@ public class ARController implements ControllerInterface, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        userLable.setText("Welcome " + userName);
-
-        ObservableList<String> list = FXCollections.observableArrayList();
-        ObservableList<String> listTeams = FXCollections.observableArrayList();
-
-        listTeams.addAll(leagueService.getAllTeamsNames());
-        addTeamsViewL.setItems(listTeams);
-        addTeamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        leagueService = new LeagueService();
 
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
@@ -223,21 +230,16 @@ public class ARController implements ControllerInterface, Initializable {
         SpinnerValueFactory<Integer> valueFactorySeason = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         SpinnerValueFactory<Integer> valueFactorySeasonTeams = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         SpinnerValueFactory<Integer> valueFactorySeasonLeague = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
-        seasonTeamsSpinner.setValueFactory(valueFactorySeasonTeams);
+        //seasonTeamsSpinner.setValueFactory(valueFactorySeasonTeams);
         //leagueTeamsSpinner.setValueFactory(valueFactorySeasonLeague);
         winSpinner.setValueFactory(valueFactoryWin);
         loseSpinner.setValueFactory(valueFactoryLose);
         tieSpinner.setValueFactory(valueFactoryTie);
         seasonSpinner.setValueFactory(valueFactorySeason);
 
-        policyCombo.getItems().addAll(
+        policyCombo.getItems().setAll(
                 "SingleMatchPolicy",
                 "ClassicMatchPolicy"
-        );
-
-
-        leagueCombo.getItems().addAll(
-                leagueService.getAllULeagues()
         );
 
 
@@ -248,13 +250,12 @@ public class ARController implements ControllerInterface, Initializable {
         ObservableList<String> list = FXCollections.observableArrayList();
         //import all unapproved team names to teamStringList from DB
         leagueService = new LeagueService();
-        list.addAll(leagueService.getAllUnconfirmedTeams());
+        list.setAll(leagueService.getAllUnconfirmedTeams());
         teamsViewL.setItems(list);
         teamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     public void logoutB(ActionEvent actionEvent) {
-        userName = null;
         Parent root1 = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
@@ -270,10 +271,6 @@ public class ARController implements ControllerInterface, Initializable {
         }
     }
 
-    public void selectLeague(ActionEvent actionEvent){
-        seasonCombo2.setDisable(false);
-
-    }
 
     private void showAlert(String title, String text, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);
@@ -284,6 +281,33 @@ public class ARController implements ControllerInterface, Initializable {
     }
 
     public void leagueSelect2(ActionEvent actionEvent) {
+        seasonCombo2.getItems().setAll(
+                leagueService.getAllSeasonsFromLeague(leagueCombo2.getValue())
+        );
+
+        seasonCombo2.setDisable(false);
+
 
     }
+
+
+    public void submitTeamsToSeason(ActionEvent actionEvent) {
+        LinkedList<String> teamsNames = new LinkedList<>();
+        ObservableList<String> list = addTeamsViewL.getSelectionModel().getSelectedItems();
+        for(int i = 0; i < list.size(); i++){
+            String teamToAdd = list.get(i);
+            teamsNames.add(teamToAdd);
+        }
+
+        String leagueID = leagueCombo2.getValue();
+        String seasonID = seasonCombo2.getValue();
+        try {
+            leagueService.chooseTeamForSeason(teamsNames, leagueID, seasonID, userLable.getText());
+        } catch (MissingInputException e){
+            showAlert(e.getMessage(),"Please complete this form to add a team to a season.", Alert.AlertType.WARNING);
+        }
+        showAlert("Success","The teams were added to the season successfully.", Alert.AlertType.INFORMATION);
+    }
+
+
 }
