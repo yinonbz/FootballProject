@@ -299,7 +299,7 @@ public class RefereeController implements ControllerInterface, Initializable {
             playerName.getItems().clear();
             playerName.getItems().addAll(players);
         } else {
-            noPlayerAlert();
+             noPlayerAlert();
         }
     }
 
