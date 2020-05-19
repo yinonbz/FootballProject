@@ -62,7 +62,7 @@ public class SystemController extends Observable {
      *
      * @param service
      */
-    private void addServiceObservers(SystemService service) {
+    public void addServiceObservers(SystemService service) {
         addObserver(service);
     }
 
@@ -1128,28 +1128,27 @@ public class SystemController extends Observable {
      */
     public String enterLoginDetails(String userName, String password) {
 
-        if(userName == null || password == null || userName.equals("") || password.equals("")){
+        if (userName == null || password == null || userName.equals("") || password.equals("")) {
             throw new MissingInputException("Missing Input");
             //return null;
         }
 
         Subscriber subscriber = selectUserFromDB(userName);
 
-        if(subscriber==null)
+        if (subscriber == null)
             throw new NotFoundInDbException("No such user in the data base.");
-            //return null;
+        //return null;
 
-        if(subscriber.getPassword().equals(password)) {
-            if(subscriber instanceof Admin){
-                Admin userCheckIfApproved = ((Admin)subscriber);
-                if(userCheckIfApproved.isApproved() == false){
+        if (subscriber.getPassword().equals(password)) {
+            if (subscriber instanceof Admin) {
+                Admin userCheckIfApproved = ((Admin) subscriber);
+                if (userCheckIfApproved.isApproved() == false) {
                     throw new NotApprovedException("You are trying to log in as an unapproved Admin. You have to be approved first by another Admin to log in.");
                     //return null;
                 }
-            }
-            else if(subscriber instanceof AssociationRepresentative){
-                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative)subscriber);
-                if(userCheckIfAprroved.isApproved() == false){
+            } else if (subscriber instanceof AssociationRepresentative) {
+                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative) subscriber);
+                if (userCheckIfAprroved.isApproved() == false) {
                     throw new NotApprovedException("You are trying to log in as an unapproved AR. You have to be approved first by an Admin to log in.");
                     //return null;
                 }
@@ -1412,23 +1411,21 @@ public class SystemController extends Observable {
         if (subscriber instanceof TeamOwner) {
             if (tryParseInt(establishedYear)) {
                 Team team = DB.selectTeamFromDB(teamName);
-                    if(team==null){
-                        if(DB.selectUnconfirmedTeamsFromDB(teamName) == null) {
-                            LinkedList<String> details = new LinkedList<>();
-                            details.add(teamName);
-                            details.add(establishedYear);
-                            details.add(username);
-                            return DB.addUnconfirmedTeamsToDB(teamName, details);
-                        }
-                        else{
-                            throw new AlreadyExistException("There is already a request pending for a team with this name. Please select a different name or wait for the team to be confirmed.");
-                        }
+                if (team == null) {
+                    if (DB.selectUnconfirmedTeamsFromDB(teamName) == null) {
+                        LinkedList<String> details = new LinkedList<>();
+                        details.add(teamName);
+                        details.add(establishedYear);
+                        details.add(username);
+                        return DB.addUnconfirmedTeamsToDB(teamName, details);
+                    } else {
+                        throw new AlreadyExistException("There is already a request pending for a team with this name. Please select a different name or wait for the team to be confirmed.");
                     }
-                    else{
-                        throw new AlreadyExistException("There is already a team with this name in the system. Please select a different name.");
-                    }
+                } else {
+                    throw new AlreadyExistException("There is already a team with this name in the system. Please select a different name.");
                 }
             }
+        }
         return false;
     }
 
@@ -1562,6 +1559,7 @@ public class SystemController extends Observable {
             LinkedList<String> followers = DB.getPageFollowers(page);
             if (followers != null) {
                 followers.add(event);
+                followers.add("Page update");
                 notifyObservers(followers);
             }
         }
@@ -1596,6 +1594,7 @@ public class SystemController extends Observable {
             LinkedList<String> followers = DB.getMatchFollowers(match);
             if (followers != null) {
                 followers.add(event);
+                followers.add("Match update");
                 notifyObservers(followers);
             }
         }
@@ -1651,6 +1650,7 @@ public class SystemController extends Observable {
             LinkedList<String> followers = DB.getMatchReferees(match);
             if (followers != null) {
                 followers.add(event);
+                followers.add("Change in match date&place");
                 notifyObservers(followers);
             }
         }
@@ -1748,6 +1748,7 @@ public class SystemController extends Observable {
                 }
             }
             usersToNotify.add(event);
+            usersToNotify.add("Team status update");
             notifyObservers(usersToNotify);
         }
     }
@@ -1766,14 +1767,78 @@ public class SystemController extends Observable {
             if (name != null) {
                 adminToUpdate.add(name);
                 adminToUpdate.add("You have lost your rights as an owner for the team '" + team.getTeamName() + "'.");
+                adminToUpdate.add("Owner privileges removal");
                 notifyObservers(adminToUpdate);
             }
         }
     }
 
+    /**
+     * The function receives a username and sends it to the DB to be added into the online users data structure
+     * @param username
+     */
+    public void addOnlineUser(String username) {
+
+        if (username != null) {
+            DB.addOnlineUser(username);
+        }
+    }
+
+    /**
+     * The function receives a username and sends it to the DB to be removed from the online users data structure
+     * @param username
+     */
+    public void removeOnlineUser(String username) {
+
+        if (username != null) {
+            DB.removeOnlineUser(username);
+        }
+    }
+
+    /**
+     * The function receives a username and sends to the DB to check whether the user is online or not
+     *
+     * @param username
+     * @return
+     */
+    public boolean isUserOnline(String username) {
+
+        if (username != null) {
+            return DB.isUserOnline(username);
+        }
+        return false;
+    }
+
+
+    /**
+     * The function receives a username and a notification for the user and saves it within the database
+     *
+     * @param username
+     * @param message
+     */
+    public void saveUserMessage(String username, String message, String title) {
+
+        if (username != null && message != null && title != null) {
+            DB.saveUserMessage(username, message, title);
+        }
+    }
+
+    /**
+     * The function receives a username and returns the list of its notifications
+     * @param username
+     * @return
+     */
+    public LinkedList getOfflineUsersNotifications(String username) {
+
+        if(username != null) {
+            return DB.getOfflineUsersNotifications(username);
+        }
+        return null; //todo: might need an exception here
+    }
+
 
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {
-        HashMap<String,LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();
+        HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();
         ArrayList<String> teamNamesInDB = new ArrayList<>();
         Iterator iterator = teamsInDB.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -1784,7 +1849,7 @@ public class SystemController extends Observable {
     }
 
     public ArrayList<String> getAllULeaguesInDB() {
-        HashMap<String,League> leaguesInDB = DB.getLeagues();
+        HashMap<String, League> leaguesInDB = DB.getLeagues();
         ArrayList<String> leagueNamesInDB = new ArrayList<>();
         Iterator iterator = leaguesInDB.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -1795,18 +1860,17 @@ public class SystemController extends Observable {
     }
 
     public ArrayList<String> getAllTeamsNames() {
-        if(DB.getTeams()!=null &&DB.getTeams().size()>0) {
+        if (DB.getTeams() != null && DB.getTeams().size() > 0) {
             ArrayList<String> teamsName = new ArrayList<>();
             teamsName.addAll(DB.getTeams().keySet());
             return teamsName;
-        }
-        else{
+        } else {
             return null;
         }
     }
 
     public ArrayList<String> getAllSeasonsFromLeague(String league) {
-        if(DB.selectLeagueFromDB(league) != null){
+        if (DB.selectLeagueFromDB(league) != null) {
             League lg = DB.selectLeagueFromDB(league);
             HashMap<Integer, Season> seasons = lg.getSeasons();
             ArrayList<String> seasonsIdInLeague = new ArrayList<>();
@@ -1819,4 +1883,6 @@ public class SystemController extends Observable {
         }
         return null;
     }
+
+
 }

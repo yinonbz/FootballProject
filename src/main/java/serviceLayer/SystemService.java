@@ -6,9 +6,7 @@ import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
-import javafx.util.Pair;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Observable;
@@ -26,6 +24,7 @@ public class SystemService implements Observer {
      */
     public SystemService() {
         this.systemController = SystemController.SystemController();
+        systemController.addServiceObservers(this);
 
     }
 
@@ -165,7 +164,7 @@ public class SystemService implements Observer {
         return systemController.addToTeamConfirmList(details,username);
     }*/
 
-/*    */
+    /*    */
 
     /**
      * the function approves the request by the AR and updates the new team in the system and in the team owner
@@ -176,7 +175,7 @@ public class SystemService implements Observer {
      * Not a UC - A function of Association Represntative
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        return systemController.confirmTeamByAssociationRepresentative(teamName,username);
+        return systemController.confirmTeamByAssociationRepresentative(teamName, username);
     }
 
 
@@ -290,8 +289,8 @@ public class SystemService implements Observer {
         return systemController.handleAdminApprovalRequest(userName, userNameToApprove, approve);
     }
 
-    public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
-        if(teamName!=null && establishedYear!=null && username!=null && !teamName.isEmpty()){
+    public boolean sendRequestForTeam(String teamName, String establishedYear, String username) {
+        if (teamName != null && establishedYear != null && username != null && !teamName.isEmpty()) {
             return systemController.sendRequestForTeam(teamName, establishedYear, username);
         }
         return false;
@@ -366,9 +365,16 @@ public class SystemService implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof SystemController && arg instanceof LinkedList) {
-            LinkedList<String> usersAndEvent = (LinkedList) arg;
-            String event = usersAndEvent.getLast();
-            //todo: Here enters the part where we send the message to each user through the interface system
+            LinkedList<String> users = (LinkedList) arg;
+            String title = users.getLast(); //title for the message in the interface
+            String event = users.getLast(); //holds the message to present to the user's interface
+            for (String user : users) {
+                if (systemController.isUserOnline(user)) {
+                    //todo: alon, this is where we connect the message to the gui
+                } else {
+                    systemController.saveUserMessage(user, event, title);
+                }
+            }
 
         }
     }

@@ -86,31 +86,4 @@ public class Fan extends Subscriber {
     }
 
 
-/*
-    @Override
-    public Boolean editDetails() {
-        return null;
-    }
-    */
-
-
-    public boolean requestToFollowTeam(){
-
-
-        return false;
-    }
-
-
-    public boolean requestToPlayer(){
-
-
-        return false;
-    }
-
-    public boolean requestToCouch(){
-
-
-        return false;
-    }
-
 }
