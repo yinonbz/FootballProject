@@ -1,5 +1,6 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Subscriber;
@@ -71,7 +72,7 @@ public class AssociationRepresentative extends Subscriber {
             return false;
         }
         if (leagueController.doesLeagueExist(newLeagueID)) {
-            return false;
+            throw new AlreadyExistException("There is already a League in the system with that name. Please choose a different name.");
         }
         return leagueController.createLeague(newLeagueID);
     }

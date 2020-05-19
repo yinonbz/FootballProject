@@ -297,4 +297,12 @@ public class Season {
         this.matchesOfTheSeason=matchesOfTheSeason;
     }
 
+    /**
+     * @return true if the season has referees assigned to it
+     *         false else
+     */
+    public boolean checkIfRefereeIsAssignedToSeason(){
+        return !(referees.size() == 0);
+    }
+
 }

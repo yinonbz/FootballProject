@@ -1,12 +1,17 @@
 package businessLayer.userTypes.Administration;
 
 
+import businessLayer.Exceptions.AlreadyExistException;
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Tournament.League;
 import businessLayer.userTypes.SystemController;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import serviceLayer.LeagueService;
 import serviceLayer.SystemService;
 
@@ -35,6 +40,8 @@ public class AssociationRepresentativeTest {
     static TeamOwner Barkat;
     static AssociationRepresentative EliLuzon;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void createTestValues() {
@@ -84,7 +91,8 @@ public class AssociationRepresentativeTest {
         assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5"));
 
         //2. dor tries to create the same season without success
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "dor12"));
+        expectedException.expect(AlreadyExistException.class);
+        testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "dor12");
 
         //3. tali tries to create a season where the starting date is after the ending date
         assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 2005, new Date(2000, 1, 11), new Date(2000, 1, 10), 5, 1, 3, "ClassicMatchPolicy", "tali5"));
@@ -158,14 +166,16 @@ public class AssociationRepresentativeTest {
     public void UC9_5_b(){
         Date d1 = new Date();
         Date d2 = new Date();
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("11",2021,d1,d2,3,0,1, "ClassicMatchPolicy","gal15"));
+        expectedException.expect(MissingInputException.class);
+        testingLeagueService.addSeasonThroughRepresentative("11",2021,d1,d2,3,0,1, "ClassicMatchPolicy","gal15");
     }
 
     @Test
     public void UC9_5_c(){
         Date d1 = new Date();
         Date d2 = new Date();
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,3,0,1, "ClassicMatchPolicy","Alon"));
+        expectedException.expect(MissingInputException.class);
+        testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,3,0,1, "ClassicMatchPolicy","Alon");
     }
 
     @Test

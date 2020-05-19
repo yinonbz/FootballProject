@@ -108,11 +108,7 @@ public class LeagueService {
      * @return
      */
     public boolean assignRefereeThroughRepresentative(String refUsername, String leagueName, int seasonID, String username) {
-
-        if (refUsername != null && leagueName != null && username != null) {
             return leagueController.assignRefereeThroughRepresentative(refUsername, leagueName, seasonID, username);
-        }
-        return false;
     }
 
     /**
@@ -165,10 +161,8 @@ public class LeagueService {
      * @return
      */
     public boolean activateMatchPolicyForSeason(String leagueID, String seasonID, String userName) {
-        if (tryParseInt(leagueID) && tryParseInt(seasonID) && userName != null) {
             return leagueController.activateMatchPolicy(leagueID, seasonID, userName);
-        }
-        return false;
+
     }
 
     /**
@@ -216,6 +210,11 @@ public class LeagueService {
     public ArrayList<String> getAllTeamsNames(){
         return systemController.getAllTeamsNames();
     }
+
+    public ArrayList<String> getAllRefereeNames(){
+        return systemController.getAllRefereeNames();
+    }
+
 
     public ArrayList<String> getAllSeasonsFromLeague(String league){
         return systemController.getAllSeasonsFromLeague(league);

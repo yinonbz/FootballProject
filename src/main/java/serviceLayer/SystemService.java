@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class SystemService implements Observer {
+public class SystemService extends Observable implements Observer {
     private SystemController systemController; //business layer system controller.
     private LeagueController leagueController;
     private TeamController teamController;

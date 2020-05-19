@@ -65,9 +65,9 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     private ComboBox<String> leagueCombo3;
     @FXML
-    private ComboBox<String> seasonCombo2;
+    private ComboBox<String> seasonCombo;
     @FXML
-    private ComboBox<String> seasonCombo3;
+    private ComboBox<String> seasonCombo2;
     @FXML
     private ComboBox<String> policyCombo;
     @FXML
@@ -78,6 +78,8 @@ public class ARController implements ControllerInterface, Initializable {
     ListView teamsViewL;
     @FXML
     ListView addTeamsViewL;
+    @FXML
+    ListView addRefereesViewL;
 
 
     @FXML
@@ -104,7 +106,7 @@ public class ARController implements ControllerInterface, Initializable {
     public void switchLeaguePane() {
         titleL.setText("Create League");
         createLeaguePane.setVisible(true);
-        activatePolicyPane.setVisible(true);
+        activatePolicyPane.setVisible(false);
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
         addTeamדToSeasonPane.setVisible(false);
@@ -113,14 +115,19 @@ public class ARController implements ControllerInterface, Initializable {
 
     @FXML
     public void switchActivatePolicyPane() {
+
         titleL.setText("Activate Match Policy");
         activatePolicyPane.setVisible(true);
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
         addTeamדToSeasonPane.setVisible(false);
-        //leagueTeamsSpinner.getValueFactory().setValue(0);
-        seasonTeamsSpinner.getValueFactory().setValue(0);
+
+        leagueCombo.getItems().setAll(
+                leagueService.getAllULeagues()
+        );
+
+
     }
 
     public void activatePolicy() {
@@ -167,7 +174,7 @@ public class ARController implements ControllerInterface, Initializable {
 
     @FXML
     public void switchAddTeamPane() {
-        titleL.setText("Add Teams To Season");
+        titleL.setText("Add Teams and Referees To Season");
         addTeamדToSeasonPane.setVisible(true);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
@@ -183,6 +190,11 @@ public class ARController implements ControllerInterface, Initializable {
         addTeamsViewL.setItems(listTeams);
         addTeamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        ObservableList<String> listReferees = FXCollections.observableArrayList();
+        listReferees.setAll(leagueService.getAllRefereeNames());
+        addRefereesViewL.setItems(listReferees);
+        addRefereesViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
     }
 
     @FXML
@@ -190,7 +202,12 @@ public class ARController implements ControllerInterface, Initializable {
         String league = leagueIdField.getText();
         String arName = userLable.getText();
         if (!league.equals("") && !arName.equals("")) {
-            leagueService.addLeagueThroughRepresentative(league, arName);
+            try {
+                leagueService.addLeagueThroughRepresentative(league, arName);
+                showAlert("Success", "The league was created successfully. Please add seasons for the league and confirm the Match Policy.", Alert.AlertType.INFORMATION);
+            } catch (AlreadyExistException e){
+                showAlert("Warning", e.getMessage(), Alert.AlertType.WARNING);
+            }
         } else {
             missingAlert();
         }
@@ -293,14 +310,21 @@ public class ARController implements ControllerInterface, Initializable {
         alert.showAndWait();
     }
 
+
+    public void leagueSelect(ActionEvent actionEvent) {
+        seasonCombo.getItems().setAll(
+                leagueService.getAllSeasonsFromLeague(leagueCombo.getValue())
+        );
+
+        seasonCombo.setDisable(false);
+    }
+
     public void leagueSelect2(ActionEvent actionEvent) {
         seasonCombo2.getItems().setAll(
                 leagueService.getAllSeasonsFromLeague(leagueCombo2.getValue())
         );
 
         seasonCombo2.setDisable(false);
-
-
     }
 
 
@@ -318,9 +342,37 @@ public class ARController implements ControllerInterface, Initializable {
             leagueService.chooseTeamForSeason(teamsNames, leagueID, seasonID, userLable.getText());
         } catch (MissingInputException e) {
             showAlert(e.getMessage(), "Please complete this form to add a team to a season.", Alert.AlertType.WARNING);
+            return;
         }
         showAlert("Success", "The teams were added to the season successfully.", Alert.AlertType.INFORMATION);
     }
 
 
+    public void activatePolicyB(ActionEvent actionEvent) {
+        try {
+            leagueService.activateMatchPolicyForSeason(leagueCombo.getValue(), seasonCombo.getValue(), userLable.getText());
+            showAlert("Success","Match Policy was activated successfully.", Alert.AlertType.INFORMATION);
+        } catch (RuntimeException e){
+            showAlert("Warning",e.getMessage(), Alert.AlertType.WARNING);
+        }
+    }
+
+    public void addReferees(ActionEvent actionEvent) {
+        String leagueID = leagueCombo2.getValue();
+        String seasonID = seasonCombo2.getValue();
+        ObservableList<String> list = addRefereesViewL.getSelectionModel().getSelectedItems();
+        for (int i = 0; i < list.size(); i++) {
+            String refereeToAdd = list.get(i);
+            try {
+                leagueService.assignRefereeThroughRepresentative(refereeToAdd, leagueID, Integer.parseInt(seasonID), userLable.getText());
+            } catch (RuntimeException e) {
+                showAlert("Warning", "Please fill all the fields in this form.", Alert.AlertType.WARNING);
+                return;
+            }
+        }
+
+        showAlert("Success", "The Referees were added to the season successfully.", Alert.AlertType.INFORMATION);
+
+
+    }
 }

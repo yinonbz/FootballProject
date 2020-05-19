@@ -1819,4 +1819,15 @@ public class SystemController extends Observable {
         }
         return null;
     }
+
+    public ArrayList<String> getAllRefereeNames() {
+        if(DB.getReferees()!=null && DB.getReferees().size()>0) {
+            ArrayList<String> refereesNames = new ArrayList<>();
+            refereesNames.addAll(DB.getReferees().keySet());
+            return refereesNames;
+        }
+        else{
+            return null;
+        }
+    }
 }

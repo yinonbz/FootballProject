@@ -274,8 +274,10 @@ public class DataBaseValues2 {
         //add referee
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
         DB.addSubscriberToDB("Alon",Alon);
+        DB.addRefereeToDB(Alon.getUsername(),Alon);
         Rayola = new Referee ("Rayola", "1223", "Rayola","main",leagueController,systemController);
         DB.addSubscriberToDB("Rayola",Rayola);
+        DB.addRefereeToDB(Rayola.getUsername(),Rayola);
 
         //add coach
         //6.1

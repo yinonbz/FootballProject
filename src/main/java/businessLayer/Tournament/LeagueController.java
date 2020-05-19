@@ -1,6 +1,8 @@
 package businessLayer.Tournament;
 
 import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
@@ -358,7 +360,7 @@ public class LeagueController {
                 return userRep.assignRefereeToSeason(refUsername, leagueName, seasonID);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete this form to add a Referee to a Season.");
     }
 
 
@@ -443,13 +445,21 @@ public class LeagueController {
                 if (season != null) {
                     if (season.getTeams() != null) {
                         if (season.getTeams().size() > 1) {
-                            return season.activateMatchPolicy(this);
+                            if(season.checkIfRefereeIsAssignedToSeason()) {
+                                return season.activateMatchPolicy(this);
+                            }
+                            else{
+                                throw new NotApprovedException("The Season must have at least one Referee before activation. Please add Referees for the Season.");
+                            }
+                        }
+                        else{
+                            throw new NotApprovedException("The Season must have at least 2 Teams before activation. Please add more teams for the Season.");
                         }
                     }
                 }
             }
         }
-        return false;
+        throw new MissingInputException("Please select a League and a Season to activate.");
     }
 
     /**

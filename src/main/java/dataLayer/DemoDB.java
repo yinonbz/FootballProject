@@ -807,6 +807,13 @@ public class DemoDB {
     }
 
     /**
+     * @return Get all referees from DB
+     */
+    public HashMap<String, Referee> getReferees() {
+        return referees;
+    }
+
+    /**
      * The function receives a match and a username of a referee, connects them to each other within the DB and returns whether the operation was successful
      *
      * @param match
