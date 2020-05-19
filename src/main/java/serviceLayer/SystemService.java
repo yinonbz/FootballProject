@@ -367,6 +367,7 @@ public class SystemService implements Observer {
             LinkedList<String> usersAndEvent = (LinkedList) arg;
             String event = usersAndEvent.getLast();
             //todo: Here enters the part where we send the message to each user through the interface system
+
         }
     }
 }
