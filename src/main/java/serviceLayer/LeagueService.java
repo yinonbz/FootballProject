@@ -219,4 +219,12 @@ public class LeagueService {
     public ArrayList<String> getAllSeasonsFromLeague(String league){
         return systemController.getAllSeasonsFromLeague(league);
     }
+
+    public void removeFromUsersOnline(String userName) {
+        systemController.removeOnlineUser(userName);
+    }
+
+    public LinkedList<String> getOfflineMessages(String userName) {
+        return systemController.getOfflineUsersNotifications("userName");
+    }
 }

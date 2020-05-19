@@ -1828,7 +1828,7 @@ public class SystemController extends Observable {
      * @param username
      * @return
      */
-    public LinkedList getOfflineUsersNotifications(String username) {
+    public LinkedList<String> getOfflineUsersNotifications(String username) {
 
         if(username != null) {
             return DB.getOfflineUsersNotifications(username);

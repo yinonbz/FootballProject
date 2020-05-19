@@ -12,39 +12,53 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import serviceLayer.LeagueService;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class FanController implements Initializable,ControllerInterface, Observer {
 
+    private LeagueService leagueService;
 
-    private ArrayList<TitledPane > notificationPanesCollection;
+    private String userName;
+
+    private ArrayList<TitledPane> notificationPanesCollection;
 
     @FXML
     private Accordion notificationsPane;
 
+    @FXML
+    private Label userLable;
+
     @Override
     public void setUser(String usernameL) {
-
+        userLable.setText(usernameL);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-
+        LinkedList<String> message = ((LinkedList<String>)arg);
+        notificationPanesCollection= new ArrayList<>();
+        AnchorPane newPanelContent = new AnchorPane();
+        newPanelContent.getChildren().add(new Label(message.get(1)));
+        TitledPane pane = new TitledPane(message.get(0), newPanelContent);
+        notificationsPane.getPanes().add(pane);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         notificationPanesCollection= new ArrayList<>();
         AnchorPane newPanelContent = new AnchorPane();
-        newPanelContent.getChildren().add(new Label("A team has been created."));
-        TitledPane pane = new TitledPane("Team Created", newPanelContent);
-        notificationPanesCollection.add(pane);
+        LinkedList<String> messages = leagueService.getOfflineMessages(userLable.getText());
+        for(String msg:messages) {
+            String title = msg.split(",")[0];
+            String event = msg.split(",")[1];
+            newPanelContent.getChildren().add(new Label(event));
+            TitledPane pane = new TitledPane(title, newPanelContent);
+            notificationPanesCollection.add(pane);
+        }
         notificationsPane.getPanes().setAll(notificationPanesCollection);
     }
 
@@ -59,6 +73,7 @@ public class FanController implements Initializable,ControllerInterface, Observe
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+            leagueService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }

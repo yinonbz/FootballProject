@@ -733,7 +733,7 @@ public class DemoDB {
      * @param username
      * @return
      */
-    public LinkedList getOfflineUsersNotifications(String username) {
+    public LinkedList<String> getOfflineUsersNotifications(String username) {
 
         if (offlineUsersNotifications.containsKey(username)) {
             return offlineUsersNotifications.get(username);

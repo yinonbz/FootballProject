@@ -370,7 +370,10 @@ public class SystemService extends Observable implements Observer {
             String event = users.getLast(); //holds the message to present to the user's interface
             for (String user : users) {
                 if (systemController.isUserOnline(user)) {
-                    //todo: alon, this is where we connect the message to the gui
+                    LinkedList<String> notification = new LinkedList<>();
+                    notification.add(title);
+                    notification.add(event);
+                    notifyObservers(notification);
                 } else {
                     systemController.saveUserMessage(user, event, title);
                 }
@@ -378,4 +381,13 @@ public class SystemService extends Observable implements Observer {
 
         }
     }
+
+    public void addToUsersOnline(String userName){
+        systemController.addOnlineUser(userName);
+    }
+
+    public void removeFromUsersOnline(String userName){
+        systemController.removeOnlineUser(userName);
+    }
+
 }

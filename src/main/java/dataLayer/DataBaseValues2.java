@@ -12,6 +12,7 @@ import serviceLayer.SystemService;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class DataBaseValues2 {
 
@@ -303,9 +304,6 @@ public class DataBaseValues2 {
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
         Ben = new Fan ("Ben","1234","ben",systemController);
         DB.addSubscriberToDB("Gate13",fan);
-        DB.addSubscriberToDB("Ben",Ben);
-
-
 
         //add teams
         ManchesterUnited = new Team("ManchesterUnited",teamOwner,1888);
