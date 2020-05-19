@@ -724,7 +724,7 @@ public class DemoDB {
             if (!offlineUsersNotifications.containsKey(username)) {
                 offlineUsersNotifications.put(username, new LinkedList<>());
             }
-            offlineUsersNotifications.get(username).add(message + ", " + title);
+            offlineUsersNotifications.get(username).add(message + "," + title);
         }
     }
 
