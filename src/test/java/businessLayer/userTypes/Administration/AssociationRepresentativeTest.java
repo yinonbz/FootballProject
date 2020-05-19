@@ -81,13 +81,13 @@ public class AssociationRepresentativeTest {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
 
         //1. gal creates a new season successfully
-        assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5"));
+        assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5"));
 
         //2. dor tries to create the same season without success
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "dor12"));
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "dor12"));
 
         //3. tali tries to create a season where the starting date is after the ending date
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 1, new Date(2000, 1, 11), new Date(2000, 1, 10), 5, 1, 3, "ClassicMatchPolicy", "tali5"));
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 2005, new Date(2000, 1, 11), new Date(2000, 1, 10), 5, 1, 3, "ClassicMatchPolicy", "tali5"));
     }
 
     @Test
@@ -120,31 +120,31 @@ public class AssociationRepresentativeTest {
     @Test
     public void test_UC9_4() {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
-        testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
-        testingLeagueService.addSeasonThroughRepresentative("101", 2, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
+        testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
+        testingLeagueService.addSeasonThroughRepresentative("101", 2001, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
         testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5");
         testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5");
 
         //1. gal assigns bob to season 1
-        assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 1, "gal5"));
+        assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 2000, "gal5"));
 
         //2. dor tries to assign same referee to season 1 unsuccessfully
-        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 1, "dor12"));
+        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 2000, "dor12"));
 
         //3. gal assigns Bob to season number 2
-        assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 2, "gal5"));
+        assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 2001, "gal5"));
 
         //4. gal assigns Alice to season 1
-        assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Alice", "101", 1, "gal5"));
+        assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Alice", "101", 2000, "gal5"));
 
         //5. tali assigns Bob to null league
-        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", null, 1, "tali5"));
+        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", null, 2001, "tali5"));
 
         //6. tali assigns Bob to a non-existing season
-        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 3, "tali5"));
+        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 2007, "tali5"));
 
         //7. tali assigns Bob to a non-existing league
-        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "102", 1, "tali5"));
+        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "102", 2000, "tali5"));
     }
 
     @Test

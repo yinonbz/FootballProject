@@ -26,9 +26,9 @@ public class PlayerTest {
 
     @Test
     public void updatePage(){
-        assertTrue(messi.addUpdate("today i played against machbi haifa"));
-        assertFalse(messi.addUpdate(""));
-        assertFalse(messi.addUpdate(null));
+        assertTrue(messi.updatePage("today i played against machbi haifa"));
+        assertFalse(messi.updatePage(""));
+        assertFalse(messi.updatePage(null));
     }
     @Test
     public void updateDetails(){

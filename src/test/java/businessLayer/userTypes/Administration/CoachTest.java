@@ -58,9 +58,9 @@ public class CoachTest {
 
     @Test
     public void updatePage(){
-        assertTrue(henry.addUpdate("today i coached my team"));
-        assertFalse(henry.addUpdate(""));
-        assertFalse(henry.addUpdate(null));
+        assertTrue(henry.updatePage("today i coached my team"));
+        assertFalse(henry.updatePage(""));
+        assertFalse(henry.updatePage(null));
     }
     @Test
     public void updateDetails(){

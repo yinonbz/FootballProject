@@ -17,7 +17,9 @@ public class TeamOwner extends Subscriber {
 
     public static int newTeamOwnerCounter = 0;
 
-    /**this is the constructor of team owner
+    /**
+     * this is the constructor of team owner
+     *
      * @param username
      * @param password
      * @param name
@@ -29,30 +31,6 @@ public class TeamOwner extends Subscriber {
         this.teamManagers = new HashMap<>();
         this.teamOwners = new HashMap<>();
     }
-
-    /**
-     * the function lets the team owner to send a request for opening a new team
-     *
-     * @param teamName        the team's name
-     * @param establishedYear the established year of the team
-     * @return true if the request was send successfully
-     */
-    /*
-    public boolean sendRequestForTeam(String teamName, String establishedYear) {
-        if (!teamName.isEmpty() && !establishedYear.isEmpty()) {
-            if (tryParseInt(establishedYear)) {
-                if (isTheNumberAYear(establishedYear)) {
-                    LinkedList<String> details = new LinkedList<>();
-                    details.add(teamName);
-                    details.add(establishedYear);
-                    details.add(getUsername());
-                    return systemController.addToTeamConfirmList(details, this.getUsername());
-                }
-            }
-        }
-        return false;
-    }
-    */
 
     /**
      * this function check a string that represent a NUMBER and checks if it can be a year
@@ -89,8 +67,8 @@ public class TeamOwner extends Subscriber {
     /**
      * this function add the asset to the chosen team
      *
-     * @param teamName the team name
-     * @param assetType the asset type
+     * @param teamName      the team name
+     * @param assetType     the asset type
      * @param assetUserName the user name of the asset
      * @return true or false if the asset was added
      */
@@ -106,14 +84,16 @@ public class TeamOwner extends Subscriber {
                         team.addPlayer(player);
                         player.setTeam(team);
                         isAdded = true;
+                        systemController.addPlayerToTeam(player, team);
                     }
                     break;
                 case "TeamManager":
                     TeamManager teamManager = systemController.findTeamManager(assetUserName);
-                    if (teamManager != null && teamManager.getTeam() == null) {//ido change !teamManager.getTeam().equals(team)
+                    if (teamManager != null && teamManager.getTeam() == null) {
                         team.addTeamManager(teamManager);
                         teamManager.setTeam(team);
                         this.teamManagers.put(team, teamManager);
+                        systemController.addTeamManagerToTeam(teamManager, team);
                         isAdded = true;
                     }
                     break;
@@ -123,15 +103,17 @@ public class TeamOwner extends Subscriber {
                     if (coach != null && !coach.containTeam(team)) {
                         team.addCoach(coach);
                         coach.addTeam(team);
+                        systemController.addCoachToTeam(coach, team);
                         isAdded = true;
                     }
                     break;
 
                 case "Stadium":
                     Stadium stadium = systemController.findStadium(assetUserName);
-                    if (stadium != null && stadium.containTeam(team) == false && team.getStadium() == null) {
+                    if (stadium != null && !stadium.containTeam(team) && team.getStadium() == null) {
                         team.setStadium(stadium);
                         stadium.addTeam(team);
+                        systemController.addStadiumToTeam(stadium, team);
                         isAdded = true;
                     }
                     break;
@@ -144,8 +126,9 @@ public class TeamOwner extends Subscriber {
 
     /**
      * this function return true or false if the team owner can delete a asset from the team
-     * @param teamName the team name
-     * @param assetType the asset type
+     *
+     * @param teamName      the team name
+     * @param assetType     the asset type
      * @param assetUserName the asset user name
      * @return true or false if the asset was remove from the team
      */
@@ -198,10 +181,11 @@ public class TeamOwner extends Subscriber {
 
     /**
      * this function return true or false if a team owner manage to edit a player information
-     * @param teamName the team name
+     *
+     * @param teamName   the team name
      * @param playerUser the player user name
-     * @param typeEdit the info type to be edit
-     * @param edit what the edit info
+     * @param typeEdit   the info type to be edit
+     * @param edit       what the edit info
      * @return true or false if the team owner manage to edit the player info
      */
     public boolean editPlayer(String teamName, String playerUser, String typeEdit, String edit) {
@@ -234,12 +218,12 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * this function return true or false if a team owner manage to edit a coach information
-     * @param teamName the team name
+     *
+     * @param teamName  the team name
      * @param CoachUser the coach user name
-     * @param typeEdit the info type to be edit
-     * @param edit what the edit info
+     * @param typeEdit  the info type to be edit
+     * @param edit      what the edit info
      * @return true or false if the team owner manage to edit the coach info
      */
     public boolean editCoach(String teamName, String CoachUser, String typeEdit, String edit) {
@@ -273,10 +257,11 @@ public class TeamOwner extends Subscriber {
 
     /**
      * this function return true or false if a team owner manage to edit a teamManager information
-     * @param teamName the team name
+     *
+     * @param teamName        the team name
      * @param teamManagerUser the teamManager user name
-     * @param typeEdit the info type to be edit
-     * @param edit what the edit info
+     * @param typeEdit        the info type to be edit
+     * @param edit            what the edit info
      * @return true or false if the team owner manage to edit the teamManager info
      */
     public boolean editTeamManager(String teamName, String teamManagerUser, String typeEdit, int edit) {
@@ -297,10 +282,11 @@ public class TeamOwner extends Subscriber {
 
     /**
      * this function return true or false if a team owner manage to edit a Stadium information
-     * @param teamName the team name
+     *
+     * @param teamName        the team name
      * @param editStadiumName the Stadium user name
-     * @param typeEdit the info type to be edit
-     * @param edit what the edit info
+     * @param typeEdit        the info type to be edit
+     * @param edit            what the edit info
      * @return true or false if the team owner manage to edit the Stadium info
      */
     public Boolean editStadium(String teamName, String editStadiumName, String typeEdit, int edit) {
@@ -320,6 +306,7 @@ public class TeamOwner extends Subscriber {
 
     /**
      * this function find the team that the owner own according to the team name and return the certain team
+     *
      * @param teamName the team name
      * @return the team according to the name
      */
@@ -359,8 +346,8 @@ public class TeamOwner extends Subscriber {
     public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
             team.setActive(true);
+            systemController.updateTeamStatusToUsers(team, "The team '" + team.getTeamName() + "' is now active.");
             return true;
-            //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
         }
         //System.out.println("The team '" + team.getTeamName() + "' has already been enabled.");
         return false;
@@ -375,8 +362,9 @@ public class TeamOwner extends Subscriber {
     public Boolean disableStatus(Team team) {
         if (team.getActive()) {
             team.setActive(false);
+            systemController.updateTeamStatusToUsers(team, "The team '" + team.getTeamName() + "' is now inactive.");
             return true;
-            //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not-active.");
+            //System.out.println("The team '" + team.getTeamName() + "' is now inactive.");
         }
         //System.out.println("The team '" + team.getTeamName() + "' has already been disabled.");
         return false;
@@ -385,21 +373,19 @@ public class TeamOwner extends Subscriber {
     /**
      * @return
      */
-    public boolean editProperties(){
+    public boolean editProperties() {
         return true;
     }
 
     /**
-     *
      * @return
      */
-    public boolean editOwners(){
+    public boolean editOwners() {
 
         return true;
     }
 
     /**
-     *
      * @param username
      * @param permission
      * @param team
@@ -408,15 +394,15 @@ public class TeamOwner extends Subscriber {
      */
     public boolean addManager(String username, Permissions permission, Team team, int salary) {
         //check if user exists in out system
-        Subscriber subscriber=null;
-        if(systemController.checkUserExists(username)){
+        Subscriber subscriber = null;
+        if (systemController.checkUserExists(username)) {
             subscriber = systemController.selectUserFromDB(username);
         }
         //verify user exists in the system, user is a team manager,user is not one of the team owners, owner indeed owns the team and team has no manager
-        if(subscriber!=null && team!=null && subscriber instanceof TeamManager){
-            TeamManager teamManager = (TeamManager)subscriber;
-            if(team.getTeamManager() ==null && teamManager.getTeam()==null){
-                if(!team.getTeamOwners().contains(subscriber) && (this.teams.contains(team))){
+        if (team != null && subscriber instanceof TeamManager) {
+            TeamManager teamManager = (TeamManager) subscriber;
+            if (team.getTeamManager() == null && teamManager.getTeam() == null) {
+                if (!team.getTeamOwners().contains(subscriber) && (this.teams.contains(team))) {
                     //covert Subsriber to teamManger
 
 
@@ -428,12 +414,11 @@ public class TeamOwner extends Subscriber {
                     teamManager.setPermissions(permission);
 
                     //link to assigning owner
-                    teamManagers.put(team,teamManager);
+                    teamManagers.put(team, teamManager);
 
                     return true;
                 }
-            }
-            else if((team.getTeamManager()!=null)){
+            } else if ((team.getTeamManager() != null)) {
                 System.out.println("please fire current Manager before appointing a new one");
             }
         }
@@ -501,9 +486,9 @@ public class TeamOwner extends Subscriber {
             subscriber = systemController.selectUserFromDB(username);
         }
 
-        if(subscriber!=null && team!=null){
-            if(this.teams.contains(team) && teamManagers.containsValue(subscriber) ){
-                if(subscriber instanceof TeamManager && team.getTeamManager().equals(subscriber)){
+        if (subscriber != null && team != null) {
+            if (this.teams.contains(team) && teamManagers.containsValue(subscriber)) {
+                if (subscriber instanceof TeamManager && team.getTeamManager().equals(subscriber)) {
                     //fire manager from team and delete links
                     team.setTeamManager(null);
                     TeamManager tm = (TeamManager) subscriber;
@@ -541,11 +526,11 @@ public class TeamOwner extends Subscriber {
         return false;
     }
     /***todo check if this function is implemented by someone?
-    public boolean editTeams() {
+     public boolean editTeams() {
 
-        return true;
-    }
-    */
+     return true;
+     }
+     */
     /**
      * a getter of teams of a team owner
      *
@@ -558,6 +543,7 @@ public class TeamOwner extends Subscriber {
 
     /**
      * this function set the team hash set
+     *
      * @param teams
      */
     public void setTeams(HashSet<Team> teams) {
@@ -661,6 +647,7 @@ public class TeamOwner extends Subscriber {
                         }
 
                         teamOwners.get(team).remove(teamOwnerToRemove);
+                        systemController.updateOwnerOfRemoval(team, teamOwnerToRemove);
                         return true;
                     }
                 }
@@ -671,26 +658,24 @@ public class TeamOwner extends Subscriber {
                     teamOwnerToRemove = OEowner.getTeamOwner();
 
                     if (team.getTeamOwners().contains(teamOwnerToRemove)) {
-                        if(teamOwners.get(team).contains(teamOwnerToRemove)){
+                        if (teamOwners.get(team).contains(teamOwnerToRemove)) {
                             LinkedList<TeamOwner> list = teamOwnerToRemove.getTeamOwners().get(team);
-                            if(list != null) {
+                            if (list != null) {
                                 while (!list.isEmpty()) {
                                     TeamOwner teamOwner = list.peek();
-                                    if(teamOwner.isFictive()){
-                                        Subscriber sub= null;
-                                        if(teamOwner.getOriginalObject().getType().equals("Player")){
-                                            sub = (Player)teamOwner.getOriginalObject();
+                                    if (teamOwner.isFictive()) {
+                                        Subscriber sub = null;
+                                        if (teamOwner.getOriginalObject().getType().equals("Player")) {
+                                            sub = (Player) teamOwner.getOriginalObject();
+                                        } else if (teamOwner.getOriginalObject().getType().equals("Coach")) {
+                                            sub = (Coach) teamOwner.getOriginalObject();
                                         }
-                                        else if(teamOwner.getOriginalObject().getType().equals("Coach")){
-                                            sub = (Coach)teamOwner.getOriginalObject();
+                                        if (teamOwner.getOriginalObject().getType().equals("TeamManager")) {
+                                            sub = (TeamManager) teamOwner.getOriginalObject();
                                         }
-                                        if(teamOwner.getOriginalObject().getType().equals("TeamManager")){
-                                            sub = (TeamManager)teamOwner.getOriginalObject();
-                                        }
-                                        teamOwnerToRemove.removeOwner(sub,teamName);
-                                    }
-                                    else{
-                                        teamOwnerToRemove.removeOwner(teamOwner,teamName);
+                                        teamOwnerToRemove.removeOwner(sub, teamName);
+                                    } else {
+                                        teamOwnerToRemove.removeOwner(teamOwner, teamName);
                                     }
                                     //team.getTeamOwners().remove(teamOwner);
                                 }
@@ -704,8 +689,9 @@ public class TeamOwner extends Subscriber {
                             teamOwnerToRemove.setOriginalObject(null);
                         }
                         teamOwners.get(team).remove(teamOwnerToRemove);
+                        systemController.updateOwnerOfRemoval(team, teamOwnerToRemove);
                         return true;
-                        }
+                    }
                 }
 
                 return false;
@@ -719,8 +705,8 @@ public class TeamOwner extends Subscriber {
         }
         return false;
     }
-        //System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
-        //return false;
+    //System.out.println("Team owner must be a Player, a Coach or a Team Manager.");
+    //return false;
 
 
     /**
@@ -758,6 +744,7 @@ public class TeamOwner extends Subscriber {
         teamOwners.get(team).add(newTeamOwner);
         newTeamOwner.getTeams().add(team);
         team.getTeamOwners().add(newTeamOwner);
+        systemController.addOwnerToTeam(newTeamOwner, team);
         //todo - add complaints to newTeamOwner? if not, complaints needs to be added manually to the newTeamOwner from the original object
         //System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
     }
@@ -768,7 +755,7 @@ public class TeamOwner extends Subscriber {
      * @return
      */
     public int reportIncome(String teamName) {
-        if(teamName!=null) {
+        if (teamName != null) {
             Team team = findTeam(teamName);
             if (team != null) {
                 return team.calculateIncome();
@@ -778,12 +765,11 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @param teamName
      * @return
      */
     public int reportExpanse(String teamName) {
-        if(teamName!=null) {
+        if (teamName != null) {
             Team team = findTeam(teamName);
             if (team != null) {
                 return team.calculateExpanse();
@@ -793,7 +779,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @param teamName
      * @return
      */
@@ -802,7 +787,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @return
      */
     public OwnerEligible getOriginalObject() {
@@ -810,7 +794,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @param originalObject
      */
     public void setOriginalObject(OwnerEligible originalObject) {
@@ -828,9 +811,10 @@ public class TeamOwner extends Subscriber {
         }
         return false;
     }
-    public boolean addUpdate(String teamName , String update){
+
+    public boolean addUpdate(String teamName, String update) {
         Team team = findTeam(teamName);
-        if(team!=null){
+        if (team != null) {
             return team.updatePage(update);
         }
         return false;
@@ -842,7 +826,6 @@ public class TeamOwner extends Subscriber {
     }
 
     /**
-     *
      * @return
      */
     public HashMap<Team, TeamManager> getTeamManagers() {

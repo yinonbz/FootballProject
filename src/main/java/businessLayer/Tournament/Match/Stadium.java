@@ -33,7 +33,7 @@ public class Stadium {
         if(this.owners ==null){
             this.owners = new HashMap<>();
         }
-        this.ticketCost = 75;//default price todo check with tomer
+        this.ticketCost = 75;
     }
 
 
