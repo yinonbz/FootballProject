@@ -8,6 +8,7 @@ import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Observable;
@@ -155,15 +156,16 @@ public class SystemService implements Observer {
         return systemController.removeReferee(username);
     }
 
-    /**
+    /*    *//**
      * the function takes a request for opening a new team and puts it in the data structure
-     *
      * @param details of the new team
-     *                Not a UC - A function of TEAM OWNER
-     */
+     *Not a UC - A function of TEAM OWNER
+     *//*
     public boolean requestForNewTeam(LinkedList<String> details, String username) {
-        return systemController.addToTeamConfirmList(details, username);
-    }
+        return systemController.addToTeamConfirmList(details,username);
+    }*/
+
+/*    */
 
     /**
      * the function approves the request by the AR and updates the new team in the system and in the team owner

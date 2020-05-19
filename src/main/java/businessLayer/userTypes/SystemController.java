@@ -1,5 +1,9 @@
 package businessLayer.userTypes;
 
+import businessLayer.Exceptions.AlreadyExistException;
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.League;
@@ -1124,30 +1128,36 @@ public class SystemController extends Observable {
      */
     public String enterLoginDetails(String userName, String password) {
 
-        if (userName == null || password == null) {
-            return null;
+        if(userName == null || password == null || userName.equals("") || password.equals("")){
+            throw new MissingInputException("Missing Input");
+            //return null;
         }
 
         Subscriber subscriber = selectUserFromDB(userName);
 
-        if (subscriber == null)
-            return null;
+        if(subscriber==null)
+            throw new NotFoundInDbException("No such user in the data base.");
+            //return null;
 
-        if (subscriber.getPassword().equals(password)) {
-            if (subscriber instanceof Admin) {
-                Admin userCheckIfApproved = ((Admin) subscriber);
-                if (userCheckIfApproved.isApproved() == false) {
-                    return null;
+        if(subscriber.getPassword().equals(password)) {
+            if(subscriber instanceof Admin){
+                Admin userCheckIfApproved = ((Admin)subscriber);
+                if(userCheckIfApproved.isApproved() == false){
+                    throw new NotApprovedException("You are trying to log in as an unapproved Admin. You have to be approved first by another Admin to log in.");
+                    //return null;
                 }
-            } else if (subscriber instanceof AssociationRepresentative) {
-                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative) subscriber);
-                if (userCheckIfAprroved.isApproved() == false) {
-                    return null;
+            }
+            else if(subscriber instanceof AssociationRepresentative){
+                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative)subscriber);
+                if(userCheckIfAprroved.isApproved() == false){
+                    throw new NotApprovedException("You are trying to log in as an unapproved AR. You have to be approved first by an Admin to log in.");
+                    //return null;
                 }
             }
             return subscriber.toString();
         }
-        return null;
+        throw new NotApprovedException("Wrong password. Please try to login again.");
+        //return null;
     }
 
 
@@ -1402,15 +1412,23 @@ public class SystemController extends Observable {
         if (subscriber instanceof TeamOwner) {
             if (tryParseInt(establishedYear)) {
                 Team team = DB.selectTeamFromDB(teamName);
-                if (team == null) {
-                    LinkedList<String> details = new LinkedList<>();
-                    details.add(teamName);
-                    details.add(establishedYear);
-                    details.add(username);
-                    return DB.addUnconfirmedTeamsToDB(teamName, details);
+                    if(team==null){
+                        if(DB.selectUnconfirmedTeamsFromDB(teamName) == null) {
+                            LinkedList<String> details = new LinkedList<>();
+                            details.add(teamName);
+                            details.add(establishedYear);
+                            details.add(username);
+                            return DB.addUnconfirmedTeamsToDB(teamName, details);
+                        }
+                        else{
+                            throw new AlreadyExistException("There is already a request pending for a team with this name. Please select a different name or wait for the team to be confirmed.");
+                        }
+                    }
+                    else{
+                        throw new AlreadyExistException("There is already a team with this name in the system. Please select a different name.");
+                    }
                 }
             }
-        }
         return false;
     }
 
@@ -1751,5 +1769,54 @@ public class SystemController extends Observable {
                 notifyObservers(adminToUpdate);
             }
         }
+    }
+
+
+    public ArrayList<String> getAllUnconfirmedTeamsInDB() {
+        HashMap<String,LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();
+        ArrayList<String> teamNamesInDB = new ArrayList<>();
+        Iterator iterator = teamsInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            teamNamesInDB.add("" + me2.getKey());
+        }
+        return teamNamesInDB;
+    }
+
+    public ArrayList<String> getAllULeaguesInDB() {
+        HashMap<String,League> leaguesInDB = DB.getLeagues();
+        ArrayList<String> leagueNamesInDB = new ArrayList<>();
+        Iterator iterator = leaguesInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            leagueNamesInDB.add("" + me2.getKey());
+        }
+        return leagueNamesInDB;
+    }
+
+    public ArrayList<String> getAllTeamsNames() {
+        if(DB.getTeams()!=null &&DB.getTeams().size()>0) {
+            ArrayList<String> teamsName = new ArrayList<>();
+            teamsName.addAll(DB.getTeams().keySet());
+            return teamsName;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public ArrayList<String> getAllSeasonsFromLeague(String league) {
+        if(DB.selectLeagueFromDB(league) != null){
+            League lg = DB.selectLeagueFromDB(league);
+            HashMap<Integer, Season> seasons = lg.getSeasons();
+            ArrayList<String> seasonsIdInLeague = new ArrayList<>();
+            Iterator iterator = seasons.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry me2 = (Map.Entry) iterator.next();
+                seasonsIdInLeague.add("" + me2.getKey());
+            }
+            return seasonsIdInLeague;
+        }
+        return null;
     }
 }

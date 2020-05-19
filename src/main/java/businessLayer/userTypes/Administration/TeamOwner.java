@@ -820,6 +820,11 @@ public class TeamOwner extends Subscriber {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "TeamOwner";
+    }
+
     /**
      * @return
      */

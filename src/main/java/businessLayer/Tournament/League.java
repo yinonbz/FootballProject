@@ -14,7 +14,7 @@ public class League {
     //private Map<Season,MatchingPolicy> matchingPolicy; // probably not needed
     //private Map<Season,RankingPolicy> rankingPolicy; // probably not needed
     private SystemController systemController;
-    private HashMap<Integer, Season> seasons;
+    private HashMap<Integer, Season> seasons; //<Season ID, Season>
     //private List<Match> matches;
 
     /**
@@ -169,5 +169,9 @@ public class League {
     public Season getSeasonFromLeague (String seasonID){
         int id = Integer.parseInt(seasonID);
         return seasons.get(id);
+    }
+
+    public HashMap<Integer, Season> getSeasons() {
+        return seasons;
     }
 }

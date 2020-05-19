@@ -16,7 +16,7 @@ private SystemController systemController;
 
     /**
      * constractor for player and coach
-     * @param username
+     * @param  username
      * @param name
      * @param birthDate
      */

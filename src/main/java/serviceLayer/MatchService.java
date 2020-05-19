@@ -1,9 +1,14 @@
 package serviceLayer;
 
 import businessLayer.Tournament.LeagueController;
+import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.MatchController;
+import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.SystemController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Date;
 
 public class MatchService {
@@ -52,7 +57,7 @@ public class MatchService {
      */
     public boolean reportGoalThroughReferee(String time, String PlayerGoal, String playerAssist, String isOwnGoal, String matchID, String username) {
         if (!PlayerGoal.isEmpty() && tryParseInt(time) && tryParseInt(matchID)) {
-            if (isOwnGoal.equals("F") || isOwnGoal.equals("T")) {
+            if (isOwnGoal.equals("false") || isOwnGoal.equals("true")) {
                 int timeEvent = Integer.parseInt(time);
                 if (timeEvent > 0 && timeEvent < 121) {
                     return matchController.reportGoal(time, PlayerGoal, playerAssist, isOwnGoal, matchID, username);
@@ -217,6 +222,35 @@ public class MatchService {
             return false;
         }
     }
+    //todo ido add this function need to connect to db
+    public HashMap<Integer, Match> getAllMatch(String rUserName) {
+        HashMap<Integer, Match> match =  matchController.getRefereeMatch(rUserName);
+        if(match!=null && match.size()>0){
+            return match;
+        }else{
+            return null;
+        }
+    }
+    //todo ido add this function need to connect to db
+    public ArrayList<String> getAllPlayerMatch(int matchId, String rUserName) {
+        HashMap<Integer, Match> matches = matchController.getRefereeMatch(rUserName);
+        if (matches != null && matches.size() > 0 && matches.containsKey(matchId)) {
+            Match currMatch = matches.get(matchId);
+            ArrayList<String> players = new ArrayList<>();
+            HashSet<Player> awayTeam = currMatch.getAwayTeam().getPlayers();
+            HashSet<Player> homeTeam = currMatch.getHomeTeam().getPlayers();
+            for (Player player : awayTeam) {
+                players.add(player.getName() + "-"+player.getTeam().getTeamName());
+            }
+            for (Player player : homeTeam) {
+                players.add(player.getName()+"-"+player.getTeam().getTeamName());
+            }
+            return players;
+        } else {
+            return null;
+        }
+    }
+
 
     /**
      * The function receives a referee's username and a match, verifies the initiation of the action is from an association representative and

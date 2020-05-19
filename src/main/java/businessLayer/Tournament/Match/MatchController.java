@@ -6,8 +6,8 @@ import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.sql.Time;
 import java.util.Date;
+import java.util.HashMap;
 
 
 public class MatchController {
@@ -65,7 +65,7 @@ public class MatchController {
             Player playerG = getPlayerFromDB(PlayerGoal);
             Player playerA = getPlayerFromDB(playerAssist);
             boolean isOwnG;
-            if (isOwnGoal.equals("T")) {
+            if (isOwnGoal.equals("true")) {
                 isOwnG = true;
             } else {
                 isOwnG = false;
@@ -208,7 +208,7 @@ public class MatchController {
      * @param matchID
      * @return
      */
-    private boolean checkPermissionOfReferee(String username, String matchID) {
+    private boolean checkPermissionOfReferee(String username, String matchID){
         Subscriber subscriber = systemController.getSubscriberByUserName(username);
         if (subscriber instanceof Referee) {
             if (((Referee) subscriber).isSubmittedToAGame(matchID)) {
@@ -390,5 +390,14 @@ public class MatchController {
             }
         }
         return false;
+    }
+
+    //todo ido added this function need to connect to DB!!
+    public HashMap<Integer, Match> getRefereeMatch(String rUserName) {
+        if (systemController.containsReferee(rUserName)) {
+            return systemController.getRefereeFromDB(rUserName).getRefMatches();
+        } else {
+            return null;
+        }
     }
 }

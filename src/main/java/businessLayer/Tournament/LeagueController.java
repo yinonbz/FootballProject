@@ -1,5 +1,6 @@
 package businessLayer.Tournament;
 
+import businessLayer.Exceptions.MissingInputException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
@@ -424,8 +425,7 @@ public class LeagueController {
                 }
             }
         }
-        return false;
-
+        throw new MissingInputException("Missing Input");
     }
 
     /**

@@ -11,9 +11,7 @@ import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.Subscriber;
 import javafx.util.Pair;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class DemoDB {
     //------------System Controller------------//
@@ -947,9 +945,7 @@ public class DemoDB {
         return unconfirmedTeams;
     }
 
-    public void setUnconfirmedTeams(HashMap<String, LinkedList<String>> unconfirmedTeams) {
-        this.unconfirmedTeams = unconfirmedTeams;
-    }
+    public void setUnconfirmedTeams(HashMap<String, LinkedList<String>> unconfirmedTeams) { this.unconfirmedTeams = unconfirmedTeams; }
 
     public HashMap<String, Stadium> getStadiums() {
         return stadiums;
@@ -962,4 +958,6 @@ public class DemoDB {
     public HashMap<Integer, Match> getMatches() {
         return matches;
     }
+
+    public HashMap<String, League> getLeagues() { return leagues; }
 }
