@@ -3,13 +3,11 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Team.Team;
 //import businessLayer.Utilities.Page;
 import businessLayer.Utilities.Page;
-import businessLayer.userTypes.Administration.FIELDJOB;
-import businessLayer.userTypes.Administration.OwnerEligible;
-import businessLayer.userTypes.Administration.TeamOwner;
+import businessLayer.Utilities.HasPage;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-public class Player extends Subscriber implements OwnerEligible {
+public class Player extends Subscriber implements OwnerEligible, HasPage {
 
     private TeamOwner teamOwner;
     private String birthDate;
@@ -36,7 +34,7 @@ public class Player extends Subscriber implements OwnerEligible {
         this.team = team;
         this.teamOwner =null;
         this.salary= salary;
-        playerPage = new Page(username,name,birthDate);
+        playerPage = new Page(username,name,birthDate, this, name);
     }
 
     public int getSalary() {
@@ -141,8 +139,9 @@ public class Player extends Subscriber implements OwnerEligible {
         return "Player";
     }
 
-    public boolean addUpdate(String update){
+    public boolean updatePage(String update){
         return playerPage.update(update);
     }
+
 
 }
