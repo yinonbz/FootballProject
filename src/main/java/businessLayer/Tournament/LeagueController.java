@@ -299,7 +299,7 @@ public class LeagueController {
                 return userRep.createSeason(leagueID, seasonID, startingDate, win, lose, tie, matchingPolicy, endingDate);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete the form.");
     }
 
     /**

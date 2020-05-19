@@ -102,9 +102,9 @@
                         <DatePicker fx:id="endingDate" layoutX="192.0" layoutY="143.0" prefHeight="24.0" prefWidth="148.0" promptText="Ending Date" />
                         <DatePicker fx:id="startingDate" layoutX="14.0" layoutY="143.0" prefHeight="24.0" prefWidth="148.0" promptText="Starting Date" />
                         <ComboBox fx:id="leagueCombo3" layoutX="14.0" layoutY="60.0" prefHeight="25.0" prefWidth="144.0" promptText="Select League..." />
-                        <Spinner fx:id="winSpinner" layoutX="16.0" layoutY="222.0" prefHeight="31.0" prefWidth="123.0" />
-                        <Spinner fx:id="loseSpinner" layoutX="185.0" layoutY="222.0" prefHeight="31.0" prefWidth="136.0" />
-                        <Spinner fx:id="tieSpinner" layoutX="363.0" layoutY="223.0" prefHeight="31.0" prefWidth="130.0" />
+                        <Spinner fx:id="winSpinner" editable="true" layoutX="16.0" layoutY="222.0" prefHeight="31.0" prefWidth="123.0" />
+                        <Spinner fx:id="loseSpinner" editable="true" layoutX="185.0" layoutY="222.0" prefHeight="31.0" prefWidth="136.0" />
+                        <Spinner fx:id="tieSpinner" editable="true" layoutX="363.0" layoutY="223.0" prefHeight="31.0" prefWidth="130.0" />
                         <Pane prefHeight="543.0" prefWidth="718.0" visible="false" />
                         <Label layoutX="189.0" layoutY="37.0" text="Season" />
                         <Label layoutX="25.0" layoutY="194.0" text="Win score policy" />
@@ -116,7 +116,7 @@
                         <Label layoutX="190.0" layoutY="118.0" text="Ending Date" />
                         <Button layoutX="17.0" layoutY="365.0" mnemonicParsing="false" onAction="#createSeason" prefHeight="31.0" prefWidth="104.0" text="Create season" />
                         <Label layoutX="16.0" layoutY="36.0" text="League" />
-                        <Spinner fx:id="seasonSpinner" layoutX="188.0" layoutY="60.0" prefHeight="25.0" prefWidth="132.0" />
+                        <Spinner fx:id="seasonSpinner" editable="true" layoutX="188.0" layoutY="60.0" prefHeight="25.0" prefWidth="132.0" />
                      </children>
                   </Pane>
                   <Pane fx:id="createLeaguePane" prefHeight="552.0" prefWidth="930.0" visible="false">

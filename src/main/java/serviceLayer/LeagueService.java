@@ -56,12 +56,7 @@ public class LeagueService {
      * @return
      */
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
-
-        if (leagueID != null && username != null && matchingPolicy != null) {
             return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose,  tie, matchingPolicy, username);
-        }
-        return false;
-
     }
 
 
