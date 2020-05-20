@@ -106,13 +106,16 @@ public class AssociationRepresentative extends Subscriber {
      * @param username
      * @return true/false
      */
-    public boolean createReferee(String username) {
+    public boolean createReferee(String username, String role) {
         if(!isApproved())
             return false;
         if (username == null) {
             return false;
         }
-        return super.getSystemController().addReferee(username, "1111", "default", "basic", this.getUsername());
+        if(!role.equals("MAIM") && !role.equals("ASSISTANT")){
+            role="MAIN";
+        }
+        return super.getSystemController().addReferee(username, "1111", "default", role, this.getUsername());
     }
 
     /**
@@ -220,8 +223,7 @@ public class AssociationRepresentative extends Subscriber {
     public boolean confirmTeamRequest(String teamName){
         if(!approved)
             return false;
-        //return systemController.confirmTeamByAssociationRepresntative(teamName,this.getUsername());
-        return true;
+        return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());
     }
 
     @Override

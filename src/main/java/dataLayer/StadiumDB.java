@@ -49,7 +49,7 @@ public class StadiumDB implements DB_Inter {
     }
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String arg2,String arg3) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().
                 from(STADIUM)
@@ -61,9 +61,9 @@ public class StadiumDB implements DB_Inter {
     }
 
     @Override
-    public Map<String, ArrayList<String>> selectFromDB(String objectName) {
+    public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
         //get specified stadium
-        if(containInDB(objectName)){
+        if(containInDB(objectName,null,null)){
             Map<String, ArrayList<String>> stadium = new HashMap<>();
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select().
@@ -130,8 +130,8 @@ public class StadiumDB implements DB_Inter {
     }
 
     @Override
-    public boolean removeFromDB(String objectName) {
-        if(containInDB(objectName)){
+    public boolean removeFromDB(String objectName,String arg2,String arg3) {
+        if(containInDB(objectName,null,null)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.delete(STADIUM)
                     .where(STADIUM.STADIUMID.eq(objectName)).execute();
@@ -142,7 +142,7 @@ public class StadiumDB implements DB_Inter {
 
     @Override
     public boolean addToDB(String stadiumID, String numOfSeats, String ticketCost, String empty, Map<String, ArrayList<String>> objDetails) {
-        if(!containInDB(stadiumID)){
+        if(!containInDB(stadiumID,null,null)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(STADIUM
                     ,STADIUM.STADIUMID

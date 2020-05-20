@@ -6,12 +6,11 @@ import businessLayer.userTypes.Subscriber;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Referee extends Subscriber {
-    private String training;
+    //private String training;
+    private roleRef roleRef;
     private LeagueController leagueController;
     private HashMap<Integer, Match> matches;
     private MatchController matchController;
@@ -20,12 +19,11 @@ public class Referee extends Subscriber {
      * @param username
      * @param password
      * @param name
-     * @param training
      * @param leaguesController
      */
-    public Referee(String username, String password, String name, String training, LeagueController leaguesController, SystemController systemController) {
+    public Referee(String username, String password, String name, roleRef roleRef ,LeagueController leaguesController, SystemController systemController) {
         super(username, password, name,systemController);
-        this.training = training;
+        this.roleRef = roleRef;
         this.leagueController = leaguesController;
         matches = new HashMap<>();
         this.matchController = matchController;
@@ -35,14 +33,13 @@ public class Referee extends Subscriber {
      * @param username
      * @param password
      * @param name
-     * @param training
      * @param leaguesController
      * @param matchController
      */
-    public Referee(String username, String password, String name, String training, LeagueController leaguesController, SystemController systemController, MatchController matchController) {
+    public Referee(String username, String password, String name, roleRef refTraining,LeagueController leaguesController, SystemController systemController, MatchController matchController) {
 
         super(username, password,name, systemController);
-        this.training = training;
+        this.roleRef  = refTraining;
         this.leagueController = leaguesController;
         matches = new HashMap<>();
         this.matchController = matchController;
@@ -85,10 +82,11 @@ public class Referee extends Subscriber {
     /**
      * @return
      */
+    /*
     public String getTraining() {
         return training;
     }
-
+    */
     /**
      * @return
      */
@@ -106,9 +104,11 @@ public class Referee extends Subscriber {
     /**
      * @param training
      */
+    /*
     public void setTraining(String training) {
         this.training = training;
     }
+    */
 
     /**
      * @param leaguesController
@@ -170,4 +170,11 @@ public class Referee extends Subscriber {
         return false;
     }
 
+    public businessLayer.userTypes.Administration.roleRef getRoleRef() {
+        return roleRef;
+    }
+
+    public void setRoleRef(businessLayer.userTypes.Administration.roleRef roleRef) {
+        this.roleRef = roleRef;
+    }
 }

@@ -33,13 +33,11 @@ public class SystemService {
      * UC 8.3.1
      */
     public HashMap<Integer, Complaint> displayComplaints(String username) {
-        //return systemController.displayComplaints(username);
-        return null;
+        return systemController.displayComplaints(username);
     }
 
     public HashMap<String, Subscriber> displayAdminApprovalRequests(String username) {
-        //return systemController.displayAdminApprovalRequests(username);
-        return null;
+        return systemController.displayAdminApprovalRequests(username);
     }
 
 
@@ -123,8 +121,7 @@ public class SystemService {
      * UC 8.3.2
      */
     public boolean replyComplaints(String complaintID, String username, String comment) {
-        //return systemController.replyComplaints(complaintID,username,comment);
-        return false;
+        return systemController.replyComplaints(complaintID,username,comment);
     }
 
 
@@ -171,8 +168,7 @@ public class SystemService {
      * Not a UC - A function of Association Represntative
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        //return systemController.confirmTeamByAssociationRepresntative(teamName,username);
-        return false;
+        return systemController.confirmTeamByAssociationRepresentative(teamName,username);
     }
 
 
@@ -236,8 +232,8 @@ public class SystemService {
      * @return true if the Coach was successfully created in the DB
      *         false else
      */
-    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJob){
-        return systemController.enterRegisterDetails_Coach(userName,password,name,training,teamJob);
+    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String roleInTeam,String training, String teamJob){
+        return systemController.enterRegisterDetails_Coach(userName,password,name,roleInTeam,training,teamJob);
     }
 
     /**
@@ -276,5 +272,12 @@ public class SystemService {
      */
     public boolean handleAdminApprovalRequest(String userName, String userNameToApprove, boolean approve){
         return systemController.handleAdminApprovalRequest(userName, userNameToApprove, approve);
+    }
+
+    public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
+        if(teamName!=null && establishedYear!=null && username!=null && !teamName.isEmpty()){
+            return systemController.sendRequestForTeam(teamName, establishedYear, username);
+        }
+        return false;
     }
 }

@@ -2,6 +2,7 @@ package businessLayer.userTypes.Administration;
 
 
 import businessLayer.Tournament.League;
+import businessLayer.userTypes.SystemController;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
@@ -24,6 +25,7 @@ public class AssociationRepresentativeTest {
     private LeagueService testingLeagueService;
     private SystemService testingSystemService;
     private League l1;
+    private SystemController systemController;
 
     static private DataBaseValues testingDBValues;
     static private DemoDB testingDB;
@@ -45,9 +47,16 @@ public class AssociationRepresentativeTest {
         gal = (AssociationRepresentative) testingDB.selectSubscriberFromDB("gal5");
         dor = (AssociationRepresentative) testingDB.selectSubscriberFromDB("dor12");
         tali = (AssociationRepresentative) testingDB.selectSubscriberFromDB("tali5");
-
+        systemController = SystemController.SystemController();
         Barkat = (TeamOwner) testingDB.selectSubscriberFromDB("AlonaBarkat");
-        Barkat.sendRequestForTeam("HapoelBeerSheva", "1888");
+        systemController.sendRequestForTeam("HapoelBeerSheva1", "1888","Tomer");
+        LinkedList <String> temp = new LinkedList<>();
+        temp.add("HapoelBeerSheva1");
+        temp.add("1888");
+        temp.add("Tomer");
+        testingDB.addUnconfirmedTeamsToDB("HapoelBeerSheva",temp);
+
+        //Barkat.sendRequestForTeam("HapoelBeerSheva", "1888");
         EliLuzon = (AssociationRepresentative) testingDB.selectSubscriberFromDB("EliLuzon");
 
         l1 = testingDB.selectLeagueFromDB("11");
@@ -87,13 +96,13 @@ public class AssociationRepresentativeTest {
         testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
 
         //1. gal creates a new referee successfully
-        assertTrue(testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5"));
+        assertTrue(testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5","MAIN"));
 
         //2. dor tries to create the same referee without success
-        assertFalse(testingLeagueService.createRefereeThroughRepresentative("Bob", "dor12"));
+        assertFalse(testingLeagueService.createRefereeThroughRepresentative("Bob", "dor12","MAIN"));
 
         //3. tali tries to create a referee with a null username field
-        assertFalse(testingLeagueService.createRefereeThroughRepresentative(null, "tali5"));
+        assertFalse(testingLeagueService.createRefereeThroughRepresentative(null, "tali5","MAIN"));
 
         //4. gal removes a referee successfully
         assertTrue(testingLeagueService.removeRefereeThroughRepresentative("Bob", "gal5"));
@@ -113,8 +122,8 @@ public class AssociationRepresentativeTest {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
         testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
         testingLeagueService.addSeasonThroughRepresentative("101", 2, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
-        testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5");
-        testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5");
+        testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5","MAIN");
+        testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5","MAIN");
 
         //1. gal assigns bob to season 1
         assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 1, "gal5"));
@@ -169,8 +178,8 @@ public class AssociationRepresentativeTest {
         teamsName.add("Everton");
         teamsName.add("Liverpool");
         teamsName.add("Chelsea");
-        testingLeagueService.chooseTeamForSeason(teamsName,"12","2020","gal5");
-        assertTrue(testingLeagueService.activateMatchPolicyForSeason("12","2020","gal5"));
+        testingLeagueService.chooseTeamForSeason(teamsName,"13","2020","gal5");
+        assertTrue(testingLeagueService.activateMatchPolicyForSeason("13","2020","gal5"));
     }
 
     @Test

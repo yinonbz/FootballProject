@@ -11,7 +11,8 @@ public class Coach extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner;
     private TRAINING training;
-    private String teamJob;
+    //private String teamJob;
+    private RoleInTeam roleInTeam;
     private int salary;
     private HashSet<Team> teams;
     private Page coachPage;
@@ -26,10 +27,10 @@ public class Coach extends Subscriber implements OwnerEligible {
      * @param salary
      * @param systemController
      */
-    public Coach(String username, String password, String name,TRAINING training, String teamJob,int salary, SystemController systemController) {
+    public Coach(String username, String password, String name,RoleInTeam roleInTeam,TRAINING training, String teamJob,int salary, SystemController systemController) {
         super(username, password,name, systemController);
         this.training=training;
-        this.teamJob=teamJob;
+        this.roleInTeam=roleInTeam;
         this.teamOwner =null;
         this.salary = salary;
         this.teams = new HashSet<>();
@@ -108,20 +109,20 @@ public class Coach extends Subscriber implements OwnerEligible {
      *
      * @return
      */
-
+    /*
     public String getTeamJob() {
         return teamJob;
     }
-
+    */
     /**
      *
-     * @param teamJob
      */
 
+    /*
     public void setTeamJob(String teamJob) {
         this.teamJob = teamJob;
     }
-
+    */
     public HashSet<Team> getTeamS() {
         return teams;
     }
@@ -176,5 +177,13 @@ public class Coach extends Subscriber implements OwnerEligible {
 
     public boolean addUpdate(String update){
         return coachPage.update(update);
+    }
+
+    public RoleInTeam getRoleInTeam() {
+        return roleInTeam;
+    }
+
+    public void setRoleInTeam(RoleInTeam roleInTeam) {
+        this.roleInTeam = roleInTeam;
     }
 }

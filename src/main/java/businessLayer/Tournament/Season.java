@@ -14,12 +14,11 @@ public class Season {
     private League league;
     //private List<Match> matches;
     private MatchingPolicy matchingPolicy;
-    private RankingPolicy rankingPolicy;
+    private ARankingPolicy rankingPolicy;
     private HashMap<String, Referee> referees;
     private HashMap<String, Team> teams;
     private HashMap<Team, LinkedList<Integer>> leagueTable;
     private HashMap <Integer, Match> matchesOfTheSeason;
-
 
     /**
      * @param seasonId
@@ -29,7 +28,7 @@ public class Season {
      * @param matchingPolicy
      * @param rankingPolicy
      */
-    public Season(int seasonId, Date startDate, Date endDate, League league, MatchingPolicy matchingPolicy, RankingPolicy rankingPolicy, HashMap<Team, LinkedList<Integer>> leagueTable, HashMap <Integer, Match> matchesOfTheSeason) {
+    public Season(int seasonId, Date startDate, Date endDate, League league, MatchingPolicy matchingPolicy, ARankingPolicy rankingPolicy, HashMap<Team, LinkedList<Integer>> leagueTable, HashMap <Integer, Match> matchesOfTheSeason) {
         this.seasonId = seasonId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -60,7 +59,7 @@ public class Season {
         teams = new HashMap<>();
         //matches = new ArrayList<>();
         leagueTable = new HashMap<>();
-        rankingPolicy = new ARankingPolicy(win, lose, tie);
+        this.rankingPolicy = new ARankingPolicy(win, lose, tie);
         if (matchingPolicy.equals("ClassicMatchPolicy")) {
             this.matchingPolicy = new ClassicMatchPolicy(league, this);
         } else if (matchingPolicy.equals("SingleMatchPolicy")) {
@@ -199,7 +198,7 @@ public class Season {
      * @param rankingPolicy
      */
 
-    public void setRankingPolicy(RankingPolicy rankingPolicy) {
+    public void setRankingPolicy(ARankingPolicy rankingPolicy) {
         this.rankingPolicy = rankingPolicy;
     }
 
@@ -252,6 +251,7 @@ public class Season {
     public boolean addTeamToSeason(Team team){
         if(team!=null){
             teams.put(team.getTeamName(),team);
+
             return true;
         }
         return false;
@@ -265,11 +265,45 @@ public class Season {
         //in order to use the match policy only once
         if(matchesOfTheSeason==null) {
             this.matchesOfTheSeason = matchingPolicy.activatePolicy(teams, leagueController);
+            leagueController.updateMatchTableInDB(matchesOfTheSeason,league.getLeagueName(),seasonId);
             if (matchesOfTheSeason != null) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * checks if the season contains a match
+     * @param marchID
+     * @return
+     */
+    public boolean seasonContainsMatch(int marchID){
+        return matchesOfTheSeason.containsKey(marchID);
+    }
+
+    /**
+     * the function updates the table of the league
+     * @param match
+     * @return
+     */
+    public boolean updateMatchTableRank(Match match){
+        return rankingPolicy.updateRank(match,leagueTable);
+    }
+
+    /**
+     * a setter if tge matches of the season
+     */
+    public void  setMatchesOfTheSeason(HashMap <Integer, Match> matchesOfTheSeason){
+        this.matchesOfTheSeason=matchesOfTheSeason;
+    }
+
+    /**
+     * getter of the match table of a season
+     * @return
+     */
+    public HashMap <Integer,Match> getMatchesOfTheSeason(){
+        return matchesOfTheSeason;
     }
 
 }

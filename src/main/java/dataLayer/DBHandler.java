@@ -52,7 +52,7 @@ public class DBHandler implements DB_Inter{
      */
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String empty1,String empty2) {
         //create sql query to search record in db using ObjectName
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().
@@ -72,9 +72,9 @@ public class DBHandler implements DB_Inter{
      */
 
     @Override
-    public Map<String,ArrayList<String>> selectFromDB(String objectName) {
+    public Map<String,ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
         //create sql query to select record from db using ObjectName
-        if(containInDB(objectName)) {
+        if(containInDB(objectName,null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select().
                     from(SUBSCRIBERS)
@@ -247,8 +247,8 @@ public class DBHandler implements DB_Inter{
      * @return
      */
     @Override
-    public boolean removeFromDB(String objectName) {
-        if(containInDB(objectName)){
+    public boolean removeFromDB(String objectName,String arg2,String arg3) {
+        if(containInDB(objectName,null,null)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.delete(SUBSCRIBERS)
                     .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName)).execute();
@@ -269,7 +269,7 @@ public class DBHandler implements DB_Inter{
     @Override
     public boolean addToDB(String username,String password,String name,String type, Map<String,ArrayList<String>> objDetails) {
         //check if user in db already
-        if(!containInDB(username)){
+        if(!containInDB(username,null,null)){
             //get subscriber from db
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(SUBSCRIBERS

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Stadium {
     private String name;
-    private Match currentMatch;
+    //private Match currentMatch;
     private HashMap <Integer,Match> previousMatches;
     private int numberOfSeats;
     private HashMap <String, Team> owners;
@@ -19,14 +19,13 @@ public class Stadium {
     /**
      * the constructor of stadium
      * @param name
-     * @param currentMatch
      * @param previousMatches
      * @param numberOfSeats
      * @param owners
      */
-    public Stadium(String name, Match currentMatch, HashMap <Integer,Match> previousMatches, int numberOfSeats, HashMap <String, Team> owners ) {
+    public Stadium(String name, HashMap <Integer,Match> previousMatches, int numberOfSeats, HashMap <String, Team> owners ) {
         this.name = name;
-        this.currentMatch = currentMatch;
+        //this.currentMatch = currentMatch;
         this.previousMatches=previousMatches;
         this.numberOfSeats=numberOfSeats;
         this.owners=owners;
@@ -45,7 +44,7 @@ public class Stadium {
      */
     public Stadium (String name, int numberOfSeats){
         this.name = name;
-        currentMatch = null;
+        //currentMatch = null;
         previousMatches = new HashMap<>();
         this.numberOfSeats = numberOfSeats;
         this.owners = new HashMap<>();
@@ -61,10 +60,11 @@ public class Stadium {
     /**
      * @return
      */
+    /*
     public Match getCurrentMatch() {
         return currentMatch;
     }
-
+    */
 
     /**
      * @param name
@@ -76,9 +76,11 @@ public class Stadium {
     /**
      * @param currentMatch
      */
+    /*
     public void setCurrentMatch(Match currentMatch) {
         this.currentMatch = currentMatch;
     }
+    */
 
     public HashMap<Integer, Match> getPreviousMatches() {
         return previousMatches;

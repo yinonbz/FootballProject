@@ -56,6 +56,7 @@ public class TeamOwnerTest {
 
     private TeamService teamService;
     private SystemService systemService;
+    private SystemController systemController;
 
     @Before
     public void UT_createTestValues() {
@@ -94,6 +95,7 @@ public class TeamOwnerTest {
 
         teamService = new TeamService();
         systemService = new SystemService();
+        systemController = SystemController.SystemController();
 
     }
     @Test
@@ -393,15 +395,16 @@ public class TeamOwnerTest {
     public void UT_checkTeamRequest() {
         //1
         //check if we get true on a normal request
-        assertTrue(Barkat.sendRequestForTeam("TheSharks", "2003"));
+
+        assertTrue(systemService.sendRequestForTeam("natania","1948","Tomer"));
 
         //2
         //check if we get a false on a not valid year
-        assertFalse(Barkat.sendRequestForTeam("TheSharks", "0"));
+        assertFalse(systemService.sendRequestForTeam("natania","","Tomer"));
 
         //3
         //check if we get a false on not valid name
-        assertFalse(Barkat.sendRequestForTeam("", "2004"));
+        assertFalse(systemService.sendRequestForTeam("","1948","Tomer"));
 
     }
 
