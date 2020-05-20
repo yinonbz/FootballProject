@@ -103,7 +103,7 @@ public class AssociationRepresentativeTest {
     @Test
     public void test_UC9_3() {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
-        testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
+        testingLeagueService.addSeasonThroughRepresentative("101", 1970, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
 
         //1. gal creates a new referee successfully
         assertTrue(testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5"));

@@ -1,11 +1,15 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Tournament.Match.Match;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import org.junit.rules.ExpectedException;
 import serviceLayer.MatchService;
 
 
@@ -22,6 +26,8 @@ public class RefereeTest {
 
     static Referee Rayola;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @BeforeClass
     public static void defineValues(){
@@ -191,7 +197,8 @@ public class RefereeTest {
     public void UC10_4_b(){
         //3
         //check that whoever is not a main referee can't change the game after it finishes
-        assertFalse(matchService.removeEventByMainReferee("4","4","Rayola","1"));
+        expectedException.expect(NotApprovedException.class);
+        matchService.removeEventByMainReferee("4","4","Rayola","1");
 
         //4
         //try to remove an event before the game finished

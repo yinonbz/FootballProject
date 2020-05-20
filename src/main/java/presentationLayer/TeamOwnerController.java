@@ -10,14 +10,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+import serviceLayer.LeagueService;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
@@ -25,9 +29,21 @@ import java.util.function.UnaryOperator;
 
 public class TeamOwnerController implements ControllerInterface, Initializable {
 
+     private LeagueService leagueService;
+
     private SystemController systemController;
 
     private String userName;
+
+
+    private ArrayList<TitledPane> notificationPanesCollection;
+
+    @FXML
+    private Accordion notificationsPane;
+
+    public TeamOwnerController(String userName) {
+        this.userName = userName;
+    }
 
     @Override
     public void setUser(String usernameL) {
@@ -94,12 +110,27 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        leagueService = new LeagueService();
         systemController = SystemController.SystemController();
         userLable.setText("Welcome " + userName);
+        leagueService = new LeagueService();
+        notificationPanesCollection= new ArrayList<>();
+
+        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
+        if(messages != null) {
+            for (String msg : messages) {
+                String title = msg.split(",")[0];
+                String event = msg.split(",")[1];
+                AnchorPane newPanelContent = new AnchorPane();
+                newPanelContent.getChildren().add(new Label(event));
+                TitledPane pane = new TitledPane(title, newPanelContent);
+                notificationPanesCollection.add(pane);
+            }
+        }
+        notificationsPane.getPanes().setAll(notificationPanesCollection);
     }
 
     public void logoutB(ActionEvent actionEvent) {
-        userName = null;
         Parent root1 = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
@@ -110,6 +141,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+            leagueService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }

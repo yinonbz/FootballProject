@@ -1,5 +1,6 @@
 package businessLayer.Tournament.Match;
 
+import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.userTypes.Administration.AssociationRepresentative;
 import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.Referee;
@@ -336,6 +337,7 @@ public class MatchController {
                     if (match.isMainReferee((Referee) subscriber)) {
                         return match.getEventRecord().removeEvent(timeOfEvent, eventId);
                     }
+                    throw new NotApprovedException("This Referee is not a Main Referee.");
                 }
             }
         }

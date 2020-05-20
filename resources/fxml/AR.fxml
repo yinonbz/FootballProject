@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.ARController">
+<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
+      <HBox id="actions" prefHeight="55.0" prefWidth="1174.0" spacing="10.0">
          <children>
-            <Button minHeight="30.0" minWidth="103.0" mnemonicParsing="false" onAction="#switchApprove" prefHeight="30.0" prefWidth="103.0" text="Approve Teams" textAlignment="CENTER">
+            <Button minHeight="30.0" minWidth="103.0" mnemonicParsing="false" onAction="#switchApprove" prefHeight="30.0" prefWidth="103.0" text="Approve Teams">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -22,7 +22,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#switchActivatePolicyPane" text="Activate Match Policy" />
               </items>
             </MenuButton>
-            <Label fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" minWidth="173.0" prefHeight="21.0" prefWidth="173.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
+            <Label id="userName" fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" minWidth="173.0" prefHeight="21.0" prefWidth="173.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
                <HBox.margin>
                   <Insets left="650.0" />
                </HBox.margin>
@@ -43,21 +43,11 @@
          </padding>
       </HBox>
    </top>
-   <left>
-      <VBox id="notifications" alignment="CENTER" prefHeight="623.0" prefWidth="244.0">
-         <children>
-            <Label disable="true" text="&lt;No new notifications&gt;">
-               <font>
-                  <Font name="System Italic" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </VBox>
-   </left>
+
    <center>
       <BorderPane prefHeight="614.0" prefWidth="771.0" BorderPane.alignment="CENTER">
          <top>
-            <HBox prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
+            <HBox id="titlePane" prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
                <children>
                   <Label fx:id="titleL">
                      <font>
@@ -73,7 +63,7 @@
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="addTeamדToSeasonPane" prefHeight="550.0" prefWidth="620.0" visible="false">
+                  <Pane id="menuPane" fx:id="addTeamדToSeasonPane" prefHeight="550.0" prefWidth="964.0" visible="false">
                      <children>
                         <Button layoutX="16.0" layoutY="244.0" mnemonicParsing="false" onAction="#submitTeamsToSeason" prefHeight="31.0" prefWidth="94.0" text="Add Teams" />
                         <Label layoutX="194.0" layoutY="14.0" text="Season" />
@@ -95,7 +85,7 @@
                         <Button layoutX="16.0" layoutY="471.0" mnemonicParsing="false" onAction="#addReferees" prefHeight="31.0" prefWidth="94.0" text="Add Referees" />
                         
                      </children></Pane>
-                  <Pane fx:id="activatePolicyPane" prefHeight="550.0" prefWidth="620.0" visible="false">
+                  <Pane id="menuPane" fx:id="activatePolicyPane" prefHeight="550.0" prefWidth="1061.0" visible="false">
                      <children>
                         <Label layoutX="20.0" layoutY="14.0" text="League ID" />
                         <Label layoutX="195.0" layoutY="14.0" text="Season ID" />
@@ -103,20 +93,20 @@
                         <ComboBox fx:id="seasonCombo" disable="true" layoutX="196.0" layoutY="36.0" prefWidth="150.0" promptText="Select Season..." />
                         <ComboBox fx:id="leagueCombo" layoutX="20.0" layoutY="36.0" onAction="#leagueSelect" prefWidth="150.0" promptText="Select League..." />
                      </children></Pane>
-                  <Pane fx:id="approveTeamPane" layoutX="1.0" prefHeight="553.0" prefWidth="620.0" visible="false">
+                  <Pane id="menuPane" fx:id="approveTeamPane" layoutX="1.0" prefHeight="553.0" prefWidth="1216.0" visible="false">
                      <children>
                         <Button layoutX="43.0" layoutY="243.0" mnemonicParsing="false" onAction="#clickApprove" text="Approve Teams" />
                         <ListView fx:id="teamsViewL" layoutX="43.0" layoutY="24.0" prefHeight="200.0" prefWidth="547.0" />
                      </children>
                   </Pane>
-                  <Pane fx:id="createSeasonPane" prefHeight="554.0" prefWidth="923.0" visible="false">
+                  <Pane id="menuPane" fx:id="createSeasonPane" prefHeight="554.0" prefWidth="923.0">
                      <children>
                         <DatePicker fx:id="endingDate" layoutX="192.0" layoutY="143.0" prefHeight="24.0" prefWidth="148.0" promptText="Ending Date" />
                         <DatePicker fx:id="startingDate" layoutX="14.0" layoutY="143.0" prefHeight="24.0" prefWidth="148.0" promptText="Starting Date" />
                         <ComboBox fx:id="leagueCombo3" layoutX="14.0" layoutY="60.0" prefHeight="25.0" prefWidth="144.0" promptText="Select League..." />
-                        <Spinner fx:id="winSpinner" editable="true" layoutX="16.0" layoutY="222.0" prefHeight="31.0" prefWidth="123.0" />
-                        <Spinner fx:id="loseSpinner" editable="true" layoutX="185.0" layoutY="222.0" prefHeight="31.0" prefWidth="136.0" />
-                        <Spinner fx:id="tieSpinner" editable="true" layoutX="363.0" layoutY="223.0" prefHeight="31.0" prefWidth="130.0" />
+                        <Spinner fx:id="winSpinner" layoutX="16.0" layoutY="222.0" prefHeight="31.0" prefWidth="123.0" />
+                        <Spinner fx:id="loseSpinner" layoutX="185.0" layoutY="222.0" prefHeight="31.0" prefWidth="136.0" />
+                        <Spinner fx:id="tieSpinner" layoutX="363.0" layoutY="223.0" prefHeight="31.0" prefWidth="130.0" />
                         <Pane prefHeight="543.0" prefWidth="718.0" visible="false" />
                         <Label layoutX="189.0" layoutY="37.0" text="Season" />
                         <Label layoutX="25.0" layoutY="194.0" text="Win score policy" />
@@ -128,10 +118,10 @@
                         <Label layoutX="190.0" layoutY="118.0" text="Ending Date" />
                         <Button layoutX="17.0" layoutY="365.0" mnemonicParsing="false" onAction="#createSeason" prefHeight="31.0" prefWidth="104.0" text="Create season" />
                         <Label layoutX="16.0" layoutY="36.0" text="League" />
-                        <Spinner fx:id="seasonSpinner" editable="true" layoutX="188.0" layoutY="60.0" prefHeight="25.0" prefWidth="132.0" />
+                        <Spinner fx:id="seasonSpinner" layoutX="188.0" layoutY="60.0" prefHeight="25.0" prefWidth="132.0" />
                      </children>
                   </Pane>
-                  <Pane fx:id="createLeaguePane" prefHeight="552.0" prefWidth="930.0" visible="false">
+                  <Pane id="menuPane" fx:id="createLeaguePane" prefHeight="552.0" prefWidth="971.0" visible="false">
                   <children>
                      <Button layoutX="129.0" layoutY="14.0" mnemonicParsing="false" onAction="#createLeague" text="Create League" />
                      <TextField fx:id="leagueIdField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="107.0" promptText="League Name" />
@@ -140,6 +130,34 @@
                </children>
             </Pane>
          </center>
+         <left>
+            <ScrollPane prefHeight="652.0" prefWidth="235.0">
+               <content>
+                  <Accordion fx:id="notificationsPane" prefHeight="259.0" prefWidth="236.0">
+                     <panes>
+                        <TitledPane animated="false" text="untitled 1">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="untitled 2">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="6.0" text="Label" />
+                                 </children></AnchorPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" prefHeight="106.0" prefWidth="236.0" text="untitled 3">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                     </panes>
+                  </Accordion>
+               </content>
+            </ScrollPane>
+         </left>
       </BorderPane>
    </center>
 </BorderPane>

@@ -1,5 +1,6 @@
 package serviceLayer;
 
+import businessLayer.Exceptions.MissingInputException;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.userTypes.SystemController;
 
@@ -60,9 +61,11 @@ public class LeagueService {
         if (leagueID != null && username != null && matchingPolicy != null) {
             if (seasonID >= 1970 && seasonID <= 2021) {
                 return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy, username);
+            }else{
+                throw new MissingInputException("Please select a Season ID between 1970 and 2021.");
             }
         }
-        return false;
+        throw new MissingInputException("Please complete the form.");
     }
 
 
@@ -225,6 +228,6 @@ public class LeagueService {
     }
 
     public LinkedList<String> getOfflineMessages(String userName) {
-        return systemController.getOfflineUsersNotifications("userName");
+        return systemController.getOfflineUsersNotifications(userName);
     }
 }

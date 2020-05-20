@@ -1,7 +1,100 @@
 #actions{
     -fx-border-color: black;
+    -fx-background-color: #202020;
+
 }
 
-#notifications{
-  -fx-border-color: black;
+#userName{
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+}
+
+.button{
+     -fx-background-color: #606060;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}
+
+.button:hover{
+     -fx-background-color: #A0A0A0;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}
+
+.menu-button{
+ -fx-background-color: #606060;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}
+
+.menu-button:hover{
+    -fx-background-color: #A0A0A0;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}
+
+.menu-item {
+     -fx-background-color: #606060;
+     -fx-font-size: 12px;
+     -fx-text-fill: white;
+ }
+
+ .menu-item:hover {
+      -fx-background-color: #A0A0A0;
+      -fx-font-size: 12px;
+      -fx-text-fill: white;
+  }
+
+ .menu-button > .arrow-button {
+         -fx-background-color: #606060;
+ }
+
+  .menu-button > .arrow-button:hover {
+          -fx-background-color: #A0A0A0;
+  }
+
+ .context-menu {
+     -fx-background-color: #606060;
+    -fx-background-insets: 0,1,4,5,6;
+    -fx-background-radius: 9,8,5,4,3;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+ }
+
+ .menu-item .label {
+         -fx-background-color: #606060;
+         -fx-font-family: "Helvetica";
+         -fx-font-size: 12px;
+         -fx-text-fill: white;
+         -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+ }
+
+#titlePane{
+    -fx-background-color: #FF8000;
+}
+
+#menuPane{
+    -fx-background-color: #FFFFFF;
+}
+
+.accordion .titled-pane .title {
+    -fx-background-color:
+        rgba(0,0,0,0.08),
+        linear-gradient(#5a61af, #51536d),
+        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 30 3 30;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 14px;
 }

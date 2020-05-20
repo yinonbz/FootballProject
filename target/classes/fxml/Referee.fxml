@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.RefereeController">
+<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <HBox id="actions" prefHeight="52.0" prefWidth="1100.0" spacing="10.0">
             <children>
@@ -43,11 +34,15 @@
                         <Font name="System Italic" size="15.0" />
                     </font>
                 </Label>
-            <Label fx:id="userLabel" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="236.0" text="Label" textAlignment="CENTER">
+            <Label id="userName" fx:id="userLabel" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="236.0" text="Label" textAlignment="CENTER">
                <font>
                   <Font name="System Italic" size="15.0" />
                </font>
             </Label>
+                <Button minHeight="30.0" minWidth="65.0" mnemonicParsing="false" onAction="#logoutB" prefHeight="30.0" prefWidth="74.0" text="Logout">
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin></Button>
             </children>
             <padding>
                 <Insets bottom="10.0" left="20.0" top="10.0" />
@@ -57,7 +52,7 @@
     <center>
         <BorderPane prefHeight="614.0" prefWidth="771.0" BorderPane.alignment="CENTER">
             <top>
-                <HBox prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
+                <HBox id="titlePane" prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
                     <children>
                         <Label fx:id="titleL">
                             <font>
@@ -73,7 +68,7 @@
             <center>
                 <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="foulPane" prefHeight="550.0" prefWidth="800.0" visible="false">
+                  <Pane id="menuPane" fx:id="foulPane" prefHeight="550.0" prefWidth="958.0" visible="false">
                      <children>
                         <Spinner fx:id="timeFoul" layoutX="46.0" layoutY="62.0" prefHeight="31.0" prefWidth="90.0" />
                         <ComboBox fx:id="aFoulPlayer" disable="true" layoutX="187.0" layoutY="149.0" prefHeight="31.0" prefWidth="171.0" promptText="Attacker Player" />
@@ -85,7 +80,7 @@
                         <Label layoutX="52.0" layoutY="128.0" text="Injured Player:" />
                         <Label layoutX="218.0" layoutY="128.0" text="Attacker Player:" />
                      </children></Pane>
-                  <Pane fx:id="goalPane" prefHeight="550.0" prefWidth="620.0" visible="false">
+                  <Pane id="menuPane" fx:id="goalPane" prefHeight="550.0" prefWidth="960.0" visible="false">
                      <children>
                         <Spinner fx:id="timeGoal" layoutX="45.0" layoutY="99.0" prefHeight="31.0" prefWidth="144.0" />
                         <ComboBox fx:id="playerGoal" disable="true" layoutX="217.0" layoutY="99.0" prefHeight="31.0" prefWidth="186.0" promptText="choose player Goal" visible="true" />
@@ -98,7 +93,7 @@
                         <Label layoutX="286.0" layoutY="78.0" text="Player Goal:" />
                         <Label layoutX="481.0" layoutY="68.0" text="Player Assisted" />
                      </children></Pane>
-                  <Pane fx:id="injuryPane" layoutY="-2.0" prefHeight="550.0" prefWidth="920.0" visible="false">
+                  <Pane id="menuPane" fx:id="injuryPane" layoutY="-2.0" prefHeight="550.0" prefWidth="959.0" visible="false">
                      <children>
                         <Spinner fx:id="timeInjury" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
                         <ComboBox fx:id="playerInjured" disable="true" layoutX="430.0" layoutY="131.0" prefHeight="31.0" prefWidth="145.0" promptText="Player Injured" visible="true" />
@@ -108,7 +103,7 @@
                         <Label layoutX="456.0" layoutY="100.0" text="Player Injured:" />
                         <Label layoutX="67.0" layoutY="100.0" text="Time:" />
                      </children></Pane>
-                  <Pane fx:id="offsidePane" prefHeight="550.0" prefWidth="920.0" visible="false">
+                  <Pane id="menuPane" fx:id="offsidePane" prefHeight="550.0" prefWidth="984.0" visible="false">
                      <children>
                         <Spinner fx:id="timeOffside" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
                         <ComboBox fx:id="playerOffside" disable="true" layoutX="401.0" layoutY="131.0" prefHeight="31.0" prefWidth="174.0" promptText="Player Offsided" visible="true" />
@@ -119,7 +114,7 @@
                         <Label layoutX="67.0" layoutY="100.0" text="Time:" />
                      </children>
                   </Pane>
-                  <Pane fx:id="redCardPane" layoutY="-2.0" prefHeight="562.0" prefWidth="930.0" visible="false">
+                  <Pane id="menuPane" fx:id="redCardPane" layoutY="-2.0" prefHeight="562.0" prefWidth="930.0" visible="false">
                      <children>
                         <Spinner fx:id="timeRed" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
                         <ComboBox fx:id="matchRedId" layoutX="204.0" layoutY="131.0" onAction="#fillPlayerRedCard" prefHeight="31.0" prefWidth="164.0" promptText="Choose Match" />
@@ -130,7 +125,7 @@
                         <Label layoutX="67.0" layoutY="100.0" text="Time:" />
                      </children>
                   </Pane>
-                  <Pane fx:id="yellowCardPane" layoutX="-2.0" layoutY="-2.0" prefHeight="572.0" prefWidth="942.0" visible="false">
+                  <Pane id="menuPane" fx:id="yellowCardPane" layoutX="-2.0" layoutY="-2.0" prefHeight="572.0" prefWidth="942.0" visible="false">
                      <children>
                         <Spinner fx:id="timeYellow" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
                         <ComboBox fx:id="playerYellow" disable="true" layoutX="415.0" layoutY="131.0" prefHeight="31.0" prefWidth="160.0" promptText="Choose Player" visible="true" />
@@ -141,7 +136,7 @@
                         <Label layoutX="67.0" layoutY="100.0" text="Time:" />
                      </children>
                   </Pane>
-                  <Pane fx:id="substitutionPane" prefHeight="550.0" prefWidth="620.0" visible="false">
+                  <Pane id="menuPane" fx:id="substitutionPane" prefHeight="550.0" prefWidth="1058.0" visible="false">
                      <children>
                          <Spinner fx:id="timeSubstitute" layoutX="45.0" layoutY="99.0" prefHeight="31.0" prefWidth="144.0" />
                          <ComboBox fx:id="playerOn" disable="true" layoutX="217.0" layoutY="99.0" prefHeight="31.0" prefWidth="186.0" promptText="choose player Goal" visible="true" />
@@ -153,7 +148,7 @@
                          <Label layoutX="286.0" layoutY="78.0" text="Player On:" />
                          <Label layoutX="481.0" layoutY="68.0" text="Player Off" />
                      </children></Pane>
-                  <Pane fx:id="removeEventPane" layoutX="-2.0" layoutY="-2.0" prefHeight="550.0" prefWidth="650.0" visible="false">
+                  <Pane id="menuPane" fx:id="removeEventPane" layoutX="-2.0" layoutY="-2.0" prefHeight="550.0" prefWidth="1058.0" visible="false">
                      <children>
                         <Button layoutX="76.0" layoutY="141.0" mnemonicParsing="false" onAction="#removeCurrEvent" text="Submit" />
                         <ComboBox fx:id="matchRemoveId" layoutX="51.0" layoutY="93.0" onAction="#fillRemove" prefHeight="25.0" prefWidth="100.0" promptText="Match ID:" />
@@ -165,17 +160,34 @@
                      </children></Pane>
                </children></Pane>
             </center>
-         <left>
-              <VBox id="notifications" alignment="CENTER" prefHeight="623.0" prefWidth="244.0" BorderPane.alignment="CENTER">
-                  <children>
-                      <Label disable="true" text="&lt;No new notifications&gt;">
-                          <font>
-                              <Font name="System Italic" size="12.0" />
-                          </font>
-                      </Label>
-                  </children>
-              </VBox>
-         </left>
+            <left>
+                <ScrollPane prefHeight="652.0" prefWidth="235.0">
+                    <content>
+                        <Accordion fx:id="notificationsPane" prefHeight="259.0" prefWidth="236.0">
+                            <panes>
+                                <TitledPane animated="false" text="untitled 1">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    </content>
+                                </TitledPane>
+                                <TitledPane animated="false" text="untitled 2">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <Label layoutX="14.0" layoutY="6.0" text="Label" />
+                                            </children></AnchorPane>
+                                    </content>
+                                </TitledPane>
+                                <TitledPane animated="false" prefHeight="106.0" prefWidth="236.0" text="untitled 3">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    </content>
+                                </TitledPane>
+                            </panes>
+                        </Accordion>
+                    </content>
+                </ScrollPane>
+            </left>
         </BorderPane>
     </center>
 </BorderPane>
