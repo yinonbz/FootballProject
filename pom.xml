@@ -9,9 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <build>
-        <pluginManagement>
             <plugins>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -31,7 +29,6 @@
                         </includes>
                     </configuration>
                 </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
@@ -51,14 +48,12 @@
                         </includes>
                     </configuration>
                 </plugin>
-
                 <plugin>
                     <!-- Specify the maven code generator plugin -->
                     <!-- Use org.jooq            for the Open Source Edition             org.jooq.pro        for commercial editions,             org.jooq.pro-java-6 for commercial editions with Java 6 support,             org.jooq.trial      for the free trial edition         Note: Only the Open Source Edition is hosted on Maven Central.               Import the others manually from your distribution -->
                     <groupId>org.jooq</groupId>
                     <artifactId>jooq-codegen-maven</artifactId>
                     <version>3.13.2</version>
-
                     <executions>
                         <execution>
                             <goals>
@@ -66,7 +61,6 @@
                             </goals>
                         </execution>
                     </executions>
-
                     <dependencies>
                         <dependency>
                             <groupId>org.mariadb.jdbc</groupId>
@@ -74,23 +68,21 @@
                             <version>2.1.2</version>
                         </dependency>
                     </dependencies>
-
                     <configuration>
                         <!-- Configure the database connection here -->
                         <jdbc>
                             <driver>org.mariadb.jdbc.Driver</driver>
-                            <url>jdbc:mariadb://132.72.65.33:3306:3306/SoccerProject</url>
+                            <url>jdbc:mariadb://localhost:3306/testdb2</url>
                             <user>root</user>
                             <password>Messi1Ronaldo2</password>
                         </jdbc>
-
                         <generator>
                             <!-- The default code generator. You can override this one, to generate your own code style.                     Supported generators:                     - org.jooq.codegen.JavaGenerator                     - org.jooq.codegen.ScalaGenerator                     Defaults to org.jooq.codegen.JavaGenerator -->
                             <database>
                                 <!-- The database type. The format here is:                         org.util.[database].[database]Database -->
                                 <name>org.jooq.meta.mariadb.MariaDBDatabase</name>
                                 <!-- The database schema (or in the absence of schema support, in your RDBMS this                         can be the owner, user, database name) to be generated -->
-                                <inputSchema>soccerproject</inputSchema>
+                                <inputSchema>testdb2</inputSchema>
                                 <!-- All elements that are generated from your schema                         (A Java regular expression. Use the pipe to separate several expressions)                         Watch out for case-sensitivity. Depending on your database, this might be important! -->
                                 <includes>.*</includes>
                                 <!-- All elements that are excluded from your schema                         (A Java regular expression. Use the pipe to separate several expressions).                         Excludes match before includes, i.e. excludes have a higher priority -->
@@ -106,7 +98,6 @@
                             <!-- The default code generator. You can override this one, to generate your own code style
        Defaults to org.jooq.codegen.JavaGenerator -->
                             <name>org.jooq.codegen.JavaGenerator</name>
-
                             <!-- The naming strategy used for class and field names.
                                  You may override this with your custom naming strategy. Some examples follow
                                  Defaults to org.jooq.codegen.DefaultGeneratorStrategy -->
@@ -114,14 +105,9 @@
                                 <name>org.jooq.codegen.DefaultGeneratorStrategy</name>
                             </strategy>
                         </generator>
-
                     </configuration>
-
                 </plugin>
             </plugins>
-
-        </pluginManagement>
-
     </build>
 
 

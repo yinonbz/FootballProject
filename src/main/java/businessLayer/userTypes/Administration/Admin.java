@@ -27,7 +27,8 @@ public class Admin extends Subscriber {
     public HashMap<Integer, Complaint> displayComplaints(){
         if(isApproved()==false)
             return null;
-        return systemController.displayComplaints(this.getUsername());
+        //return systemController.displayComplaints(this.getUsername());
+        return null;
     }
 
     /**
@@ -44,7 +45,8 @@ public class Admin extends Subscriber {
         if(!tryParseInt(complaintID)){
             return false;
         }
-        return systemController.replyComplaints(complaintID, subscriber, comment);
+        //return systemController.replyComplaints(complaintID, subscriber, comment);
+        return true;
     }
 
     /**

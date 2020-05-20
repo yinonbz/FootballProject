@@ -39,7 +39,8 @@ public class LeagueController {
      * @return
      */
     public Stadium getRandomStadium() {
-        return systemController.findDefaultStadium();
+        //return systemController.findDefaultStadium();
+        return null;
     }
 
     /**
@@ -139,7 +140,8 @@ public class LeagueController {
      * @return true/false
      */
     public boolean doesLeagueExist(String leagueID) {
-        return systemController.containsLeague(leagueID);
+        //return systemController.containsLeague(leagueID);
+        return true;
     }
 
     /**
@@ -154,10 +156,10 @@ public class LeagueController {
             return false;
         }
         League newLeague = new League(leagueID);
-        systemController.addLeagueToDB(leagueID, newLeague);
+        /*systemController.addLeagueToDB(leagueID, newLeague);
         if (!systemController.containsLeague(leagueID)) {
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -175,14 +177,16 @@ public class LeagueController {
      */
     public boolean addSeasonToLeague(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
 
-        League leagueToAdd = systemController.getLeagueFromDB(leagueID);
+        //League leagueToAdd = systemController.getLeagueFromDB(leagueID);
+        League leagueToAdd = null;
         if (leagueToAdd == null) {
             return false;
         }
         if(matchingPolicy == null || (!matchingPolicy.equals("SingleMatchPolicy") && !matchingPolicy.equals("ClassicMatchPolicy"))) {
             return false;
         }
-        return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy);
+        //return leagueToAdd.addSeasonToLeague(seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy);
+        return true;
         //todo: check if when you pull out a complex object from a hashmap, the changes you do to it are registered in the hashmap
     }
 
@@ -218,11 +222,11 @@ public class LeagueController {
         if (refUserName == null || leagueName == null) {
             return false;
         }
-        if (systemController.containsLeague(leagueName) && systemController.containsReferee(refUserName)) {
+        /*if (systemController.containsLeague(leagueName) && systemController.containsReferee(refUserName)) {
             League addingToLeague = systemController.getLeagueFromDB(leagueName);
             Referee refToAssign = systemController.getRefereeFromDB(refUserName);
             return addingToLeague.addRefereeToSeason(refToAssign, seasonID);
-        }
+        }*/
         return false;
     }
 
@@ -235,7 +239,7 @@ public class LeagueController {
     public void addAssociationRepToController(AssociationRepresentative associationRep) {
         if (associationRep != null) {
             if (!systemController.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
-                systemController.addSubscriberToDB(associationRep.getUsername(), associationRep);
+                systemController.addSubscriber(associationRep);
             }
         }
     }
@@ -249,7 +253,7 @@ public class LeagueController {
     public void addRefereeToDataFromSystemController(Referee referee) {
 
         if (referee != null && !systemController.containsReferee(referee.getUsername())) {
-            systemController.addSubscriberToDB(referee.getUsername(), referee);
+            systemController.addSubscriber(referee);
         }
     }
 

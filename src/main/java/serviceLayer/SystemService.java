@@ -33,11 +33,13 @@ public class SystemService {
      * UC 8.3.1
      */
     public HashMap<Integer, Complaint> displayComplaints(String username) {
-        return systemController.displayComplaints(username);
+        //return systemController.displayComplaints(username);
+        return null;
     }
 
     public HashMap<String, Subscriber> displayAdminApprovalRequests(String username) {
-        return systemController.displayAdminApprovalRequests(username);
+        //return systemController.displayAdminApprovalRequests(username);
+        return null;
     }
 
 
@@ -121,7 +123,8 @@ public class SystemService {
      * UC 8.3.2
      */
     public boolean replyComplaints(String complaintID, String username, String comment) {
-        return systemController.replyComplaints(complaintID,username,comment);
+        //return systemController.replyComplaints(complaintID,username,comment);
+        return false;
     }
 
 
@@ -168,7 +171,8 @@ public class SystemService {
      * Not a UC - A function of Association Represntative
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        return systemController.confirmTeamByAssociationRepresntative(teamName,username);
+        //return systemController.confirmTeamByAssociationRepresntative(teamName,username);
+        return false;
     }
 
 

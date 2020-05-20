@@ -845,4 +845,32 @@ public class TeamOwner extends Subscriber {
     public HashMap<Team, LinkedList<TeamOwner>> getTeamOwners() {
         return teamOwners;
     }
+
+    public boolean addTeam(Team team){
+        if(team!=null){
+            teams.add(team);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAssignedOwner(Team team,TeamOwner teamOwner){
+        if(team!=null && teamOwner!= null){
+            if (teamOwners.containsKey(team) == false) {
+                teamOwners.put(team, new LinkedList<>());
+            }
+            teamOwners.get(team).add(teamOwner);
+            return true;
+        }
+        return false;
+    }
+    public boolean addAssignedManager(Team team,TeamManager teamManager){
+        if(team!=null && teamManager!=null){
+            if(teamManagers.get(team) !=null){
+                teamManagers.put(team,teamManager);
+                return true;
+            }
+        }
+        return false;
+    }
 }
