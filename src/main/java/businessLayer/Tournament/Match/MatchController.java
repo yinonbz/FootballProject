@@ -278,7 +278,6 @@ public class MatchController {
             return null;
         }
     }
-
     /**
      * the function lets the referee to watch a details of a match that he manages
      *
