@@ -70,10 +70,10 @@ public class LeagueService {
      * @param username
      * @return
      */
-    public boolean createRefereeThroughRepresentative(String refUsername, String username) {
+    public boolean createRefereeThroughRepresentative(String refUsername, String username, String role) {
 
         if (refUsername != null && username != null) {
-            return leagueController.createRefereeThroughRepresentative(refUsername, username);
+            return leagueController.createRefereeThroughRepresentative(refUsername, username, role);
         }
         return false;
     }

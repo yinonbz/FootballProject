@@ -1,14 +1,17 @@
 package dataLayer;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public interface DB_Inter {
 
-    boolean containInDB(String objectName, String table,String where,String groupby);
+    boolean containInDB(String objectName);
 
-    Object selectFromDB(String objectName,String table,String where,String groupby);
+    Object selectFromDB(String objectName);
 
-    boolean removeFromDB(String objectName, String table,String where,String groupby);
+    boolean removeFromDB(String objectName);
 
-    boolean addToDb(String name,Object obj,String table,String where,String groupby);
+    boolean addToDb(String username, String password, String name, Map<String, ArrayList<String>> objDetails);
 
     //void queryMethod(String method);
 

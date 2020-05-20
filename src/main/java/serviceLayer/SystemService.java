@@ -232,8 +232,8 @@ public class SystemService {
      * @return true if the Coach was successfully created in the DB
      *         false else
      */
-    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJob){
-        return systemController.enterRegisterDetails_Coach(userName,password,name,training,teamJob);
+    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String roleInTeam,String training, String teamJob){
+        return systemController.enterRegisterDetails_Coach(userName,password,name,roleInTeam,training,teamJob);
     }
 
     /**

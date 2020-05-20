@@ -30,6 +30,7 @@ public class SystemController {
     private TeamController teamController;
     private MatchController matchController;
 
+
     //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
     //private HashMap<String, Team> teams; //name of the team, the team object
     //private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
@@ -556,14 +557,14 @@ public class SystemController {
      * @param username
      * @param password
      * @param name
-     * @param training
+     * @param refTraining
      * @param representativeUser
      * @return true/false
      */
-    public boolean addReferee(String username, String password, String name, String training, String representativeUser) {
+    public boolean addReferee(String username, String password, String name, String refTraining, String representativeUser) {
 
         Subscriber representative = getSubscriberByUserName(representativeUser);
-        if (username == null || password == null || name == null || training == null || representative == null) {
+        if (username == null || password == null || name == null || refTraining == null || representative == null) {
             return false;
         }
         if (!(representative instanceof AssociationRepresentative)) {
@@ -573,7 +574,7 @@ public class SystemController {
             return false;
         }
 
-        Referee newRef = new Referee(username, password, name, training, leagueController, this);
+        Referee newRef = new Referee(username, password, name, roleRef.valueOf(refTraining),leagueController, this);
         DB.addSubscriberToDB(username, newRef);
         leagueController.addRefereeToDataFromSystemController(newRef);
         return true;
@@ -1178,7 +1179,7 @@ public class SystemController {
      * @return true if the new coach was created successfully in the DB
      *         false else
      */
-    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String training, String teamJob){
+    public boolean enterRegisterDetails_Coach(String userName, String password, String name, String roleInTeam ,String training, String teamJob){
         if(userName == null || password == null || name == null || training==null|| teamJob==null){
             return false;
         }
@@ -1190,7 +1191,7 @@ public class SystemController {
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
             return false;
-        Subscriber newCoach = new Coach(userName,password,name,TRAINING.valueOf(training),teamJob,0,this);
+        Subscriber newCoach = new Coach(userName,password,name,RoleInTeam.valueOf(roleInTeam),TRAINING.valueOf(training),teamJob,0,this);
         addSubscriberToDB(userName,newCoach);
         return true;
     }
@@ -1389,6 +1390,65 @@ public class SystemController {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    /**
+     * the function updates the referee ID and attach it to the season in the DB
+     * @param leagueID
+     * @param seasonID
+     * @param refereeID
+     * @return
+     */
+    public boolean addRefereeToSeasonDB(String leagueID, int seasonID, String refereeID){
+        return true;
+    }
+
+    public boolean addTeamToSeasonDB(String leagueID, int seasonID, String teamID){
+        return true;
+    }
+
+    public boolean addMatchTableToSeason(String leagueID, int seasonID,LinkedList<Integer> matchNum){
+        return true;
+    }
+
+    public boolean updateMatchTableOFSeason(String leagueID, int seasonID, String teamID, LinkedList<Integer> info){
+        return true;
+    }
+
+    public boolean addMatchToDB(String leagueID, int seasonID, String matchID ,String teamHome, String teamAway, String stadium, String score, Date date){
+        return true;
+    }
+
+    public boolean updateScore (String matchID, String score){
+        return true;
+    }
+
+    public boolean updateMainRefereeToMatch(String matchID,String refID){
+        return true;
+    }
+
+    public boolean updateNumOfFans(String matchID,int numOfFans){
+        return true;
+    }
+
+    public boolean addRefereeToMatch(String matchID, String refID){
+        return true;
+    }
+
+    public LinkedList<String> getRefsOfMatch(int matchID){
+        return null;
+    }
+
+    public HashMap <String,String> selectMatchFromDB(int matchID){
+        return null;
+    }
+
+    public boolean containInDB(String objectName){
+        return true;
+    }
+
+    public boolean addMatchTableOfSeason(HashMap <Integer, Match> matchesOfTheSeason, String leagueID, int seasonID){
+        return true;
     }
 
 }

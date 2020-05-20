@@ -170,4 +170,12 @@ public class League {
         int id = Integer.parseInt(seasonID);
         return seasons.get(id);
     }
+
+    public String getLeagueName() {
+        return leagueName;
+    }
+
+    public void setLeagueName(String leagueName) {
+        this.leagueName = leagueName;
+    }
 }

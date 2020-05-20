@@ -20,7 +20,6 @@ public class Season {
     private HashMap<Team, LinkedList<Integer>> leagueTable;
     private HashMap <Integer, Match> matchesOfTheSeason;
 
-
     /**
      * @param seasonId
      * @param startDate
@@ -252,6 +251,7 @@ public class Season {
     public boolean addTeamToSeason(Team team){
         if(team!=null){
             teams.put(team.getTeamName(),team);
+
             return true;
         }
         return false;
@@ -265,6 +265,7 @@ public class Season {
         //in order to use the match policy only once
         if(matchesOfTheSeason==null) {
             this.matchesOfTheSeason = matchingPolicy.activatePolicy(teams, leagueController);
+            leagueController.updateMatchTableInDB(matchesOfTheSeason,league.getLeagueName(),seasonId);
             if (matchesOfTheSeason != null) {
                 return true;
             }
@@ -295,6 +296,14 @@ public class Season {
      */
     public void  setMatchesOfTheSeason(HashMap <Integer, Match> matchesOfTheSeason){
         this.matchesOfTheSeason=matchesOfTheSeason;
+    }
+
+    /**
+     * getter of the match table of a season
+     * @return
+     */
+    public HashMap <Integer,Match> getMatchesOfTheSeason(){
+        return matchesOfTheSeason;
     }
 
 }

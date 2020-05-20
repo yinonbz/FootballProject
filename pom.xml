@@ -52,23 +52,74 @@
                     </configuration>
                 </plugin>
 
-              <!--  <plugin>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-maven-plugin</artifactId>
-                    <version>0.0.4</version>
-                    <configuration>
-                        <mainClass>hellofx/org.openjfx.App</mainClass>
-                    </configuration>
-                </plugin>-->
+                <plugin>
+                    <!-- Specify the maven code generator plugin -->
+                    <!-- Use org.jooq            for the Open Source Edition             org.jooq.pro        for commercial editions,             org.jooq.pro-java-6 for commercial editions with Java 6 support,             org.jooq.trial      for the free trial edition         Note: Only the Open Source Edition is hosted on Maven Central.               Import the others manually from your distribution -->
+                    <groupId>org.jooq</groupId>
+                    <artifactId>jooq-codegen-maven</artifactId>
+                    <version>3.13.2</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
 
-              <!--  <plugin>
-                    <groupId>com.zenjava</groupId>
-                    <artifactId>javafx-maven-plugin</artifactId>
-                    <version>8.8.3</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.mariadb.jdbc</groupId>
+                            <artifactId>mariadb-java-client</artifactId>
+                            <version>2.1.2</version>
+                        </dependency>
+                    </dependencies>
+
                     <configuration>
-                        <mainClass>main</mainClass>
+                        <!-- Configure the database connection here -->
+                        <jdbc>
+                            <driver>org.mariadb.jdbc.Driver</driver>
+                            <!--<url>jdbc:mariadb://132.72.65.33:3306:3306/SoccerProject</url> -->
+                            <url>jdbc:mariadb://localhost:3306:3306/localsoccer</url>
+                            <user>root</user>
+                            <password>Messi1Ronaldo2</password>
+                        </jdbc>
+
+                        <generator>
+                            <!-- The default code generator. You can override this one, to generate your own code style.                     Supported generators:                     - org.jooq.codegen.JavaGenerator                     - org.jooq.codegen.ScalaGenerator                     Defaults to org.jooq.codegen.JavaGenerator -->
+                            <database>
+                                <!-- The database type. The format here is:                         org.util.[database].[database]Database -->
+                                <name>org.jooq.meta.mariadb.MariaDBDatabase</name>
+                                <!-- The database schema (or in the absence of schema support, in your RDBMS this                         can be the owner, user, database name) to be generated -->
+                                <!-- <inputSchema>soccerproject</inputSchema>-->
+
+                                <inputSchema>localsoccer</inputSchema>
+                                <!-- All elements that are generated from your schema                         (A Java regular expression. Use the pipe to separate several expressions)                         Watch out for case-sensitivity. Depending on your database, this might be important! -->
+                                <includes>.*</includes>
+                                <!-- All elements that are excluded from your schema                         (A Java regular expression. Use the pipe to separate several expressions).                         Excludes match before includes, i.e. excludes have a higher priority -->
+                                <excludes>
+                                </excludes>
+                            </database>
+                            <target>
+                                <!-- The destination package of your generated classes (within the destination directory) -->
+                                <packageName>dataLayer.Tables</packageName>
+                                <!-- The destination directory of your generated classes. Using Maven directory layout here -->
+                                <directory>src/main/java/</directory>
+                            </target>
+                            <!-- The default code generator. You can override this one, to generate your own code style
+       Defaults to org.jooq.codegen.JavaGenerator -->
+                            <name>org.jooq.codegen.JavaGenerator</name>
+
+                            <!-- The naming strategy used for class and field names.
+                                 You may override this with your custom naming strategy. Some examples follow
+                                 Defaults to org.jooq.codegen.DefaultGeneratorStrategy -->
+                            <strategy>
+                                <name>org.jooq.codegen.DefaultGeneratorStrategy</name>
+                            </strategy>
+                        </generator>
+
                     </configuration>
-                </plugin>-->
+
+                </plugin>
             </plugins>
 
         </pluginManagement>
@@ -87,11 +138,11 @@
             <artifactId>javafx-fxml</artifactId>
             <version>11</version>
         </dependency>
-            <dependency>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-controls</artifactId>
-                <version>11</version>
-            </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>11</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -99,11 +150,31 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>surefire-junit47</artifactId>
             <version>3.0.0-M4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>3.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>3.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.1.2</version>
         </dependency>
     </dependencies>
 

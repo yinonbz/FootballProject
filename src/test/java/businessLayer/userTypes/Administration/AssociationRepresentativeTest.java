@@ -96,13 +96,13 @@ public class AssociationRepresentativeTest {
         testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
 
         //1. gal creates a new referee successfully
-        assertTrue(testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5"));
+        assertTrue(testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5","MAIN"));
 
         //2. dor tries to create the same referee without success
-        assertFalse(testingLeagueService.createRefereeThroughRepresentative("Bob", "dor12"));
+        assertFalse(testingLeagueService.createRefereeThroughRepresentative("Bob", "dor12","MAIN"));
 
         //3. tali tries to create a referee with a null username field
-        assertFalse(testingLeagueService.createRefereeThroughRepresentative(null, "tali5"));
+        assertFalse(testingLeagueService.createRefereeThroughRepresentative(null, "tali5","MAIN"));
 
         //4. gal removes a referee successfully
         assertTrue(testingLeagueService.removeRefereeThroughRepresentative("Bob", "gal5"));
@@ -122,8 +122,8 @@ public class AssociationRepresentativeTest {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
         testingLeagueService.addSeasonThroughRepresentative("101", 1, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
         testingLeagueService.addSeasonThroughRepresentative("101", 2, new Date(), new Date(), "5", "1", "3", "ClassicMatchPolicy", "gal5");
-        testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5");
-        testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5");
+        testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5","MAIN");
+        testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5","MAIN");
 
         //1. gal assigns bob to season 1
         assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 1, "gal5"));
