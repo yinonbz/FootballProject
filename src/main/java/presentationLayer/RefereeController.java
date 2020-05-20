@@ -10,12 +10,9 @@ import javafx.scene.layout.Pane;
 import serviceLayer.MatchService;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class RefereeController implements ControllerInterface, Initializable {
+public class RefereeController implements ControllerInterface, Initializable, Observer {
     @FXML
     private javafx.scene.control.Label userLabel;
     @FXML
@@ -544,4 +541,8 @@ public class RefereeController implements ControllerInterface, Initializable {
         eventRemove.setValueFactory(valueFactoryEvent);
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

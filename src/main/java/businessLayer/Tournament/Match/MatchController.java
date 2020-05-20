@@ -6,6 +6,7 @@ import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -207,7 +208,7 @@ public class MatchController {
      * @param matchID
      * @return
      */
-    private boolean checkPermissionOfReferee(String username, String matchID) {
+    private boolean checkPermissionOfReferee(String username, String matchID){
         Subscriber subscriber = systemController.getSubscriberByUserName(username);
         if (subscriber instanceof Referee) {
             if (((Referee) subscriber).isSubmittedToAGame(matchID)) {
@@ -242,6 +243,7 @@ public class MatchController {
             if (checkPlayerParticipates(player1, match)) {
                 EventRecord eventRecord = match.getEventRecord();
                 eventRecord.addEvent(time, event);
+                systemController.updateMatchToFollowers(match, event.toString());
                 return true;
             }
         }
@@ -340,6 +342,55 @@ public class MatchController {
         return false;
     }
 
+    /**
+     * The function verifies the user is an AR and that the match exists, updates the match's date and returns whether
+     * the operation was successful or not
+     *
+     * @param username
+     * @param matchID
+     * @param date
+     * @return
+     */
+    public boolean setDateForMatch(String username, String matchID, Date date) {
+
+        if (username == null || matchID == null) {
+            return false;
+        }
+        Subscriber user = systemController.getSubscriberByUserName(username);
+        int id = Integer.parseInt(matchID);
+        Match match = systemController.findMatch(id);
+        if (user instanceof AssociationRepresentative && match != null) {
+            String eventToUpdate = match.defineDate(date);
+            systemController.updateMatchChangesToReferees(match, eventToUpdate);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * The function verifies the user is an AR, that the match exists and that the stadium exists, updates the match's
+     * location and returns whether the operation was successful or not
+     * @param username
+     * @param matchID
+     * @param stadiumName
+     * @return
+     */
+    public boolean setStadiumForMatch(String username, String matchID, String stadiumName) {
+
+        if (username != null && matchID != null && stadiumName != null) {
+            Subscriber user = systemController.getSubscriberByUserName(username);
+            int id = Integer.parseInt(matchID);
+            Match match = systemController.findMatch(id);
+            Stadium stadium = systemController.findStadium(stadiumName);
+            if (user instanceof AssociationRepresentative && stadium != null && match != null) {
+                String eventToUpdate = match.defineStadium(stadium);
+                systemController.updateMatchChangesToReferees(match, eventToUpdate);
+                return true;
+            }
+        }
+        return false;
+    }
+
     //todo ido added this function need to connect to DB!!
     public HashMap<Integer, Match> getRefereeMatch(String rUserName) {
         if (systemController.containsReferee(rUserName)) {
@@ -348,5 +399,4 @@ public class MatchController {
             return null;
         }
     }
-
 }

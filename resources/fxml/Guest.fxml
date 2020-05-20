@@ -29,7 +29,7 @@
                   </Pane>
                   <Pane id="removeTeamP" fx:id="removeTeamP" prefHeight="571.0" prefWidth="789.0">
                      <children>
-                        <Label layoutX="194.0" layoutY="239.0" text="Remove Team">
+                        <Label layoutX="174.0" layoutY="184.0" text="Remove Team">
                            <font>
                               <Font size="64.0" />
                            </font>

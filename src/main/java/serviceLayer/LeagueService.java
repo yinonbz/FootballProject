@@ -34,7 +34,7 @@ public class LeagueService {
     public boolean addLeagueThroughRepresentative(String leagueID, String username) {
 
         if (leagueID != null && username != null) {
-            System.out.println(leagueID +" ,"+username);
+            System.out.println(leagueID + " ," + username);
             //need to be connected ido created stab
             return leagueController.addLeagueThroughRepresentative(leagueID, username);
         }
@@ -57,13 +57,12 @@ public class LeagueService {
      */
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
-        System.out.println("every thing are ok");
-        //todo ido put it this way to create stub need to return as usual
         if (leagueID != null && username != null && matchingPolicy != null) {
-            return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose,  tie, matchingPolicy, username);
+            if (seasonID >= 1970 && seasonID <= 2021) {
+                return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy, username);
+            }
         }
         return false;
-
     }
 
 
@@ -109,11 +108,7 @@ public class LeagueService {
      * @return
      */
     public boolean assignRefereeThroughRepresentative(String refUsername, String leagueName, int seasonID, String username) {
-
-        if (refUsername != null && leagueName != null && username != null) {
             return leagueController.assignRefereeThroughRepresentative(refUsername, leagueName, seasonID, username);
-        }
-        return false;
     }
 
     /**
@@ -149,16 +144,13 @@ public class LeagueService {
     /**
      * the function lets the AR to choose teams and add them to the season
      * @param teamsNames the teams the AR wants to add
-     * @param leagueID the league ID
-     * @param seasonID the season ID
-     * @param username the username
+     * @param leagueID   the league ID
+     * @param seasonID   the season ID
+     * @param username   the username
      * @return true if it done successfully
      */
     public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID , String seasonID, String username){
-        if(teamsNames!=null && teamsNames.size()>0 && tryParseInt(seasonID) && username!=null){
-            return leagueController.chooseTeamForSeason(teamsNames,leagueID,seasonID,username);
-        }
-        return false;
+        return leagueController.chooseTeamForSeason(teamsNames,leagueID,seasonID,username);
     }
 
     /**
@@ -168,25 +160,24 @@ public class LeagueService {
      * @param userName
      * @return
      */
-    public boolean activateMatchPolicyForSeason(String leagueID, String seasonID, String userName){
-        if(tryParseInt(leagueID) && tryParseInt(seasonID) && userName!=null){
-            return leagueController.activateMatchPolicy(leagueID,seasonID,userName);
-        }
-        return false;
+    public boolean activateMatchPolicyForSeason(String leagueID, String seasonID, String userName) {
+            return leagueController.activateMatchPolicy(leagueID, seasonID, userName);
+
     }
 
     /**
      * the function lets an AR or a Referee to update a ranking table of a season
+     *
      * @param leagueID the league id the season belongs to
      * @param seasonID the season id
-     * @param matchID the match we want to update on
+     * @param matchID  the match we want to update on
      * @param username the requester
      * @return true is the action was completed
      */
-    public boolean updateSeasonTableRank(String leagueID, String seasonID, String matchID, String username){
-        if(leagueID!=null && matchID!=null && username!=null && seasonID!=null){
-            if(tryParseInt(leagueID) && tryParseInt(seasonID) && tryParseInt(matchID)){
-                return leagueController.updateSeasonTableRank(leagueID,seasonID,matchID,username);
+    public boolean updateSeasonTableRank(String leagueID, String seasonID, String matchID, String username) {
+        if (leagueID != null && matchID != null && username != null && seasonID != null) {
+            if (tryParseInt(leagueID) && tryParseInt(seasonID) && tryParseInt(matchID)) {
+                return leagueController.updateSeasonTableRank(leagueID, seasonID, matchID, username);
             }
         }
         return false;
@@ -194,6 +185,7 @@ public class LeagueService {
 
     /**
      * private function that checks that a string represents an interger
+     *
      * @param value the string
      * @return true if it an integer
      */
@@ -213,12 +205,26 @@ public class LeagueService {
     public ArrayList<String> getAllULeagues(){
         return systemController.getAllULeaguesInDB();
     }
+
     //אtodo ido added
     public ArrayList<String> getAllTeamsNames(){
         return systemController.getAllTeamsNames();
     }
 
-/*    public ArrayList<String> getAllSeasonsFromLeague(String League){
+    public ArrayList<String> getAllRefereeNames(){
+        return systemController.getAllRefereeNames();
+    }
 
-    }*/
+
+    public ArrayList<String> getAllSeasonsFromLeague(String league){
+        return systemController.getAllSeasonsFromLeague(league);
+    }
+
+    public void removeFromUsersOnline(String userName) {
+        systemController.removeOnlineUser(userName);
+    }
+
+    public LinkedList<String> getOfflineMessages(String userName) {
+        return systemController.getOfflineUsersNotifications("userName");
+    }
 }

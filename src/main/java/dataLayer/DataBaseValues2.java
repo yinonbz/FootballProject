@@ -12,6 +12,7 @@ import serviceLayer.SystemService;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class DataBaseValues2 {
 
@@ -274,8 +275,10 @@ public class DataBaseValues2 {
         //add referee
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
         DB.addSubscriberToDB("Alon",Alon);
+        DB.addRefereeToDB(Alon.getUsername(),Alon);
         Rayola = new Referee ("Rayola", "1223", "Rayola","main",leagueController,systemController);
         DB.addSubscriberToDB("Rayola",Rayola);
+        DB.addRefereeToDB(Rayola.getUsername(),Rayola);
 
         //add coach
         //6.1
@@ -301,9 +304,6 @@ public class DataBaseValues2 {
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
         Ben = new Fan ("Ben","1234","ben",systemController);
         DB.addSubscriberToDB("Gate13",fan);
-        DB.addSubscriberToDB("Ben",Ben);
-
-
 
         //add teams
         ManchesterUnited = new Team("ManchesterUnited",teamOwner,1888);
@@ -506,7 +506,7 @@ public class DataBaseValues2 {
         table.put(4,m4);
         season2020.setMatchesOfTheSeason(table);
         league3 = new League("13");
-        league3.addSeasonToLeague(2020,startDate,endDate,3,0,1,"SingleMatchPolicy");
+        league3.addSeasonToLeague(2021,startDate,endDate,3,0,1,"SingleMatchPolicy");
         DB.addLeagueToDB("13",league3);
 
         DB.addLeagueToDB("12" ,league2);
