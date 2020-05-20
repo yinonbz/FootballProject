@@ -162,6 +162,10 @@ public class ARController implements ControllerInterface, Initializable {
 
     }
     @FXML
+    public void removeEvent(){
+
+    }
+    @FXML
     public void createLeague(){
         String league = leagueIdField.getText();
         String arName = userLable.getText();
@@ -212,34 +216,35 @@ public class ARController implements ControllerInterface, Initializable {
 
         ObservableList<String> list = FXCollections.observableArrayList();
         ObservableList<String> listTeams = FXCollections.observableArrayList();
-
+        /*
         listTeams.addAll(leagueService.getAllTeamsNames());
         addTeamsViewL.setItems(listTeams);
         addTeamsViewL.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
+        */
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactoryTie = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0);
         SpinnerValueFactory<Integer> valueFactorySeason = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         SpinnerValueFactory<Integer> valueFactorySeasonTeams = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
         SpinnerValueFactory<Integer> valueFactorySeasonLeague = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,0);
+        /*
         seasonTeamsSpinner.setValueFactory(valueFactorySeasonTeams);
         //leagueTeamsSpinner.setValueFactory(valueFactorySeasonLeague);
         winSpinner.setValueFactory(valueFactoryWin);
         loseSpinner.setValueFactory(valueFactoryLose);
         tieSpinner.setValueFactory(valueFactoryTie);
         seasonSpinner.setValueFactory(valueFactorySeason);
-
+        */
         policyCombo.getItems().addAll(
                 "SingleMatchPolicy",
                 "ClassicMatchPolicy"
         );
 
-
+        /*
         leagueCombo.getItems().addAll(
                 leagueService.getAllULeagues()
         );
-
+        */
 
 
     }
@@ -274,6 +279,7 @@ public class ARController implements ControllerInterface, Initializable {
         seasonCombo2.setDisable(false);
 
     }
+
 
     private void showAlert(String title, String text, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);

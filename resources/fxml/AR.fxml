@@ -80,7 +80,7 @@
                         <Label layoutX="399.0" layoutY="133.0" text="Season ID" />
                         <Label layoutX="399.0" layoutY="57.0" text="League ID" />
                         <ComboBox fx:id="leagueCombo2" layoutX="399.0" layoutY="77.0" onAction="#leagueSelect2" prefHeight="25.0" prefWidth="151.0" />
-                        <ChoiceBox fx:id="seasonCombo2" disable="true" layoutX="400.0" layoutY="155.0" prefHeight="25.0" prefWidth="153.0" />
+                        <ComboBox fx:id="seasonCombo2" disable="true" layoutX="400.0" layoutY="155.0" prefHeight="25.0" prefWidth="153.0" />
                      </children></Pane>
                   <Pane fx:id="activatePolicyPane" prefHeight="550.0" prefWidth="620.0" visible="false">
                      <children>
