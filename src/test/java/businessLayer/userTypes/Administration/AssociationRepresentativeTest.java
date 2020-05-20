@@ -3,6 +3,7 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Tournament.League;
 import businessLayer.userTypes.SystemController;
@@ -77,6 +78,7 @@ public class AssociationRepresentativeTest {
         assertTrue(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "gal5"));
 
         //2. dor tries to create the same league without success
+        expectedException.expect(AlreadyExistException.class);
         assertFalse(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "dor12"));
 
         //3. tali tries to create a new league with null
@@ -146,7 +148,8 @@ public class AssociationRepresentativeTest {
         assertTrue(testingLeagueService.assignRefereeThroughRepresentative("Alice", "101", 2000, "gal5"));
 
         //5. tali assigns Bob to null league
-        assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", null, 2001, "tali5"));
+        expectedException.expect(MissingInputException.class);
+        testingLeagueService.assignRefereeThroughRepresentative("Bob", null, 2001, "tali5");
 
         //6. tali assigns Bob to a non-existing season
         assertFalse(testingLeagueService.assignRefereeThroughRepresentative("Bob", "101", 2007, "tali5"));
@@ -189,7 +192,8 @@ public class AssociationRepresentativeTest {
         teamsName.add("Liverpool");
         teamsName.add("Chelsea");
         testingLeagueService.chooseTeamForSeason(teamsName,"13","2020","gal5");
-        assertTrue(testingLeagueService.activateMatchPolicyForSeason("13","2020","gal5"));
+        expectedException.expect(NotApprovedException.class);
+        testingLeagueService.activateMatchPolicyForSeason("13","2020","gal5");
     }
 
     @Test
@@ -197,7 +201,9 @@ public class AssociationRepresentativeTest {
         Date d1 = new Date();
         Date d2 = new Date();
         assertFalse(testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,3,0,1, "Hello","gal5"));
-        assertFalse(testingLeagueService.activateMatchPolicyForSeason("12","2020","gal5"));
+
+        expectedException.expect(NotApprovedException.class);
+        testingLeagueService.activateMatchPolicyForSeason("12","2020","gal5");
     }
 
     @Test
