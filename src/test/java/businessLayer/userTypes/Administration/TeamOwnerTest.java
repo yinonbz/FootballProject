@@ -1,11 +1,14 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Team.Team;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import businessLayer.userTypes.SystemController;
+import org.junit.rules.ExpectedException;
 import serviceLayer.SystemService;
 import serviceLayer.TeamService;
 
@@ -52,9 +55,13 @@ public class TeamOwnerTest {
     private DataBaseValues tDB;
 
 
+
     private TeamService teamService;
     private SystemService systemService;
     private SystemController systemController;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void UT_createTestValues() {
@@ -302,6 +309,7 @@ public class TeamOwnerTest {
         //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
         //check if add succeeded
+        expectedException.expect(AlreadyExistException.class);
         assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
 
     }
@@ -311,7 +319,8 @@ public class TeamOwnerTest {
         //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
         //add same manager again and adding manager to occupied team
-        assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        expectedException.expect(AlreadyExistException.class);
+        teamService.addManager("Inon","kloppJ","GENERAL","HTA","100");
     }
 
     @Test
@@ -497,7 +506,9 @@ public class TeamOwnerTest {
         BeerSheva.setTeamManager(itay);
         itay.setTeam(BeerSheva);
         //try assign manager to a team that not belong to me
-        assertFalse(Alex.addManager("pepG", Permissions.GENERAL, BeerSheva, 200));
+
+        expectedException.expect(AlreadyExistException.class);
+        Alex.addManager("pepG", Permissions.GENERAL, BeerSheva, 200);
         //manager already has team
         assertFalse(Alex.addManager("itayK", Permissions.GENERAL, LeedsUnited, 200));
         //all good
