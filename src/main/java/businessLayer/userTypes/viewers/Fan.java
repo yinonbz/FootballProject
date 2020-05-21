@@ -7,8 +7,6 @@ import businessLayer.userTypes.SystemController;
 import java.util.List;
 
 public class Fan extends Subscriber {
-    private String name;
-
 
     /**
      * @param username
@@ -17,7 +15,6 @@ public class Fan extends Subscriber {
      */
     public Fan(String username, String password, String name, SystemController systemController) {
         super(username, password,name, systemController);
-        this.name = name;
     }
 
     /**

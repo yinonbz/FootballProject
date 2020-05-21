@@ -238,7 +238,7 @@ public class LeagueController {
     public void addAssociationRepToController(AssociationRepresentative associationRep) {
         if (associationRep != null) {
             if (!systemController.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
-                systemController.addSubscriberToDB(associationRep.getUsername(), associationRep);
+                systemController.addSubscriber(associationRep);
             }
         }
     }
@@ -252,7 +252,7 @@ public class LeagueController {
     public void addRefereeToDataFromSystemController(Referee referee) {
 
         if (referee != null && !systemController.containsReferee(referee.getUsername())) {
-            systemController.addSubscriberToDB(referee.getUsername(), referee);
+            systemController.addSubscriber(referee);
         }
     }
 

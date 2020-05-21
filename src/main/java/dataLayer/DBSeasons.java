@@ -39,8 +39,13 @@ public class DBSeasons implements DB_Inter {
     }
 
     @Override
-    public boolean containInDB(String objectName) {
-        return false;
+    public boolean containInDB(String leagueID,String seasonID,String empty1) {
+        return containsInDB(leagueID,Integer.parseInt(seasonID));
+    }
+
+    @Override
+    public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
+        return null;
     }
 
     public boolean containsInDB(String leagueID, int seasonID){
@@ -52,12 +57,27 @@ public class DBSeasons implements DB_Inter {
 
 
     @Override
-    public Object selectFromDB(String objectName) {
+    public boolean removeFromDB(String objectName,String arg2,String arg3) {
+        return false;
+    }
+
+    @Override
+    public boolean addToDB(String str1, String str2, String str3, String str4, Map<String, ArrayList<String>> objDetails) {
+        return false;
+    }
+
+    @Override
+    public int countRecords() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
         return null;
     }
 
     @Override
-    public boolean removeFromDB(String objectName) {
+    public boolean TerminateDB() {
         return false;
     }
 
@@ -130,12 +150,7 @@ public class DBSeasons implements DB_Inter {
         return false;
     }
 
-    @Override
-    public boolean addToDb(String username, String password, String name, Map<String, ArrayList<String>> objDetails) {
-        return false;
-    }
-
-    public boolean addToDb (String leagueID,int seasonID, HashMap <String,LinkedList<String>> details, Date start, Date end){
+    public boolean addToDb (String leagueID,int seasonID, Date start, Date end,HashMap <String,LinkedList<String>> details){
         if(!containsInDB(leagueID,seasonID)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(SEASONS,SEASONS.LEAGUEID,SEASONS.SEASONID).values(leagueID,seasonID).execute();

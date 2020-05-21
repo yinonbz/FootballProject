@@ -40,27 +40,35 @@ public class DBUnconfirmedTeams implements DB_Inter {
     }
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String arg2,String arg3) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().from(UNCONFIRMED_TEAMS).where(UNCONFIRMED_TEAMS.TEAMID.eq(objectName)).fetch();
         return (!result.isEmpty());
     }
 
     @Override
-    public Object selectFromDB(String objectName) {
-        return null;
+    public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
+        return selectUnconfirmedTeamFromDB(objectName);
     }
 
-    public HashMap<String,String> selectUnconfirmedTeamFromDB(String teamID){
-        HashMap<String,String> details = new HashMap<>();
-        if(containInDB(teamID)) {
+    public HashMap<String,ArrayList<String>> selectUnconfirmedTeamFromDB(String teamID){
+        HashMap<String,ArrayList<String>> details = new HashMap<>();
+        if(containInDB(teamID,null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result <?> result = create.select().from(UNCONFIRMED_TEAMS).where(UNCONFIRMED_TEAMS.TEAMID.eq(teamID)).fetch();
             String year  = result.get(0).get(UNCONFIRMED_TEAMS.ESTABLISHEDYEAR)+"";
             String teamOwner = result.get(0).get(UNCONFIRMED_TEAMS.OWNERID);
-            details.put("year",year);
-            details.put("owner",teamOwner);
-            details.put("teamID",teamID);
+
+            ArrayList<String> yearA = new ArrayList<>();
+            yearA.add(year);
+            ArrayList<String> teamOwnerA = new ArrayList<>();
+            teamOwnerA.add(teamOwner);
+            ArrayList<String> teamIDA = new ArrayList<>();
+            teamIDA.add(teamID);
+
+            details.put("year",yearA);
+            details.put("owner",teamOwnerA);
+            details.put("teamID",teamIDA);
             return details;
         }
         return null;
@@ -68,8 +76,8 @@ public class DBUnconfirmedTeams implements DB_Inter {
 
 
     @Override
-    public boolean removeFromDB(String objectName) {
-        if(containInDB(objectName)) {
+    public boolean removeFromDB(String objectName,String arg2,String arg3) {
+        if(containInDB(objectName,null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.delete(UNCONFIRMED_TEAMS).where(UNCONFIRMED_TEAMS.TEAMID.eq(objectName)).execute();
             return true;
@@ -77,16 +85,37 @@ public class DBUnconfirmedTeams implements DB_Inter {
         return false;
     }
 
+    @Override
+    public boolean addToDB(String teamID, String establishedYear, String ownerName, String str4, Map<String, ArrayList<String>> objDetails) {
+        return addRequestForTeam(teamID,Integer.parseInt(establishedYear),ownerName);
+    }
 
     @Override
-    public boolean addToDb(String username, String password, String name, Map<String, ArrayList<String>> objDetails) {
+    public int countRecords() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+        return null;
+    }
+
+    @Override
+    public boolean TerminateDB() {
         return false;
     }
 
     public boolean addRequestForTeam(String teamID, int establishedYear, String ownerName) {
-        if (!containInDB(teamID)) {
+        if (!containInDB(teamID,null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.insertInto(UNCONFIRMED_TEAMS,UNCONFIRMED_TEAMS.TEAMID,UNCONFIRMED_TEAMS.ESTABLISHEDYEAR,UNCONFIRMED_TEAMS.OWNERID).values(teamID,establishedYear,ownerName).execute();
+            create.insertInto(UNCONFIRMED_TEAMS
+                    ,UNCONFIRMED_TEAMS.TEAMID
+                    ,UNCONFIRMED_TEAMS.ESTABLISHEDYEAR
+                    ,UNCONFIRMED_TEAMS.OWNERID)
+                    .values(teamID
+                    ,establishedYear
+                    ,ownerName)
+                    .execute();
             return true;
         }
         return false;

@@ -178,4 +178,12 @@ public class Coach extends Subscriber implements OwnerEligible {
     public boolean addUpdate(String update){
         return coachPage.update(update);
     }
+
+    public RoleInTeam getRoleInTeam() {
+        return roleInTeam;
+    }
+
+    public void setRoleInTeam(RoleInTeam roleInTeam) {
+        this.roleInTeam = roleInTeam;
+    }
 }

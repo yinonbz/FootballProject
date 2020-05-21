@@ -1,17 +1,11 @@
 package dataLayer;
 
-import dataLayer.Tables.enums.CoachesTraining;
-import dataLayer.Tables.enums.PlayersFieldjob;
-//import dataLayer.Tables.enums.RefereesTraining;
-import dataLayer.Tables.enums.TeammanagersPermissions;
+import dataLayer.Tables.enums.*;
 import org.jooq.*;
 import org.jooq.Record;
 import org.jooq.impl.*;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -28,7 +22,10 @@ public class DBHandler implements DB_Inter{
     String myUrl;
     Connection connection = null;
 
-
+    public DBHandler(){
+        this("root","Messi1Ronaldo2",
+                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/testdb2");
+    }
 
     public DBHandler(String username,String password, String myDriver, String myUrl){
         this.username = username;
@@ -55,7 +52,7 @@ public class DBHandler implements DB_Inter{
      */
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String empty1,String empty2) {
         //create sql query to search record in db using ObjectName
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().
@@ -75,26 +72,26 @@ public class DBHandler implements DB_Inter{
      */
 
     @Override
-    public Map<String,ArrayList<String>> selectFromDB(String objectName) {
+    public Map<String,ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
         //create sql query to select record from db using ObjectName
-        if(containInDB(objectName)) {
+        if(containInDB(objectName,null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select().
                     from(SUBSCRIBERS)
                     .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName))
                     .fetch();
 
-            Map<String,ArrayList<String>> objDetails = new HashMap<>();
+            Map<String, ArrayList<String>> objDetails = new HashMap<>();
             String username = result.get(0).get(SUBSCRIBERS.SUBSCRIBERID);
             //String password = result.get(0).get(SUBSCRIBERS.PASSWORD); //todo create constructor withoud password to subscriber
             String name = result.get(0).get(SUBSCRIBERS.NAME);
             String type = result.get(0).get(SUBSCRIBERS.TYPE);
 
-            objDetails.put("username",new ArrayList<>());
+            objDetails.put("username", new ArrayList<>());
             objDetails.get("username").add(username);
-            objDetails.put("name",new ArrayList<>());
+            objDetails.put("name", new ArrayList<>());
             objDetails.get("name").add(name);
-            objDetails.put("type",new ArrayList<>());
+            objDetails.put("type", new ArrayList<>());
             objDetails.get("type").add(type);
 
             if (type.equalsIgnoreCase("player")) {
@@ -105,15 +102,15 @@ public class DBHandler implements DB_Inter{
                 int salary = result.get(0).get(PLAYERS.SALARY);
                 String teamOwnerID = result.get(0).get(PLAYERS.TEAMOWNERID_FICTIVE);
 
-                objDetails.put("teamID",new ArrayList<>());
+                objDetails.put("teamID", new ArrayList<>());
                 objDetails.get("teamID").add(teamID);
-                objDetails.put("birthDay",new ArrayList<>());
+                objDetails.put("birthDay", new ArrayList<>());
                 objDetails.get("birthDay").add(birthDay);
-                objDetails.put("fieldJob",new ArrayList<>());
+                objDetails.put("fieldJob", new ArrayList<>());
                 objDetails.get("fieldJob").add(fieldJob);
-                objDetails.put("salary",new ArrayList<>());
+                objDetails.put("salary", new ArrayList<>());
                 objDetails.get("salary").add(String.valueOf(salary));
-                objDetails.put("teamOwnerID",new ArrayList<>());
+                objDetails.put("teamOwnerID", new ArrayList<>());
                 objDetails.get("teamOwnerID").add(teamOwnerID);
             }
             if (type.equalsIgnoreCase("coach")) {
@@ -121,7 +118,7 @@ public class DBHandler implements DB_Inter{
                         .join(COACH_TEAM).on(COACHES.COACHID.eq(COACH_TEAM.COACHID)))
                         .where(COACHES.COACHID.eq(objectName)).fetch();
                 ArrayList<String> teams = new ArrayList<>();
-                //String teamID = result.get(0).get(COACHES.TEAMID);
+                String teamID = result.get(0).get(COACHES.TEAMID);
                 String training = result.get(0).get(COACHES.TRAINING).name();
                 int salary = result.get(0).get(COACHES.SALARY);
                 String teamOwnerID = result.get(0).get(COACHES.TEAMOWNERID_FICTIVE);
@@ -130,30 +127,30 @@ public class DBHandler implements DB_Inter{
                     teams.add(r.get(COACH_TEAM.TEAMID));
                 }
 
-                objDetails.put("teamID",new ArrayList<>());
-                //objDetails.get("teamID").add(teamID);
-                objDetails.put("teams",teams);
-                objDetails.put("training",new ArrayList<>());
+                objDetails.put("teamID", new ArrayList<>());
+                objDetails.get("teamID").add(teamID);
+                objDetails.put("teams", teams);
+                objDetails.put("training", new ArrayList<>());
                 objDetails.get("training").add(training);
-                objDetails.put("salary",new ArrayList<>());
+                objDetails.put("salary", new ArrayList<>());
                 objDetails.get("salary").add(String.valueOf(salary));
-                objDetails.put("teamOwnerID",new ArrayList<>());
+                objDetails.put("teamOwnerID", new ArrayList<>());
                 objDetails.get("teamOwnerID").add(teamOwnerID);
             }
-            if (type.equalsIgnoreCase("teammanger")) {
+            if (type.equalsIgnoreCase("teammanager")) {
                 result = create.select().from(TEAMMANAGERS).where(TEAMMANAGERS.MANAGERID.eq(objectName)).fetch();
                 String teamID = result.get(0).get(TEAMMANAGERS.TEAMID);
                 String permissions = result.get(0).get(TEAMMANAGERS.PERMISSIONS).name();
                 int salary = result.get(0).get(TEAMMANAGERS.SALARY);
                 String teamOwnerID = result.get(0).get(TEAMMANAGERS.TEAMOWNERID_FICTIVE);
 
-                objDetails.put("teamID",new ArrayList<>());
+                objDetails.put("teamID", new ArrayList<>());
                 objDetails.get("teamID").add(teamID);
-                objDetails.put("permissions",new ArrayList<>());
+                objDetails.put("permissions", new ArrayList<>());
                 objDetails.get("permissions").add(permissions);
-                objDetails.put("salary",new ArrayList<>());
+                objDetails.put("salary", new ArrayList<>());
                 objDetails.get("salary").add(String.valueOf(salary));
-                objDetails.put("teamOwnerID",new ArrayList<>());
+                objDetails.put("teamOwnerID", new ArrayList<>());
                 objDetails.get("teamOwnerID").add(teamOwnerID);
             }
             if (type.equalsIgnoreCase("teamowner")) {
@@ -166,35 +163,41 @@ public class DBHandler implements DB_Inter{
 
                 //data extraction
 
-                String teamOwnerID = result.get(0).get(TEAMOWNER_OWNERELIGIBLE.OWNERID);
-                String eligible = Stream.of(result.get(0).get(TEAMOWNER_OWNERELIGIBLE.PLAYERID),result.get(0).get(TEAMOWNER_OWNERELIGIBLE.COACHID),result.get(0).get(TEAMOWNER_OWNERELIGIBLE.MANAGERID)).filter(Objects::nonNull).findFirst().orElse(null);
+                //String teamOwnerID = result.get(0).get(TEAMOWNER_OWNERELIGIBLE.OWNERID);
+                String eligible = Stream.of(result.get(0).get(TEAMOWNER_OWNERELIGIBLE.PLAYERID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.COACHID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.MANAGERID)).filter(Objects::nonNull).findFirst().orElse(null);
                 ArrayList<String> teams = new ArrayList<>();
-                ArrayList<String> ownerAssignedByMe = new ArrayList<>();
-                ArrayList<String> managersAssignedByMe = new ArrayList<>();
 
                 for (Record r : result) {
                     teams.add(r.get(OWNER_TEAMS.TEAMID));
                 }
 
+                ArrayList<String> managersAssignedByMe = new ArrayList<>();
+                ArrayList<String> managerTeam = new ArrayList<>();
                 Result<?> result2 = create.select().
                         from(OWNER_MANAGER_ASSIGNINGS).
                         where(OWNER_MANAGER_ASSIGNINGS.OWNERID.eq(objectName))
                         .fetch();
                 for (Record r : result2) {
                     managersAssignedByMe.add(r.get(OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID));
+                    managerTeam.add(r.get(OWNER_MANAGER_ASSIGNINGS.TEAMID));
                 }
-                Result<?> result3= create.select().
+                Result<?> result3 = create.select().
                         from(OWNER_OWNER_ASSIGNINGS).
                         where(OWNER_OWNER_ASSIGNINGS.OWNERID.eq(objectName))
                         .fetch();
 
+                ArrayList<String> ownerAssignedByMe = new ArrayList<>();
+                ArrayList<String> ownerTeam = new ArrayList<>();
                 for (Record r : result3) {
                     ownerAssignedByMe.add(r.get(OWNER_OWNER_ASSIGNINGS.ASSIGNEEID));
+                    ownerTeam.add(r.get(OWNER_OWNER_ASSIGNINGS.TEAMID));
                 }
-                objDetails.put("teams",teams);
-                objDetails.put("ownerAssigned",ownerAssignedByMe);
-                objDetails.put("managersAssigned",managersAssignedByMe);
-                objDetails.put("eligible",new ArrayList<>());
+                objDetails.put("teams", teams);
+                objDetails.put("ownerAssigned", ownerAssignedByMe);
+                objDetails.put("ownerTeam", ownerTeam);
+                objDetails.put("managersAssigned", managersAssignedByMe);
+                objDetails.put("managerTeam", managerTeam);
+                objDetails.put("eligible", new ArrayList<>());
                 objDetails.get("eligible").add(eligible);
             }
             if (type.equalsIgnoreCase("admin")) {
@@ -202,7 +205,7 @@ public class DBHandler implements DB_Inter{
                         from(ADMINS).where(ADMINS.ADMINID.eq(objectName)).fetch();
                 boolean approved = result.get(0).get(ADMINS.APPROVED);
 
-                objDetails.put("approved",new ArrayList<>());
+                objDetails.put("approved", new ArrayList<>());
                 objDetails.get("approved").add(Boolean.toString(approved));
 
             }
@@ -211,7 +214,7 @@ public class DBHandler implements DB_Inter{
                         from(ARS).where(ARS.AR_ID.eq(objectName)).fetch();
                 boolean approved = result.get(0).get(ARS.APPROVED);
 
-                objDetails.put("approved",new ArrayList<>());
+                objDetails.put("approved", new ArrayList<>());
                 objDetails.get("approved").add(Boolean.toString(approved));
             }
             if (type.equalsIgnoreCase("referee")) {
@@ -223,15 +226,15 @@ public class DBHandler implements DB_Inter{
                         .from(REFEREE_MATCHES)
                         .where(REFEREE_MATCHES.REFEREEID.eq(objectName))
                         .fetch();
-                //String training = result.get(0).get(REFEREES.TRAINING).name();
+                String training = result.get(0).get(REFEREES.TRAINING).name();
                 ArrayList<String> matches = new ArrayList<>();
-                for(Record r: result2){
+                for (Record r : result2) {
                     matches.add(String.valueOf(r.get(REFEREE_MATCHES.MATCHID)));
                 }
 
-                objDetails.put("matches",matches);
-                objDetails.put("training",new ArrayList<>());
-                //objDetails.get("training").add(training);
+                objDetails.put("matches", matches);
+                objDetails.put("training", new ArrayList<>());
+                objDetails.get("training").add(training);
             }
             return objDetails;
         }
@@ -244,18 +247,13 @@ public class DBHandler implements DB_Inter{
      * @return
      */
     @Override
-    public boolean removeFromDB(String objectName) {
-        if(containInDB(objectName)){
+    public boolean removeFromDB(String objectName,String arg2,String arg3) {
+        if(containInDB(objectName,null,null)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.delete(SUBSCRIBERS)
                     .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName)).execute();
             return true;
         }
-        return false;
-    }
-
-    @Override
-    public boolean addToDb(String username, String password, String name, Map<String, ArrayList<String>> objDetails) {
         return false;
     }
 
@@ -268,12 +266,10 @@ public class DBHandler implements DB_Inter{
      * @param objDetails userType details (player,coach etc...)
      * @return added successfully or not
      */
-
-    /*
-        @Override
-    public boolean addToDb(String username,String password,String name,String type, Map<String,ArrayList<String>> objDetails) {
+    @Override
+    public boolean addToDB(String username,String password,String name,String type, Map<String,ArrayList<String>> objDetails) {
         //check if user in db already
-        if(!containInDB(username)){
+        if(!containInDB(username,null,null)){
             //get subscriber from db
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(SUBSCRIBERS
@@ -302,7 +298,7 @@ public class DBHandler implements DB_Inter{
                                 ,convertToDate(objDetails.get("birthDate").get(0))
                                 ,Integer.parseInt(objDetails.get("salary").get(0))
                                 ,objDetails.get("ownerFictive").isEmpty()?
-                                        objDetails.get("ownerFictive").get(0) : null)
+                                        null :  objDetails.get("ownerFictive").get(0))
                         .execute();
                 return true;
             }
@@ -318,15 +314,15 @@ public class DBHandler implements DB_Inter{
                                 ,CoachesTraining.valueOf(objDetails.get("training").get(0))
                                 ,Integer.parseInt(objDetails.get("salary").get(0))
                                 ,objDetails.get("ownerFictive").isEmpty()?
-                                        objDetails.get("ownerFictive").get(0) : null)
+                                        null : objDetails.get("ownerFictive").get(0))
                         .execute();
 
                 for (String str : objDetails.get("teams")) {
                     create.insertInto(COACH_TEAM
-                            ,COACH_TEAM.COACHID
-                            ,COACH_TEAM.TEAMID)
-                            .values(username,str)
-                            .execute();
+                                    ,COACH_TEAM.COACHID
+                                    ,COACH_TEAM.TEAMID)
+                    .values(username,str)
+                    .execute();
                 }
                 return true;
             }
@@ -342,11 +338,10 @@ public class DBHandler implements DB_Inter{
                                 ,TeammanagersPermissions.valueOf(objDetails.get("permissions").get(0))
                                 ,Integer.parseInt(objDetails.get("salary").get(0))
                                 ,objDetails.get("ownerFictive").isEmpty()?
-                                        objDetails.get("ownerFictive").get(0) : null)
+                                        null : objDetails.get("ownerFictive").get(0))
                         .execute();
                 return true;
             }
-
             if (type.equalsIgnoreCase("teamowner")) {
                 create.insertInto(TEAMOWNER_OWNERELIGIBLE
                         ,TEAMOWNER_OWNERELIGIBLE.OWNERID
@@ -355,10 +350,11 @@ public class DBHandler implements DB_Inter{
                         ,TEAMOWNER_OWNERELIGIBLE.MANAGERID)
                         .values(username
                                 ,objDetails.get("playerID").isEmpty()?
-                                        objDetails.get("playerID").get(0) : null
-                                ,CoachesTraining.valueOf(objDetails.get("training").get(0))
-                                ,Integer.parseInt(objDetails.get("salary").get(0))
-                                ,objDetails.get("ownerFictive").get(0))
+                                        null : objDetails.get("playerID").get(0)
+                                ,objDetails.get("coachID").isEmpty()?
+                                        null : objDetails.get("coachID").get(0)
+                                ,objDetails.get("managerID").isEmpty()?
+                                        null : objDetails.get("managerID").get(0))
                         .execute();
 
                 for (String str : objDetails.get("teams")) {
@@ -366,23 +362,28 @@ public class DBHandler implements DB_Inter{
                             ,OWNER_TEAMS.OWNERID
                             ,OWNER_TEAMS.TEAMID)
                             .values(username,str)
-                            .execute();
+                    .execute();
                 }
-                for (String str : objDetails.get("ownersAssigned")) {
+                for (int i=0;i<objDetails.get("ownersAssigned").size();i++) {
                     create.insertInto(OWNER_OWNER_ASSIGNINGS
                             ,OWNER_OWNER_ASSIGNINGS.OWNERID
-                            ,OWNER_OWNER_ASSIGNINGS.ASSIGNEEID)
-                            .values(username,str)
-                            .execute();
-                    //TODO should we delete teamID from this table?
+                            ,OWNER_OWNER_ASSIGNINGS.ASSIGNEEID
+                            ,OWNER_OWNER_ASSIGNINGS.TEAMID)
+                            .values(username
+                                    ,objDetails.get("ownersAssigned").get(i)
+                                    ,objDetails.get("ownerTeam").get(i))
+                    .execute();
                 }
-                for (String str : objDetails.get("managersAssigned")) {
+
+                for (int i=0;i<objDetails.get("managersAssigned").size();i++) {
                     create.insertInto(OWNER_MANAGER_ASSIGNINGS
                             ,OWNER_MANAGER_ASSIGNINGS.OWNERID
-                            ,OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID)
-                            .values(username,str)
-                            .execute();
-                    //TODO should we delete teamID from this table?
+                            ,OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID
+                            ,OWNER_MANAGER_ASSIGNINGS.TEAMID)
+                            .values(username
+                                    ,objDetails.get("managersAssigned").get(i)
+                                    ,objDetails.get("managerTeam").get(i))
+                    .execute();
                 }
             }
             if (type.equalsIgnoreCase("admin")) {
@@ -391,7 +392,7 @@ public class DBHandler implements DB_Inter{
                         ,ADMINS.APPROVED)
                         .values(username,
                                 Boolean.valueOf(objDetails.get("approved").get(0)))
-                        .execute();
+                .execute();
             }
             if (type.equalsIgnoreCase("ar")) {
                 create.insertInto(ARS
@@ -406,21 +407,64 @@ public class DBHandler implements DB_Inter{
                 create.insertInto(REFEREES
                         ,REFEREES.REFEREEID
                         ,REFEREES.TRAINING).
-                        values(username, RefereesTraining.valueOf(objDetails.get("training").get(0)));
+                        values(username, RefereesTraining.valueOf(objDetails.get("training").get(0)))
+                .execute();
 
                 for(String str: objDetails.get("matches")){
                     create.insertInto(REFEREE_MATCHES
                             ,REFEREE_MATCHES.REFEREEID
                             ,REFEREE_MATCHES.MATCHID).
-                            values(username, Integer.parseInt(str));
+                            values(username, Integer.parseInt(str))
+                    .execute();
                 }
             }
             return true;
         }
         return false;
     }
-    */
-    public boolean TerminateDB(String objectName) {
+
+    @Override
+    public int countRecords() {
+        return -1;
+    }
+
+    @Override
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType) {
+        if(userType ==UserTypes.COACH){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(COACHES.COACHID).
+                    from(COACHES)
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allCoaches = new ArrayList<>();
+            allCoaches.add(new HashMap<>());
+            allCoaches.get(0).put("coaches",new ArrayList<>());
+            for(Record r: result){
+                allCoaches.get(0).get("coaches").add(r.get(COACHES.COACHID));
+
+            }
+            return allCoaches;
+        }
+        if(userType ==UserTypes.REFEREE){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(REFEREES.REFEREEID).
+                    from(REFEREES)
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allReferees = new ArrayList<>();
+            allReferees.add(new HashMap<>());
+            allReferees.get(0).put("referees",new ArrayList<>());
+            for(Record r: result){
+                allReferees.get(0).get("referees").add(r.get(REFEREES.REFEREEID));
+
+            }
+            return allReferees;
+        }
+        else{
+            System.out.println("invalid select from subscriberDB");
+        }
+        return null;
+    }
+
+    public boolean TerminateDB() {
         try {
             connection.close();
         } catch (SQLException e) {

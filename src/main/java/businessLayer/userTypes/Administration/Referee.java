@@ -162,4 +162,19 @@ public class Referee extends Subscriber {
         return "Referee";
     }
 
+    public boolean addMatch(Match match){
+        if(match!=null){
+            matches.put(match.getMatchId(),match);
+            return true;
+        }
+        return false;
+    }
+
+    public businessLayer.userTypes.Administration.roleRef getRoleRef() {
+        return roleRef;
+    }
+
+    public void setRoleRef(businessLayer.userTypes.Administration.roleRef roleRef) {
+        this.roleRef = roleRef;
+    }
 }

@@ -9,11 +9,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static dataLayer.Tables.Tables.LEAGUE;
-import static dataLayer.Tables.Tables.PAGE_POST;
 
 public class DBLeagues implements DB_Inter{
 
@@ -40,7 +39,7 @@ public class DBLeagues implements DB_Inter{
     }
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String empty1,String empty2) {
         //create sql query to search record in db using ObjectName
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().from(LEAGUE).where(LEAGUE.LEAGUEID.eq(objectName)).fetch();
@@ -48,16 +47,21 @@ public class DBLeagues implements DB_Inter{
     }
 
     @Override
-    public Object selectFromDB(String objectName) {
+    public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result <?> result = create.select().from(LEAGUE).where(LEAGUE.LEAGUEID.eq(objectName)).fetch();
         String leagueID = result.get(0).get(LEAGUE.LEAGUEID);
-        return leagueID;
+
+        Map<String,ArrayList<String>> objDetails = new HashMap<>();
+        ArrayList<String> leagueIDs = new ArrayList<>();
+        leagueIDs.add(leagueID);
+        objDetails.put("leagueID",leagueIDs);
+        return objDetails;
     }
 
     @Override
-    public boolean removeFromDB(String objectName) {
-        if(containInDB(objectName)) {
+    public boolean removeFromDB(String objectName,String arg2,String arg3) {
+        if(containInDB(objectName,null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.delete(LEAGUE)
                     .where(LEAGUE.LEAGUEID.eq(objectName)).execute();
@@ -65,15 +69,30 @@ public class DBLeagues implements DB_Inter{
         }
         return false;
     }
-    
+
     @Override
-    public boolean addToDb(String username, String password, String name, Map<String, ArrayList<String>> objDetails) {
+    public boolean addToDB(String leagueID, String empty1, String empty2, String empty3, Map<String, ArrayList<String>> objDetails) {
+        return addToDb(leagueID);
+    }
+
+    @Override
+    public int countRecords() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+        return null;
+    }
+
+    @Override
+    public boolean TerminateDB() {
         return false;
     }
 
 
     public boolean addToDb(String leagueID){
-        if(!containInDB(leagueID)) {
+        if(!containInDB(leagueID,null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(LEAGUE,LEAGUE.LEAGUEID).values(leagueID).execute();
             return true;
