@@ -115,12 +115,15 @@ public class TeamService {
         return systemController.removeOwnerFromTeam(userName, teamName, newUserName);
     }
 
-    public LinkedList<String> getTeamsOfTeamOwner(String userName){
-        return systemController.getTeamOfTeamOwner(userName);
+    public LinkedList<String> getActiveTeamOfTeamOwner(String userName){
+        return systemController.getActiveTeamOfTeamOwner(userName);
     }
 
     public ArrayList<String> getAllTeamManagers(){
         return systemController.getAllTeamManagers();
     }
 
+    public LinkedList<String> getInactiveTeamOfTeamOwner(String userName) {
+        return systemController.getInactiveTeamOfTeamOwner(userName);
+    }
 }

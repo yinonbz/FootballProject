@@ -44,8 +44,8 @@ public class TeamManagerController implements Initializable,ControllerInterface,
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if(messages != null) {
             for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
+                String title = msg.split(",")[1];
+                String event = msg.split(",")[0];
                 AnchorPane newPanelContent = new AnchorPane();
                 newPanelContent.getChildren().add(new Label(event));
                 TitledPane pane = new TitledPane(title, newPanelContent);

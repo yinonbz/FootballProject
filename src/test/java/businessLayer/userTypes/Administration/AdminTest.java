@@ -1,12 +1,16 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import org.junit.rules.ExpectedException;
 import serviceLayer.SystemService;
 
 import static junit.framework.TestCase.assertNull;
@@ -18,6 +22,9 @@ public class AdminTest {
     static DataBaseValues tDB;
     static SystemService systemService;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @BeforeClass
     public static void defineValues(){
         tDB = new DataBaseValues();
@@ -27,7 +34,8 @@ public class AdminTest {
 
     @Test
     public void UC8_1_a(){
-        assertTrue(systemService.closeTeamByAdmin("Chelsea","TomerSein"));
+        expectedException.expect(NotFoundInDbException.class);
+        systemService.closeTeamByAdmin("Chelsea","TomerSein");
         //1
         //checks if we can close the team successfully
         Team Chelsea = DB.selectTeamFromDB("Chelsea");

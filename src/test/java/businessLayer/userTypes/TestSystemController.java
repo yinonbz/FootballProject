@@ -61,7 +61,8 @@ public class TestSystemController {
     public void UT_checkCloseTeam(){
         //1
         //close a team 1st time
-        assertTrue(admin.closeTeam("LeedsUnited"));
+        expectedException.expect(NotFoundInDbException.class);
+        admin.closeTeam("LeedsUnited");
 
         //2
         //close team that doesn't exist

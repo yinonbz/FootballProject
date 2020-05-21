@@ -432,6 +432,7 @@ public class DataBaseValues2 {
         Ronaldinio = new TeamManager("Ronaldinio", "111", "Ronaldinio",null ,0, systemController);
         DB.addTeamManagerToDB("Ronaldinio",Ronaldinio);
         valverde = new TeamManager("valverde","111","valverde",Liverpool,100,systemController);
+        DB.addTeamManagerToTeam(valverde,Liverpool);
         DB.addTeamManagerToDB("valverde",valverde);
         DB.addSubscriberToDB("Ronaldinio",Ronaldinio);;
         DB.addSubscriberToDB("itayK",itay);

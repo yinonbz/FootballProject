@@ -1024,7 +1024,7 @@ public class SystemController extends Observable {
     }
 
     /**
-     * UC-6.6 - disable team status by Team Owner todo-write tests
+     * UC-6.6 - disable team status by Team Owner
      *
      * @param teamName the name of the team from input
      * @param userName the user who wants to disable the team status
@@ -1033,7 +1033,7 @@ public class SystemController extends Observable {
      */
     public Boolean disableTeamStatus(String teamName, String userName) {
         if (userName == null || teamName == null) {
-            return false;
+           throw new MissingInputException("Please select a team to close.");
         }
         if (!DB.containsInSystemSubscribers(userName) || !DB.containsInTeamsDB(teamName)) {
             return false;
@@ -1761,6 +1761,7 @@ public class SystemController extends Observable {
             }
             usersToNotify.add(event);
             usersToNotify.add("Team status update");
+            setChanged();
             notifyObservers(usersToNotify);
         }
     }
@@ -1861,6 +1862,38 @@ public class SystemController extends Observable {
         }
         return teamNames;
     }
+
+    /**
+     * @param userName Team Owner
+     * @return names of the ACTIVE teams
+     */
+    public LinkedList<String> getActiveTeamOfTeamOwner(String userName){
+        TeamOwner teamOwner = DB.getTeamOwner(userName);
+        LinkedList<String> teamNames = new LinkedList<>();
+        HashSet<Team> teams = teamOwner.getTeams();
+        for(Team t: teams){
+            if(t.getActive() == true)
+            teamNames.add(t.getTeamName());
+        }
+        return teamNames;
+    }
+
+    /**
+     * @param userName Team Owner
+     * @return names of the INACTIVE teams
+     */
+    public LinkedList<String> getInactiveTeamOfTeamOwner(String userName){
+        TeamOwner teamOwner = DB.getTeamOwner(userName);
+        LinkedList<String> teamNames = new LinkedList<>();
+        HashSet<Team> teams = teamOwner.getTeams();
+        for(Team t: teams){
+            if(t.getActive() == false)
+                teamNames.add(t.getTeamName());
+        }
+        return teamNames;
+    }
+
+
 
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {
         HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();

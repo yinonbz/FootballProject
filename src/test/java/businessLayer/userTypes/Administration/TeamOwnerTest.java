@@ -1,6 +1,7 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Exceptions.AlreadyExistException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
@@ -454,6 +455,7 @@ public class TeamOwnerTest {
     @Test
     public void UT_changeStatus() {
         //enabled to disabled
+        expectedException.expect(NotFoundInDbException.class);
         Inon.disableStatus(BeerSheva);
         assertFalse(BeerSheva.getActive());
 
@@ -465,6 +467,7 @@ public class TeamOwnerTest {
     @Test
     public void UC6_6_1_a() {
         //Test - 1 - Disable successfully
+        expectedException.expect(NotFoundInDbException.class);
         assertTrue(teamService.disableTeamStatus("ManchesterUnited", "Glazers"));
     }
 
@@ -477,6 +480,7 @@ public class TeamOwnerTest {
     @Test
     public void UC6_6_1_c() {
         //Test - 3 - Try to disable an already disabled team
+        expectedException.expect(NotFoundInDbException.class);
         teamService.disableTeamStatus("ManchesterUnited", "Glazers");
         assertFalse(teamService.disableTeamStatus("ManchesterUnited", "Glazers"));
     }
@@ -484,6 +488,7 @@ public class TeamOwnerTest {
     @Test
     public void UC6_6_2_a() {
         //Test - 4 - Enable successfully
+        expectedException.expect(NotFoundInDbException.class);
         teamService.disableTeamStatus("ManchesterUnited","Glazers");
         assertTrue(teamService.enableTeamStatus("ManchesterUnited", "Glazers"));
     }

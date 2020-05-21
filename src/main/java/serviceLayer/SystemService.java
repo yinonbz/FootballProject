@@ -1,5 +1,6 @@
 package serviceLayer;
 
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
@@ -363,19 +364,20 @@ public class SystemService extends Observable implements Observer {
     public void update(Observable o, Object arg) {
         if (o instanceof SystemController && arg instanceof LinkedList) {
             LinkedList<String> users = (LinkedList) arg;
-            String title = users.getLast(); //title for the message in the interface
-            String event = users.getLast(); //holds the message to present to the user's interface
+            String title = users.removeLast(); //title for the message in the interface
+            String event = users.removeLast(); //holds the message to present to the user's interface
             for (String user : users) {
                 if (systemController.isUserOnline(user)) {
                     LinkedList<String> notification = new LinkedList<>();
                     notification.add(title);
                     notification.add(event);
+                    setChanged();
                     notifyObservers(notification);
                 } else {
                     systemController.saveUserMessage(user, event, title);
                 }
             }
-
+            throw new NotFoundInDbException("");
         }
     }
 
@@ -390,4 +392,6 @@ public class SystemService extends Observable implements Observer {
     public ArrayList<String> getSystemSubscribers() {
         return systemController.getSystemSubscribers();
     }
+
+
 }
