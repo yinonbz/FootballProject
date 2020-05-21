@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import serviceLayer.LeagueService;
+import serviceLayer.SystemService;
 import serviceLayer.TeamService;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
 
      private TeamService teamService;
 
-    private SystemController systemController;
+     private SystemService systemService;
 
     private String userName;
 
@@ -124,7 +125,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
 
     public void submitNewTeam(ActionEvent actionEvent) {
         try {
-            systemController.sendRequestForTeam(teamNameL.getText(), "" + yearSpinner.getValue(), userName);
+            systemService.sendRequestForTeam(teamNameL.getText(), "" + yearSpinner.getValue(), userName);
             showAlert("Team request has been created successfully","A team request has been created and was passed to the Association Representatives to approve.", Alert.AlertType.INFORMATION);
         } catch (AlreadyExistException e){
             showAlert("Failed to add a new team",e.getMessage(), Alert.AlertType.WARNING);
@@ -143,7 +144,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         leagueService = new LeagueService();
         teamService = new TeamService();
-        systemController = SystemController.SystemController();
+        systemService = new SystemService();
         userLable.setText("Welcome " + userName);
         leagueService = new LeagueService();
         notificationPanesCollection= new ArrayList<>();
@@ -204,7 +205,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         teamsViewL.setItems(listTeams);
 
         listTeams = FXCollections.observableArrayList();
-        listTeams.setAll(teamService.getAllTeamManagers()); //get only the team owner's teams
+        listTeams.setAll(systemService.getSystemSubscribers()); //get only the team owner's teams
         teamManagersViewL.setItems(listTeams);
 
         NumberFormat format = NumberFormat.getIntegerInstance();

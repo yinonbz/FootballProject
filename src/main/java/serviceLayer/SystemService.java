@@ -7,10 +7,7 @@ import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class SystemService extends Observable implements Observer {
     private SystemController systemController; //business layer system controller.
@@ -390,4 +387,7 @@ public class SystemService extends Observable implements Observer {
         systemController.removeOnlineUser(userName);
     }
 
+    public ArrayList<String> getSystemSubscribers() {
+        return systemController.getSystemSubscribers();
+    }
 }

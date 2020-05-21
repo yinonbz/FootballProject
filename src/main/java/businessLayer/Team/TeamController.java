@@ -129,9 +129,10 @@ public class TeamController {
                         return owner.addManager(username, Permissions.valueOf(permission), systemController.getTeamByName(teamName), Integer.parseInt(salary));
                     }
                 }
+
             }
         }
-       throw new MissingInputException("Please fill the form completely before adding a new Team Manager.\"");
+       throw new MissingInputException("Please fill the form completely before adding a new Team Manager.");
     }
 
     public boolean fireManager(String ownerUser, String username, String teamName) {

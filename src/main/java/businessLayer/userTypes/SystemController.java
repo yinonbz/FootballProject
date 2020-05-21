@@ -20,7 +20,6 @@ import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.DemoDB;
-import javafx.util.Pair;
 import serviceLayer.SystemService;
 
 import java.util.*;
@@ -299,6 +298,19 @@ public class SystemController extends Observable {
 
     public void setRecommendationSystem(RecommendationSystem recommendationSystem) {
         this.recommendationSystem = recommendationSystem;
+    }
+
+    public ArrayList<String> getSystemSubscribers() {
+        HashMap<String, Subscriber> users = DB.getSystemSubscribers();
+        ArrayList<String> systemUsers = new ArrayList<>();
+        ArrayList<String> leagueNamesInDB = new ArrayList<>();
+        Iterator iterator = users.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            systemUsers.add("" + me2.getKey());
+        }
+
+        return systemUsers;
     }
 
     /**

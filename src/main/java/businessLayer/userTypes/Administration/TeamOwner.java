@@ -418,6 +418,9 @@ public class TeamOwner extends Subscriber {
 
                     return true;
                 }
+                else{
+                    throw new AlreadyExistException("This user is already a Team Owner of the team.");
+                }
             } else if ((team.getTeamManager() != null)) {
                 throw new AlreadyExistException("Please fire current Manager before appointing a new one.");
             }
