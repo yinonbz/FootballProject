@@ -4,18 +4,18 @@ import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
+import businessLayer.Utilities.Page;
+import businessLayer.Utilities.HasPage;
 import businessLayer.userTypes.Administration.Coach;
 import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
+import businessLayer.userTypes.SystemController;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
-public class Team {
+public class Team implements HasPage {
     private HashSet<Player> players;
     private HashSet<Coach> coaches;
     private TeamManager teamManager;
@@ -28,8 +28,11 @@ public class Team {
     private int establishedYear;
     private Boolean isActive;
     private Boolean closedByAdmin; //refers to UC 8.1 - can be changed only once
+    private Page teamPage;
 
-    /**a
+    /**
+     * a
+     *
      * @param players
      * @param coaches
      * @param teamManagers
@@ -60,43 +63,48 @@ public class Team {
         this.teamName = teamName;
         this.establishedYear = establishedYear;
         this.isActive = isActive;
-        this.closedByAdmin=closedByAdmin;
+        this.closedByAdmin = closedByAdmin;
+        teamPage = new Page(teamOwners, teamName, establishedYear, this, teamName);
 
     }
     //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited
+
     /**
      * constructor - opening a new team in the system - will be send to approval to the association representative
-     * @param teamName the name of the team
+     *
+     * @param teamName  the name of the team
      * @param teamOwner the owner of the team
      */
-    public Team (String teamName, TeamOwner teamOwner, int establishedYear){
-        this.teamName=teamName;
-        teamOwners= new HashSet<>();
+    public Team(String teamName, TeamOwner teamOwner, int establishedYear) {
+        this.teamName = teamName;
+        teamOwners = new HashSet<>();
         teamOwners.add(teamOwner);
         teamOwner.getTeams().add(this);
-        this.establishedYear=establishedYear;
-        isActive=true;
-        closedByAdmin=false;
+        this.establishedYear = establishedYear;
+        isActive = true;
+        closedByAdmin = false;
         stadium = null;
         this.players = new HashSet<>();
-        this.coaches =new HashSet<>();
-        this.seasons=new HashSet<>();
+        this.coaches = new HashSet<>();
+        this.seasons = new HashSet<>();
         this.matches = new HashSet<>();
-        this.teamManager =null;
+        this.teamManager = null;
+        teamPage = new Page(teamOwners, teamName, establishedYear, this, teamName);
+
 
     }
 
     /**
      * the function closes a team permanently by the admin. once it done, it can't be changed
+     *
      * @return true is the status has been changed
      */
-    public boolean closeTeamPermanently(){
-        if(closedByAdmin){
+    public boolean closeTeamPermanently() {
+        if (closedByAdmin) {
             return false;
-        }
-        else{
+        } else {
             setActive(false);
-            closedByAdmin=true;
+            closedByAdmin = true;
         }
         return true;
     }
@@ -190,13 +198,13 @@ public class Team {
     }
 
     /**
-     *
      * @param teamManager
      */
 
     public void setTeamManager(TeamManager teamManager) {
         this.teamManager = teamManager;
     }
+
     /**
      * @param teamOwners
      */
@@ -263,29 +271,31 @@ public class Team {
     }
 
     /**
-     *
      * @return
      */
     public Boolean getClosedByAdmin() {
         return closedByAdmin;
     }
 
-    /** ido added
+    /**
+     * ido added
      * this function add a player to the team
+     *
      * @param p the player to be added
      */
-    public void addPlayer(Player p){
+    public void addPlayer(Player p) {
         this.players.add(p);
     }
 
     /**
      * ido add
      * this function add a teamManager to the team
+     *
      * @param teamManager the teamManager to be added
      */
 
     public void addTeamManager(TeamManager teamManager) {
-        this.teamManager=teamManager;
+        this.teamManager = teamManager;
     }
 
     public void addCoach(Coach coach) {
@@ -293,7 +303,7 @@ public class Team {
     }
 
     public void removePlayer(Player player) {
-        if(players.contains(player)) {
+        if (players.contains(player)) {
             players.remove(player);
         }
     }
@@ -304,14 +314,14 @@ public class Team {
 
 
     public void removeCoach(Coach coach) {
-        if(coaches.contains(coach)){
+        if (coaches.contains(coach)) {
             coaches.remove(coach);
         }
     }
 
     public Player getPlayerByUser(String playerUser) {
-        for (Player player:players) {
-            if(player.getUsername().equals(playerUser)){
+        for (Player player : players) {
+            if (player.getUsername().equals(playerUser)) {
                 return player;
             }
         }
@@ -319,8 +329,8 @@ public class Team {
     }
 
     public Coach getCoachByUser(String coachUser) {
-        for (Coach coach:coaches) {
-            if(coach.getUsername().equals(coachUser)){
+        for (Coach coach : coaches) {
+            if (coach.getUsername().equals(coachUser)) {
                 return coach;
             }
         }
@@ -347,14 +357,14 @@ public class Team {
 
 
     public int calculateExpanse() {
-        int sum=0;
-        for (Player player:players) {
+        int sum = 0;
+        for (Player player : players) {
             sum = sum + player.getSalary();
         }
-        for (Coach coach:coaches) {
+        for (Coach coach : coaches) {
             sum = sum + coach.getSalary();
         }
-        if(teamManager!=null) {
+        if (teamManager != null) {
             sum = sum + teamManager.getSalary();
         }
         return sum;
@@ -364,5 +374,9 @@ public class Team {
         int sum = 0;
         this.stadium.getNumberOfSeats();
         return stadium.calculateIncome(this);
+    }
+
+    public boolean updatePage(String update) {
+        return teamPage.update(update);
     }
 }

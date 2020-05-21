@@ -1,5 +1,6 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Subscriber;
@@ -71,7 +72,7 @@ public class AssociationRepresentative extends Subscriber {
             return false;
         }
         if (leagueController.doesLeagueExist(newLeagueID)) {
-            return false;
+            throw new AlreadyExistException("There is already a League in the system with that name. Please choose a different name.");
         }
         return leagueController.createLeague(newLeagueID);
     }
@@ -220,12 +221,12 @@ public class AssociationRepresentative extends Subscriber {
     public boolean confirmTeamRequest(String teamName){
         if(!approved)
             return false;
-        return systemController.confirmTeamByAssociationRepresntative(teamName,this.getUsername());
+        return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());
     }
 
     @Override
     public String toString() {
-        return "AssociationRepresentative";
+        return "AR";
     }
 
     public boolean isApproved() {

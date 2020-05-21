@@ -1,5 +1,6 @@
 package businessLayer.Tournament;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.userTypes.Administration.Referee;
@@ -10,21 +11,21 @@ import java.util.*;
 public class League {
 
     private String leagueName;
-    private Map<Team, Integer> scoreTable;
+    //private Map<Team, Integer> scoreTable;
     //private Map<Season,MatchingPolicy> matchingPolicy; // probably not needed
     //private Map<Season,RankingPolicy> rankingPolicy; // probably not needed
     private SystemController systemController;
-    private HashMap<Integer, Season> seasons;
-    private List<Match> matches;
+    private HashMap<Integer, Season> seasons; //<Season ID, Season>
+    //private List<Match> matches;
 
     /**
      * @param leagueName
      */
     public League(String leagueName) {
         this.leagueName = leagueName;
-        scoreTable = new HashMap<>();
+        //scoreTable = new HashMap<>();
         seasons = new HashMap<>();
-        matches = new ArrayList<>();
+        //matches = new ArrayList<>();
     }
 /*
     /**
@@ -97,18 +98,20 @@ public class League {
     /**
      * @return
      */
-
+    /*
     public List<Match> getMatches() {
         return matches;
     }
+    */
 
     /**
      * @param matches
      */
+    /*
     public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
-
+    */
 
     /**
      * The function creates a season and adds it to the league then returns whether the creation was successful or not
@@ -123,9 +126,14 @@ public class League {
      */
     public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
 
-        if (seasons.containsKey(seasonID) || startingDate.after(endingDate)) {
-            return false;
+        if (seasons.containsKey(seasonID)){
+            throw new AlreadyExistException("There is already a season with this Season ID in this league. Please choose another Season ID.");
         }
+
+        if(startingDate.after(endingDate)) {
+            throw new InputMismatchException("The Starting Date must be before the Ending Date.");
+        }
+
         if (matchingPolicy == null){
             return false;
         }
@@ -167,5 +175,9 @@ public class League {
     public Season getSeasonFromLeague (String seasonID){
         int id = Integer.parseInt(seasonID);
         return seasons.get(id);
+    }
+
+    public HashMap<Integer, Season> getSeasons() {
+        return seasons;
     }
 }

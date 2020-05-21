@@ -2,6 +2,7 @@ package businessLayer.Tournament;
 
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
+import businessLayer.userTypes.SystemController;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
@@ -12,12 +13,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class ARankingPolicyTest {
 
     private DataBaseValues tDB;
     private DemoDB DB;
+    LeagueController leagueController;
+    static SystemController systemController;
     private HashMap<Team, LinkedList<Integer>> rankTable;
     private Season s;
     private ARankingPolicy aRankingPolicy;
@@ -72,6 +76,8 @@ public class ARankingPolicyTest {
         s.setRankingPolicy(aRankingPolicy);
         s.initializeTable();
         rankTable = s.getLeagueTable();
+        systemController = SystemController.SystemController();
+        leagueController = systemController.getLeagueController();
 
     }
 
@@ -112,4 +118,11 @@ public class ARankingPolicyTest {
         assertEquals(1,infoMU.get(2).intValue()); //num for goals A
         assertEquals(4,infoMU.get(3).intValue()); //num of points
     }
+
+    @Test
+
+    public void checkUpdateTableRank(){
+        assertTrue(leagueController.updateSeasonTableRank("12","2020","4","Rayola"));
+    }
+
 }

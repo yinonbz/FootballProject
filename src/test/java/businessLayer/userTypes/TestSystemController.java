@@ -1,5 +1,8 @@
 package businessLayer.userTypes;
 
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Admin;
@@ -10,8 +13,9 @@ import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.BeforeClass;
 
+import org.junit.Rule;
 import org.junit.Test;
-import businessLayer.userTypes.SystemController;
+import org.junit.rules.ExpectedException;
 import serviceLayer.SystemService;
 
 
@@ -21,18 +25,20 @@ import static org.junit.Assert.assertFalse;
 
 public class TestSystemController {
 
-     static Team LeedsUnited;
-     static Team Sunderland;
-     static TeamOwner Alex;
-     static TeamOwner Max;
-     static TeamOwner YaelM;
-     static Admin admin;
-     static Admin admin2;
-     static Fan fan;
+    static Team LeedsUnited;
+    static Team Sunderland;
+    static TeamOwner Alex;
+    static TeamOwner Max;
+    static TeamOwner YaelM;
+    static Admin admin;
+    static Admin admin2;
+    static Fan fan;
     static DemoDB DB;
     static DataBaseValues tDB;
     static SystemService systemService;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @BeforeClass
 
@@ -118,7 +124,7 @@ public class TestSystemController {
         assertEquals("Solved",c1.getComment());
         assertEquals("TomerSein",c1.getHandler());
 
- //       System.out.println(systemController.getSystemComplaints().get(0).toString());
+        //       System.out.println(systemController.getSystemComplaints().get(0).toString());
 
         //2
         //can't add an empty comment
@@ -200,8 +206,12 @@ public class TestSystemController {
     @Test
     public void UT_enterUserDetails(){
         SystemController systemController = SystemController.SystemController();
+        expectedException.expect(NotFoundInDbException.class);
         assertNull(systemController.enterLoginDetails("Itzik","abc123"));
-        assertNull(systemController.enterLoginDetails(null,"abc123"));
+        expectedException.expect(MissingInputException.class);
+        systemController.enterLoginDetails(null,"abc123");
+        expectedException.expect(NotApprovedException.class);
+        systemController.enterLoginDetails("Buzaglo","abc123");
         assertNull(systemController.enterLoginDetails("Itzik",null));
     }
 
@@ -227,6 +237,7 @@ public class TestSystemController {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.enterRegisterDetails_Admin("NewAdmin", "abc123", "b"));
         assertFalse(((Admin) systemController.selectUserFromDB("NewAdmin")).isApproved());
+        expectedException.expect(NotApprovedException.class);
         assertNull(systemController.enterLoginDetails("NewAdmin", "abc123"));
         assertFalse(systemController.handleAdminApprovalRequest("Buzaglo", "NewAdmin", true));
         assertFalse(systemController.handleAdminApprovalRequest("TomerSein", "Buzaglo", true));
@@ -241,14 +252,15 @@ public class TestSystemController {
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR", "abc123", "b"));
         assertFalse(((AssociationRepresentative) systemController.selectUserFromDB("NewAR")).isApproved());
+        expectedException.expect(NotApprovedException.class);
         assertNull(systemController.enterLoginDetails("NewAR", "abc123"));
         assertFalse(systemController.handleAdminApprovalRequest("Buzaglo", "NewAR", true));
         assertTrue(systemController.handleAdminApprovalRequest("TomerSein", "NewAR", true));
         assertTrue(((AssociationRepresentative) systemController.selectUserFromDB("NewAR")).isApproved());
         assertEquals(systemController.enterLoginDetails("NewAR", "abc123"), "AssociationRepresentative");
     }
-        @Test
-        public void UT_handleAdminApprovalRequest_3() {
+    @Test
+    public void UT_handleAdminApprovalRequest_3() {
         //check AR disapproval request
         SystemController systemController = SystemController.SystemController();
         assertTrue(systemController.enterRegisterDetails_AssociationRepresentative("NewAR2","abc123","b"));
@@ -305,11 +317,13 @@ public class TestSystemController {
 
     @Test
     public void UC_2_3_b(){
-        assertNull(systemService.enterLoginDetails("Buzaglo",null));
+        expectedException.expect(MissingInputException.class);
+        systemService.enterLoginDetails("Buzaglo",null);
     }
 
     @Test
     public void UC_2_3_c(){
+        expectedException.expect(NotFoundInDbException.class);
         assertNull(systemService.enterLoginDetails("Dudidu","Dudidu123"));
     }
 }

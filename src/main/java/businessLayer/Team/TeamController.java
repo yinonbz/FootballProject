@@ -1,16 +1,20 @@
 package businessLayer.Team;
 
+import businessLayer.Exceptions.MissingInputException;
 import businessLayer.userTypes.Administration.OwnerEligible;
 import businessLayer.userTypes.Administration.Permissions;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
+import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 
-import java.security.acl.Owner;
 
 public class TeamController {
     private SystemController systemController;
     private static TeamController single_instance;
+
+
 
     public TeamController() {
         //systemController = SystemController.SystemController();
@@ -125,9 +129,10 @@ public class TeamController {
                         return owner.addManager(username, Permissions.valueOf(permission), systemController.getTeamByName(teamName), Integer.parseInt(salary));
                     }
                 }
+
             }
         }
-        return false;
+       throw new MissingInputException("Please fill the form completely before adding a new Team Manager.");
     }
 
     public boolean fireManager(String ownerUser, String username, String teamName) {
@@ -195,4 +200,6 @@ public class TeamController {
         }
         return -1;
     }
+
+
 }

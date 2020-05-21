@@ -1,13 +1,14 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Team.Team;
 import dataLayer.DataBaseValues;
 import dataLayer.DemoDB;
 import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
-import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.SystemController;
+import org.junit.rules.ExpectedException;
 import serviceLayer.SystemService;
 import serviceLayer.TeamService;
 
@@ -54,8 +55,13 @@ public class TeamOwnerTest {
     private DataBaseValues tDB;
 
 
+
     private TeamService teamService;
     private SystemService systemService;
+    private SystemController systemController;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void UT_createTestValues() {
@@ -94,6 +100,7 @@ public class TeamOwnerTest {
 
         teamService = new TeamService();
         systemService = new SystemService();
+        systemController = SystemController.SystemController();
 
     }
     @Test
@@ -302,6 +309,7 @@ public class TeamOwnerTest {
         //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
         //check if add succeeded
+        expectedException.expect(AlreadyExistException.class);
         assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
 
     }
@@ -311,7 +319,8 @@ public class TeamOwnerTest {
         //all good
         assertTrue(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
         //add same manager again and adding manager to occupied team
-        assertFalse(teamService.addManager("Inon","kloppJ","GENERAL","HTA","100"));
+        expectedException.expect(AlreadyExistException.class);
+        teamService.addManager("Inon","kloppJ","GENERAL","HTA","100");
     }
 
     @Test
@@ -393,15 +402,16 @@ public class TeamOwnerTest {
     public void UT_checkTeamRequest() {
         //1
         //check if we get true on a normal request
-        assertTrue(Barkat.sendRequestForTeam("TheSharks", "2003"));
+
+        assertTrue(systemService.sendRequestForTeam("natania","1948","Tomer"));
 
         //2
         //check if we get a false on a not valid year
-        assertFalse(Barkat.sendRequestForTeam("TheSharks", "0"));
+        assertFalse(systemService.sendRequestForTeam("natania","","Tomer"));
 
         //3
         //check if we get a false on not valid name
-        assertFalse(Barkat.sendRequestForTeam("", "2004"));
+        assertFalse(systemService.sendRequestForTeam("","1948","Tomer"));
 
     }
 
@@ -496,7 +506,9 @@ public class TeamOwnerTest {
         BeerSheva.setTeamManager(itay);
         itay.setTeam(BeerSheva);
         //try assign manager to a team that not belong to me
-        assertFalse(Alex.addManager("pepG", Permissions.GENERAL, BeerSheva, 200));
+
+        expectedException.expect(AlreadyExistException.class);
+        Alex.addManager("pepG", Permissions.GENERAL, BeerSheva, 200);
         //manager already has team
         assertFalse(Alex.addManager("itayK", Permissions.GENERAL, LeedsUnited, 200));
         //all good
@@ -608,6 +620,15 @@ public class TeamOwnerTest {
         assertEquals(teamService.reportIncome("JacobS", "BeerSheva"), -1);
 
         //assertTrue(Jacob.deleteAsset("BeitarJerusalem", "Stadium", "Tedi"));
+    }
+
+    @Test
+    public void updatePage(){
+        assertTrue(Jacob.addUpdate("McabiHaifa","that is my new team"));
+        assertFalse(Jacob.addUpdate("McabiHaifa",""));
+        assertFalse(Jacob.addUpdate("McabiHaifa",null));
+        assertFalse(Jacob.addUpdate("BeerSheva","that is my new team"));
+
     }
 
 

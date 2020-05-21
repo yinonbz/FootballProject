@@ -1,6 +1,10 @@
 package businessLayer.Tournament;
 
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
+import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.Utilities.alertSystem.AlertSystem;
 import businessLayer.Utilities.logSystem.LoggingSystem;
@@ -291,13 +295,16 @@ public class LeagueController {
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
         if (leagueID != null && username != null && matchingPolicy != null) {
+            if(startingDate.after(endingDate)){
+                throw new MissingInputException("Starting Date must be before the Ending Date.");
+            }
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
                 return userRep.createSeason(leagueID, seasonID, startingDate, win, lose, tie, matchingPolicy, endingDate);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete the form.");
     }
 
     /**
@@ -356,7 +363,7 @@ public class LeagueController {
                 return userRep.assignRefereeToSeason(refUsername, leagueName, seasonID);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete this form to add a Referee to a Season.");
     }
 
 
@@ -423,8 +430,7 @@ public class LeagueController {
                 }
             }
         }
-        return false;
-
+        throw new MissingInputException("Missing Input");
     }
 
     /**
@@ -442,12 +448,46 @@ public class LeagueController {
                 if (season != null) {
                     if (season.getTeams() != null) {
                         if (season.getTeams().size() > 1) {
-                            return season.activateMatchPolicy(this);
+                            if(season.checkIfRefereeIsAssignedToSeason()) {
+                                return season.activateMatchPolicy(this);
+                            }
+                            else{
+                                throw new NotApprovedException("The Season must have at least one Referee before activation. Please add Referees for the Season.");
+                            }
+                        }
+                        else{
+                            throw new NotApprovedException("The Season must have at least 2 Teams before activation. Please add more teams for the Season.");
                         }
                     }
                 }
             }
         }
+        throw new MissingInputException("Please select a League and a Season to activate.");
+    }
+
+    /**
+     * the function lets the AR or the Referee to update the ranking table of a season
+     * @param leagueID the league id the season belongs to
+     * @param seasonID the season id
+     * @param matchID the match we want to update on
+     * @param username the requester
+     * @return true is the action was completed
+     */
+    public boolean updateSeasonTableRank(String leagueID, String seasonID, String matchID, String username) {
+        if (seasonID != null && username != null && leagueID!=null) {
+            Subscriber user = systemController.getSubscriberByUserName(username);
+            if (user instanceof AssociationRepresentative || user instanceof Referee) {
+                Season season = systemController.selectSeasonFromDB(leagueID, seasonID);
+                if (season != null) {
+                        Match match = systemController.selectMatchFromDB(matchID);
+                            if(match!=null){
+                                if(season.seasonContainsMatch(Integer.parseInt(matchID))){
+                                    return season.updateMatchTableRank(match);
+                                }
+                            }
+                        }
+                    }
+                }
         return false;
     }
 }
