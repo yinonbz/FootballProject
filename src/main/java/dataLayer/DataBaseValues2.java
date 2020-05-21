@@ -150,6 +150,7 @@ public class DataBaseValues2 {
     static Match m4;
     static Match m5;
     static Match m6;
+    static Match m7;
 
     //events
     static YellowCard e1;
