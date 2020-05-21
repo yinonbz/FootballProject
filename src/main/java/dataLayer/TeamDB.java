@@ -55,7 +55,7 @@ public class TeamDB implements DB_Inter {
     }
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String arg1,String arg2) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().
                 from(TEAMS)
@@ -67,8 +67,8 @@ public class TeamDB implements DB_Inter {
     }
 
     @Override
-    public Map<String, ArrayList<String>> selectFromDB(String objectName) {
-        if(containInDB(objectName)){
+    public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg1,String arg2) {
+        if(containInDB(objectName,null,null)){
 
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select().
@@ -169,14 +169,14 @@ public class TeamDB implements DB_Inter {
     }
 
     @Override
-    public boolean removeFromDB(String objectName) {
+    public boolean removeFromDB(String objectName,String arg1,String arg2) {
         System.out.println("cannot delete team");
         return false;
     }
 
     @Override
     public boolean addToDB(String name, String establishedYear, String isActive, String teamManagerID, Map<String, ArrayList<String>> objDetails) {
-        if(!containInDB(name)){
+        if(!containInDB(name,null,null)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(TEAMS
                     ,TEAMS.NAME
@@ -234,6 +234,11 @@ public class TeamDB implements DB_Inter {
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType) {
         System.out.println("can't get all teams from the system");
         return null;
+    }
+
+    @Override
+    public boolean update(Enum<?> e, Map<String, String> arguments) {
+        return false;
     }
 
     @Override

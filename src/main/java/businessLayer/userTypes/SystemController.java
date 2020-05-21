@@ -17,13 +17,12 @@ import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class SystemController {
 
     private static SystemController single_instance = null; //singleton instance
-    private DB_Inter DB; //this will be our DB until the next iteration
+    private DB_Inter DB; //DBs in use
     private AlertSystem alertSystem;
     private RecommendationSystem recommendationSystem;
     private LoggingSystem loggingSystem;
@@ -31,22 +30,6 @@ public class SystemController {
     private LeagueController leagueController;
     private TeamController teamController;
     private MatchController matchController;
-
-
-    //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
-    //private HashMap<String, Team> teams; //name of the team, the team object
-    //private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
-    //private Map<Subscriber, List<String>> userNotifications;
-    //private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
-    //private HashMap<String, LinkedList<String>> unconfirmedTeams;
-    //private HashMap<String, Stadium> stadiums;
-
-
-    //----------------OLD DATA STRUCTURES THAT ARE NOT USED-------------------------------//
-
-    //private List<Guest> onlineGuests;
-    //private List<Admin> admins;
-    //private List<League> leagues;
 
 
     private SystemController() {
@@ -443,7 +426,7 @@ public class SystemController {
 
         if (subscriber instanceof Admin) {
             connectToTeamDB();
-            if (DB.containInDB(teamName)) {
+            if (DB.containInDB(teamName,null,null)) {
                 Team chosenTeam = getTeamByName(teamName);
                 //checks what is the status of the team
                 if (chosenTeam.closeTeamPermanently()) {
@@ -514,11 +497,11 @@ public class SystemController {
                             return "Can't remove an exclusive team owner";
                         }
                     }
-                    DB.removeFromDB(subscriberName);
+                    DB.removeFromDB(subscriberName,null,null);
                     //remove from notifications
-                    if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
+                    /*if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
                         DB.removeNotificationFromDB(tempSubscriber.getUsername());
-                    }
+                    }*/ //fixme take out of comment
                     return "The User " + subscriberName + " was removed";
                 }
                 return "User doesn't exist in the system";
@@ -537,6 +520,7 @@ public class SystemController {
     public HashMap<Integer, Complaint> displayComplaints(String username) {
         Subscriber subscriber = getSubscriberByUserName(username);
         HashMap<Integer, Complaint> complaintsReturn = new HashMap<>();
+        connectToComplaintsDB();
         ArrayList<Map<String, ArrayList<String>>> allComplaints = DB.selectAllRecords(null);
         for(Map<String, ArrayList<String>> complaint: allComplaints){
             String complaintID = complaint.get("complaintID").get(0);
@@ -558,7 +542,8 @@ public class SystemController {
     public HashMap<String, Subscriber> displayAdminApprovalRequests(String username) {
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof Admin) {
-            return DB.selectAllAdminApprovalRequests();
+            //return DB.selectAllAdminApprovalRequests();fixme take out of comment
+            return null;
         } else {
             return null;
         }
@@ -577,13 +562,13 @@ public class SystemController {
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof Admin && !comment.isEmpty()) {
             //int compID = Integer.parseInt(complaintID);
-            if (DB.containInDB(complaintID)) {
+            if (DB.containInDB(complaintID,null,null)) {
                 Complaint complaint = getComplaintByID(complaintID);
                 //Complaint editedComplaint = ((Admin) subscriber).replyComplaints(complaint,comment);
                 complaint.setAnswered(true);
                 complaint.setComment(comment);
                 complaint.setHandler(subscriber.getUsername());
-                DB.removeFromDB(complaintID);
+                DB.removeFromDB(complaintID,null,null);
                 addComplaint(complaint);
                 return true;
             }
@@ -604,7 +589,7 @@ public class SystemController {
 
     public Complaint getComplaintByID(String complaintID){
         connectToComplaintsDB();
-        Map<String, ArrayList<String>> complaintM = DB.selectFromDB(complaintID);
+        Map<String, ArrayList<String>> complaintM = DB.selectFromDB(complaintID,null,null);
         return new Complaint(Integer.parseInt(complaintID),
                 complaintM.get("WriterID").get(0),complaintM.get("content").get(0)
                 ,complaintM.get("HandlerID").get(0),complaintM.get("comment").get(0)
@@ -615,10 +600,11 @@ public class SystemController {
     public boolean addAdminApprovalRequest(String userName, Subscriber admin) {
         Subscriber subscriber = getSubscriberByUserName(userName);
         if (subscriber instanceof Admin){
-            DB.addAdminApprovalRequest(userName,admin);
+            //DB.addAdminApprovalRequest(userName,admin);fixme take out of comment
             return true;
         }
         return false;
+
     }
 
     /**
@@ -641,7 +627,7 @@ public class SystemController {
         if (!(representative instanceof AssociationRepresentative)) {
             return false;
         }
-        if (DB.containInDB(username)) {
+        if (DB.containInDB(username,null,null)) {
             return false;
         }
 
@@ -694,6 +680,9 @@ public class SystemController {
                     ArrayList<String> training = new ArrayList<>();
                     training.add(c.getTraining().name());
 
+                    ArrayList<String> roleInTeam = new ArrayList<>();
+                    roleInTeam.add(c.getRoleInTeam().name());
+
                     ArrayList<String> salaryC = new ArrayList<>();
                     salaryC.add(String.valueOf(c.getSalary()));
 
@@ -705,6 +694,7 @@ public class SystemController {
 
                     objDetails.put("teams", teamIDC);
                     objDetails.put("training", training);
+                    objDetails.put("roleInTeam", roleInTeam);
                     objDetails.put("salary", salaryC);
                     objDetails.put("ownerFictive", teamOwnerIDC);
                     objDetails.put("teamJob",teamJob);
@@ -829,7 +819,7 @@ public class SystemController {
         if (username == null) {
             return false;
         }
-        if (!DB.containInDB(username)) {
+        if (!DB.containInDB(username,null,null)) {
             return false;
         }
         Subscriber possibleRef = getSubscriberByUserName(username);
@@ -840,7 +830,7 @@ public class SystemController {
         //leagueController.removeReferee(possibleRef);
         Referee ref = (Referee) possibleRef;
         ref.removeFromAllMatches();
-        DB.removeFromDB(username);
+        DB.removeFromDB(username,null,null);
         return true;
     }
 
@@ -855,7 +845,7 @@ public class SystemController {
     public boolean addToTeamConfirmList(LinkedList<String> details, String username) {
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof TeamOwner) {
-            DB.addUnconfirmedTeamsToDB(details.getFirst(), details);
+            DB.addToDB(details.get(0), details.get(1),details.get(2),null,null);
             return true;
         }
         return false;
@@ -924,19 +914,22 @@ public class SystemController {
      * @return true if it done successfully
      */
     public boolean confirmTeamByAssociationRepresentative(String teamName, String username) {
-        connectToSubscriberDB();
         Subscriber subscriber = getSubscriberByUserName(username);
         if (subscriber instanceof AssociationRepresentative) {
-            //connectToUncofirmedTeamsDB***************8 todo
-            if (DB.containsInUnconfirmedTeams(teamName)) {
+            connectToUnconfirmedTeamsDB();
+            if (DB.containInDB(teamName,null,null)) {
                 //check that a team with a same name doesn't exist
                 connectToTeamDB();
-                if (!DB.containInDB(teamName)) {
-                    //connectToUncofirmedTeamsDB**************todo
-                    LinkedList<String> request = DB.selectUnconfirmedTeamsFromDB(teamName);
+                if (!DB.containInDB(teamName,null,null)) {
+                    connectToUnconfirmedTeamsDB();
+                    Map<String, ArrayList<String>> requestDetails = DB.selectFromDB(teamName,null,null);
+                    LinkedList<String> request = new LinkedList<>();
+                    request.add(0,requestDetails.get("teamID").get(0));
+                    request.add(1,requestDetails.get("year").get(0));
+                    request.add(2,requestDetails.get("owner").get(0));
                     //checks that the user who wrote the request exists
                     connectToSubscriberDB();
-                    if (DB.containInDB(request.get(2))) {
+                    if (DB.containInDB(request.get(2),null,null)) {
                         Subscriber teamOwner = getSubscriberByUserName(request.get(2));
                         //checks that the user is a team owner
                         if (teamOwner instanceof TeamOwner) {
@@ -944,12 +937,12 @@ public class SystemController {
                             Team team = new Team(teamName, (TeamOwner) teamOwner, year);
                             connectToTeamDB();
                             addTeam(team);
-                            //connectToUncofirmedTeamsDB**************todo
-                            DB.removeUnconfirmedTeamsFromDB(teamName);
+                            connectToUnconfirmedTeamsDB();
+                            DB.removeFromDB(teamName,null,null);
                             ((TeamOwner) teamOwner).getTeams().add(team);
                             //updates the structure of the updated subscriber with the team
                             connectToSubscriberDB();
-                            DB.removeFromDB(teamOwner.getUsername());
+                            DB.removeFromDB(teamOwner.getUsername(),null,null);
                             addSubscriber(teamOwner);
                             return true;
                         }
@@ -967,7 +960,7 @@ public class SystemController {
      */
     public boolean checkUserExists(String playerName){
         connectToSubscriberDB();
-        return DB.containInDB(playerName);
+        return DB.containInDB(playerName,null,null);
     }
 
     /**
@@ -1015,7 +1008,8 @@ public class SystemController {
      * @return
      */
     public boolean containsLeague(String leagueID){
-        return DB.containsInSystemLeague(leagueID);
+        //return DB.containsInSystemLeague(leagueID);fixme take out of comment
+        return false;
     }
 
     /**
@@ -1024,7 +1018,8 @@ public class SystemController {
      * @return
      */
     public League getLeagueFromDB(String leagueID){
-        return DB.selectLeagueFromDB(leagueID);
+        //return DB.selectLeagueFromDB(leagueID);fixme take out of comment
+        return null;
     }
 
     /**
@@ -1034,7 +1029,8 @@ public class SystemController {
      * @return
      */
     public boolean addLeagueToDB(String leagueID, League league){
-        return DB.addLeagueToDB(leagueID,league);
+        //return DB.addLeagueToDB(leagueID,league);fixme take out of comment
+        return false;
     }
 
 
@@ -1072,7 +1068,7 @@ public class SystemController {
 
     public Stadium getStadiumByID(String stadiumID){
         connectToStadiumDB();
-        Map<String, ArrayList<String>> stadium = DB.selectFromDB(stadiumID);
+        Map<String, ArrayList<String>> stadium = DB.selectFromDB(stadiumID,null,null);
         HashMap<String,Team> owners = new HashMap<>();
         for(String str: stadium.get("teams")){
             owners.put(str,getTeamByName(str));
@@ -1085,7 +1081,7 @@ public class SystemController {
 
     public Stadium findStadium(String assetUserName) {
         connectToStadiumDB();
-        if(DB.containInDB(assetUserName)){
+        if(DB.containInDB(assetUserName,null,null)){
             return getStadiumByID(assetUserName);
         }
         return null;
@@ -1133,9 +1129,9 @@ public class SystemController {
      */
     public Subscriber getSubscriberByUserName(String userName) {
         Subscriber sub = null;
-        if (DB.containInDB(userName)) {
+        if (DB.containInDB(userName,null,null)) {
             connectToSubscriberDB();
-            Map<String,ArrayList<String>> subDetails = DB.selectFromDB(userName);
+            Map<String,ArrayList<String>> subDetails = DB.selectFromDB(userName,null,null);
             String type = subDetails.get("type").get(0);
             if(type.equalsIgnoreCase("player")){
                 sub = new Player(userName,subDetails.get("password").get(0)
@@ -1216,8 +1212,8 @@ public class SystemController {
      */
     public Team getTeamByName(String teamName) {
         connectToTeamDB();
-        if (DB.containInDB(teamName)) {
-            Map<String,ArrayList<String>> teamDetails = DB.selectFromDB(teamName);
+        if (DB.containInDB(teamName,null,null)) {
+            Map<String,ArrayList<String>> teamDetails = DB.selectFromDB(teamName,null,null);
             HashSet<Player> players = new HashSet<>();
             HashSet<Coach> coaches = new HashSet<>();
             HashSet<Match> matches = new HashSet<>();
@@ -1319,7 +1315,7 @@ public class SystemController {
      */
     public boolean addNewStadium(String nameStadium, String numberOfSeats){
         connectToStadiumDB();
-        if (!DB.containInDB(nameStadium)){
+        if (!DB.containInDB(nameStadium,null,null)){
             int numOfSeats = Integer.parseInt(numberOfSeats);
             Stadium stadium = new Stadium(nameStadium,numOfSeats);
             return addStadium(stadium);
@@ -1337,7 +1333,12 @@ public class SystemController {
         if (userName == null || teamName == null) {
             return false;
         }
-        if (!DB.containInDB(userName) || !DB.containInDB(teamName)) {
+        connectToSubscriberDB();
+        if (!DB.containInDB(userName,null,null)) {
+            return false;
+        }
+        connectToTeamDB();
+        if(!DB.containInDB(teamName,null,null)){
             return false;
         }
         Subscriber possibleTeamOwner = getSubscriberByUserName(userName);
@@ -1375,11 +1376,11 @@ public class SystemController {
             return false;
         }
         connectToSubscriberDB();
-        if (!DB.containInDB(userName)) {
+        if (!DB.containInDB(userName,null,null)) {
             return false;
         }
         connectToTeamDB();
-        if(!DB.containInDB(teamName)){
+        if(!DB.containInDB(teamName,null,null)){
             return false;
         }
         connectToSubscriberDB();
@@ -1420,11 +1421,11 @@ public class SystemController {
             return false;
         }
         connectToSubscriberDB();
-        if (!DB.containInDB(userName)) {
+        if (!DB.containInDB(userName,null,null)) {
             return false;
         }
         connectToTeamDB();
-        if(!DB.containInDB(teamName)){
+        if(!DB.containInDB(teamName,null,null)){
             return false;
         }
         Subscriber possibleTeamOwner = getSubscriberByUserName(userName);
@@ -1454,11 +1455,11 @@ public class SystemController {
             return false;
         }
         connectToSubscriberDB();
-        if (!DB.containInDB(userName)) {
+        if (!DB.containInDB(userName,null,null)) {
             return false;
         }
         connectToTeamDB();
-        if(!DB.containInDB(teamName)){
+        if(!DB.containInDB(teamName,null,null)){
             return false;
         }
         Subscriber possibleTeamOwner = getSubscriberByUserName(userName);
@@ -1490,7 +1491,8 @@ public class SystemController {
      * @return
      */
     public Match findMatch(int matchID){
-        return DB.selectMatchFromDB(matchID);
+        //return DB.selectMatchFromDB(matchID); fixme take out of comment
+        return null;
     }
 
     /**
@@ -1747,7 +1749,7 @@ public class SystemController {
     }
 
     public boolean removeAdminRequest(String userNameToApprove) {
-        DB.removeAdminRequest(userNameToApprove);
+        //DB.removeAdminRequest(userNameToApprove);fixme take out of comment
         return true;
     }
 
@@ -1759,7 +1761,8 @@ public class SystemController {
      * @return
      */
     public Season selectSeasonFromDB(String leagueID, String seasonID){
-        return DB.selectSeasonFromDB(leagueID,seasonID);
+        //return DB.selectSeasonFromDB(leagueID,seasonID);fixme take out of comment
+        return null;
     }
 
     /**
@@ -1768,7 +1771,8 @@ public class SystemController {
      * @return
      */
     public Match selectMatchFromDB(String matchID){
-        return DB.selectMatchFromDB(Integer.parseInt(matchID));
+        //return DB.selectMatchFromDB(Integer.parseInt(matchID));fixme take out of comment
+        return null;
     }
 
     public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
@@ -1783,8 +1787,9 @@ public class SystemController {
                     details.add(teamName);
                     details.add(establishedYear);
                     details.add(username);
-                    //connect to db unconfirmed todo
-                    return DB.addUnconfirmedTeamsToDB(teamName, details);
+                    connectToUnconfirmedTeamsDB();
+                    return DB.addToDB(teamName, details.get(1),details.get(2),null,null);
+
                 }
             }
         }
@@ -1874,5 +1879,9 @@ public class SystemController {
     private void connectToStadiumDB(){
         DB.TerminateDB();
         DB = new StadiumDB();
+    }
+    private void connectToUnconfirmedTeamsDB(){
+        DB.TerminateDB();
+        DB = new DBUnconfirmedTeams();
     }
 }

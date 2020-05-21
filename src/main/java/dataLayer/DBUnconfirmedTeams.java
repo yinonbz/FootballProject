@@ -92,12 +92,17 @@ public class DBUnconfirmedTeams implements DB_Inter {
 
     @Override
     public int countRecords() {
-        return 0;
+        return -1;
     }
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
         return null;
+    }
+
+    @Override
+    public boolean update(Enum<?> e, Map<String, String> arguments) {
+        return false;
     }
 
     @Override

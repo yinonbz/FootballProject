@@ -179,6 +179,11 @@ public class StadiumDB implements DB_Inter {
     }
 
     @Override
+    public boolean update(Enum<?> e, Map<String, String> arguments) {
+        return false;
+    }
+
+    @Override
     public boolean TerminateDB() {
         try {
             connection.close();

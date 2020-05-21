@@ -47,7 +47,7 @@ public class ComplaintsDB implements DB_Inter{
     }
 
     @Override
-    public boolean containInDB(String objectName) {
+    public boolean containInDB(String objectName,String arg1,String arg2) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().
                 from(COMPLAINTS)
@@ -59,8 +59,8 @@ public class ComplaintsDB implements DB_Inter{
     }
 
     @Override
-    public Map<String, ArrayList<String>> selectFromDB(String objectName) {
-        if(containInDB(objectName)) {
+    public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg1,String arg2) {
+        if(containInDB(objectName,null,null)) {
 
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select().
@@ -92,8 +92,8 @@ public class ComplaintsDB implements DB_Inter{
     }
 
     @Override
-    public boolean removeFromDB(String objectName) {
-        if(containInDB(objectName)){
+    public boolean removeFromDB(String objectName,String arg1,String arg2) {
+        if(containInDB(objectName,null,null)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.delete(COMPLAINTS)
                     .where(COMPLAINTS.COMPLAINTID.eq(Integer.parseInt(objectName)))
@@ -105,7 +105,7 @@ public class ComplaintsDB implements DB_Inter{
 
     @Override
     public boolean addToDB(String complaintID, String handlerID, String writerID, String isAnswered, Map<String, ArrayList<String>> objDetails) {
-        if(!containInDB(complaintID)) {
+        if(!containInDB(complaintID,null,null)) {
             //get subscriber from db
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(COMPLAINTS
@@ -142,9 +142,14 @@ public class ComplaintsDB implements DB_Inter{
                 .fetch();
 
         for(Record r: result){
-            allComplaints.add(selectFromDB(String.valueOf(r.get(COMPLAINTS.COMPLAINTID))));
+            allComplaints.add(selectFromDB(String.valueOf(r.get(COMPLAINTS.COMPLAINTID)),null,null));
         }
         return allComplaints;
+    }
+
+    @Override
+    public boolean update(Enum<?> e, Map<String, String> arguments) {
+        return false;
     }
 
     @Override

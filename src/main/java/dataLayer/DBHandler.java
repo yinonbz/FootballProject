@@ -118,7 +118,7 @@ public class DBHandler implements DB_Inter{
                         .join(COACH_TEAM).on(COACHES.COACHID.eq(COACH_TEAM.COACHID)))
                         .where(COACHES.COACHID.eq(objectName)).fetch();
                 ArrayList<String> teams = new ArrayList<>();
-                String teamID = result.get(0).get(COACHES.TEAMID);
+                String roleInTeam = result.get(0).get(COACHES.ROLEINTEAM).name();
                 String training = result.get(0).get(COACHES.TRAINING).name();
                 int salary = result.get(0).get(COACHES.SALARY);
                 String teamOwnerID = result.get(0).get(COACHES.TEAMOWNERID_FICTIVE);
@@ -127,8 +127,8 @@ public class DBHandler implements DB_Inter{
                     teams.add(r.get(COACH_TEAM.TEAMID));
                 }
 
-                objDetails.put("teamID", new ArrayList<>());
-                objDetails.get("teamID").add(teamID);
+                objDetails.put("roleInTeam", new ArrayList<>());
+                objDetails.get("roleInTeam").add(roleInTeam);
                 objDetails.put("teams", teams);
                 objDetails.put("training", new ArrayList<>());
                 objDetails.get("training").add(training);
@@ -226,15 +226,15 @@ public class DBHandler implements DB_Inter{
                         .from(REFEREE_MATCHES)
                         .where(REFEREE_MATCHES.REFEREEID.eq(objectName))
                         .fetch();
-                String training = result.get(0).get(REFEREES.TRAINING).name();
+                String roleRef = result.get(0).get(REFEREES.ROLEREF).name();
                 ArrayList<String> matches = new ArrayList<>();
                 for (Record r : result2) {
                     matches.add(String.valueOf(r.get(REFEREE_MATCHES.MATCHID)));
                 }
 
                 objDetails.put("matches", matches);
-                objDetails.put("training", new ArrayList<>());
-                objDetails.get("training").add(training);
+                objDetails.put("roleRef", new ArrayList<>());
+                objDetails.get("roleRef").add(roleRef);
             }
             return objDetails;
         }
@@ -305,12 +305,12 @@ public class DBHandler implements DB_Inter{
             if (type.equalsIgnoreCase("coach")) {
                 create.insertInto(COACHES
                         ,COACHES.COACHID
-                        ,COACHES.TEAMID
+                        ,COACHES.ROLEINTEAM
                         ,COACHES.TRAINING
                         ,COACHES.SALARY
                         ,COACHES.TEAMOWNERID_FICTIVE)
                         .values(username
-                                ,objDetails.get("teamID").get(0) //todo check if necessary
+                                ,CoachesRoleinteam.valueOf(objDetails.get("roleInTeam").get(0))
                                 ,CoachesTraining.valueOf(objDetails.get("training").get(0))
                                 ,Integer.parseInt(objDetails.get("salary").get(0))
                                 ,objDetails.get("ownerFictive").isEmpty()?
@@ -406,8 +406,8 @@ public class DBHandler implements DB_Inter{
             if (type.equalsIgnoreCase("referee")) {
                 create.insertInto(REFEREES
                         ,REFEREES.REFEREEID
-                        ,REFEREES.TRAINING).
-                        values(username, RefereesTraining.valueOf(objDetails.get("training").get(0)))
+                        ,REFEREES.ROLEREF).
+                        values(username, RefereesRoleref.valueOf(objDetails.get("roleRef").get(0)))
                 .execute();
 
                 for(String str: objDetails.get("matches")){
@@ -462,6 +462,11 @@ public class DBHandler implements DB_Inter{
             System.out.println("invalid select from subscriberDB");
         }
         return null;
+    }
+
+    @Override
+    public boolean update(Enum<?> e, Map<String, String> arguments) {
+        return false;
     }
 
     public boolean TerminateDB() {

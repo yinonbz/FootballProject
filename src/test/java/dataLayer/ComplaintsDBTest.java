@@ -39,8 +39,8 @@ public class ComplaintsDBTest {
 
     @Test
     public void containInDB() {
-        assertTrue(db.containInDB("1"));
-        assertFalse(db.containInDB("3"));
+        assertTrue(db.containInDB("1",null,null));
+        assertFalse(db.containInDB("3",null,null));
     }
 
     @Test
@@ -53,17 +53,17 @@ public class ComplaintsDBTest {
 
     @Test
     public void deleteFromDB() {
-        assertTrue(db.removeFromDB("3"));
-        assertFalse(db.removeFromDB("3"));
+        assertTrue(db.removeFromDB("3",null,null));
+        assertFalse(db.removeFromDB("3",null,null));
 
     }
 
     @Test
     public void selectFromDB() {
         ArrayList<Map<String, ArrayList<String>>> maps = new ArrayList<>();
-        Map<String, ArrayList<String>> map1 = db.selectFromDB("1");
-        Map<String, ArrayList<String>> map2 = db.selectFromDB("3");
-        Map<String, ArrayList<String>> map3 = db.selectFromDB("2");
+        Map<String, ArrayList<String>> map1 = db.selectFromDB("1",null,null);
+        Map<String, ArrayList<String>> map2 = db.selectFromDB("3",null,null);
+        Map<String, ArrayList<String>> map3 = db.selectFromDB("2",null,null);
         maps.add(map1);
         maps.add(map3);
         for(Map<String,ArrayList<String>> map: maps){
@@ -82,7 +82,7 @@ public class ComplaintsDBTest {
     @Test
     public void countRecords(){
         assertEquals(2,db.countRecords());
-        assertTrue(db.countRecords() ==3);
+        assertFalse(db.countRecords() ==3);
     }
 
     @Test

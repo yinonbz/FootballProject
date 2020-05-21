@@ -155,7 +155,9 @@ public class DBMatch implements DB_Inter {
     public boolean update(Enum<?> e,Map<String,String> args) {
         if(e == MATCHENUM.ADDREFEREE){
             addRefereeToMatch(args.get("matchID"),args.get("refID"));
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -168,8 +170,7 @@ public class DBMatch implements DB_Inter {
         if(!containInDB(matchID,null,null)){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(MATCH,MATCH.MATCHID,MATCH.LEAGUEID,MATCH.SEASONID,MATCH.TEAMHOMEID,
-                    MATCH.TEAMAWAYID,MATCH.STADIUMID,MATCH.SCORE
-            ).values(Integer.parseInt(matchID),leagueID,seasonID,teamHome,teamAway,stadium,score).execute();
+                    MATCH.TEAMAWAYID,MATCH.STADIUMID,MATCH.SCORE).values(Integer.parseInt(matchID),leagueID,seasonID,teamHome,teamAway,stadium,score).execute();
             create.insertInto(EVENTRECORDER,EVENTRECORDER.MATCHID).values(Integer.parseInt(matchID)).execute();
             //create.insertInto(MATCH,MATCH.DATE).values(date).execute();
             return true;
