@@ -26,9 +26,6 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
 
     private ArrayList<TitledPane> notificationPanesCollection;
 
-    public PlayerController(String userName) {
-        this.userName = userName;
-    }
 
     @FXML
     private Accordion notificationsPane;
@@ -38,7 +35,23 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
 
     @Override
     public void setUser(String usernameL) {
+        userLable.setText(usernameL);
         userName = usernameL;
+        leagueService = new LeagueService();
+        notificationPanesCollection= new ArrayList<>();
+
+        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
+        if(messages != null) {
+            for (String msg : messages) {
+                String title = msg.split(",")[0];
+                String event = msg.split(",")[1];
+                AnchorPane newPanelContent = new AnchorPane();
+                newPanelContent.getChildren().add(new Label(event));
+                TitledPane pane = new TitledPane(title, newPanelContent);
+                notificationPanesCollection.add(pane);
+            }
+        }
+        notificationsPane.getPanes().setAll(notificationPanesCollection);
     }
 
     @Override

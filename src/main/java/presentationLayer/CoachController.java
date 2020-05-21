@@ -29,30 +29,14 @@ public class CoachController implements Initializable,ControllerInterface, Obser
     @FXML
     private Accordion notificationsPane;
 
-    public CoachController(String userName) {
-        this.userName = userName;
-    }
 
     @FXML
     private Label userLable;
 
     @Override
     public void setUser(String usernameL) {
+        userLable.setText(usernameL);
         userName = usernameL;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        LinkedList<String> message = ((LinkedList<String>)arg);
-        notificationPanesCollection= new ArrayList<>();
-        AnchorPane newPanelContent = new AnchorPane();
-        newPanelContent.getChildren().add(new Label(message.get(1)));
-        TitledPane pane = new TitledPane(message.get(0), newPanelContent);
-        notificationsPane.getPanes().add(pane);
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
         leagueService = new LeagueService();
         notificationPanesCollection= new ArrayList<>();
 
@@ -68,6 +52,21 @@ public class CoachController implements Initializable,ControllerInterface, Obser
             }
         }
         notificationsPane.getPanes().setAll(notificationPanesCollection);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        LinkedList<String> message = ((LinkedList<String>)arg);
+        notificationPanesCollection= new ArrayList<>();
+        AnchorPane newPanelContent = new AnchorPane();
+        newPanelContent.getChildren().add(new Label(message.get(1)));
+        TitledPane pane = new TitledPane(message.get(0), newPanelContent);
+        notificationsPane.getPanes().add(pane);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 
     public void logoutB(ActionEvent actionEvent) {

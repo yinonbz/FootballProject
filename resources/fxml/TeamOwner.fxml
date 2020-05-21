@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.TeamOwnerController">
    <top>
       <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
          <children>
@@ -19,7 +19,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#addTeamManager" text="Add Team Manager" />
               </items>
             </MenuButton>
-            <Label id="userName" fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" prefHeight="21.0" prefWidth="173.0" textAlignment="CENTER">
+            <Label id="userName" fx:id="userLabel" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" prefHeight="21.0" prefWidth="173.0" textAlignment="CENTER">
                <HBox.margin>
                   <Insets left="650.0" />
                </HBox.margin>

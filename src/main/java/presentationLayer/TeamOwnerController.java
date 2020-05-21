@@ -51,13 +51,27 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
     @FXML
     private Accordion notificationsPane;
 
-    public TeamOwnerController(String userName) {
-        this.userName = userName;
-    }
+    @FXML
+    private Label userLabel;
 
     @Override
     public void setUser(String usernameL) {
         userName = usernameL;
+        userLabel.setText(usernameL);
+        notificationPanesCollection= new ArrayList<>();
+
+        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
+        if(messages != null) {
+            for (String msg : messages) {
+                String title = msg.split(",")[0];
+                String event = msg.split(",")[1];
+                AnchorPane newPanelContent = new AnchorPane();
+                newPanelContent.getChildren().add(new Label(event));
+                TitledPane pane = new TitledPane(title, newPanelContent);
+                notificationPanesCollection.add(pane);
+            }
+        }
+        notificationsPane.getPanes().setAll(notificationPanesCollection);
     }
     @FXML
     private Spinner<Integer> yearSpinner;
@@ -145,22 +159,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         leagueService = new LeagueService();
         teamService = new TeamService();
         systemService = new SystemService();
-        userLable.setText("Welcome " + userName);
         leagueService = new LeagueService();
-        notificationPanesCollection= new ArrayList<>();
-
-        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
-        if(messages != null) {
-            for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
-                AnchorPane newPanelContent = new AnchorPane();
-                newPanelContent.getChildren().add(new Label(event));
-                TitledPane pane = new TitledPane(title, newPanelContent);
-                notificationPanesCollection.add(pane);
-            }
-        }
-        notificationsPane.getPanes().setAll(notificationPanesCollection);
 
         searchTeam.setPromptText("Search");
         searchTeam.textProperty().addListener(new ChangeListener() {

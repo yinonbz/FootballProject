@@ -33,7 +33,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     @FXML
     private Accordion notificationsPane;
     @FXML
-    private javafx.scene.control.Label userLabel;
+    private Label userLabel;
     @FXML
     private Pane substitutionPane;
     @FXML
@@ -109,13 +109,28 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     @FXML
     private Spinner<Integer> eventRemove;
 
-    public RefereeController(String userName) {
-        this.userName = userName;
-    }
 
     @Override
-    public void setUser(String usernameL) {
+    public void setUser(String usernameL)
+    {
+        ObservableList<String> list = FXCollections.observableArrayList();
         userLabel.setText(usernameL);
+        leagueService = new LeagueService();
+        notificationPanesCollection= new ArrayList<>();
+
+        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
+        if(messages != null) {
+            for (String msg : messages) {
+                String title = msg.split(",")[0];
+                String event = msg.split(",")[1];
+                AnchorPane newPanelContent = new AnchorPane();
+                newPanelContent.getChildren().add(new Label(event));
+                TitledPane pane = new TitledPane(title, newPanelContent);
+                notificationPanesCollection.add(pane);
+            }
+        }
+        notificationsPane.getPanes().setAll(notificationPanesCollection);
+
         HashMap<Integer, Match> match = new HashMap<>();
         match = matchService.getAllMatch(userLabel.getText());
         if (match == null) {
@@ -551,22 +566,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<String> list = FXCollections.observableArrayList();
-        leagueService = new LeagueService();
-        notificationPanesCollection= new ArrayList<>();
 
-        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
-        if(messages != null) {
-            for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
-                AnchorPane newPanelContent = new AnchorPane();
-                newPanelContent.getChildren().add(new Label(event));
-                TitledPane pane = new TitledPane(title, newPanelContent);
-                notificationPanesCollection.add(pane);
-            }
-        }
-        notificationsPane.getPanes().setAll(notificationPanesCollection);
         //import all unapproved team names to teamStringList from DB
         matchService = new MatchService();
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 121, 0);

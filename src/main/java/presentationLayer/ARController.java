@@ -84,11 +84,6 @@ public class ARController implements ControllerInterface, Initializable, Observe
     private Accordion notificationsPane;
 
 
-    public ARController(String userName) {
-        this.userName = userName;
-    }
-
-
     @FXML
     public void switchApprove() {
 
@@ -258,17 +253,12 @@ public class ARController implements ControllerInterface, Initializable, Observe
     @Override
     public void setUser(String usernameL) {
         userLable.setText(usernameL);
-    }
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+        userName = usernameL;
         leagueService = new LeagueService();
-        notificationPanesCollection = new ArrayList<>();
+        notificationPanesCollection= new ArrayList<>();
 
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
-        if (messages != null) {
+        if(messages != null) {
             for (String msg : messages) {
                 String title = msg.split(",")[0];
                 String event = msg.split(",")[1];
@@ -279,6 +269,11 @@ public class ARController implements ControllerInterface, Initializable, Observe
             }
         }
         notificationsPane.getPanes().setAll(notificationPanesCollection);
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
