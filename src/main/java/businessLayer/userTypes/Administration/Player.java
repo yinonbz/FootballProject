@@ -59,6 +59,10 @@ public class Player extends Subscriber implements OwnerEligible, HasPage {
         this.birthDate = birthDate;
     }
 
+    /**
+     *
+     * @param fieldJob
+     */
     public void setFieldJob(FIELDJOB fieldJob) {
         this.fieldJob = fieldJob;
     }

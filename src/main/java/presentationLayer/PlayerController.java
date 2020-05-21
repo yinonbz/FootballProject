@@ -86,4 +86,6 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
             e.printStackTrace();
         }
     }
+
+
 }

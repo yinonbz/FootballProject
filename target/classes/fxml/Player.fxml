@@ -5,11 +5,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.PlayerController">
+<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
             <children>
-                <Label id="userName" fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" minWidth="173.0" prefHeight="21.0" prefWidth="173.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
+            <MenuButton mnemonicParsing="false" text="Edit Details">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Edit Name" />
+                <MenuItem mnemonicParsing="false" text="Edit Birthday" />
+              </items>
+            </MenuButton>
+            <Button mnemonicParsing="false" text="Upload Content" />
+                <Label id="userName" fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" prefHeight="21.0" prefWidth="173.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
                     <HBox.margin>
                         <Insets left="650.0" />
                     </HBox.margin>
@@ -20,10 +27,7 @@
                         <Insets top="5.0" />
                     </padding>
                 </Label>
-                <Button minHeight="30.0" minWidth="65.0" mnemonicParsing="false" onAction="#logoutB" prefHeight="30.0" prefWidth="74.0" text="Logout">
-                    <HBox.margin>
-                        <Insets right="20.0" />
-                    </HBox.margin></Button>
+                <Button mnemonicParsing="false" onAction="#logoutB" prefHeight="30.0" prefWidth="60.0" text="Logout" />
             </children>
             <padding>
                 <Insets bottom="10.0" left="20.0" top="10.0" />
@@ -32,23 +36,6 @@
     </top>
     <center>
         <BorderPane prefHeight="614.0" prefWidth="771.0" BorderPane.alignment="CENTER">
-            <top>
-                <HBox id="titlePane" prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <Label fx:id="titleL">
-                            <font>
-                                <Font size="25.0" />
-                            </font>
-                        </Label>
-                    </children>
-                    <padding>
-                        <Insets left="50.0" top="10.0" />
-                    </padding>
-                </HBox>
-            </top>
-            <center>
-                <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-            </center>
             <left>
                 <ScrollPane prefHeight="652.0" prefWidth="235.0">
                     <content>
@@ -77,6 +64,40 @@
                     </content>
                 </ScrollPane>
             </left>
+            <top>
+                <HBox id="titlePane" prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label fx:id="titleL">
+                            <font>
+                                <Font size="25.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets left="50.0" top="10.0" />
+                    </padding>
+                </HBox>
+            </top>
+            <center>
+                <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane id="menuPane" fx:id="namePane" prefHeight="550.0" prefWidth="1018.0" visible="false">
+                     <children>
+                        <TextField layoutX="50.0" layoutY="135.0" />
+                        <Button layoutX="240.0" layoutY="135.0" mnemonicParsing="false" text="Submit" />
+                        <Label layoutX="87.0" layoutY="111.0" text="Change Name:" />
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="uploadPane" prefHeight="550.0" prefWidth="1097.0">
+                     <children>
+                        <DatePicker layoutX="50.0" layoutY="135.0" />
+                        <Button layoutX="240.0" layoutY="135.0" mnemonicParsing="false" text="Button" />
+                        <Label layoutX="91.0" layoutY="111.0" text="Change Birthday:" />
+                     </children></Pane>
+                  <Pane id="menuPane" fx:id="bDateName" prefHeight="550.0" prefWidth="936.0" visible="false" />
+               </children>
+                </Pane>
+            </center>
         </BorderPane>
     </center>
 </BorderPane>
