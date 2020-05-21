@@ -2,12 +2,8 @@ package businessLayer.userTypes;
 
 import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
-import businessLayer.Tournament.League;
-import businessLayer.Tournament.LeagueController;
-import businessLayer.Tournament.Match.Match;
-import businessLayer.Tournament.Match.MatchController;
-import businessLayer.Tournament.Match.Stadium;
-import businessLayer.Tournament.Season;
+import businessLayer.Tournament.*;
+import businessLayer.Tournament.Match.*;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.Utilities.alertSystem.*;
@@ -17,6 +13,8 @@ import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class SystemController {
@@ -1491,8 +1489,79 @@ public class SystemController {
      * @return
      */
     public Match findMatch(int matchID){
-        //return DB.selectMatchFromDB(matchID); fixme take out of comment
+
+        Map<String, ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID),null,null);
+        if(details!=null){
+            Team home = getTeamByName(details.get("homeTeam").get(0));
+            Team away = getTeamByName(details.get("awayTeam").get(0));
+            League league = getLeagueFromDB(details.get("leagueID").get(0));
+            Stadium stadium = getStadiumByID(details.get("stadium").get(0));
+            Season season = selectSeasonFromDB(league.getLeagueName(),details.get("seasonID").get(0));
+            String scoreString = details.get("score").get(0);
+            String [] arr = scoreString.split(":");
+            int [] score = new int [2];
+            score[0]=Integer.parseInt(arr[0]);
+            score[1]=Integer.parseInt(arr[1]);
+            Referee mainReferee = (Referee)selectUserFromDB(details.get("mainRef").get(0));
+            ArrayList<String> refID = details.get("allRefs");
+            LinkedList<Referee> refs = new LinkedList<>();
+            for(String allRefID : refID){
+                refs.add((Referee)selectUserFromDB(allRefID));
+            }
+            int numOfFans = Integer.parseInt(details.get("numberOFFans").get(0));
+            EventRecord eventRecord = selectEventRecord(matchID);
+            boolean isFinished = Boolean.valueOf(details.get("isFinished").get(0));
+            Match match = new Match(league,season,home,away,refs,score,null,isFinished,stadium,numOfFans,eventRecord,mainReferee);
+            return match;
+        }
         return null;
+    }
+
+    public EventRecord selectEventRecord (int matchID){
+        Map<String,ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID),null,null);
+        //Event event = select
+        return null;
+    }
+
+    public boolean addEvent(int matchID, String time, int eventID, Event event){
+        HashMap <String,ArrayList<String>> details = new HashMap<>();
+        String type="";
+        if(event instanceof Goal){
+            type="goal";
+            details.put("playerG",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("playerA",new ArrayList <> (Arrays.asList(((Goal) event).getSecondPlayer().getName())));
+            String isOwnGoal = String.valueOf(((Goal) event).isOwnGoal());
+            details.put("isOwnGoal",new ArrayList <> (Arrays.asList(((isOwnGoal)))));
+        }
+        else if(event instanceof YellowCard){
+            type="yellowcard";
+            details.put("player",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
+        }
+        else if(event instanceof RedCard){
+            type="redcard";
+            details.put("player",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
+        }
+        else if(event instanceof Offside){
+            type="offside";
+            details.put("player",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
+        }
+        else if(event instanceof Injury){
+            type="injury";
+            details.put("player",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
+        }
+        else if(event instanceof Foul){
+            type="foul";
+            details.put("playerA",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("playerF",new ArrayList <> (Arrays.asList(((Foul) event).getSecondPlayer().getName())));
+
+        }
+        else if(event instanceof Substitute){
+            type="sub";
+            details.put("playerIn",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("playerOut",new ArrayList <> (Arrays.asList(((Substitute) event).getSecondPlayer().getName())));
+        }
+        DB.addToDB(String.valueOf(matchID),time,String.valueOf(eventID),type, details);
+        return false;
     }
 
     /**
@@ -1761,19 +1830,49 @@ public class SystemController {
      * @return
      */
     public Season selectSeasonFromDB(String leagueID, String seasonID){
-        //return DB.selectSeasonFromDB(leagueID,seasonID);fixme take out of comment
-        return null;
+        Map <String,ArrayList<String>> details = DB.selectFromDB(leagueID,String.valueOf(seasonID),null);
+        ArrayList<String> matchesString = details.get("matches");
+        HashMap<Integer,Match> matches = new HashMap<>();
+        for(String matchID : matchesString){
+            Match match = findMatch(Integer.parseInt(matchID));
+            matches.put(match.getMatchId(),match);
+        }
+        ArrayList<String> refString = details.get("referees");
+        HashMap<String,Referee> referees = new HashMap<>();
+        for(String refereeID : refString){
+            Subscriber ref = getSubscriberByUserName(refereeID);
+            referees.put(ref.getUsername(),(Referee)ref);
+        }
+        ArrayList<String> teamsString = details.get("teams");
+        HashMap<String,Team> teams = new HashMap<>();
+        for(String teamID : teamsString){
+            Team team = getTeamByName(teamID);
+            teams.put(teamID,team);
+        }
+        ArrayList <String> tableLeagueString = details.get("table");
+        HashMap <Team,LinkedList<Integer>> leagueTable = new HashMap<>();
+        for(int i=0;i<tableLeagueString.size();i=i+5){
+            Team team = teams.get(tableLeagueString.get(i));
+            LinkedList<Integer> teamDetail = new LinkedList<>();
+            teamDetail.add(Integer.parseInt(tableLeagueString.get(i+1)));
+            teamDetail.add(Integer.parseInt(tableLeagueString.get(i+2)));
+            teamDetail.add(Integer.parseInt(tableLeagueString.get(i+3)));
+            teamDetail.add(Integer.parseInt(tableLeagueString.get(i+4)));
+            leagueTable.put(team,teamDetail);
+        }
+        ArrayList<String> rankingPolicyString = details.get("rankingPolicy");
+        ARankingPolicy rankingPolicy = new ARankingPolicy(Integer.parseInt(rankingPolicyString.get(2)),
+                Integer.parseInt(rankingPolicyString.get(3)),Integer.parseInt(rankingPolicyString.get(4)));
+
+        String matchingPolicy = details.get("matchingPolicy").get(0);
+        Date start = new Date();
+        Date end = new Date();
+        //public Season(int seasonId, Date startDate, Date endDate, League league, int win, int lose, int tie, String matchingPolicy)
+        League league = getLeagueFromDB(leagueID);
+        Season season = new Season(league,Integer.parseInt(seasonID),start,end,rankingPolicy,leagueTable,matches,referees,matchingPolicy);
+        return season;
     }
 
-    /**
-     *
-     * @param matchID
-     * @return
-     */
-    public Match selectMatchFromDB(String matchID){
-        //return DB.selectMatchFromDB(Integer.parseInt(matchID));fixme take out of comment
-        return null;
-    }
 
     public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
         connectToSubscriberDB();
@@ -1812,56 +1911,102 @@ public class SystemController {
      * @param refereeID
      * @return
      */
-    public boolean addRefereeToSeasonDB(String leagueID, int seasonID, String refereeID){
-        return true;
+    public boolean addRefereeToSeason(String leagueID, int seasonID, String refereeID){
+        HashMap<String,String> details = new HashMap<>();
+        details.put("leagueID",leagueID);
+        details.put("seasonID",String.valueOf(seasonID));
+        details.put("refID",refereeID);
+        return DB.update(SEASONENUM.REFEREE,details);
     }
 
+
     public boolean addTeamToSeasonDB(String leagueID, int seasonID, String teamID){
-        return true;
+        HashMap <String, String> details = new HashMap<>();
+        details.put("leagueID",leagueID);
+        details.put("seasonID",String.valueOf(seasonID));
+        details.put("teamID",teamID);
+        return DB.update(SEASONENUM.TEAM,details);
     }
 
     public boolean addMatchTableToSeason(String leagueID, int seasonID,LinkedList<Integer> matchNum){
-        return true;
+        HashMap <String,String> details = new HashMap<>();
+        details.put("leagueID",leagueID);
+        details.put("seasonID",String.valueOf(seasonID));
+        details.put(String.valueOf(matchNum),String.valueOf(matchNum));
+        return DB.update(SEASONENUM.MATCHESTABLE,details);
     }
 
     public boolean updateMatchTableOFSeason(String leagueID, int seasonID, String teamID, LinkedList<Integer> info){
-        return true;
+        HashMap<String,String> details = new HashMap<>();
+        details.put("teamID",teamID);
+        details.put("leagueID",leagueID);
+        details.put("seasonID",String.valueOf(seasonID));
+        details.put("numOfGames",String.valueOf(info.get(0)));
+        details.put("goalsFor",String.valueOf(info.get(1)));
+        details.put("goalAgainst",String.valueOf(info.get(2)));
+        details.put("points",String.valueOf(info.get(3)));
+        return DB.update(SEASONENUM.SEASONUPDATED,details);
     }
 
-    public boolean addMatchToDB(String leagueID, int seasonID, String matchID ,String teamHome, String teamAway, String stadium, String score, Date date){
-        return true;
+
+    public boolean addNewMatch(Match match, String leagueID, int seasonID){
+        HashMap <String, ArrayList<String>> details = new HashMap<>();
+        details.put("teamHome",new ArrayList <> (Arrays.asList(match.getHomeTeam().getTeamName())));
+        details.put("teamAway",new ArrayList <> (Arrays.asList(match.getAwayTeam().getTeamName())));
+        int [] scoreInt = match.getScore();
+        String scoreString = scoreInt[0]+":"+scoreInt[1];
+        details.put("score",new ArrayList <> (Arrays.asList(scoreString)));
+        details.put("date",new ArrayList <> (Arrays.asList(match.getDate().toString())));
+        return DB.addToDB(leagueID,String.valueOf(seasonID),String.valueOf(match.getMatchId()),match.getStadium().getName(),details);
     }
+
 
     public boolean updateScore (String matchID, String score){
-        return true;
+        HashMap<String,String> details = new HashMap<>();
+        details.put("matchID",matchID);
+        details.put("score",score);
+        return DB.update(MATCHENUM.SCORE,details);
     }
 
     public boolean updateMainRefereeToMatch(String matchID,String refID){
-        return true;
+        HashMap<String,String> details = new HashMap<>();
+        details.put("refID",refID);
+        details.put("matchID",matchID);
+        return DB.update(MATCHENUM.MAINREFEREE,details);
     }
 
     public boolean updateNumOfFans(String matchID,int numOfFans){
-        return true;
+        HashMap<String,String> details = new HashMap<>();
+        details.put("numOfFans",String.valueOf(numOfFans));
+        details.put("matchID",matchID);
+        return DB.update(MATCHENUM.NUMBEROFFANS,details);
     }
 
     public boolean addRefereeToMatch(String matchID, String refID){
-        return true;
+        HashMap<String,String> details = new HashMap<>();
+        details.put("refID",refID);
+        details.put("matchID",matchID);
+        return DB.update(MATCHENUM.ADDREFEREE,details);
     }
 
-    public LinkedList<String> getRefsOfMatch(int matchID){
-        return null;
+    public List<Referee> getRefsOfMatch(int matchID){
+        Match match = findMatch(matchID);
+        return match.getReferee();
     }
 
-    public HashMap <String,String> selectMatchFromDB(int matchID){
-        return null;
-    }
 
     public boolean containInDB(String objectName){
         return true;
     }
 
     public boolean addMatchTableOfSeason(HashMap <Integer, Match> matchesOfTheSeason, String leagueID, int seasonID){
-        return true;
+        LinkedList<Integer> matchID = new LinkedList<>();
+        for (HashMap.Entry<Integer,Match> entry : matchesOfTheSeason.entrySet()){
+            Match match = entry.getValue();
+            addNewMatch(match, leagueID, seasonID);
+            matchID.add(match.getMatchId());
+        }
+        return addMatchTableToSeason(leagueID,seasonID,matchID);
     }
 
     private void connectToSubscriberDB(){
@@ -1883,5 +2028,15 @@ public class SystemController {
     private void connectToUnconfirmedTeamsDB(){
         DB.TerminateDB();
         DB = new DBUnconfirmedTeams();
+    }
+
+
+
+    private LocalDate convertToDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+        //convert String to LocalDate
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return localDate;
     }
 }

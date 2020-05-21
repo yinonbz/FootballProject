@@ -92,7 +92,14 @@ public class DBLeagues implements DB_Inter{
 
     @Override
     public boolean TerminateDB() {
-        return false;
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("error closing connection of DB");
+            return false;
+        }
+
+        return true;
     }
 
 

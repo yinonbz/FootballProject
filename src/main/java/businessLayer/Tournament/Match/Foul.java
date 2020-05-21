@@ -19,7 +19,7 @@ public class Foul extends Event {
     }
 
     @Override
-    Player getSecondPlayer() {
+    public Player getSecondPlayer() {
         return inFavor;
     }
 

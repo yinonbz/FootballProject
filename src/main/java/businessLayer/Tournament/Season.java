@@ -42,6 +42,23 @@ public class Season {
         initializeTable(); // here we initialize the table
     }
 
+    public Season (League league, int seasonID, Date startDate, Date endDate, ARankingPolicy aRankingPolicy, HashMap<Team, LinkedList<Integer>> leagueTable,
+                   HashMap<Integer,Match> matchesOfTheSeason, HashMap<String,Referee> referees, String matchingPolicy) {
+        this.league=league;
+        this.seasonId=seasonID;
+        this.startDate=startDate;
+        this.endDate=endDate;
+        this.rankingPolicy=aRankingPolicy;
+        this.referees=referees;
+        this.leagueTable=leagueTable;
+        this.matchesOfTheSeason=matchesOfTheSeason;
+        if (matchingPolicy.equals("ClassicMatchPolicy")) {
+            this.matchingPolicy = new ClassicMatchPolicy(league, this);
+        } else if (matchingPolicy.equals("SingleMatchPolicy")) {
+            this.matchingPolicy = new SingleMatchPolicy(league, this);
+        }
+    }
+
     /**
      * constructor of a new season without a policy
      *

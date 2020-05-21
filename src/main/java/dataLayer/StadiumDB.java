@@ -27,7 +27,7 @@ public class StadiumDB implements DB_Inter {
 
     public StadiumDB(){
         this("root","Messi1Ronaldo2",
-                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/testdb2");
+                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/localsoccer");
     }
 
     public StadiumDB(String username,String password, String myDriver, String myUrl){

@@ -223,7 +223,7 @@ public class LeagueController {
             League addingToLeague = systemController.getLeagueFromDB(leagueName);
             Referee refToAssign = systemController.getRefereeFromDB(refUserName);
             if(addingToLeague.addRefereeToSeason(refToAssign, seasonID)){
-                return systemController.addRefereeToSeasonDB(leagueName,seasonID,refUserName);
+                return systemController.addRefereeToSeason(leagueName,seasonID,refUserName);
             }
         }
         return false;
@@ -476,7 +476,7 @@ public class LeagueController {
             if (user instanceof AssociationRepresentative || user instanceof Referee) {
                 Season season = systemController.selectSeasonFromDB(leagueID, seasonID);
                 if (season != null) {
-                        Match match = systemController.selectMatchFromDB(matchID);
+                        Match match = systemController.findMatch(Integer.parseInt(matchID));
                             if(match!=null){
                                 if(season.seasonContainsMatch(Integer.parseInt(matchID))){
                                     if(season.updateMatchTableRank(match)){ //todo DB

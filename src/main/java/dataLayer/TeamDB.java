@@ -33,7 +33,7 @@ public class TeamDB implements DB_Inter {
 
     public TeamDB(){
         this("root","Messi1Ronaldo2",
-                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/testdb2");
+                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/localsoccer");
     }
 
     public TeamDB(String username,String password, String myDriver, String myUrl){

@@ -30,7 +30,9 @@ public class Goal extends Event {
         this.isOwnGoal = isOwnGoal;
     }
 
-
+    public boolean isOwnGoal(){
+        return isOwnGoal;
+    }
 
     @Override
     public String toString(){
@@ -38,7 +40,7 @@ public class Goal extends Event {
     }
 
     @Override
-    Player getSecondPlayer() {
+    public Player getSecondPlayer() {
         return assist;
     }
 }

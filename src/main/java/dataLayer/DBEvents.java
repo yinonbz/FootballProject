@@ -127,6 +127,16 @@ public class DBEvents implements DB_Inter {
             player.add(result.get(0).get(GOAL.PLAYERGOALID));
             details.put("player",player);
         }
+        else if(type.equals("foul")){
+            result = create.select().from(FOUL).where(FOUL.MATCHID.eq(matchID).and(FOUL.EVENTID.eq(eventID)
+                    .and(FOUL.TIME.eq(time)))).fetch();
+            ArrayList<String> playerA = new ArrayList<>();
+            ArrayList<String> playerF = new ArrayList<>();
+            playerA.add(result.get(0).get(FOUL.PLAYERAGAINSTID));
+            playerF.add(result.get(0).get(FOUL.PLAYERINFAVORID));
+            details.put("playerA",playerA);
+            details.put("playerF",playerF);
+        }
         return details;
     }
 
@@ -159,7 +169,14 @@ public class DBEvents implements DB_Inter {
 
     @Override
     public boolean TerminateDB() {
-        return false;
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("error closing connection of DB");
+            return false;
+        }
+
+        return true;
     }
 
     public boolean removeEventFromDB(int matchID, String time, int eventID){
@@ -195,14 +212,19 @@ public class DBEvents implements DB_Inter {
             }
             else if(type.equals("goal")){
                 create.insertInto(GOAL,GOAL.MATCHID,GOAL.TIME,GOAL.EVENTID,
-                        GOAL.PLAYERGOALID,GOAL.PLAYERASSISTID).values(matchID,time,eventID,details.get("playerG").get(0),details.get("playerA").get(0)).execute();
-                //todo the is own goals does trouble
+                        GOAL.PLAYERGOALID,GOAL.PLAYERASSISTID,GOAL.ISOWNGOAL).values(matchID,time,eventID,details.get("playerG").get(0),
+                        details.get("playerA").get(0),Byte.valueOf(details.get("isOwnGoal").get(0))).execute();
             }
             else if(type.equals("offside")){
                 create.insertInto(OFFSIDE,OFFSIDE.MATCHID,OFFSIDE.TIME,OFFSIDE.EVENTID,
                         OFFSIDE.PLAYEROFFSIDEID).values(matchID,time,eventID,details.get("player").get(0)).execute();
             }
+            else if(type.equals("foul")){
+                create.insertInto(FOUL,FOUL.MATCHID,FOUL.TIME,FOUL.EVENTID,
+                        FOUL.PLAYERAGAINSTID,FOUL.PLAYERINFAVORID).values(matchID,time,eventID,details.get("playerA").get(0),details.get("playerF").get(0)).execute();
+            }
             return true;
+
         }
         return false;
     }

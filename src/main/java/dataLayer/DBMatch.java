@@ -49,67 +49,72 @@ public class DBMatch implements DB_Inter {
 
 
     @Override
-    public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
-        return selectMatchFromDB(Integer.parseInt(objectName));
+    public Map<String, ArrayList<String>> selectFromDB(String matchID,String arg2,String arg3) {
+        return selectMatchFromDB(Integer.parseInt(matchID));
     }
     private HashMap <String,ArrayList<String>> selectMatchFromDB(int matchID){
+        if(containInDB(String.valueOf(matchID),null,null)) {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(matchID)).fetch();
+            String id = result.get(0).get(MATCH.MATCHID).toString();
+            String home = result.get(0).get(MATCH.TEAMHOMEID);
+            String away = result.get(0).get(MATCH.TEAMAWAYID);
+            String leagueID = result.get(0).get(MATCH.LEAGUEID);
+            String seasonID = result.get(0).get(MATCH.SEASONID).toString();
+            String score = result.get(0).get(MATCH.SCORE);
+            String numberOFFans = result.get(0).get(MATCH.NUMBEROFFANS).toString();
+            String stadium = result.get(0).get(MATCH.STADIUMID);
+            String date = result.get(0).get(MATCH.DATE).toString();
+            String referee = result.get(0).get(MATCH.MAINREFEREEID);
+            String isFinished = result.get(0).get(MATCH.ISFINISHED).toString();
+            ArrayList<String> allReferees = getRefsOfMatch(matchID);
 
-        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result <?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(matchID)).fetch();
-        String id = result.get(0).get(MATCH.MATCHID).toString();
-        String home = result.get(0).get(MATCH.TEAMHOMEID);
-        String away = result.get(0).get(MATCH.TEAMAWAYID);
-        String leagueID = result.get(0).get(MATCH.LEAGUEID);
-        String seasonID = result.get(0).get(MATCH.SEASONID).toString();
-        String score = result.get(0).get(MATCH.SCORE);
-        String numberOFFans = result.get(0).get(MATCH.NUMBEROFFANS).toString();
-        String stadium = result.get(0).get(MATCH.STADIUMID);
-        String date = result.get(0).get(MATCH.DATE).toString();
-        String referee = result.get(0).get(MATCH.MAINREFEREEID);
-        String isFinished = result.get(0).get(MATCH.ISFINISHED).toString();
+            HashMap<String, ArrayList<String>> details = new HashMap<>();
 
-        HashMap <String,ArrayList<String>> details = new HashMap<>();
+            ArrayList<String> matchIDs = new ArrayList<>();
+            matchIDs.add(id);
+            ArrayList<String> homeTeam = new ArrayList<>();
+            homeTeam.add(home);
+            ArrayList<String> awayTeam = new ArrayList<>();
+            awayTeam.add(away);
+            ArrayList<String> leagueIDS = new ArrayList<>();
+            leagueIDS.add(leagueID);
+            ArrayList<String> seasonIDs = new ArrayList<>();
+            seasonIDs.add(seasonID);
+            ArrayList<String> scores = new ArrayList<>();
+            scores.add(score);
+            ArrayList<String> numberOFFansA = new ArrayList<>();
+            numberOFFansA.add(numberOFFans);
+            ArrayList<String> stadiumA = new ArrayList<>();
+            stadiumA.add(stadium);
+            ArrayList<String> dateA = new ArrayList<>();
+            dateA.add(date);
+            ArrayList<String> referees = new ArrayList<>();
+            referees.add(referee);
+            ArrayList<String> isFinishedA = new ArrayList<>();
+            isFinishedA.add(isFinished);
 
-        ArrayList<String> matchIDs = new ArrayList<>();
-        matchIDs.add(id);
-        ArrayList<String> homeTeam = new ArrayList<>();
-        homeTeam.add(home);
-        ArrayList<String> awayTeam = new ArrayList<>();
-        awayTeam.add(away);
-        ArrayList<String> leagueIDS = new ArrayList<>();
-        leagueIDS.add(leagueID);
-        ArrayList<String> seasonIDs = new ArrayList<>();
-        seasonIDs.add(seasonID);
-        ArrayList<String> scores = new ArrayList<>();
-        scores.add(score);
-        ArrayList<String> numberOFFansA = new ArrayList<>();
-        numberOFFansA.add(numberOFFans);
-        ArrayList<String> stadiumA = new ArrayList<>();
-        stadiumA.add(stadium);
-        ArrayList<String> dateA = new ArrayList<>();
-        dateA.add(date);
-        ArrayList<String> referees = new ArrayList<>();
-        referees.add(referee);
-        ArrayList<String> isFinishedA = new ArrayList<>();
-        isFinishedA.add(isFinished);
+            details.put("matchID", matchIDs);
+            details.put("homeTeam", homeTeam);
+            details.put("awayTeam", awayTeam);
+            details.put("leagueID", leagueIDS);
+            details.put("seasonID", seasonIDs);
+            details.put("score", scores);
+            details.put("numberOFFans", numberOFFansA);
+            details.put("stadium", stadiumA);
+            details.put("date", dateA);
+            details.put("mainRef", referees);
+            details.put("isFinished", isFinishedA);
+            details.put("allRefs",allReferees);
 
-        details.put("matchID",matchIDs);
-        details.put("homeTeam",homeTeam);
-        details.put("awayTeam",awayTeam);
-        details.put("leagueID",leagueIDS);
-        details.put("seasonID",seasonIDs);
-        details.put("score",scores);
-        details.put("numberOFFans",numberOFFansA);
-        details.put("stadium",stadiumA);
-        details.put("date",dateA);
-        details.put("referee",referees);
-        details.put("isFinished",isFinishedA);
-        return details;
+            return details;
+        }
+        return null;
     }
 
-    public LinkedList<String> getRefsOfMatch(int matchID){
+    public ArrayList<String> getRefsOfMatch(int matchID){
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        LinkedList<String> refNames = new LinkedList<>();
+        ArrayList<String> refNames = new ArrayList<>();
         Result <?> result = create.select().from(MATCH_REFEREE).where(MATCH_REFEREE.MATCHID.eq(matchID)).fetch();
         if(result.isEmpty()){
             return null;
@@ -157,12 +162,31 @@ public class DBMatch implements DB_Inter {
             addRefereeToMatch(args.get("matchID"),args.get("refID"));
             return true;
         }
+        else if(e==MATCHENUM.SCORE){
+            updateScore(args.get("matchID"),args.get("score"));
+            return true;
+        }
+        else if(e==MATCHENUM.MAINREFEREE){
+            updateMainRefereeToMatch(args.get("matchID"),args.get("refID"));
+            return true;
+        }
+        else if(e==MATCHENUM.NUMBEROFFANS){
+            updateNumOfFans(args.get("matchID"),Integer.parseInt(args.get("numOfFans")));
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean TerminateDB() {
-        return false;
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("error closing connection of DB");
+            return false;
+        }
+
+        return true;
     }
 
     public boolean addMatchToDB(String leagueID, int seasonID, String matchID , String stadium,
