@@ -12,7 +12,6 @@ import serviceLayer.SystemService;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class DataBaseValues2 {
 
@@ -223,6 +222,9 @@ public class DataBaseValues2 {
         Harry = new TeamOwner("Harry","jj","Harry",systemController);
         gerrard = new TeamOwner("gerrard","jj","Harry",systemController);
 
+        DB.addTeamOwnerToDB("Tomer",teamOwner);
+
+
 
         DB.addSubscriberToDB("Tomer", teamOwner);
         DB.addSubscriberToDB("gerrard", gerrard);
@@ -291,14 +293,17 @@ public class DataBaseValues2 {
         itay = new TeamManager("itayK", "111", "itay",null ,100, systemController);
         itay.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("itayK",itay);
+        DB.addTeamManagerToDB("itayK",itay);
 
         klopp = new TeamManager("kloppJ", "111", "klopp",null ,100, systemController);
         klopp.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("kloppJ",klopp);
+        DB.addTeamManagerToDB("kloppJ",klopp);
 
         pep = new TeamManager("pepG", "111", "pep",null ,100, systemController);
         pep.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("pepG",pep);
+        DB.addTeamManagerToDB("pepG",pep);
 
         //add fan
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
@@ -422,9 +427,11 @@ public class DataBaseValues2 {
         DB.addTeamToDB("BeitarJerusalem",BeitarJerusalem);
 
         //add team manager
-        itay = new TeamManager("itayK", "111", "itay",null ,0, systemController);
+        //itay = new TeamManager("itayK", "111", "itay",null ,0, systemController);
         Ronaldinio = new TeamManager("Ronaldinio", "111", "Ronaldinio",null ,0, systemController);
+        DB.addTeamManagerToDB("Ronaldinio",Ronaldinio);
         valverde = new TeamManager("valverde","111","valverde",Liverpool,100,systemController);
+        DB.addTeamManagerToDB("valverde",valverde);
         DB.addSubscriberToDB("Ronaldinio",Ronaldinio);;
         DB.addSubscriberToDB("itayK",itay);
         DB.addSubscriberToDB("valverde",valverde);

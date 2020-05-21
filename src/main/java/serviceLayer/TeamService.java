@@ -3,6 +3,10 @@ package serviceLayer;
 
 import businessLayer.Team.TeamController;
 import businessLayer.userTypes.SystemController;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class TeamService {
     private TeamController teamController;
     private SystemController systemController;
@@ -109,6 +113,14 @@ public class TeamService {
 
     public Boolean removeOwner(String userName, String teamName, String newUserName) {
         return systemController.removeOwnerFromTeam(userName, teamName, newUserName);
+    }
+
+    public LinkedList<String> getTeamsOfTeamOwner(String userName){
+        return systemController.getTeamOfTeamOwner(userName);
+    }
+
+    public ArrayList<String> getAllTeamManagers(){
+        return systemController.getAllTeamManagers();
     }
 
 }

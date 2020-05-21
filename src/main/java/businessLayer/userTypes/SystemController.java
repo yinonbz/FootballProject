@@ -1836,6 +1836,19 @@ public class SystemController extends Observable {
         return null; //todo: might need an exception here
     }
 
+    /**
+     * @param userName The team owner's userName
+     * @return
+     */
+    public LinkedList<String> getTeamOfTeamOwner(String userName){
+        TeamOwner teamOwner = DB.getTeamOwner(userName);
+        LinkedList<String> teamNames = new LinkedList<>();
+        HashSet<Team> teams = teamOwner.getTeams();
+        for(Team t: teams){
+            teamNames.add(t.getTeamName());
+        }
+        return teamNames;
+    }
 
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {
         HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();
@@ -1846,6 +1859,17 @@ public class SystemController extends Observable {
             teamNamesInDB.add("" + me2.getKey());
         }
         return teamNamesInDB;
+    }
+
+    public ArrayList<String> getAllTeamManagers(){
+        HashMap<String,TeamManager> teamManagersInDB = DB.getTeamManagers();
+        ArrayList<String> teamManagerNamesInDB = new ArrayList<>();
+        Iterator iterator = teamManagersInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            teamManagerNamesInDB.add("" + me2.getKey());
+        }
+        return teamManagerNamesInDB;
     }
 
     public ArrayList<String> getAllULeaguesInDB() {

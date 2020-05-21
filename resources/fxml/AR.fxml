@@ -99,7 +99,7 @@
                         <ListView fx:id="teamsViewL" layoutX="43.0" layoutY="24.0" prefHeight="200.0" prefWidth="547.0" />
                      </children>
                   </Pane>
-                  <Pane id="menuPane" fx:id="createSeasonPane" prefHeight="554.0" prefWidth="923.0">
+                  <Pane id="menuPane" fx:id="createSeasonPane" prefHeight="554.0" prefWidth="923.0" visible="false">
                      <children>
                         <DatePicker fx:id="endingDate" layoutX="192.0" layoutY="143.0" prefHeight="24.0" prefWidth="148.0" promptText="Ending Date" />
                         <DatePicker fx:id="startingDate" layoutX="14.0" layoutY="143.0" prefHeight="24.0" prefWidth="148.0" promptText="Starting Date" />
