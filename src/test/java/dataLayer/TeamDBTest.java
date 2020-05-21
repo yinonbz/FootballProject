@@ -35,7 +35,7 @@ public class TeamDBTest {
         ArrayList<String> closedByAdmin= new ArrayList<>();
         closedByAdmin.add("");
         ArrayList<String> stadium= new ArrayList<>();
-        stadium.add("Cruyff Stadium");
+        stadium.add("Anfield");
 
         //player details
         detailsPlayer = new HashMap<>();
@@ -92,8 +92,8 @@ public class TeamDBTest {
 
     @Test
     public void containInDB() {
-        assertTrue(db.containInDB("Barcelona"));
-        assertFalse(db.containInDB("Cruyff FC2"));
+        assertTrue(db.containInDB("Barcelona",null,null));
+        assertFalse(db.containInDB("Cruyff FC2",null,null));
     }
 
     @Test
@@ -101,23 +101,23 @@ public class TeamDBTest {
         assertTrue(db.addToDB(teamDetails.get("name").get(0)
                 ,teamDetails.get("establishedYear").get(0),teamDetails.get("isActive").get(0)
                 ,teamDetails.get("teamManagerID").get(0),teamDetails));
-        assertTrue(db.containInDB("Cruyff FC"));
+        assertTrue(db.containInDB("Cruyff FC",null,null));
 
     }
 
     @Test
     public void deleteFromDB() {
-        assertFalse(db.removeFromDB("Cruyff FC"));
-        assertFalse(db.removeFromDB("Cruyff FC2"));
+        assertFalse(db.removeFromDB("Cruyff FC",null,null));
+        assertFalse(db.removeFromDB("Cruyff FC2",null,null));
 
     }
 
     @Test
     public void selectFromDB() {
         ArrayList<Map<String, ArrayList<String>>> maps = new ArrayList<>();
-        Map<String, ArrayList<String>> map1 = db.selectFromDB("Barcelona");
-        Map<String, ArrayList<String>> map2 = db.selectFromDB("Arthur2");
-        Map<String, ArrayList<String>> map9 = db.selectFromDB("Cruyff FC");
+        Map<String, ArrayList<String>> map1 = db.selectFromDB("Barcelona",null,null);
+        Map<String, ArrayList<String>> map2 = db.selectFromDB("Arthur2",null,null);
+        Map<String, ArrayList<String>> map9 = db.selectFromDB("Cruyff FC",null,null);
         maps.add(map1);
         maps.add(map9);
         for(Map<String,ArrayList<String>> map: maps){

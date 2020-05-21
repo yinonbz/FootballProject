@@ -27,8 +27,7 @@ public class Admin extends Subscriber {
     public HashMap<Integer, Complaint> displayComplaints(){
         if(isApproved()==false)
             return null;
-        //return systemController.displayComplaints(this.getUsername());
-        return null;
+        return systemController.displayComplaints(this.getUsername());
     }
 
     /**
@@ -45,8 +44,7 @@ public class Admin extends Subscriber {
         if(!tryParseInt(complaintID)){
             return false;
         }
-        //return systemController.replyComplaints(complaintID, subscriber, comment);
-        return true;
+        return systemController.replyComplaints(complaintID, subscriber, comment);
     }
 
     /**
@@ -153,11 +151,13 @@ public class Admin extends Subscriber {
         if(subscriberToApprove instanceof Admin){
             Admin adminToApprove = ((Admin)subscriberToApprove);
             adminToApprove.setApproved(approve);
+            // todo update DB
             return systemController.removeAdminRequest(userNameToApprove);
         }
         else if(subscriberToApprove instanceof AssociationRepresentative){
             AssociationRepresentative adminToApprove = ((AssociationRepresentative)subscriberToApprove);
             adminToApprove.setApproved(approve);
+            // todo update DB
             return systemController.removeAdminRequest(userNameToApprove);
         }
 

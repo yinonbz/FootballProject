@@ -14,7 +14,7 @@ public class DBMatchTest {
     public void startTest(){
         DB = new DBMatch();
         Date date = new Date();
-        DB.addMatchToDB("Champions",2019,"200006","Manchester United","Manchester City", "Old Trafford","0:0",date);
+        //DB.addMatchToDB("Champions",2019,"200006","Manchester United","Manchester City", "Old Trafford","0:0",date);
     }
 
 

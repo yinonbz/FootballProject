@@ -112,7 +112,7 @@ public class AssociationRepresentative extends Subscriber {
         if (username == null) {
             return false;
         }
-        if(!role.equals("MAIM") && !role.equals("ASSISTANT")){
+        if(!role.equals("MAIN") && !role.equals("ASSISTANT")){
             role="MAIN";
         }
         return super.getSystemController().addReferee(username, "1111", "default", role, this.getUsername());
@@ -223,7 +223,8 @@ public class AssociationRepresentative extends Subscriber {
     public boolean confirmTeamRequest(String teamName){
         if(!approved)
             return false;
-        return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());
+        //return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());fixme take out of comment
+        return false;
     }
 
     @Override

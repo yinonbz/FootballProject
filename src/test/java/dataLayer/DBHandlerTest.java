@@ -1,10 +1,10 @@
 package dataLayer;
 
+import businessLayer.userTypes.Administration.RoleInTeam;
+import businessLayer.userTypes.Administration.roleRef;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,18 +46,18 @@ public class DBHandlerTest {
 
         //coach Details
         detailsCoach = new HashMap<>();
-        ArrayList<String> teamIDC = new ArrayList<>();
-        teamIDC.add("Barcelona");
+        ArrayList<String> roleInTeam = new ArrayList<>();
+        roleInTeam.add(RoleInTeam.TACTICAL.name());
         ArrayList<String> training = new ArrayList<>();
         training.add("GK");
         ArrayList<String> salaryC = new ArrayList<>();
         salaryC.add("546");
         ArrayList<String> teamOwnerIDC= new ArrayList<>();
-        teamOwnerIDC.add("");
+        //teamOwnerIDC.add("");
         ArrayList<String> teams = new ArrayList<>();
         teams.add("Barcelona");
         teams.add("Ajax");
-        detailsCoach.put("teamID", teamIDC);
+        detailsCoach.put("roleInTeam", roleInTeam);
         detailsCoach.put("training", training);
         detailsCoach.put("salary", salaryC);
         detailsCoach.put("ownerFictive", teamOwnerIDC);
@@ -116,21 +116,22 @@ public class DBHandlerTest {
 
         //referee Details
         detailsRef = new HashMap<>();
-        ArrayList<String> trainingRef = new ArrayList<>();
-        trainingRef.add("GENERAL");
+        ArrayList<String> roleReferee = new ArrayList<>();
+        roleReferee.add(roleRef.ASSISTANT.name());
+
         ArrayList<String> matches = new ArrayList<>();
         matches.add("200003");
         matches.add("200004");
 
-        detailsRef.put("training", trainingRef);
+        detailsRef.put("roleRef", roleReferee);
         detailsRef.put("matches", matches);
 
     }
 
     @Test
     public void containInDB() {
-        assertTrue(db.containInDB("Arthur"));
-        assertFalse(db.containInDB("Arthuri"));
+        assertTrue(db.containInDB("Arthur",null,null));
+        assertFalse(db.containInDB("Arthuri",null,null));
     }
 
     @Test
@@ -141,13 +142,13 @@ public class DBHandlerTest {
         //add coach
         //assertTrue(db.addToDB("Valverde",String.valueOf("Valverde1".hashCode()),"ValverdeOut","Coach",detailsCoach));
         //add manager
-        //assertTrue(db.addToDB("Pep",String.valueOf("Pep1".hashCode()),"Guardiola","TeamManager",detailsTM));
+//        assertTrue(db.addToDB("Pep",String.valueOf("Pep1".hashCode()),"Guardiola","TeamManager",detailsTM));
         //addOwner
-        //assertTrue(db.addToDB("Maldini",String.valueOf("Maldini1".hashCode()),"Maldini","TeamOwner",detailsTO));
+//        assertTrue(db.addToDB("Maldini",String.valueOf("Maldini1".hashCode()),"Maldini","TeamOwner",detailsTO));
         //addAdmin
-        //assertTrue(db.addToDB("AdminInon",String.valueOf("AdminInon1".hashCode()),"AdminInon","Admin",detailsAdmin));
+//        assertTrue(db.addToDB("AdminInon",String.valueOf("AdminInon1".hashCode()),"AdminInon","Admin",detailsAdmin));
         //addAR
-        //assertTrue(db.addToDB("testAR",String.valueOf("testAR1".hashCode()),"testAR","AR",detailsAR));
+//        assertTrue(db.addToDB("testAR",String.valueOf("testAR1".hashCode()),"testAR","AR",detailsAR));
         //addRef
         assertTrue(db.addToDB("testRef",String.valueOf("testRef1".hashCode()),"testRef","Referee",detailsRef));
 
@@ -157,8 +158,8 @@ public class DBHandlerTest {
 
     @Test
     public void deleteFromDB() {
-        assertTrue(db.removeFromDB("testRef"));
-        assertFalse(db.removeFromDB("testRef"));
+        assertTrue(db.removeFromDB("testRef",null,null));
+        assertFalse(db.removeFromDB("testRef",null,null));
 
     }
 
@@ -183,15 +184,15 @@ public class DBHandlerTest {
     @Test
     public void selectFromDB() {
         ArrayList<Map<String, ArrayList<String>>> maps = new ArrayList<>();
-        Map<String, ArrayList<String>> map1 = db.selectFromDB("Arthur");
-        Map<String, ArrayList<String>> map2 = db.selectFromDB("Arthur2");
-        Map<String, ArrayList<String>> map3 = db.selectFromDB("adminA");
-        Map<String, ArrayList<String>> map4 = db.selectFromDB("Akinola");
-        Map<String, ArrayList<String>> map5 = db.selectFromDB("Altman");
-        Map<String, ArrayList<String>> map6 = db.selectFromDB("Bradley");
-        Map<String, ArrayList<String>> map7 = db.selectFromDB("Cohen");
-        Map<String, ArrayList<String>> map8 = db.selectFromDB("Dabbur");
-        Map<String, ArrayList<String>> map9 = db.selectFromDB("Hackett");
+        Map<String, ArrayList<String>> map1 = db.selectFromDB("Arthur",null,null);
+        Map<String, ArrayList<String>> map2 = db.selectFromDB("Arthur2",null,null);
+        Map<String, ArrayList<String>> map3 = db.selectFromDB("adminA",null,null);
+        Map<String, ArrayList<String>> map4 = db.selectFromDB("Akinola",null,null);
+        Map<String, ArrayList<String>> map5 = db.selectFromDB("Altman",null,null);
+        Map<String, ArrayList<String>> map6 = db.selectFromDB("Bradley",null,null);
+        Map<String, ArrayList<String>> map7 = db.selectFromDB("Cohen",null,null);
+        Map<String, ArrayList<String>> map8 = db.selectFromDB("Dabbur",null,null);
+        Map<String, ArrayList<String>> map9 = db.selectFromDB("Hackett",null,null);
         maps.add(map1);
         maps.add(map3);
         maps.add(map4);
