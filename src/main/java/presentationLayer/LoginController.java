@@ -50,7 +50,6 @@ public class LoginController implements Initializable {
             return;
         }*/
         try {
-            ControllerInterface Controller = null;
             FXMLLoader fxmlLoader = null;
             String user;
             //user = "AR";
@@ -60,38 +59,30 @@ public class LoginController implements Initializable {
             }
             switch (user) {
                 case "Admin":
-                    Controller = new AdminController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Admin.fxml"));
                     break;
                 case "AR":
-                    Controller = new ARController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AR.fxml"));
                     break;
                 case "Coach":
-                    Controller = new CoachController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Coach.fxml"));
                     break;
                 case "Fan":
-                    Controller = new FanController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Fan.fxml"));
                     break;
                 case "Guest":
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Guest.fxml"));
                     break;
                 case "Player":
-                    Controller = new PlayerController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Player.fxml"));
                     break;
                 case "Referee":
-                    Controller = new RefereeController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Referee.fxml"));
                     break;
                 case "TeamManager":
-                    Controller = new TeamManagerController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TeamManager.fxml"));
                     break;
                 case "TeamOwner":
-                    Controller = new TeamOwnerController(usernameL.getText());
                     fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TeamOwner.fxml"));
                     break;
                 default:
@@ -100,20 +91,18 @@ public class LoginController implements Initializable {
 
             Parent root1 = null;
             try {
-                //Controller.setUser(usernameL.getText());
-                fxmlLoader.setController(Controller);
                 root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 Scene scene = new Scene(root1, 1166, 666);
                 scene.getStylesheets().add("/css/style.css");
                 stage.setScene(scene);
 
-                //Controller = fxmlLoader.getController();
-                Controller.setUser(usernameL.getText());
                 //IDO ADD
-
+                ControllerInterface Controller = fxmlLoader.getController();
+                System.out.println(usernameL.getText());
+                Controller.setUser(usernameL.getText());
                 systemService.addToUsersOnline(usernameL.getText());
-
+                //
                 stage.show();
                 ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
             } catch (IOException e) {

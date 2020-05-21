@@ -1,39 +1,20 @@
 package presentationLayer;
 
-import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Tournament.Match.Match;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import serviceLayer.LeagueService;
 import serviceLayer.MatchService;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 public class RefereeController implements ControllerInterface, Initializable, Observer {
-
-    private String userName;
-
-    private LeagueService leagueService;
-
-    private ArrayList<TitledPane> notificationPanesCollection;
-
     @FXML
-    private Accordion notificationsPane;
-    @FXML
-    private javafx.scene.control.Label userLabel;
+    private Label userLabel;
     @FXML
     private Pane substitutionPane;
     @FXML
@@ -108,11 +89,6 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     private Spinner<Integer> timeRemove;
     @FXML
     private Spinner<Integer> eventRemove;
-
-    public RefereeController(String userName) {
-        this.userName = userName;
-    }
-
     @Override
     public void setUser(String usernameL) {
         userLabel.setText(usernameL);
@@ -401,8 +377,6 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             int time = timeRemove.getValue();
             int eventId = eventRemove.getValue();
             matchService.removeEventByMainReferee(String.valueOf(time), String.valueOf(matchId), userLabel.getText(), String.valueOf(eventId));
-        } catch (NotApprovedException e){
-            showAlert("Access Denied",e.getMessage(), Alert.AlertType.WARNING);
         } catch (Exception e) {
             missingAlert();
         }
@@ -552,21 +526,6 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<String> list = FXCollections.observableArrayList();
-        leagueService = new LeagueService();
-        notificationPanesCollection= new ArrayList<>();
-
-        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
-        if(messages != null) {
-            for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
-                AnchorPane newPanelContent = new AnchorPane();
-                newPanelContent.getChildren().add(new Label(event));
-                TitledPane pane = new TitledPane(title, newPanelContent);
-                notificationPanesCollection.add(pane);
-            }
-        }
-        notificationsPane.getPanes().setAll(notificationPanesCollection);
         //import all unapproved team names to teamStringList from DB
         matchService = new MatchService();
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 121, 0);
@@ -584,37 +543,6 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
 
     @Override
     public void update(Observable o, Object arg) {
-        LinkedList<String> message = ((LinkedList<String>)arg);
-        notificationPanesCollection= new ArrayList<>();
-        AnchorPane newPanelContent = new AnchorPane();
-        newPanelContent.getChildren().add(new Label(message.get(1)));
-        TitledPane pane = new TitledPane(message.get(0), newPanelContent);
-        notificationsPane.getPanes().add(pane);
-    }
 
-
-    private void showAlert(String title, String text, Alert.AlertType alertType){
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(text);
-        alert.showAndWait();
-    }
-
-    public void logoutB(ActionEvent actionEvent) {
-        Parent root1 = null;
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
-            root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(root1, 356, 700);
-            scene.getStylesheets().add("/css/login.css");
-            stage.setScene(scene);
-            stage.show();
-            ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-            leagueService.removeFromUsersOnline(userName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
