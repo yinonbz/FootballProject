@@ -38,4 +38,7 @@ public abstract class Event {
 
     abstract Player getSecondPlayer();
 
+    public int getId(){
+        return id;
+    }
 }

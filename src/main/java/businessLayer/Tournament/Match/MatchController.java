@@ -235,6 +235,7 @@ public class MatchController {
             if(checkPlayerParticipates(player1,match)) {
                 EventRecord eventRecord = match.getEventRecord();
                 eventRecord.addEvent(time, event);
+                systemController.addEvent(Integer.parseInt(matchID),time,event.getId(),event);
                 return true;
             }
         }

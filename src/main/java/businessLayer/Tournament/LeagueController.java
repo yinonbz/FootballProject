@@ -154,8 +154,8 @@ public class LeagueController {
         if (leagueID == null) {
             return false;
         }
-        League newLeague = new League(leagueID);
-        systemController.addLeagueToDB(leagueID, newLeague);
+        //League newLeague = new League(leagueID);
+        systemController.addLeagueToDB(leagueID);
         if (!systemController.containsLeague(leagueID)) {
             return false;
         }

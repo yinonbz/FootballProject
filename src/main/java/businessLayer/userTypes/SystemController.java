@@ -951,6 +951,8 @@ public class SystemController {
         return false;
     }
 
+
+
     /**
      * the function checks if a player exists in the DB
      * @param playerName
@@ -1006,8 +1008,8 @@ public class SystemController {
      * @return
      */
     public boolean containsLeague(String leagueID){
-        //return DB.containsInSystemLeague(leagueID);fixme take out of comment
-        return false;
+        connectToLeagueDB();
+        return DB.containInDB(leagueID,null,null);
     }
 
     /**
@@ -1016,7 +1018,12 @@ public class SystemController {
      * @return
      */
     public League getLeagueFromDB(String leagueID){
-        //return DB.selectLeagueFromDB(leagueID);fixme take out of comment
+        connectToLeagueDB();
+        Map<String,ArrayList<String>> details = DB.selectFromDB("leagueID",null,null);
+        if(details!=null){
+            League league = new League(leagueID);
+            return league;
+        }
         return null;
     }
 
@@ -1026,9 +1033,9 @@ public class SystemController {
      * @param league
      * @return
      */
-    public boolean addLeagueToDB(String leagueID, League league){
-        //return DB.addLeagueToDB(leagueID,league);fixme take out of comment
-        return false;
+    public boolean addLeagueToDB(String leagueID){
+        connectToLeagueDB();
+        return DB.addToDB(leagueID,null,null,null,null);
     }
 
 
@@ -1492,16 +1499,20 @@ public class SystemController {
 
         Map<String, ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID),null,null);
         if(details!=null){
+            connectToTeamDB();
             Team home = getTeamByName(details.get("homeTeam").get(0));
             Team away = getTeamByName(details.get("awayTeam").get(0));
             League league = getLeagueFromDB(details.get("leagueID").get(0));
+            connectToSeasonDB();
             Stadium stadium = getStadiumByID(details.get("stadium").get(0));
+            connectToSeasonDB();
             Season season = selectSeasonFromDB(league.getLeagueName(),details.get("seasonID").get(0));
             String scoreString = details.get("score").get(0);
             String [] arr = scoreString.split(":");
             int [] score = new int [2];
             score[0]=Integer.parseInt(arr[0]);
             score[1]=Integer.parseInt(arr[1]);
+            connectToSubscriberDB();
             Referee mainReferee = (Referee)selectUserFromDB(details.get("mainRef").get(0));
             ArrayList<String> refID = details.get("allRefs");
             LinkedList<Referee> refs = new LinkedList<>();
@@ -1509,6 +1520,7 @@ public class SystemController {
                 refs.add((Referee)selectUserFromDB(allRefID));
             }
             int numOfFans = Integer.parseInt(details.get("numberOFFans").get(0));
+            connectToEventRecordDB();
             EventRecord eventRecord = selectEventRecord(matchID);
             boolean isFinished = Boolean.valueOf(details.get("isFinished").get(0));
             Match match = new Match(league,season,home,away,refs,score,null,isFinished,stadium,numOfFans,eventRecord,mainReferee);
@@ -1519,7 +1531,54 @@ public class SystemController {
 
     public EventRecord selectEventRecord (int matchID){
         Map<String,ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID),null,null);
-        //Event event = select
+        connectToMatchDB();
+        Match match = findMatch(matchID);
+        EventRecord eventRecord = new EventRecord(match);
+        connectToEventDB();
+        for(Map.Entry<String,ArrayList<String>> arr : details.entrySet()){
+            Event event = selectEvent(Integer.parseInt(arr.getValue().get(0)),arr.getValue().get(1),Integer.parseInt(arr.getValue().get(2)));
+            eventRecord.addEvent(arr.getValue().get(1),event);
+        }
+        return eventRecord;
+    }
+
+    public Event selectEvent(int matchID, String time, int eventID){
+        connectToEventDB();
+        String type="";
+        Map<String,ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID),time,String.valueOf(eventID));
+
+        if(details.get("type").equals("goal")){
+            Player playerG = (Player)getSubscriberByUserName(details.get("playerG").get(0));
+            Player playerA = (Player)getSubscriberByUserName(details.get("playerA").get(0));
+            boolean isOwnGoal = Boolean.valueOf(details.get("isOwnGoal").get(0));
+            return new Goal (playerG,playerA,isOwnGoal,matchController);
+        }
+        else if(details.get("type").equals("yellowcard")){
+            Player player = (Player)getSubscriberByUserName(details.get("player").get(0));
+            return new YellowCard(player,matchController);
+        }
+        else if(details.get("type").equals("redcard")){
+            Player player = (Player)getSubscriberByUserName(details.get("player").get(0));
+            return new RedCard(player,matchController);
+        }
+        else if(details.get("type").equals("offside")){
+            Player player = (Player)getSubscriberByUserName(details.get("player").get(0));
+            return new Offside(player,matchController);
+        }
+        else if(details.get("type").equals("injury")){
+            Player player = (Player)getSubscriberByUserName(details.get("player").get(0));
+            return new Injury(player,matchController);
+        }
+        else if(details.get("type").equals("foul")){
+            Player playerA = (Player)getSubscriberByUserName(details.get("playerA").get(0));
+            Player playerF = (Player)getSubscriberByUserName(details.get("playerF").get(0));
+            return new Foul (playerA,playerF,matchController);
+        }
+        else if(details.get("type").equals("sub")){
+            Player playerON = (Player)getSubscriberByUserName(details.get("playerON").get(0));
+            Player playerOff = (Player)getSubscriberByUserName(details.get("playerOff").get(0));
+            return new Substitute (playerON,playerOff,matchController);
+        }
         return null;
     }
 
@@ -1553,13 +1612,13 @@ public class SystemController {
             type="foul";
             details.put("playerA",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
             details.put("playerF",new ArrayList <> (Arrays.asList(((Foul) event).getSecondPlayer().getName())));
-
         }
         else if(event instanceof Substitute){
             type="sub";
             details.put("playerIn",new ArrayList <> (Arrays.asList(event.getFirstPlayer().getName())));
             details.put("playerOut",new ArrayList <> (Arrays.asList(((Substitute) event).getSecondPlayer().getName())));
         }
+        connectToEventDB();
         DB.addToDB(String.valueOf(matchID),time,String.valueOf(eventID),type, details);
         return false;
     }
@@ -1833,24 +1892,28 @@ public class SystemController {
         Map <String,ArrayList<String>> details = DB.selectFromDB(leagueID,String.valueOf(seasonID),null);
         ArrayList<String> matchesString = details.get("matches");
         HashMap<Integer,Match> matches = new HashMap<>();
+        connectToMatchDB();
         for(String matchID : matchesString){
             Match match = findMatch(Integer.parseInt(matchID));
             matches.put(match.getMatchId(),match);
         }
         ArrayList<String> refString = details.get("referees");
         HashMap<String,Referee> referees = new HashMap<>();
+        connectToSubscriberDB();
         for(String refereeID : refString){
             Subscriber ref = getSubscriberByUserName(refereeID);
             referees.put(ref.getUsername(),(Referee)ref);
         }
         ArrayList<String> teamsString = details.get("teams");
         HashMap<String,Team> teams = new HashMap<>();
+        connectToTeamDB();
         for(String teamID : teamsString){
             Team team = getTeamByName(teamID);
             teams.put(teamID,team);
         }
         ArrayList <String> tableLeagueString = details.get("table");
         HashMap <Team,LinkedList<Integer>> leagueTable = new HashMap<>();
+        connectToSeasonDB();
         for(int i=0;i<tableLeagueString.size();i=i+5){
             Team team = teams.get(tableLeagueString.get(i));
             LinkedList<Integer> teamDetail = new LinkedList<>();
@@ -1868,6 +1931,7 @@ public class SystemController {
         Date start = new Date();
         Date end = new Date();
         //public Season(int seasonId, Date startDate, Date endDate, League league, int win, int lose, int tie, String matchingPolicy)
+        connectToLeagueDB();
         League league = getLeagueFromDB(leagueID);
         Season season = new Season(league,Integer.parseInt(seasonID),start,end,rankingPolicy,leagueTable,matches,referees,matchingPolicy);
         return season;
@@ -1921,6 +1985,7 @@ public class SystemController {
 
 
     public boolean addTeamToSeasonDB(String leagueID, int seasonID, String teamID){
+        connectToSeasonDB();
         HashMap <String, String> details = new HashMap<>();
         details.put("leagueID",leagueID);
         details.put("seasonID",String.valueOf(seasonID));
@@ -1929,6 +1994,7 @@ public class SystemController {
     }
 
     public boolean addMatchTableToSeason(String leagueID, int seasonID,LinkedList<Integer> matchNum){
+        connectToSeasonDB();
         HashMap <String,String> details = new HashMap<>();
         details.put("leagueID",leagueID);
         details.put("seasonID",String.valueOf(seasonID));
@@ -1937,6 +2003,7 @@ public class SystemController {
     }
 
     public boolean updateMatchTableOFSeason(String leagueID, int seasonID, String teamID, LinkedList<Integer> info){
+        connectToSeasonDB();
         HashMap<String,String> details = new HashMap<>();
         details.put("teamID",teamID);
         details.put("leagueID",leagueID);
@@ -1950,6 +2017,7 @@ public class SystemController {
 
 
     public boolean addNewMatch(Match match, String leagueID, int seasonID){
+        connectToMatchDB();
         HashMap <String, ArrayList<String>> details = new HashMap<>();
         details.put("teamHome",new ArrayList <> (Arrays.asList(match.getHomeTeam().getTeamName())));
         details.put("teamAway",new ArrayList <> (Arrays.asList(match.getAwayTeam().getTeamName())));
@@ -1962,6 +2030,7 @@ public class SystemController {
 
 
     public boolean updateScore (String matchID, String score){
+        connectToMatchDB();
         HashMap<String,String> details = new HashMap<>();
         details.put("matchID",matchID);
         details.put("score",score);
@@ -1969,6 +2038,7 @@ public class SystemController {
     }
 
     public boolean updateMainRefereeToMatch(String matchID,String refID){
+        connectToMatchDB();
         HashMap<String,String> details = new HashMap<>();
         details.put("refID",refID);
         details.put("matchID",matchID);
@@ -1976,6 +2046,7 @@ public class SystemController {
     }
 
     public boolean updateNumOfFans(String matchID,int numOfFans){
+        connectToMatchDB();
         HashMap<String,String> details = new HashMap<>();
         details.put("numOfFans",String.valueOf(numOfFans));
         details.put("matchID",matchID);
@@ -1983,6 +2054,7 @@ public class SystemController {
     }
 
     public boolean addRefereeToMatch(String matchID, String refID){
+        connectToMatchDB();
         HashMap<String,String> details = new HashMap<>();
         details.put("refID",refID);
         details.put("matchID",matchID);
@@ -1990,14 +2062,11 @@ public class SystemController {
     }
 
     public List<Referee> getRefsOfMatch(int matchID){
+
         Match match = findMatch(matchID);
         return match.getReferee();
     }
 
-
-    public boolean containInDB(String objectName){
-        return true;
-    }
 
     public boolean addMatchTableOfSeason(HashMap <Integer, Match> matchesOfTheSeason, String leagueID, int seasonID){
         LinkedList<Integer> matchID = new LinkedList<>();
@@ -2006,8 +2075,12 @@ public class SystemController {
             addNewMatch(match, leagueID, seasonID);
             matchID.add(match.getMatchId());
         }
+        connectToSeasonDB();
         return addMatchTableToSeason(leagueID,seasonID,matchID);
     }
+
+
+
 
     private void connectToSubscriberDB(){
         DB.TerminateDB();
@@ -2029,6 +2102,32 @@ public class SystemController {
         DB.TerminateDB();
         DB = new DBUnconfirmedTeams();
     }
+
+    private void connectToMatchDB(){
+        DB.TerminateDB();
+        DB = new DBMatch();
+    }
+
+    private void connectToSeasonDB(){
+        DB.TerminateDB();
+        DB = new DBSeasons();
+    }
+
+    private void connectToLeagueDB(){
+        DB.TerminateDB();
+        DB = new DBLeagues();
+    }
+
+    private void connectToEventDB(){
+        DB.TerminateDB();
+        DB = new DBEvents();
+    }
+
+    private void connectToEventRecordDB(){
+        DB.TerminateDB();
+        DB = new EventRecordDB();
+    }
+
 
 
 
