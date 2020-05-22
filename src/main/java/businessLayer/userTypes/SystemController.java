@@ -1963,4 +1963,22 @@ public class SystemController extends Observable {
             return null;
         }
     }
+
+    public void updatePlayerBDate(String date, String user) {
+    }
+
+    public void updatePlayerName(String name, String userName) {
+    }
+
+    public void updatePlayerPost(String userName, String post) {
+    }
+
+    public void updateCoachName(String name, String userName1) {
+    }
+
+    public void updateCoachPost(String userName, String post) {
+    }
+
+    public void updateRefereeName(String name, String userName) {
+    }
 }

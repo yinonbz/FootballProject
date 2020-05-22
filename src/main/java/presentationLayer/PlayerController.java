@@ -1,5 +1,6 @@
 package presentationLayer;
 
+import businessLayer.userTypes.Administration.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +8,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import serviceLayer.LeagueService;
+import serviceLayer.SystemService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +22,8 @@ import java.util.*;
 public class PlayerController implements Initializable,ControllerInterface, Observer {
 
     private LeagueService leagueService;
+
+    private SystemService systemService;
 
     private String userName;
 
@@ -32,7 +35,84 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
 
     @FXML
     private Label userLable;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private DatePicker bDate;
+    @FXML
+    private Pane namePane;
+    @FXML
+    private Pane bDatePane;
+    @FXML
+    private Pane uploadPane;
+    @FXML
+    private Label titleL;
+    @FXML
+    private TextArea postPlayer;
+    @FXML
+    public void changeBDate(){
+        try {
+            String date = bDate.getValue().toString();
+            if(date!=null &&!date.equals("")) {
+                systemService.updatePlayerBDate(date, userName);
+                success("changing BirthDate to " +date );
+            }else{
+                missingAlert();
+            }
+        }catch (Exception e){
+            missingAlert();
+        }
+    }
+    @FXML
+    public void changeName(){
+        try {
+            String name = nameField.getText();
+            if(name!=null &&!name.equals("")) {
+                systemService.updatePlayerName(name, userName);
+                success("changing name to " +name );
+            }else{
+                missingAlert();
+            }
+        }catch (Exception e){
+            missingAlert();
+        }
+    }
+    @FXML
+    public void switchBDatePane(){
+        titleL.setText("Edit Birthday");
+        bDatePane.setVisible(true);
+        namePane.setVisible(false);
+        uploadPane.setVisible(false);
+    }
+    @FXML
+    public void switchNamePane(){
+        titleL.setText("Edit Name");
+        bDatePane.setVisible(false);
+        namePane.setVisible(true);
+        uploadPane.setVisible(false);
 
+    }
+    @FXML
+    public void switchUploadPane(){
+        titleL.setText("Upload Contact");
+        bDatePane.setVisible(false);
+        namePane.setVisible(false);
+        uploadPane.setVisible(true);
+
+    }
+    @FXML
+    public void updatePostPage(){
+        try {
+            String post = postPlayer.getText();
+            if(post!=null &&!post.equals("")) {
+                systemService.updatePlayerPost(userName,post);
+            }else{
+                missingAlert();
+            }
+        }catch (Exception e){
+            missingAlert();
+        }
+    }
     @Override
     public void setUser(String usernameL) {
         userLable.setText(usernameL);
@@ -67,6 +147,7 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         leagueService = new LeagueService();
+        systemService = new SystemService();
         notificationPanesCollection= new ArrayList<>();
 
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
@@ -99,6 +180,19 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
             e.printStackTrace();
         }
     }
-
+    private void missingAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Empty Fields");
+        alert.setHeaderText("Please fill all fields");
+        alert.setContentText("Please fill all the fields in this form.");
+        alert.showAndWait();
+    }
+    private void success(String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(text + " was succeeded");
+        alert.setHeaderText("success");
+        alert.setContentText(text + " was succeeded");
+        alert.showAndWait();
+    }
 
 }

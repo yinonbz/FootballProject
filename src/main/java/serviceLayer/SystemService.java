@@ -393,5 +393,31 @@ public class SystemService extends Observable implements Observer {
         return systemController.getSystemSubscribers();
     }
 
+    public void updatePlayerBDate(String date, String user){
+        systemController.updatePlayerBDate(date,user);
+    }
 
+    public void updatePlayerName(String name, String userName) {
+        systemController.updatePlayerName(name,userName);
+    }
+
+    public void updatePlayerPost(String userName, String post) {
+        systemController.updatePlayerPost(userName,post);
+
+    }
+
+    public void updateCoachName(String name, String userName) {
+        systemController.updateCoachName(name,userName);
+
+    }
+
+    public void updateCoachPost(String userName, String post) {
+        systemController.updateCoachPost(userName,post);
+
+    }
+
+    public void updateRefereeName(String name, String userName) {
+        systemController.updateRefereeName(name,userName);
+
+    }
 }

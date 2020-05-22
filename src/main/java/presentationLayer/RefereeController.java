@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import serviceLayer.LeagueService;
 import serviceLayer.MatchService;
+import serviceLayer.SystemService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +28,8 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     private String userName;
 
     private LeagueService leagueService;
+
+    private SystemService systemService;
 
     private ArrayList<TitledPane> notificationPanesCollection;
 
@@ -50,6 +53,8 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     private Pane redCardPane;
     @FXML
     private Pane yellowCardPane;
+    @FXML
+    private Pane namePane;
     @FXML
     private Spinner<Integer> timeFoul;
     @FXML
@@ -108,8 +113,10 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     private Spinner<Integer> timeRemove;
     @FXML
     private Spinner<Integer> eventRemove;
-
-
+    @FXML
+    private TextField nameField;
+    @FXML
+    private Label titleL;
     @Override
     public void setUser(String usernameL)
     {
@@ -132,7 +139,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         notificationsPane.getPanes().setAll(notificationPanesCollection);
 
         HashMap<Integer, Match> match = new HashMap<>();
-        match = matchService.getAllMatch(userLabel.getText());
+        match = matchService.getAllRefereeMatch(userLabel.getText());
         if (match == null) {
             noMatchAlert();
         } else {
@@ -151,6 +158,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
 
     @FXML
     public void switchFoulPane() {
+        titleL.setText("Report Foul");
         foulPane.setVisible(true);
         goalPane.setVisible(false);
         injuryPane.setVisible(false);
@@ -159,12 +167,14 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         yellowCardPane.setVisible(false);
         substitutionPane.setVisible(false);
         removeEventPane.setVisible(false);
+        namePane.setVisible(false);
         timeFoul.getValueFactory().setValue(0);
 
     }
 
     @FXML
     public void switchInjuryPane() {
+        titleL.setText("Report Injury");
         foulPane.setVisible(false);
         goalPane.setVisible(false);
         injuryPane.setVisible(true);
@@ -173,6 +183,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         yellowCardPane.setVisible(false);
         substitutionPane.setVisible(false);
         removeEventPane.setVisible(false);
+        namePane.setVisible(false);
         timeInjury.getValueFactory().setValue(0);
 
 
@@ -180,6 +191,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
 
     @FXML
     public void switchGoalPane() {
+        titleL.setText("Report Goal");
         foulPane.setVisible(false);
         goalPane.setVisible(true);
         injuryPane.setVisible(false);
@@ -188,12 +200,14 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         yellowCardPane.setVisible(false);
         substitutionPane.setVisible(false);
         removeEventPane.setVisible(false);
+        namePane.setVisible(false);
         timeGoal.getValueFactory().setValue(0);
 
     }
 
     @FXML
     public void switchOffsidePane() {
+        titleL.setText("Report Offside");
         foulPane.setVisible(false);
         goalPane.setVisible(false);
         injuryPane.setVisible(false);
@@ -202,11 +216,13 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         yellowCardPane.setVisible(false);
         substitutionPane.setVisible(false);
         removeEventPane.setVisible(false);
+        namePane.setVisible(false);
         timeOffside.getValueFactory().setValue(0);
     }
 
     @FXML
     public void switchRedCardPane() {
+        titleL.setText("Report Red Card");
         foulPane.setVisible(false);
         goalPane.setVisible(false);
         injuryPane.setVisible(false);
@@ -215,11 +231,13 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         yellowCardPane.setVisible(false);
         substitutionPane.setVisible(false);
         removeEventPane.setVisible(false);
+        namePane.setVisible(false);
         timeRed.getValueFactory().setValue(0);
     }
 
     @FXML
     public void switchYellowCardPane() {
+        titleL.setText("Report Yellow Card");
         foulPane.setVisible(false);
         goalPane.setVisible(false);
         injuryPane.setVisible(false);
@@ -228,11 +246,13 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         yellowCardPane.setVisible(true);
         substitutionPane.setVisible(false);
         removeEventPane.setVisible(false);
+        namePane.setVisible(false);
         timeYellow.getValueFactory().setValue(0);
     }
 
     @FXML
     public void switchSubstitutionPane() {
+        titleL.setText("Report Substitution");
         foulPane.setVisible(false);
         goalPane.setVisible(false);
         injuryPane.setVisible(false);
@@ -241,10 +261,12 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         yellowCardPane.setVisible(false);
         substitutionPane.setVisible(true);
         removeEventPane.setVisible(false);
+        namePane.setVisible(false);
         timeSubstitute.getValueFactory().setValue(0);
     }
     @FXML
     public void switchRemovePane() {
+        titleL.setText("Remove Event");
         foulPane.setVisible(false);
         goalPane.setVisible(false);
         injuryPane.setVisible(false);
@@ -252,15 +274,28 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         redCardPane.setVisible(false);
         yellowCardPane.setVisible(false);
         substitutionPane.setVisible(false);
+        namePane.setVisible(false);
         removeEventPane.setVisible(true);
         timeRemove.getValueFactory().setValue(0);
+    }
+    public void switchNamePane() {
+        titleL.setText("Edit Name");
+        foulPane.setVisible(false);
+        goalPane.setVisible(false);
+        injuryPane.setVisible(false);
+        offsidePane.setVisible(false);
+        redCardPane.setVisible(false);
+        yellowCardPane.setVisible(false);
+        substitutionPane.setVisible(false);
+        removeEventPane.setVisible(false);
+        namePane.setVisible(true);
     }
     @FXML
     public void getAllMatches(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(userLabel.getText() + " Matches:");
         String refereeMatches = "";
-        HashMap<Integer,Match> map = matchService.getAllMatch(userLabel.getText());
+        HashMap<Integer,Match> map = matchService.getAllRefereeMatch(userLabel.getText());
         if(map!=null &&map.size()>0) {
             for (Map.Entry<Integer, Match> entry : map.entrySet()) {
                 refereeMatches = refereeMatches + "\n" + "Match: " + entry.getValue().toString();
@@ -288,7 +323,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 return;
             } else {
                 matchService.reportFoulThroughReferee(String.valueOf(time), aPlayer.split("-")[0], iPlayer.split("-")[0], String.valueOf(seasonId), this.userLabel.getText());
-                Success("report foul on: "+ iPlayer.split("-")[0]+ " by the attacker: "+aPlayer.split("-")[0] );
+                success("report foul on: "+ iPlayer.split("-")[0]+ " by the attacker: "+aPlayer.split("-")[0] );
             }
         } catch (Exception e) {
             missingAlert();
@@ -311,7 +346,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 return;
             } else {
                 matchService.reportGoalThroughReferee(String.valueOf(time), gPlayer.split("-")[0], aPlayer.split("-")[0], Boolean.toString(isOwn), String.valueOf(seasonId), userLabel.getText());
-                Success("report Goal to Team: "+gPlayer.split("-")[1] + "by player: "+gPlayer.split("-")[0] );
+                success("report Goal to Team: "+gPlayer.split("-")[1] + "by player: "+gPlayer.split("-")[0] );
             }
         } catch (Exception e) {
             missingAlert();
@@ -328,7 +363,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 missingAlert();
             } else {
                 matchService.reportOnInjury(String.valueOf(time), player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
-                Success("report injury to: "+player );
+                success("report injury to: "+player );
             }
         } catch (Exception e) {
             missingAlert();
@@ -345,7 +380,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 missingAlert();
             } else {
                 matchService.reportOffside(String.valueOf(time), player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
-                Success("report Offside to: "+player );
+                success("report Offside to: "+player );
             }
         } catch (Exception e) {
             missingAlert();
@@ -362,7 +397,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 missingAlert();
             } else {
                 matchService.reportOnRedCard(String.valueOf(time), player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
-                Success("report red card to: "+player );
+                success("report red card to: "+player );
             }
         } catch (Exception e) {
             missingAlert();
@@ -379,7 +414,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 missingAlert();
             } else {
                 matchService.yellowCard(String.valueOf(time), player.split("-")[0], String.valueOf(seasonId), userLabel.getText());
-                Success("report yellow card to: "+player );
+                success("report yellow card to: "+player );
             }
         } catch (Exception e) {
             missingAlert();
@@ -403,7 +438,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 return;
             } else {
                 matchService.reportOnSubstitute(String.valueOf(time), onPlayer.split("-")[0], offPlayer.split("-")[0], String.valueOf(seasonId), userLabel.getText());
-                Success("Substitution");
+                success("Substitution");
             }
         } catch (Exception e) {
             missingAlert();
@@ -427,7 +462,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         int matchId = matchFoul.getValue();
         iFoulPlayer.setDisable(false);
         aFoulPlayer.setDisable(false);
-        ArrayList<String> players = matchService.getAllPlayerMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
         if (players != null && players.size() > 0) {
             iFoulPlayer.getItems().clear();
             aFoulPlayer.getItems().clear();
@@ -443,7 +478,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         int matchId = matchSubstituteId.getValue();
         playerOn.setDisable(false);
         playerOff.setDisable(false);
-        ArrayList<String> players = matchService.getAllPlayerMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
         if (players != null && players.size() > 0) {
             playerOn.getItems().clear();
             playerOn.getItems().addAll(players);
@@ -453,14 +488,27 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             noPlayerAlert();
         }
     }
-
+    @FXML
+    public void changeName(){
+        try {
+            String name = nameField.getText();
+            if(name!=null &&!name.equals("")) {
+                systemService.updateRefereeName(name, userName);
+                success("changing name to " +name );
+            }else{
+                missingAlert();
+            }
+        }catch (Exception e){
+            missingAlert();
+        }
+    }
     @FXML
     public void fillPlayerGoal() {
         int matchId = matchGoalId.getValue();
         playerGoal.setDisable(false);
         playerAssisted.setDisable(false);
         isOwnGoal.setDisable(false);
-        ArrayList<String> players = matchService.getAllPlayerMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
         if (players != null && players.size() > 0) {
             playerGoal.getItems().clear();
             playerGoal.getItems().addAll(players);
@@ -500,7 +548,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         int matchId = match.getValue();
         playerName.setDisable(false);
         playerName.getItems().removeAll();
-        ArrayList<String> players = matchService.getAllPlayerMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
         if (players != null && players.size() > 0) {
             playerName.getItems().clear();
             playerName.getItems().addAll(players);
@@ -508,7 +556,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             noPlayerAlert();
         }
     }
-    private void Success(String text) {
+    private void success(String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(text + " was succeeded");
         alert.setHeaderText("success");
@@ -569,6 +617,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
 
         //import all unapproved team names to teamStringList from DB
         matchService = new MatchService();
+        systemService = new SystemService();
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 121, 0);
         timeFoul.setValueFactory(valueFactory);
         timeGoal.setValueFactory(valueFactory);
