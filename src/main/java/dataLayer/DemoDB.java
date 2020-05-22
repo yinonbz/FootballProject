@@ -733,12 +733,41 @@ public class DemoDB {
      * @param username
      * @return
      */
-    public LinkedList getOfflineUsersNotifications(String username) {
+    public LinkedList<String> getOfflineUsersNotifications(String username) {
 
         if (offlineUsersNotifications.containsKey(username)) {
             return offlineUsersNotifications.get(username);
         }
         return null;
+    }
+
+    /**
+     * The function receives a letter and returns the teams that begin with that letter. If there are none, tries to
+     * find a team that starts with a close letter to the one given
+     * @param letter
+     * @return relevantNames
+     */
+    public LinkedList<Team> getTeamsWithCloseNames(char letter){
+
+        LinkedList<Team> relevantTeams = new LinkedList<>();
+        int count = 0;
+        while(relevantTeams.size() == 0 && count < 26){
+            for(Map.Entry team : teams.entrySet()){
+                String name = (String)team.getKey();
+                if(name.charAt(0) == letter){
+                    relevantTeams.add((Team)team.getValue());
+                }
+            }
+            if(letter=='z'){
+                letter = 'a';
+            } else if(letter == 'Z'){
+                letter = 'A';
+            } else {
+                letter = (char) ((int) letter + 1); //searches for teams which their names begins with the next letter
+            }
+            count++;
+        }
+        return relevantTeams;
     }
 
     //-------------------------LEAGUE CONTROLLER-------------------------//

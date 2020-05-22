@@ -37,6 +37,8 @@ public class SystemController extends Observable {
     private TeamController teamController;
     private MatchController matchController;
 
+
+
     //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
     //private HashMap<String, Team> teams; //name of the team, the team object
     //private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
@@ -1560,6 +1562,7 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Page update");
+                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -1595,6 +1598,7 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Match update");
+                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -1651,6 +1655,7 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Change in match date&place");
+                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -1749,6 +1754,7 @@ public class SystemController extends Observable {
             }
             usersToNotify.add(event);
             usersToNotify.add("Team status update");
+            setChanged();
             notifyObservers(usersToNotify);
         }
     }
@@ -1768,6 +1774,7 @@ public class SystemController extends Observable {
                 adminToUpdate.add(name);
                 adminToUpdate.add("You have lost your rights as an owner for the team '" + team.getTeamName() + "'.");
                 adminToUpdate.add("Owner privileges removal");
+                setChanged();
                 notifyObservers(adminToUpdate);
             }
         }
@@ -1834,6 +1841,19 @@ public class SystemController extends Observable {
             return DB.getOfflineUsersNotifications(username);
         }
         return null; //todo: might need an exception here
+    }
+
+    /**
+     * The function receives a teamName and returns the matching team. If the name does not exist, returns close
+     * names to the original
+     * @param teamName
+     * @return possibleNames
+     */
+    public LinkedList<Team> getSimilarTeams(String teamName) {
+        LinkedList<Team> possibleNames;
+        char firstTeamNameLetter = teamName.charAt(0);
+        possibleNames = DB.getTeamsWithCloseNames(firstTeamNameLetter);
+        return possibleNames;
     }
 
 

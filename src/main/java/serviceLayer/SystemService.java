@@ -1,5 +1,6 @@
 package serviceLayer;
 
+import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
@@ -18,14 +19,12 @@ public class SystemService implements Observer {
     private TeamController teamController;
     private MatchController matchController;
 
-
     /**
      * initalizing system and controllers as singeltons
      */
     public SystemService() {
         this.systemController = SystemController.SystemController();
         systemController.addServiceObservers(this);
-
     }
 
     /**
@@ -361,13 +360,31 @@ public class SystemService implements Observer {
         return false;
     }
 
+    /**
+     * The function receives a team name and returns the matching team or teams with close names to the one given
+     * @param teamName
+     */
+    public void findTeamWithName(String teamName) { //todo: fix the returning value once we decide hoew to present at GUI
+
+        Team team = systemController.getTeamByName(teamName);
+        if (team != null) {
+            //here we return the user the team he was searching for
+        } else {
+            LinkedList<Team> similarTeamNames = systemController.getSimilarTeams(teamName);
+            if (similarTeamNames.size() == 0) {
+                //here we let the user know there were no teams with similar names to the one he entered
+            } else {
+                //here we return the names that were retrieved in a way to present at the GUI
+            }
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof SystemController && arg instanceof LinkedList) {
             LinkedList<String> users = (LinkedList) arg;
-            String title = users.getLast(); //title for the message in the interface
-            String event = users.getLast(); //holds the message to present to the user's interface
+            String title = users.removeLast(); //title for the message in the interface
+            String event = users.removeLast(); //holds the message to present to the user's interface
             for (String user : users) {
                 if (systemController.isUserOnline(user)) {
                     //todo: alon, this is where we connect the message to the gui
