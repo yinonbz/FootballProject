@@ -190,6 +190,7 @@ public class SystemController {
         if (checkPasswordStrength(newPassword, userName) == false)
             return false;
         temporaryAdmin.setPassword(newPassword);
+        //todo update db record
         return true;
     }
 
@@ -430,7 +431,7 @@ public class SystemController {
                 Team chosenTeam = getTeamByName(teamName);
                 //checks what is the status of the team
                 if (chosenTeam.closeTeamPermanently()) {
-                    addTeam(chosenTeam);
+                    addTeam(chosenTeam); //todo only update status of current team
                     return true;
                 }
                 //team is already closed by admin
@@ -568,7 +569,7 @@ public class SystemController {
                 complaint.setAnswered(true);
                 complaint.setComment(comment);
                 complaint.setHandler(subscriber.getUsername());
-                DB.removeFromDB(complaintID,null,null);
+                DB.removeFromDB(complaintID,null,null);//todo update instead
                 addComplaint(complaint);
                 return true;
             }
@@ -940,6 +941,7 @@ public class SystemController {
                             connectToUnconfirmedTeamsDB();
                             DB.removeFromDB(teamName,null,null);
                             ((TeamOwner) teamOwner).getTeams().add(team);
+                            //todo update teams of teamOwner
                             //updates the structure of the updated subscriber with the team
                             connectToSubscriberDB();
                             DB.removeFromDB(teamOwner.getUsername(),null,null);
@@ -1550,22 +1552,15 @@ public class SystemController {
         if(userName == null || password == null || name == null || birthDate == null || fieldJob == null || teamName == null){
             return false;
         }
-
         if(validateUserName(userName)){
             return false;
         }
-
         if(checkPasswordStrength(password,userName) == false){
             return false;
         }
-
-
-
         Subscriber subscriber = selectUserFromDB(userName);
-
         if(subscriber!=null) //user name is already exists in the database
             return false;
-
         Team team = getTeamByName(teamName);
         if(team == null){ //no such team in the DB
             return false;
@@ -1862,6 +1857,14 @@ public class SystemController {
 
     public boolean addMatchTableOfSeason(HashMap <Integer, Match> matchesOfTheSeason, String leagueID, int seasonID){
         return true;
+    }
+
+    public boolean updateApprovedAdmin(String isApproved,String adminID){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("adminID",adminID);
+        arguments.put("isApproved",isApproved);
+        return DB.update(SUBSCRIBERSUPDATES.ADMINSETAPPROVED,arguments);
     }
 
     private void connectToSubscriberDB(){

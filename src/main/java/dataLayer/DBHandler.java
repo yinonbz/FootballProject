@@ -466,6 +466,125 @@ public class DBHandler implements DB_Inter{
 
     @Override
     public boolean update(Enum<?> e, Map<String, String> arguments) {
+
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        if(e == SUBSCRIBERSUPDATES.ADMINSETAPPROVED){
+            create.update(ADMINS)
+                    .set(ADMINS.APPROVED, Boolean.valueOf(arguments.get("setApproved")))
+                    .where(ADMINS.ADMINID.eq(arguments.get("adminID")))
+                    .execute();
+            return true;
+        }
+        if(e == SUBSCRIBERSUPDATES.ARSETAPPROVED){
+            create.update(ARS)
+                    .set(ARS.APPROVED, Boolean.valueOf(arguments.get("setApproved")))
+                    .where(ARS.AR_ID.eq(arguments.get("ARID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETTEAMTOPLAYER){
+            create.update(PLAYERS)
+                    .set(PLAYERS.TEAMID, arguments.get("teamID"))
+                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETTEAMTOTM){
+            create.update(TEAMMANAGERS)
+                    .set(TEAMMANAGERS.TEAMID, arguments.get("teamID"))
+                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETPLAYERBIRTHDATE){
+            create.update(PLAYERS)
+                    .set(PLAYERS.BIRTHDATE, convertToDate(arguments.get("birthDate")))
+                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETSUBSCRIBERNAME){
+            create.update(SUBSCRIBERS)
+                    .set(SUBSCRIBERS.NAME, arguments.get("name"))
+                    .where(SUBSCRIBERS.SUBSCRIBERID.eq(arguments.get("subscriberID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETPLAYERFIELDJOB){
+            create.update(PLAYERS)
+                    .set(PLAYERS.FIELDJOB, PlayersFieldjob.valueOf(arguments.get("fieldJob")))
+                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETPLAYERSALARY){
+            create.update(PLAYERS)
+                    .set(PLAYERS.SALARY, Integer.parseInt(arguments.get("salary")))
+                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETTMPERMISSIONS){
+            create.update(TEAMMANAGERS)
+                    .set(TEAMMANAGERS.PERMISSIONS, TeammanagersPermissions.valueOf(arguments.get("permissions")))
+                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                    .execute();
+            return true;
+        }
+        if(e== SUBSCRIBERSUPDATES.SETTMSALARY){
+            create.update(TEAMMANAGERS)
+                    .set(TEAMMANAGERS.SALARY, Integer.parseInt(arguments.get("salary")))
+                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.ADDMANAGERTOOWNER){
+            create.insertInto(OWNER_MANAGER_ASSIGNINGS
+                    ,OWNER_MANAGER_ASSIGNINGS.OWNERID
+                    ,OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID
+                    ,OWNER_MANAGER_ASSIGNINGS.TEAMID)
+                    .values(arguments.get("ownerID")
+                            ,arguments.get("managersAssigned")
+                            ,arguments.get("teamID"))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.ADDOWNERTOOWNER){
+            create.insertInto(OWNER_OWNER_ASSIGNINGS
+                    ,OWNER_OWNER_ASSIGNINGS.OWNERID
+                    ,OWNER_OWNER_ASSIGNINGS.ASSIGNEEID
+                    ,OWNER_OWNER_ASSIGNINGS.TEAMID)
+                    .values(arguments.get("ownerID")
+                            ,arguments.get("assigneeID")
+                            ,arguments.get("teamID"))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.DELETEMANAGERFROMOWNER){
+            create.delete(OWNER_MANAGER_ASSIGNINGS)
+                    .where(OWNER_MANAGER_ASSIGNINGS.OWNERID.eq(arguments.get("ownerID"))
+                            .and(OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID.eq(arguments.get("managerID")))
+                                    .and(OWNER_MANAGER_ASSIGNINGS.TEAMID.eq(arguments.get("teamID"))))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.DELETEOWNERFROMOWNER){
+            create.delete(OWNER_OWNER_ASSIGNINGS)
+                    .where(OWNER_OWNER_ASSIGNINGS.OWNERID.eq(arguments.get("ownerID"))
+                    .and(OWNER_OWNER_ASSIGNINGS.ASSIGNEEID.eq(arguments.get("assigneeID")))
+                    .and(OWNER_OWNER_ASSIGNINGS.TEAMID.eq(arguments.get("teamID"))))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.ADDTEAMTOOWNER){
+            create.insertInto(OWNER_TEAMS
+                    ,OWNER_TEAMS.OWNERID
+                    ,OWNER_TEAMS.TEAMID)
+                    .values(arguments.get("ownerID")
+                            ,arguments.get("teamID"))
+                    .execute();
+            return true;
+        }
         return false;
     }
 

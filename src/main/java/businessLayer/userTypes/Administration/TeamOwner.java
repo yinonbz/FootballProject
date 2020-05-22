@@ -100,6 +100,7 @@ public class TeamOwner extends Subscriber {
         SystemController systemController = this.getSystemController();
         if (team != null && team.getActive()) {
             switch (assetType) {
+                //todo update each addition in DB
                 case "Player":
                     Player player = systemController.findPlayer(assetUserName);
                     if (player != null && player.getTeam() == null) {
@@ -154,6 +155,7 @@ public class TeamOwner extends Subscriber {
         Team team = findTeam(teamName);
         SystemController systemController = this.getSystemController();
         if (team != null && team.getActive()) {
+            //todo update each deletion in DB
             switch (assetType) {
                 case "Player":
                     Player player = systemController.findPlayer(assetUserName);
@@ -209,6 +211,7 @@ public class TeamOwner extends Subscriber {
         if (playerUser != null && typeEdit != null && edit != null) {
             Player player = team.getPlayerByUser(playerUser);
             if (player != null) {
+                //todo update all changes in DB
                 if (typeEdit.equals("birthDate")) {
                     team.removePlayer(player);
                     player.setBirthDate(edit);
@@ -247,6 +250,7 @@ public class TeamOwner extends Subscriber {
         if (CoachUser != null && typeEdit != null && edit != null) {
             Coach coach = team.getCoachByUser(CoachUser);
             if (coach != null) {
+                //todo update all changes in DB
                 if (typeEdit.equals("training")) {
                     team.removeCoach(coach);
                     coach.setTraining(TRAINING.valueOf(edit));
@@ -285,6 +289,7 @@ public class TeamOwner extends Subscriber {
         if (teamManagerUser != null && typeEdit != null && team != null) {
             TeamManager teamManager = team.getTeamManager();
             if (teamManager != null) {
+                //todo update all cahnges in DB
                 if (typeEdit.equals("salary")) {
                     team.removeTeamManager(teamManager);
                     teamManager.setSalary(edit);
@@ -424,12 +429,12 @@ public class TeamOwner extends Subscriber {
                     //assign to team manager field in the team objects
                     teamManager.setTeam(team);
                     team.setTeamManager(teamManager);
-
                     //grant permissions to the new team manager
                     teamManager.setPermissions(permission);
 
                     //link to assigning owner
-                    teamManagers.put(team,teamManager);
+                    teamManagers.put(team,teamManager); //insert into owners_teamManagersman
+                    //todo update changes in DB
 
                     return true;
                 }
@@ -505,17 +510,18 @@ public class TeamOwner extends Subscriber {
         if(subscriber!=null && team!=null){
             if(this.teams.contains(team) && teamManagers.containsValue(subscriber) ){
                 if(subscriber instanceof TeamManager && team.getTeamManager().equals(subscriber)){
+
                     //fire manager from team and delete links
                     team.setTeamManager(null);
                     TeamManager tm = (TeamManager) subscriber;
                     tm.setTeam(null);
-
                     //cancel permissions
                     tm.setPermissions(null);
 
                     //delete assignment from owner
-                    teamManagers.remove(team);
+                    teamManagers.remove(team); //delete from owner_manager_assigning table
 
+                    //todo update changes in DB
                     return true;
                 }
             }
