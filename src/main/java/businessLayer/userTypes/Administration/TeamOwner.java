@@ -105,6 +105,9 @@ public class TeamOwner extends Subscriber {
                     if (player != null && player.getTeam() == null) {
                         team.addPlayer(player);
                         player.setTeam(team);
+                        //update in db
+                        systemController.setTeamToPlayer(player.getUsername(),team.getTeamName());
+                        systemController.addPlayerToTeam(player.getUsername(),team.getTeamName());
                         isAdded = true;
                     }
                     break;
@@ -114,10 +117,17 @@ public class TeamOwner extends Subscriber {
                         team.addTeamManager(teamManager);
                         teamManager.setTeam(team);
                         this.teamManagers.put(team, teamManager);
+
+                        //update db
+
+                        systemController.setTeamToTM(teamManager.getUsername(),team.getTeamName());
+                        systemController.setTMToTeam(teamManager.getUsername(),team.getTeamName());
+                        systemController.addManagerToOwner(this.getUsername(),teamManager.getUsername(),team.getTeamName());
                         isAdded = true;
                     }
                     break;
 
+                //todo update each addition in DB
                 case "Coach":
                     Coach coach = systemController.findCoach(assetUserName);
                     if (coach != null && !coach.containTeam(team)) {
@@ -154,6 +164,7 @@ public class TeamOwner extends Subscriber {
         Team team = findTeam(teamName);
         SystemController systemController = this.getSystemController();
         if (team != null && team.getActive()) {
+            //todo update each deletion in DB
             switch (assetType) {
                 case "Player":
                     Player player = systemController.findPlayer(assetUserName);
@@ -213,11 +224,17 @@ public class TeamOwner extends Subscriber {
                     team.removePlayer(player);
                     player.setBirthDate(edit);
                     team.addPlayer(player);
+
+                    //UPDATE DB
+                    systemController.SetPlayerBirthdate(player.getUsername(),player.getBirthDate());
                     return true;
                 } else if (typeEdit.equals("fieldJob")) {
                     team.removePlayer(player);
                     player.setFieldJob(FIELDJOB.valueOf(edit));
                     team.addPlayer(player);
+
+                    //UPDATE DB
+                    systemController.SetPlayerFieldJob(player.getUsername(),player.getFieldJob().name());
                     return true;
                 } else if (typeEdit.equals("salary")) {
                     if (isNumeric(edit)) {
@@ -225,6 +242,10 @@ public class TeamOwner extends Subscriber {
                         team.removePlayer(player);
                         player.setSalary(salary);
                         team.addPlayer(player);
+
+                        //UPDATE DB
+                        systemController.SetPlayerSalary(player.getUsername(),player.getFieldJob().name());
+
                         return true;
                     }
                 }
@@ -247,6 +268,7 @@ public class TeamOwner extends Subscriber {
         if (CoachUser != null && typeEdit != null && edit != null) {
             Coach coach = team.getCoachByUser(CoachUser);
             if (coach != null) {
+                //todo update all changes in DB
                 if (typeEdit.equals("training")) {
                     team.removeCoach(coach);
                     coach.setTraining(TRAINING.valueOf(edit));
@@ -289,6 +311,9 @@ public class TeamOwner extends Subscriber {
                     team.removeTeamManager(teamManager);
                     teamManager.setSalary(edit);
                     team.addTeamManager(teamManager);
+
+                    //Update DB
+                    systemController.SetTMSalary(teamManager.getUsername(),String.valueOf(teamManager.getSalary()));
                     return true;
                 }
             }
@@ -420,16 +445,21 @@ public class TeamOwner extends Subscriber {
                 if(!team.getTeamOwners().contains(subscriber) && (this.teams.contains(team))){
                     //covert Subsriber to teamManger
 
-
                     //assign to team manager field in the team objects
                     teamManager.setTeam(team);
                     team.setTeamManager(teamManager);
-
                     //grant permissions to the new team manager
                     teamManager.setPermissions(permission);
 
                     //link to assigning owner
-                    teamManagers.put(team,teamManager);
+                    teamManagers.put(team,teamManager); //insert into owners_teamManagersman
+
+                    //UPDATE DB
+                    systemController.setTMToTeam(teamManager.getUsername(),team.getTeamName());
+                    systemController.SetTMPermissions(teamManager.getUsername(),permission.name());
+                    systemController.setTeamToTM(teamManager.getUsername(),team.getTeamName());
+                    systemController.addManagerToOwner(this.getUsername(),teamManager.getUsername(),team.getTeamName());
+
 
                     return true;
                 }
@@ -505,16 +535,23 @@ public class TeamOwner extends Subscriber {
         if(subscriber!=null && team!=null){
             if(this.teams.contains(team) && teamManagers.containsValue(subscriber) ){
                 if(subscriber instanceof TeamManager && team.getTeamManager().equals(subscriber)){
+
                     //fire manager from team and delete links
                     team.setTeamManager(null);
                     TeamManager tm = (TeamManager) subscriber;
                     tm.setTeam(null);
-
                     //cancel permissions
                     tm.setPermissions(null);
 
                     //delete assignment from owner
-                    teamManagers.remove(team);
+                    teamManagers.remove(team); //delete from owner_manager_assigning table
+
+                    //UPDATE DB
+
+                    systemController.setTeamToTM(tm.getUsername(),null);
+                    systemController.SetTMPermissions(tm.getUsername(),null);
+                    systemController.setTMToTeam(null,team.getTeamName());
+                    systemController.deleteManagerToOwner(this.getUsername(),tm.getUsername(),team.getTeamName());
 
                     return true;
                 }

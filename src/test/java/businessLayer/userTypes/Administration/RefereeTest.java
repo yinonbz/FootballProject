@@ -202,7 +202,6 @@ public class RefereeTest {
     }
 
 
-    //todo ido mutation test
     @Test
     public void IT_checkFalseSubnit(){
         assertFalse(Rayola.isSubmittedToAGame("TOMER"));

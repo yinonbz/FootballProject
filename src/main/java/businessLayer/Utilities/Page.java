@@ -2,12 +2,11 @@ package businessLayer.Utilities;
 
 import businessLayer.userTypes.Administration.TeamOwner;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Stack;
 
 public class Page {
+
 private HashSet<String> owners;
 private Stack<String> posts;
 private String name;

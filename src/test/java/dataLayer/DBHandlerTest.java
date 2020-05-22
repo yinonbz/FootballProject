@@ -1,5 +1,7 @@
 package dataLayer;
 
+import businessLayer.userTypes.Administration.FIELDJOB;
+import businessLayer.userTypes.Administration.Permissions;
 import businessLayer.userTypes.Administration.RoleInTeam;
 import businessLayer.userTypes.Administration.roleRef;
 import org.junit.Before;
@@ -161,6 +163,89 @@ public class DBHandlerTest {
         assertTrue(db.removeFromDB("testRef",null,null));
         assertFalse(db.removeFromDB("testRef",null,null));
 
+    }
+
+    @Test
+    public void update() {
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("setApproved","true");
+        arguments.put("adminID","AdminInon");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.ADMINSETAPPROVED,arguments));
+        arguments.clear();
+
+        arguments.put("setApproved","true");
+        arguments.put("ARID","testAR");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.ARSETAPPROVED,arguments));
+        arguments.clear();
+
+        arguments.put("teamID","Cruyff FC");
+        arguments.put("playerID","Umtiti");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETTEAMTOPLAYER,arguments));
+        arguments.clear();
+
+        arguments.put("teamID","Cruyff FC");
+        arguments.put("managerID","Zavaleta");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETTEAMTOTM,arguments));
+        arguments.clear();
+
+        arguments.put("birthDate","1992/08/28");
+        arguments.put("playerID","Umtiti");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETPLAYERBIRTHDATE,arguments));
+        arguments.clear();
+
+        arguments.put("name","Samuel Umtiti");
+        arguments.put("subscriberID","Umtiti");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETSUBSCRIBERNAME,arguments));
+        arguments.clear();
+
+        arguments.put("fieldJob", FIELDJOB.DM.name());
+        arguments.put("playerID","Umtiti");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETPLAYERFIELDJOB,arguments));
+        arguments.clear();
+
+        arguments.put("salary", "600");
+        arguments.put("playerID","Umtiti");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETPLAYERSALARY,arguments));
+        arguments.clear();
+
+        arguments.put("salary", "600");
+        arguments.put("managerID","Zavaleta");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETTMSALARY,arguments));
+        arguments.clear();
+
+        arguments.put("permissions", Permissions.COACHORIENTED.name());
+        arguments.put("managerID","Zavaleta");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.SETTMPERMISSIONS,arguments));
+        arguments.clear();
+
+        arguments.put("ownerID", "Morrow");
+        arguments.put("teamID", "Cruyff FC");
+        arguments.put("managersAssigned","Zavaleta");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.ADDMANAGERTOOWNER,arguments));
+        arguments.clear();
+
+        arguments.put("ownerID", "Morrow");
+        arguments.put("teamID", "Cruyff FC");
+        arguments.put("managerID","Zavaleta");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.DELETEMANAGERFROMOWNER,arguments));
+        arguments.clear();
+
+        arguments.put("ownerID", "Morrow");
+        arguments.put("teamID", "Cruyff FC");
+        arguments.put("assigneeID","Ben-Harush");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.ADDOWNERTOOWNER,arguments));
+        arguments.clear();
+
+        arguments.put("ownerID", "Morrow");
+        arguments.put("teamID", "Cruyff FC");
+        arguments.put("assigneeID","Ben-Harush");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.DELETEOWNERFROMOWNER,arguments));
+        arguments.clear();
+
+        arguments.put("teamID", "Cruyff FC");
+        arguments.put("ownerID","Ben-Harush");
+        assertTrue(db.update(SUBSCRIBERSUPDATES.ADDTEAMTOOWNER,arguments));
+        arguments.clear();
     }
 
     @Test

@@ -238,6 +238,33 @@ public class TeamDB implements DB_Inter {
 
     @Override
     public boolean update(Enum<?> e, Map<String, String> arguments) {
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        if(e==TEAMUPDATES.SETACTIVE){
+            create.update(TEAMS)
+                    .set(TEAMS.ISACTIVE, Boolean.valueOf(arguments.get("isActive")))
+                    .where(TEAMS.NAME.eq(arguments.get("teamID")))
+                    .execute();
+            return true;
+        }
+        if(e==TEAMUPDATES.ADDPLAYER){
+            create.insertInto(TEAM_PLAYERS
+                    ,TEAM_PLAYERS.PLAYERID
+                    ,TEAM_PLAYERS.TEAMID)
+                    .values(arguments.get("playerID")
+                            ,arguments.get("teamID"))
+                    .onDuplicateKeyUpdate()
+                    .set(TEAM_PLAYERS.PLAYERID,arguments.get("playerID"))
+                    .set(TEAM_PLAYERS.TEAMID,arguments.get("teamID"))
+                    .execute();
+            return true;
+        }
+        if(e==TEAMUPDATES.SETTEAMMANAGER){
+            create.update(TEAMS)
+                    .set(TEAMS.TEAMMANAGERID, arguments.get("managerID"))
+                    .where(TEAMS.NAME.eq(arguments.get("teamID")))
+                    .execute();
+            return true;
+        }
         return false;
     }
 

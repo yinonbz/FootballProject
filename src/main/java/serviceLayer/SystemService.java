@@ -168,8 +168,7 @@ public class SystemService {
      * Not a UC - A function of Association Represntative
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        //return systemController.confirmTeamByAssociationRepresentative(teamName,username);fixme take out of comment
-        return false;
+        return systemController.confirmTeamByAssociationRepresentative(teamName,username);
     }
 
 

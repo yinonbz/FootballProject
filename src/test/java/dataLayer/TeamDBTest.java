@@ -105,6 +105,24 @@ public class TeamDBTest {
 
     }
 
+
+    @Test
+    public void update() {
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("managerID","Zavaleta");
+        arguments.put("teamID","Cruyff FC");
+        assertTrue(db.update(TEAMUPDATES.SETTEAMMANAGER,arguments));
+        arguments.clear();
+        arguments.put("teamID","Cruyff FC");
+        arguments.put("playerID","Umtiti");
+        assertTrue(db.update(TEAMUPDATES.ADDPLAYER,arguments));
+        arguments.clear();
+        arguments.put("isActive","true");
+        arguments.put("teamID","Cruyff FC");
+        assertTrue(db.update(TEAMUPDATES.SETACTIVE,arguments));
+
+    }
+
     @Test
     public void deleteFromDB() {
         assertFalse(db.removeFromDB("Cruyff FC",null,null));
