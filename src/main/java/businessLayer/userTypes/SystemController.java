@@ -431,7 +431,7 @@ public class SystemController {
                 Team chosenTeam = getTeamByName(teamName);
                 //checks what is the status of the team
                 if (chosenTeam.closeTeamPermanently()) {
-                    addTeam(chosenTeam); //todo only update status of current team
+                    setTeamActive(chosenTeam.getTeamName(),String.valueOf(chosenTeam.getActive()));
                     return true;
                 }
                 //team is already closed by admin
@@ -941,11 +941,11 @@ public class SystemController {
                             connectToUnconfirmedTeamsDB();
                             DB.removeFromDB(teamName,null,null);
                             ((TeamOwner) teamOwner).getTeams().add(team);
-                            //todo update teams of teamOwner
                             //updates the structure of the updated subscriber with the team
                             connectToSubscriberDB();
                             DB.removeFromDB(teamOwner.getUsername(),null,null);
                             addSubscriber(teamOwner);
+                            addTeamToOwner(teamOwner.getUsername(),team.getTeamName());
                             return true;
                         }
                     }
@@ -1866,6 +1866,118 @@ public class SystemController {
         arguments.put("isApproved",isApproved);
         return DB.update(SUBSCRIBERSUPDATES.ADMINSETAPPROVED,arguments);
     }
+
+    public boolean setTeamToPlayer(String playerID,String teamID){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("teamID",teamID);
+        arguments.put("playerID",playerID);
+        return DB.update(SUBSCRIBERSUPDATES.SETTEAMTOPLAYER,arguments);
+    }
+
+    public boolean addPlayerToTeam(String playerID,String teamID){
+        connectToTeamDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("teamID",teamID);
+        arguments.put("playerID",playerID);
+        return DB.update(TEAMUPDATES.ADDPLAYER,arguments);
+    }
+
+    public boolean setTeamToTM(String managerID,String teamID){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("teamID",teamID);
+        arguments.put("managerID",managerID);
+        return DB.update(SUBSCRIBERSUPDATES.SETTEAMTOTM,arguments);
+    }
+
+    public boolean addManagerToOwner(String ownerID,String managerID,String teamID){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",ownerID);
+        arguments.put("teamID",teamID);
+        arguments.put("managersAssigned",managerID);
+        return DB.update(SUBSCRIBERSUPDATES.ADDMANAGERTOOWNER,arguments);
+    }
+
+    public boolean deleteManagerToOwner(String ownerID,String managerID,String teamID){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",ownerID);
+        arguments.put("teamID",teamID);
+        arguments.put("managerID",managerID);
+        return DB.update(SUBSCRIBERSUPDATES.DELETEMANAGERFROMOWNER,arguments);
+    }
+
+    public boolean setTMToTeam(String managerID,String teamID){
+        connectToTeamDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("teamID",teamID);
+        arguments.put("managerID",managerID);
+        return DB.update(TEAMUPDATES.SETTEAMMANAGER,arguments);
+    }
+
+
+    public boolean SetPlayerBirthdate(String playerID,String birthDate){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("birthDate",birthDate);
+        arguments.put("playerID",playerID);
+        return DB.update(SUBSCRIBERSUPDATES.SETPLAYERBIRTHDATE,arguments);
+    }
+
+    public boolean SetPlayerFieldJob(String playerID,String fieldJob){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("fieldJob",fieldJob);
+        arguments.put("playerID",playerID);
+        return DB.update(SUBSCRIBERSUPDATES.SETPLAYERFIELDJOB,arguments);
+    }
+
+    public boolean SetPlayerSalary(String playerID,String salary){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("salary",salary);
+        arguments.put("playerID",playerID);
+        return DB.update(SUBSCRIBERSUPDATES.SETPLAYERSALARY,arguments);
+    }
+
+    public boolean SetTMSalary(String managerID,String salary){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("salary",salary);
+        arguments.put("managerID",managerID);
+        return DB.update(SUBSCRIBERSUPDATES.SETTMSALARY,arguments);
+    }
+
+    public boolean SetTMPermissions(String managerID,String permissions){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("permissions",permissions);
+        arguments.put("managerID",managerID);
+        return DB.update(SUBSCRIBERSUPDATES.SETTMPERMISSIONS,arguments);
+    }
+
+    public boolean addTeamToOwner(String ownerID,String teamID){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",ownerID);
+        arguments.put("teamID",teamID);
+        return DB.update(SUBSCRIBERSUPDATES.ADDTEAMTOOWNER,arguments);
+    }
+
+
+    public boolean setTeamActive(String teamID,String isActive){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("isActive",isActive);
+        arguments.put("teamID",teamID);
+        return DB.update(TEAMUPDATES.SETACTIVE,arguments);
+    }
+
+
+
+
 
     private void connectToSubscriberDB(){
         DB.TerminateDB();

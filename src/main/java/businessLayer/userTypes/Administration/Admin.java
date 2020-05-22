@@ -157,7 +157,8 @@ public class Admin extends Subscriber {
         else if(subscriberToApprove instanceof AssociationRepresentative){
             AssociationRepresentative adminToApprove = ((AssociationRepresentative)subscriberToApprove);
             adminToApprove.setApproved(approve);
-            // todo update DB
+            //update in db
+            systemController.updateApprovedAdmin(adminToApprove.getUsername(),String.valueOf(approve));
             return systemController.removeAdminRequest(userNameToApprove);
         }
 
