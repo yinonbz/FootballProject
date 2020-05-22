@@ -15,16 +15,16 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
-public class ARController implements ControllerInterface, Initializable {
+public class ARController implements ControllerInterface, Initializable, Observer {
 
     private LeagueService leagueService;
 
+    private String userName;
+
+    private ArrayList<TitledPane> notificationPanesCollection;
 
     @FXML
     private Pane approveOrCreatePane;
@@ -45,9 +45,9 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     private Pane addTeamדToSeasonPane;
     @FXML
-    private Label userLable;
+    private javafx.scene.control.Label userLable;
     @FXML
-    private TextField leagueIdField;
+    private javafx.scene.control.TextField leagueIdField;
     @FXML
     private Spinner<Integer> winSpinner;
     @FXML
@@ -80,6 +80,8 @@ public class ARController implements ControllerInterface, Initializable {
     ListView addTeamsViewL;
     @FXML
     ListView addRefereesViewL;
+    @FXML
+    private Accordion notificationsPane;
 
 
     @FXML
@@ -138,6 +140,10 @@ public class ARController implements ControllerInterface, Initializable {
 
     public void clickApprove(ActionEvent actionEvent) {
         ObservableList<String> list = teamsViewL.getSelectionModel().getSelectedItems();
+        if (list.size() == 0) {
+            showAlert("No Teams selected", "No teams were selected. Please select at least one Team to approve.", Alert.AlertType.WARNING);
+            return;
+        }
         for (int i = 0; i < list.size(); i++) {
             String teamToApprove = list.get(i);
             leagueService.confirmTeamRequestThroughRepresentative(teamToApprove, userLable.getText());
@@ -205,7 +211,7 @@ public class ARController implements ControllerInterface, Initializable {
             try {
                 leagueService.addLeagueThroughRepresentative(league, arName);
                 showAlert("Success", "The league was created successfully. Please add seasons for the league and confirm the Match Policy.", Alert.AlertType.INFORMATION);
-            } catch (AlreadyExistException e){
+            } catch (AlreadyExistException e) {
                 showAlert("Warning", e.getMessage(), Alert.AlertType.WARNING);
             }
         } else {
@@ -224,19 +230,19 @@ public class ARController implements ControllerInterface, Initializable {
     @FXML
     public void createSeason() {
         try {
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        LocalDate start = startingDate.getValue();
-        LocalDate end = endingDate.getValue();
-        if(start == null || end == null)
-            throw new MissingInputException("Please choose a Starting and an Ending Date for the season.");
-        int win = winSpinner.getValue();
-        int lose = loseSpinner.getValue();
-        int tie = tieSpinner.getValue();
-        int season = seasonSpinner.getValue();
-        String league = leagueCombo3.getValue();
-        String policy = policyCombo.getValue();
-        Date sDate = Date.from(start.atStartOfDay(defaultZoneId).toInstant());
-        Date eDate = Date.from(end.atStartOfDay(defaultZoneId).toInstant());
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            LocalDate start = startingDate.getValue();
+            LocalDate end = endingDate.getValue();
+            if (start == null || end == null)
+                throw new MissingInputException("Please choose a Starting and an Ending Date for the season.");
+            int win = winSpinner.getValue();
+            int lose = loseSpinner.getValue();
+            int tie = tieSpinner.getValue();
+            int season = seasonSpinner.getValue();
+            String league = leagueCombo3.getValue();
+            String policy = policyCombo.getValue();
+            Date sDate = Date.from(start.atStartOfDay(defaultZoneId).toInstant());
+            Date eDate = Date.from(end.atStartOfDay(defaultZoneId).toInstant());
             leagueService.addSeasonThroughRepresentative(league, season, sDate, eDate, win, lose, tie, policy, userLable.getText());
             showAlert("Success", "Season was created successfully. Please confirm the Match Policy to activate the Season.", Alert.AlertType.INFORMATION);
         } catch (RuntimeException e) {
@@ -247,20 +253,32 @@ public class ARController implements ControllerInterface, Initializable {
     @Override
     public void setUser(String usernameL) {
         userLable.setText(usernameL);
+        userName = usernameL;
+        leagueService = new LeagueService();
+        notificationPanesCollection= new ArrayList<>();
+
+        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
+        if(messages != null) {
+            for (String msg : messages) {
+                String title = msg.split(",")[0];
+                String event = msg.split(",")[1];
+                AnchorPane newPanelContent = new AnchorPane();
+                newPanelContent.getChildren().add(new Label(event));
+                TitledPane pane = new TitledPane(title, newPanelContent);
+                notificationPanesCollection.add(pane);
+            }
+        }
+        notificationsPane.getPanes().setAll(notificationPanesCollection);
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        leagueService = new LeagueService();
-
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
         SpinnerValueFactory<Integer> valueFactoryTie = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
-        SpinnerValueFactory<Integer> valueFactorySeason = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 3000, 0);
-        SpinnerValueFactory<Integer> valueFactorySeasonTeams = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 3000, 0);
-        SpinnerValueFactory<Integer> valueFactorySeasonLeague = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 3000, 0);
+        SpinnerValueFactory<Integer> valueFactorySeason = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, 2021, 0);
         //seasonTeamsSpinner.setValueFactory(valueFactorySeasonTeams);
         //leagueTeamsSpinner.setValueFactory(valueFactorySeasonLeague);
         winSpinner.setValueFactory(valueFactoryWin);
@@ -296,6 +314,7 @@ public class ARController implements ControllerInterface, Initializable {
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+            leagueService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -312,18 +331,26 @@ public class ARController implements ControllerInterface, Initializable {
 
 
     public void leagueSelect(ActionEvent actionEvent) {
-        seasonCombo.getItems().setAll(
-                leagueService.getAllSeasonsFromLeague(leagueCombo.getValue())
-        );
-
+        try {
+            seasonCombo.getItems().setAll(
+                    leagueService.getAllSeasonsFromLeague(leagueCombo.getValue())
+            );
+        } catch (NullPointerException e) {
+            seasonCombo.setDisable(true);
+            return;
+        }
         seasonCombo.setDisable(false);
     }
 
     public void leagueSelect2(ActionEvent actionEvent) {
+        try{
         seasonCombo2.getItems().setAll(
                 leagueService.getAllSeasonsFromLeague(leagueCombo2.getValue())
         );
-
+        } catch (NullPointerException e) {
+            seasonCombo2.setDisable(true);
+            return;
+        }
         seasonCombo2.setDisable(false);
     }
 
@@ -351,9 +378,9 @@ public class ARController implements ControllerInterface, Initializable {
     public void activatePolicyB(ActionEvent actionEvent) {
         try {
             leagueService.activateMatchPolicyForSeason(leagueCombo.getValue(), seasonCombo.getValue(), userLable.getText());
-            showAlert("Success","Match Policy was activated successfully.", Alert.AlertType.INFORMATION);
-        } catch (RuntimeException e){
-            showAlert("Warning",e.getMessage(), Alert.AlertType.WARNING);
+            showAlert("Success", "Match Policy was activated successfully.", Alert.AlertType.INFORMATION);
+        } catch (RuntimeException e) {
+            showAlert("Warning", e.getMessage(), Alert.AlertType.WARNING);
         }
     }
 
@@ -374,5 +401,15 @@ public class ARController implements ControllerInterface, Initializable {
         showAlert("Success", "The Referees were added to the season successfully.", Alert.AlertType.INFORMATION);
 
 
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        LinkedList<String> message = ((LinkedList<String>) arg);
+        notificationPanesCollection = new ArrayList<>();
+        AnchorPane newPanelContent = new AnchorPane();
+        newPanelContent.getChildren().add(new Label(message.get(1)));
+        TitledPane pane = new TitledPane(message.get(0), newPanelContent);
+        notificationsPane.getPanes().add(pane);
     }
 }

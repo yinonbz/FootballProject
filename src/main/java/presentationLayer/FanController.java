@@ -35,6 +35,22 @@ public class FanController implements Initializable,ControllerInterface, Observe
     @Override
     public void setUser(String usernameL) {
         userLable.setText(usernameL);
+        userName = usernameL;
+        leagueService = new LeagueService();
+        notificationPanesCollection= new ArrayList<>();
+
+        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
+        if(messages != null) {
+            for (String msg : messages) {
+                String title = msg.split(",")[0];
+                String event = msg.split(",")[1];
+                AnchorPane newPanelContent = new AnchorPane();
+                newPanelContent.getChildren().add(new Label(event));
+                TitledPane pane = new TitledPane(title, newPanelContent);
+                notificationPanesCollection.add(pane);
+            }
+        }
+        notificationsPane.getPanes().setAll(notificationPanesCollection);
     }
 
     @Override
@@ -49,17 +65,7 @@ public class FanController implements Initializable,ControllerInterface, Observe
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        notificationPanesCollection= new ArrayList<>();
-        AnchorPane newPanelContent = new AnchorPane();
-        LinkedList<String> messages = leagueService.getOfflineMessages(userLable.getText());
-        for(String msg:messages) {
-            String title = msg.split(",")[0];
-            String event = msg.split(",")[1];
-            newPanelContent.getChildren().add(new Label(event));
-            TitledPane pane = new TitledPane(title, newPanelContent);
-            notificationPanesCollection.add(pane);
-        }
-        notificationsPane.getPanes().setAll(notificationPanesCollection);
+
     }
 
     public void logoutB(ActionEvent actionEvent) {
