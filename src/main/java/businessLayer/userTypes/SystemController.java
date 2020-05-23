@@ -1872,6 +1872,7 @@ public class SystemController extends Observable {
      * @return
      */
     public LinkedList<String> getTeamOfTeamOwner(String userName){
+        /*
         TeamOwner teamOwner = DB.getTeamOwner(userName);
         LinkedList<String> teamNames = new LinkedList<>();
         HashSet<Team> teams = teamOwner.getTeams();
@@ -1879,6 +1880,8 @@ public class SystemController extends Observable {
             teamNames.add(t.getTeamName());
         }
         return teamNames;
+        */
+        return null;
     }
 
     /**
@@ -1886,6 +1889,7 @@ public class SystemController extends Observable {
      * @return names of the ACTIVE teams
      */
     public LinkedList<String> getActiveTeamOfTeamOwner(String userName){
+        /*
         TeamOwner teamOwner = DB.getTeamOwner(userName);
         LinkedList<String> teamNames = new LinkedList<>();
         HashSet<Team> teams = teamOwner.getTeams();
@@ -1894,6 +1898,8 @@ public class SystemController extends Observable {
             teamNames.add(t.getTeamName());
         }
         return teamNames;
+        */
+        return null;
     }
 
     /**
@@ -1901,6 +1907,7 @@ public class SystemController extends Observable {
      * @return names of the INACTIVE teams
      */
     public LinkedList<String> getInactiveTeamOfTeamOwner(String userName){
+        /*
         TeamOwner teamOwner = DB.getTeamOwner(userName);
         LinkedList<String> teamNames = new LinkedList<>();
         HashSet<Team> teams = teamOwner.getTeams();
@@ -1909,6 +1916,8 @@ public class SystemController extends Observable {
                 teamNames.add(t.getTeamName());
         }
         return teamNames;
+        */
+        return null;
     }
 
 
@@ -1927,6 +1936,7 @@ public class SystemController extends Observable {
     }
 
     public ArrayList<String> getAllTeamManagers(){
+        /*
         HashMap<String,TeamManager> teamManagersInDB = DB.getTeamManagers();
         ArrayList<String> teamManagerNamesInDB = new ArrayList<>();
         Iterator iterator = teamManagersInDB.entrySet().iterator();
@@ -1935,6 +1945,8 @@ public class SystemController extends Observable {
             teamManagerNamesInDB.add("" + me2.getKey());
         }
         return teamManagerNamesInDB;
+        */
+        return null;
     }
 
     public ArrayList<String> getAllULeaguesInDB() {
@@ -1996,26 +2008,21 @@ public class SystemController extends Observable {
         return null;
     }
     //todo javafx function
-
     public void updatePlayerBDate(String date, String user) {
     }
     //todo javafx function
-
     public void updatePlayerName(String name, String userName) {
     }
     //todo javafx function
-
     public void updatePlayerPost(String userName, String post) {
     }
     //todo javafx function
-
     public void updateCoachName(String name, String userName1) {
     }
-
+    //todo javafx function
     public void updateCoachPost(String userName, String post) {
     }
     //todo javafx function
-
     public void updateRefereeName(String name, String userName) {
     }
 }
