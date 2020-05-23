@@ -303,7 +303,7 @@ public class SystemController extends Observable {
 
 
     public ArrayList<String> getSystemSubscribers() {
-        HashMap<String, Subscriber> users = DB.getSystemSubscribers();
+/*        HashMap<String, Subscriber> users = DB.getSystemSubscribers();
         ArrayList<String> systemUsers = new ArrayList<>();
         ArrayList<String> leagueNamesInDB = new ArrayList<>();
         Iterator iterator = users.entrySet().iterator();
@@ -312,7 +312,8 @@ public class SystemController extends Observable {
             systemUsers.add("" + me2.getKey());
         }
 
-        return systemUsers;
+        return systemUsers;*/
+        return null;
     }
 
     /**
@@ -1868,23 +1869,6 @@ public class SystemController extends Observable {
     }
 
     /**
-     * @param userName The team owner's userName
-     * @return
-     */
-    public LinkedList<String> getTeamOfTeamOwner(String userName){
-        /*
-        TeamOwner teamOwner = DB.getTeamOwner(userName);
-        LinkedList<String> teamNames = new LinkedList<>();
-        HashSet<Team> teams = teamOwner.getTeams();
-        for(Team t: teams){
-            teamNames.add(t.getTeamName());
-        }
-        return teamNames;
-        */
-        return null;
-    }
-
-    /**
      * @param userName Team Owner
      * @return names of the ACTIVE teams
      */
@@ -1921,6 +1905,9 @@ public class SystemController extends Observable {
     }
 
 
+    /**
+     * @return get all the unconfirmed team names from the DB
+     */
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {
         /*
         HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();
@@ -1935,6 +1922,9 @@ public class SystemController extends Observable {
         return null;
     }
 
+    /**
+     * @return get all the team manager's user names from the DB
+     */
     public ArrayList<String> getAllTeamManagers(){
         /*
         HashMap<String,TeamManager> teamManagersInDB = DB.getTeamManagers();
@@ -1949,7 +1939,10 @@ public class SystemController extends Observable {
         return null;
     }
 
-    public ArrayList<String> getAllULeaguesInDB() {
+    /**
+     * @return get all the league's names from the DB
+     */
+    public ArrayList<String> getAllLeaguesInDB() {
         /*
         HashMap<String, League> leaguesInDB = DB.getLeagues();
         ArrayList<String> leagueNamesInDB = new ArrayList<>();
@@ -1963,6 +1956,9 @@ public class SystemController extends Observable {
         return null;
     }
 
+    /**
+     * @return get all the team's names from the DB
+     */
     public ArrayList<String> getAllTeamsNames() {
         /*
         if (DB.getTeams() != null && DB.getTeams().size() > 0) {
@@ -1976,6 +1972,11 @@ public class SystemController extends Observable {
         return null;
     }
 
+
+    /**
+     * @param league the league we want to return it's seasons
+     * @return the league's seasons
+     */
     public ArrayList<String> getAllSeasonsFromLeague(String league) {
         /*
         if (DB.selectLeagueFromDB(league) != null) {
@@ -1994,6 +1995,9 @@ public class SystemController extends Observable {
         return null;
     }
 
+    /**
+     * @return returns all the referee names from the DB
+     */
     public ArrayList<String> getAllRefereeNames() {
         /*
         if(DB.getReferees()!=null && DB.getReferees().size()>0) {

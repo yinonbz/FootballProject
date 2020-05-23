@@ -360,6 +360,11 @@ public class SystemService extends Observable implements Observer {
     }
 
 
+    /**
+     * @param o
+     * @param arg the notifications
+     *            this function updates the presentation layer for new notifications
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof SystemController && arg instanceof LinkedList) {
@@ -381,14 +386,16 @@ public class SystemService extends Observable implements Observer {
         }
     }
 
+    /**
+     * @param userName the user's username to add to the online users in DB (when logging in)
+     */
     public void addToUsersOnline(String userName){
         systemController.addOnlineUser(userName);
     }
 
-    public void removeFromUsersOnline(String userName){
-        systemController.removeOnlineUser(userName);
-    }
-
+    /**
+     * @return get all of the system subscribers (online AND offline)
+     */
     public ArrayList<String> getSystemSubscribers() {
         return systemController.getSystemSubscribers();
     }
