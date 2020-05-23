@@ -43,7 +43,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
     @FXML
     private Pane activatePolicyPane;
     @FXML
-    private Pane addTeamדToSeasonPane;
+    private Pane addTeamToSeasonPane;
     @FXML
     private javafx.scene.control.Label userLable;
     @FXML
@@ -94,7 +94,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(true);
         activatePolicyPane.setVisible(false);
-        addTeamדToSeasonPane.setVisible(false);
+        addTeamToSeasonPane.setVisible(false);
 
 
     }
@@ -111,7 +111,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
         activatePolicyPane.setVisible(false);
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
-        addTeamדToSeasonPane.setVisible(false);
+        addTeamToSeasonPane.setVisible(false);
 
     }
 
@@ -123,7 +123,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
         createSeasonPane.setVisible(false);
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
-        addTeamדToSeasonPane.setVisible(false);
+        addTeamToSeasonPane.setVisible(false);
 
         leagueCombo.getItems().setAll(
                 leagueService.getAllULeagues()
@@ -152,6 +152,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
         displayUnconfirmedTeams();
     }
 
+
     @FXML
     public void chooseTeam() {
         ObservableList list = addTeamsViewL.getSelectionModel().getSelectedItems();
@@ -166,12 +167,11 @@ public class ARController implements ControllerInterface, Initializable, Observe
     @FXML
     public void switchSeasonPane() {
         titleL.setText("Create Season");
-        addTeamדToSeasonPane.setVisible(false);
+        addTeamToSeasonPane.setVisible(false);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         activatePolicyPane.setVisible(false);
         createSeasonPane.setVisible(true);
-
         leagueCombo3.getItems().setAll(
                 leagueService.getAllULeagues()
         );
@@ -181,7 +181,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
     @FXML
     public void switchAddTeamPane() {
         titleL.setText("Add Teams and Referees To Season");
-        addTeamדToSeasonPane.setVisible(true);
+        addTeamToSeasonPane.setVisible(true);
         createLeaguePane.setVisible(false);
         approveTeamPane.setVisible(false);
         createSeasonPane.setVisible(false);

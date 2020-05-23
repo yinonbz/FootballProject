@@ -901,14 +901,18 @@ public class SystemController extends Observable {
     }*/
 
     /**
+     * //todo javafx function
      * @param userName the user name that the user searches it's user instance
      * @return the user's instance with the user name, if existed in the system
      * NULL if there is no user in the system with the input user name
      */
     public Subscriber getSubscriberByUserName(String userName) {
+        /*
         if (DB.containsInSystemSubscribers(userName)) {
             return DB.selectSubscriberFromDB(userName);
         }
+        return null;
+        */
         return null;
     }
 
@@ -916,11 +920,15 @@ public class SystemController extends Observable {
      * @param teamName the team name that the user searches it's team instance
      * @return the team's instance with the team name, if existed in the system
      * *      NULL if there is no team in the system with the input team name
+     *     //todo javafx function
      */
     public Team getTeamByName(String teamName) {
+        /*
         if (DB.containsInTeamsDB(teamName)) {
             return DB.selectTeamFromDB(teamName);
         }
+        return null;
+        */
         return null;
     }
 
@@ -1419,8 +1427,9 @@ public class SystemController extends Observable {
     public Match selectMatchFromDB(String matchID) {
         return DB.selectMatchFromDB(Integer.parseInt(matchID));
     }
-
+    //todo javafx function
     public boolean sendRequestForTeam(String teamName, String establishedYear, String username) {
+        /*
         Subscriber subscriber = DB.selectSubscriberFromDB(username);
         if (subscriber instanceof TeamOwner) {
             if (tryParseInt(establishedYear)) {
@@ -1440,6 +1449,8 @@ public class SystemController extends Observable {
                 }
             }
         }
+        return false;
+        */
         return false;
     }
 
@@ -1804,10 +1815,12 @@ public class SystemController extends Observable {
      * @param username
      */
     public void removeOnlineUser(String username) {
-
+        /*
         if (username != null) {
             DB.removeOnlineUser(username);
         }
+        */
+        return;
     }
 
     /**
@@ -1838,17 +1851,20 @@ public class SystemController extends Observable {
         }
     }
 
-    /**
+    /**    //todo javafx function
+
      * The function receives a username and returns the list of its notifications
      * @param username
      * @return
      */
     public LinkedList<String> getOfflineUsersNotifications(String username) {
-
+        /*
         if(username != null) {
             return DB.getOfflineUsersNotifications(username);
         }
         return null; //todo: might need an exception here
+        */
+        return null;
     }
 
     /**
@@ -1897,6 +1913,7 @@ public class SystemController extends Observable {
 
 
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {
+        /*
         HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams();
         ArrayList<String> teamNamesInDB = new ArrayList<>();
         Iterator iterator = teamsInDB.entrySet().iterator();
@@ -1905,6 +1922,8 @@ public class SystemController extends Observable {
             teamNamesInDB.add("" + me2.getKey());
         }
         return teamNamesInDB;
+        */
+        return null;
     }
 
     public ArrayList<String> getAllTeamManagers(){
@@ -1919,6 +1938,7 @@ public class SystemController extends Observable {
     }
 
     public ArrayList<String> getAllULeaguesInDB() {
+        /*
         HashMap<String, League> leaguesInDB = DB.getLeagues();
         ArrayList<String> leagueNamesInDB = new ArrayList<>();
         Iterator iterator = leaguesInDB.entrySet().iterator();
@@ -1927,9 +1947,12 @@ public class SystemController extends Observable {
             leagueNamesInDB.add("" + me2.getKey());
         }
         return leagueNamesInDB;
+        */
+        return null;
     }
 
     public ArrayList<String> getAllTeamsNames() {
+        /*
         if (DB.getTeams() != null && DB.getTeams().size() > 0) {
             ArrayList<String> teamsName = new ArrayList<>();
             teamsName.addAll(DB.getTeams().keySet());
@@ -1937,9 +1960,12 @@ public class SystemController extends Observable {
         } else {
             return null;
         }
+        */
+        return null;
     }
 
     public ArrayList<String> getAllSeasonsFromLeague(String league) {
+        /*
         if (DB.selectLeagueFromDB(league) != null) {
             League lg = DB.selectLeagueFromDB(league);
             HashMap<Integer, Season> seasons = lg.getSeasons();
@@ -1952,9 +1978,12 @@ public class SystemController extends Observable {
             return seasonsIdInLeague;
         }
         return null;
+        */
+        return null;
     }
 
     public ArrayList<String> getAllRefereeNames() {
+        /*
         if(DB.getReferees()!=null && DB.getReferees().size()>0) {
             ArrayList<String> refereesNames = new ArrayList<>();
             refereesNames.addAll(DB.getReferees().keySet());
@@ -1963,22 +1992,29 @@ public class SystemController extends Observable {
         else{
             return null;
         }
+        */
+        return null;
     }
+    //todo javafx function
 
     public void updatePlayerBDate(String date, String user) {
     }
+    //todo javafx function
 
     public void updatePlayerName(String name, String userName) {
     }
+    //todo javafx function
 
     public void updatePlayerPost(String userName, String post) {
     }
+    //todo javafx function
 
     public void updateCoachName(String name, String userName1) {
     }
 
     public void updateCoachPost(String userName, String post) {
     }
+    //todo javafx function
 
     public void updateRefereeName(String name, String userName) {
     }

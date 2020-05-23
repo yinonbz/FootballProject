@@ -122,7 +122,6 @@ public class LeagueService {
      * @return
      */
     public boolean confirmTeamRequestThroughRepresentative(String teamName, String username) {
-
         if (teamName != null && username != null) {
             return leagueController.confirmTeamRequestThroughRepresentative(teamName, username);
         }

@@ -268,7 +268,7 @@ public class LeagueController {
      * @return
      */
     public boolean addLeagueThroughRepresentative(String leagueID, String username) {
-
+        /*
         if (leagueID != null && username != null) {
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
@@ -276,6 +276,8 @@ public class LeagueController {
                 return userRep.createLeague(leagueID);
             }
         }
+        return false;
+        */
         return false;
     }
 
@@ -293,7 +295,7 @@ public class LeagueController {
      * @return
      */
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
-
+        /*
         if (leagueID != null && username != null && matchingPolicy != null) {
             if(startingDate.after(endingDate)){
                 throw new MissingInputException("Starting Date must be before the Ending Date.");
@@ -305,6 +307,8 @@ public class LeagueController {
             }
         }
         throw new MissingInputException("Please complete the form.");
+        */
+        return false;
     }
 
     /**
@@ -415,6 +419,7 @@ public class LeagueController {
      * @return true if at least one team was added
      */
     public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID, String seasonID, String userName) {
+        /*
         if (seasonID != null && userName != null && leagueID!=null) {
             Subscriber user = systemController.getSubscriberByUserName(userName);
             if(user instanceof AssociationRepresentative){
@@ -431,6 +436,8 @@ public class LeagueController {
             }
         }
         throw new MissingInputException("Missing Input");
+        */
+        return false;
     }
 
     /**
@@ -441,6 +448,7 @@ public class LeagueController {
      * @return
      */
     public boolean activateMatchPolicy(String leagueID, String seasonID, String userName){
+        /*
         if (seasonID != null && userName != null && leagueID!=null) {
             Subscriber user = systemController.getSubscriberByUserName(userName);
             if (user instanceof AssociationRepresentative) {
@@ -463,6 +471,8 @@ public class LeagueController {
             }
         }
         throw new MissingInputException("Please select a League and a Season to activate.");
+        */
+        return false;
     }
 
     /**
