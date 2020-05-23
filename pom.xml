@@ -27,6 +27,9 @@
                             <include>**/*Test.java</include>
                             <include>**/Test*.java</include>
                         </includes>
+                        <excludes>
+                            <exclude>**/*DB*Test*.java</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
                 <plugin>
