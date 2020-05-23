@@ -24,7 +24,7 @@ public class DBHandler implements DB_Inter{
 
     public DBHandler(){
         this("root","Messi1Ronaldo2",
-                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/demodb");
+                "org.mariadb.jdbc.Driver","jdbc:mysql://132.72.65.33:3306/demodb");
     }
 
     public DBHandler(String username,String password, String myDriver, String myUrl){
