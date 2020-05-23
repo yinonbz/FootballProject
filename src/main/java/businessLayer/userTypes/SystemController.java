@@ -901,7 +901,7 @@ public class SystemController extends Observable {
     }*/
 
     /**
-     * //todo javafx function
+     * //todo javafx  function
      * @param userName the user name that the user searches it's user instance
      * @return the user's instance with the user name, if existed in the system
      * NULL if there is no user in the system with the input user name
