@@ -231,7 +231,8 @@ public class TeamManager extends Subscriber implements OwnerEligible {
                         return true;
                     } else if (typeEdit.equals("teamJob")) {
                         team.removeCoach(coach);
-                        coach.setTeamJob(edit);
+                        //coach.setTeamJob(edit);
+                        coach.getTeamS().add(team);
                         team.addCoach(coach);
                         return true;
                     }

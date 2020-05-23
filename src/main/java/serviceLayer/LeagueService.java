@@ -76,10 +76,10 @@ public class LeagueService {
      * @param username
      * @return
      */
-    public boolean createRefereeThroughRepresentative(String refUsername, String username) {
+    public boolean createRefereeThroughRepresentative(String refUsername, String username, String role) {
 
         if (refUsername != null && username != null) {
-            return leagueController.createRefereeThroughRepresentative(refUsername, username);
+            return leagueController.createRefereeThroughRepresentative(refUsername, username, role);
         }
         return false;
     }
@@ -226,7 +226,8 @@ public class LeagueService {
      * @return all of the referee names from the DB
      */
     public ArrayList<String> getAllRefereeNames(){
-        return systemController.getAllRefereeNames();
+      //  return systemController.getAllRefereeNames(); todo not implemented in db
+        return null;
     }
 
 

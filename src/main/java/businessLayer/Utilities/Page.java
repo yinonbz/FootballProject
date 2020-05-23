@@ -17,7 +17,7 @@ static int pageId=0;
 
     /**
      * constractor for player and coach
-     * @param  username
+     * @param username
      * @param name
      * @param birthDate
      */

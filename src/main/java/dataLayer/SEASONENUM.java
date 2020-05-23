@@ -1,0 +1,5 @@
+package dataLayer;
+
+public enum SEASONENUM {
+REFEREE,MATCHESTABLE,TEAM, SEASONUPDATED,
+}
