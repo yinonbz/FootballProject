@@ -89,4 +89,29 @@ public class Fan extends Subscriber {
         return null;
     }
     */
+
+
+    public boolean requestToFollowTeam(){
+
+
+        return false;
+    }
+
+
+    public boolean requestToPlayer(){
+
+
+        return false;
+    }
+
+    public boolean requestToCouch(){
+
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Fan";
+    }
 }

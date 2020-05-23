@@ -1,5 +1,8 @@
 package businessLayer.Tournament;
 
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
@@ -294,13 +297,18 @@ public class LeagueController {
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
         if (leagueID != null && username != null && matchingPolicy != null) {
+            if(startingDate.after(endingDate)){
+                throw new MissingInputException("Starting Date must be before the Ending Date.");
+            }
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
                 return userRep.createSeason(leagueID, seasonID, startingDate, win, lose, tie, matchingPolicy, endingDate);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete the form.");
+
+        //return false;
     }
 
     /**
@@ -359,7 +367,7 @@ public class LeagueController {
                 return userRep.assignRefereeToSeason(refUsername, leagueName, seasonID);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete this form to add a Referee to a Season.");
     }
 
 
@@ -426,9 +434,9 @@ public class LeagueController {
                     return true;
                 }
             }
+            return false;
         }
-        return false;
-
+        throw new MissingInputException("Missing Input");
     }
 
     /**
@@ -446,20 +454,27 @@ public class LeagueController {
                 if (season != null) {
                     if (season.getTeams() != null) {
                         if (season.getTeams().size() > 1) {
-                            if(season.activateMatchPolicy(this)){
+                            if(season.checkIfRefereeIsAssignedToSeason()) {
                                 HashMap <Integer,Match> matches = season.getMatchesOfTheSeason();
                                 //Integer [] keys = (Integer [] )matches.keySet().toArray();
                                 LinkedList<Integer> keys = new LinkedList<>();
                                 keys.addAll(matches.keySet());
                                systemController.addMatchTableToSeason(leagueID, Integer.parseInt(seasonID), keys); //todo DB
-                               return true;
+                               return season.activateMatchPolicy(this);
                             }
+                            else{
+                                throw new NotApprovedException("The Season must have at least one Referee before activation. Please add Referees for the Season.");
+                            }
+                        }
+                        else{
+                            throw new NotApprovedException("The Season must have at least 2 Teams before activation. Please add more teams for the Season.");
                         }
                     }
                 }
             }
+            return false;
         }
-        return false;
+        throw new MissingInputException("Please select a League and a Season to activate.");
     }
 
     /**

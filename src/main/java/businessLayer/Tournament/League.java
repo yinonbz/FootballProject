@@ -1,5 +1,6 @@
 package businessLayer.Tournament;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.userTypes.Administration.Referee;
@@ -14,7 +15,7 @@ public class League {
     //private Map<Season,MatchingPolicy> matchingPolicy; // probably not needed
     //private Map<Season,RankingPolicy> rankingPolicy; // probably not needed
     private SystemController systemController;
-    private HashMap<Integer, Season> seasons;
+    private HashMap<Integer, Season> seasons; //<Season ID, Season>
     //private List<Match> matches;
 
     /**
@@ -125,9 +126,14 @@ public class League {
      */
     public boolean addSeasonToLeague(int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy) {
 
-        if (seasons.containsKey(seasonID) || startingDate.after(endingDate)) {
-            return false;
+        if (seasons.containsKey(seasonID)){
+            throw new AlreadyExistException("There is already a season with this Season ID in this league. Please choose another Season ID.");
         }
+
+        if(startingDate.after(endingDate)) {
+            throw new InputMismatchException("The Starting Date must be before the Ending Date.");
+        }
+
         if (matchingPolicy == null){
             return false;
         }
@@ -177,5 +183,9 @@ public class League {
 
     public void setLeagueName(String leagueName) {
         this.leagueName = leagueName;
+    }
+
+    public HashMap<Integer, Season> getSeasons() {
+        return seasons;
     }
 }

@@ -2,12 +2,13 @@ package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
 import businessLayer.Utilities.Page;
+import businessLayer.Utilities.HasPage;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
 import java.util.HashSet;
 
-public class Coach extends Subscriber implements OwnerEligible {
+public class Coach extends Subscriber implements OwnerEligible, HasPage {
 
     private TeamOwner teamOwner;
     private TRAINING training;
@@ -34,7 +35,7 @@ public class Coach extends Subscriber implements OwnerEligible {
         this.teamOwner =null;
         this.salary = salary;
         this.teams = new HashSet<>();
-        coachPage = new Page(username,name,"");
+        coachPage = new Page(username,name,"", this, name);
     }
 
     /**
@@ -175,7 +176,7 @@ public class Coach extends Subscriber implements OwnerEligible {
         return "Coach";
     }
 
-    public boolean addUpdate(String update){
+    public boolean updatePage(String update){
         return coachPage.update(update);
     }
 
@@ -186,4 +187,5 @@ public class Coach extends Subscriber implements OwnerEligible {
     public void setRoleInTeam(RoleInTeam roleInTeam) {
         this.roleInTeam = roleInTeam;
     }
+
 }

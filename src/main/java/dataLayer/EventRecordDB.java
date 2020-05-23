@@ -19,7 +19,7 @@ public class EventRecordDB implements DB_Inter {
     String password = "Messi1Ronaldo2";
     String myDriver = "org.mariadb.jdbc.Driver";
     //String myUrl = "jdbc:mysql://132.72.65.33:3306/SoccerProject";
-    String myUrl = "jdbc:mysql://localhost:3306/localsoccer";
+    String myUrl = "jdbc:mysql://localhost:3306/demodb";
     Connection connection = null;
 
 
