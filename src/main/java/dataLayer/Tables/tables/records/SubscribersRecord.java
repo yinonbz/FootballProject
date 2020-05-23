@@ -19,59 +19,59 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SubscribersRecord extends UpdatableRecordImpl<SubscribersRecord> implements Record4<String, String, String, String> {
 
-    private static final long serialVersionUID = -1923957649;
+    private static final long serialVersionUID = -668900529;
 
     /**
-     * Setter for <code>testdb3.subscribers.SubscriberID</code>.
+     * Setter for <code>demodb.subscribers.SubscriberID</code>.
      */
     public void setSubscriberid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.subscribers.SubscriberID</code>.
+     * Getter for <code>demodb.subscribers.SubscriberID</code>.
      */
     public String getSubscriberid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.subscribers.password</code>.
+     * Setter for <code>demodb.subscribers.password</code>.
      */
     public void setPassword(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.subscribers.password</code>.
+     * Getter for <code>demodb.subscribers.password</code>.
      */
     public String getPassword() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.subscribers.name</code>.
+     * Setter for <code>demodb.subscribers.name</code>.
      */
     public void setName(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.subscribers.name</code>.
+     * Getter for <code>demodb.subscribers.name</code>.
      */
     public String getName() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.subscribers.type</code>.
+     * Setter for <code>demodb.subscribers.type</code>.
      */
     public void setType(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.subscribers.type</code>.
+     * Getter for <code>demodb.subscribers.type</code>.
      */
     public String getType() {
         return (String) get(3);

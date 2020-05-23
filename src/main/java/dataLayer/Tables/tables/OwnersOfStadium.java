@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.OwnersOfStadiumRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OwnersOfStadium extends TableImpl<OwnersOfStadiumRecord> {
 
-    private static final long serialVersionUID = -1964953618;
+    private static final long serialVersionUID = 731932506;
 
     /**
-     * The reference instance of <code>testdb3.owners_of_stadium</code>
+     * The reference instance of <code>demodb.owners_of_stadium</code>
      */
     public static final OwnersOfStadium OWNERS_OF_STADIUM = new OwnersOfStadium();
 
@@ -47,31 +47,31 @@ public class OwnersOfStadium extends TableImpl<OwnersOfStadiumRecord> {
     }
 
     /**
-     * The column <code>testdb3.owners_of_stadium.StadiumID</code>.
+     * The column <code>demodb.owners_of_stadium.StadiumID</code>.
      */
     public final TableField<OwnersOfStadiumRecord, String> STADIUMID = createField(DSL.name("StadiumID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.owners_of_stadium.TeamID</code>.
+     * The column <code>demodb.owners_of_stadium.TeamID</code>.
      */
     public final TableField<OwnersOfStadiumRecord, String> TEAMID = createField(DSL.name("TeamID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>testdb3.owners_of_stadium</code> table reference
+     * Create a <code>demodb.owners_of_stadium</code> table reference
      */
     public OwnersOfStadium() {
         this(DSL.name("owners_of_stadium"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.owners_of_stadium</code> table reference
+     * Create an aliased <code>demodb.owners_of_stadium</code> table reference
      */
     public OwnersOfStadium(String alias) {
         this(DSL.name(alias), OWNERS_OF_STADIUM);
     }
 
     /**
-     * Create an aliased <code>testdb3.owners_of_stadium</code> table reference
+     * Create an aliased <code>demodb.owners_of_stadium</code> table reference
      */
     public OwnersOfStadium(Name alias) {
         this(alias, OWNERS_OF_STADIUM);
@@ -91,7 +91,7 @@ public class OwnersOfStadium extends TableImpl<OwnersOfStadiumRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

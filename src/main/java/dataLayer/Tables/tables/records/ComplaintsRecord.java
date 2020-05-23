@@ -19,87 +19,87 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ComplaintsRecord extends UpdatableRecordImpl<ComplaintsRecord> implements Record6<Integer, String, String, String, String, Boolean> {
 
-    private static final long serialVersionUID = 1508489778;
+    private static final long serialVersionUID = 113229556;
 
     /**
-     * Setter for <code>testdb3.complaints.ComplaintID</code>.
+     * Setter for <code>demodb.complaints.ComplaintID</code>.
      */
     public void setComplaintid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.complaints.ComplaintID</code>.
+     * Getter for <code>demodb.complaints.ComplaintID</code>.
      */
     public Integer getComplaintid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.complaints.WriterID</code>.
+     * Setter for <code>demodb.complaints.WriterID</code>.
      */
     public void setWriterid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.complaints.WriterID</code>.
+     * Getter for <code>demodb.complaints.WriterID</code>.
      */
     public String getWriterid() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.complaints.Content</code>.
+     * Setter for <code>demodb.complaints.Content</code>.
      */
     public void setContent(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.complaints.Content</code>.
+     * Getter for <code>demodb.complaints.Content</code>.
      */
     public String getContent() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.complaints.handlerID</code>.
+     * Setter for <code>demodb.complaints.handlerID</code>.
      */
     public void setHandlerid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.complaints.handlerID</code>.
+     * Getter for <code>demodb.complaints.handlerID</code>.
      */
     public String getHandlerid() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>testdb3.complaints.Comment</code>.
+     * Setter for <code>demodb.complaints.Comment</code>.
      */
     public void setComment(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>testdb3.complaints.Comment</code>.
+     * Getter for <code>demodb.complaints.Comment</code>.
      */
     public String getComment() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>testdb3.complaints.isAnswered</code>.
+     * Setter for <code>demodb.complaints.isAnswered</code>.
      */
     public void setIsanswered(Boolean value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>testdb3.complaints.isAnswered</code>.
+     * Getter for <code>demodb.complaints.isAnswered</code>.
      */
     public Boolean getIsanswered() {
         return (Boolean) get(5);

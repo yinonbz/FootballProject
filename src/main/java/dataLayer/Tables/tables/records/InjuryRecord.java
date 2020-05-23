@@ -18,59 +18,59 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class InjuryRecord extends TableRecordImpl<InjuryRecord> implements Record4<Integer, Integer, String, String> {
 
-    private static final long serialVersionUID = 1233337242;
+    private static final long serialVersionUID = 1107328342;
 
     /**
-     * Setter for <code>testdb3.injury.MatchID</code>.
+     * Setter for <code>demodb.injury.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.injury.MatchID</code>.
+     * Getter for <code>demodb.injury.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.injury.EventID</code>.
+     * Setter for <code>demodb.injury.EventID</code>.
      */
     public void setEventid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.injury.EventID</code>.
+     * Getter for <code>demodb.injury.EventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.injury.Time</code>.
+     * Setter for <code>demodb.injury.Time</code>.
      */
     public void setTime(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.injury.Time</code>.
+     * Getter for <code>demodb.injury.Time</code>.
      */
     public String getTime() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.injury.PlayerInjuredID</code>.
+     * Setter for <code>demodb.injury.PlayerInjuredID</code>.
      */
     public void setPlayerinjuredid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.injury.PlayerInjuredID</code>.
+     * Getter for <code>demodb.injury.PlayerInjuredID</code>.
      */
     public String getPlayerinjuredid() {
         return (String) get(3);

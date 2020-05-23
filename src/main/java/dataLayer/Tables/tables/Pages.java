@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.PagesRecord;
 
 import java.time.LocalDate;
@@ -33,10 +33,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Pages extends TableImpl<PagesRecord> {
 
-    private static final long serialVersionUID = -1091796733;
+    private static final long serialVersionUID = -616535821;
 
     /**
-     * The reference instance of <code>testdb3.pages</code>
+     * The reference instance of <code>demodb.pages</code>
      */
     public static final Pages PAGES = new Pages();
 
@@ -49,36 +49,36 @@ public class Pages extends TableImpl<PagesRecord> {
     }
 
     /**
-     * The column <code>testdb3.pages.pageID</code>.
+     * The column <code>demodb.pages.pageID</code>.
      */
     public final TableField<PagesRecord, Integer> PAGEID = createField(DSL.name("pageID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>testdb3.pages.name</code>.
+     * The column <code>demodb.pages.name</code>.
      */
     public final TableField<PagesRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.pages.birthday</code>.
+     * The column <code>demodb.pages.birthday</code>.
      */
     public final TableField<PagesRecord, LocalDate> BIRTHDAY = createField(DSL.name("birthday"), org.jooq.impl.SQLDataType.LOCALDATE.defaultValue(org.jooq.impl.DSL.field("curdate()", org.jooq.impl.SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * Create a <code>testdb3.pages</code> table reference
+     * Create a <code>demodb.pages</code> table reference
      */
     public Pages() {
         this(DSL.name("pages"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.pages</code> table reference
+     * Create an aliased <code>demodb.pages</code> table reference
      */
     public Pages(String alias) {
         this(DSL.name(alias), PAGES);
     }
 
     /**
-     * Create an aliased <code>testdb3.pages</code> table reference
+     * Create an aliased <code>demodb.pages</code> table reference
      */
     public Pages(Name alias) {
         this(alias, PAGES);
@@ -98,7 +98,7 @@ public class Pages extends TableImpl<PagesRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

@@ -18,31 +18,31 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PagePostRecord extends TableRecordImpl<PagePostRecord> implements Record2<Integer, String> {
 
-    private static final long serialVersionUID = -1468553688;
+    private static final long serialVersionUID = -772243100;
 
     /**
-     * Setter for <code>testdb3.page_post.pageID</code>.
+     * Setter for <code>demodb.page_post.pageID</code>.
      */
     public void setPageid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.page_post.pageID</code>.
+     * Getter for <code>demodb.page_post.pageID</code>.
      */
     public Integer getPageid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.page_post.post</code>.
+     * Setter for <code>demodb.page_post.post</code>.
      */
     public void setPost(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.page_post.post</code>.
+     * Getter for <code>demodb.page_post.post</code>.
      */
     public String getPost() {
         return (String) get(1);

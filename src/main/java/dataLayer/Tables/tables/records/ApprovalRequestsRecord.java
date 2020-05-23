@@ -19,59 +19,59 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ApprovalRequestsRecord extends UpdatableRecordImpl<ApprovalRequestsRecord> implements Record4<String, String, String, String> {
 
-    private static final long serialVersionUID = -1632523537;
+    private static final long serialVersionUID = 1002932527;
 
     /**
-     * Setter for <code>testdb3.approval_requests.username</code>.
+     * Setter for <code>demodb.approval_requests.username</code>.
      */
     public void setUsername(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.approval_requests.username</code>.
+     * Getter for <code>demodb.approval_requests.username</code>.
      */
     public String getUsername() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.approval_requests.name</code>.
+     * Setter for <code>demodb.approval_requests.name</code>.
      */
     public void setName(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.approval_requests.name</code>.
+     * Getter for <code>demodb.approval_requests.name</code>.
      */
     public String getName() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.approval_requests.password</code>.
+     * Setter for <code>demodb.approval_requests.password</code>.
      */
     public void setPassword(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.approval_requests.password</code>.
+     * Getter for <code>demodb.approval_requests.password</code>.
      */
     public String getPassword() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.approval_requests.userType</code>.
+     * Setter for <code>demodb.approval_requests.userType</code>.
      */
     public void setUsertype(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.approval_requests.userType</code>.
+     * Getter for <code>demodb.approval_requests.userType</code>.
      */
     public String getUsertype() {
         return (String) get(3);

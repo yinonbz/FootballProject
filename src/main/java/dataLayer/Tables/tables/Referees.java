@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.enums.RefereesRoleref;
 import dataLayer.Tables.tables.records.RefereesRecord;
 
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Referees extends TableImpl<RefereesRecord> {
 
-    private static final long serialVersionUID = 1497433040;
+    private static final long serialVersionUID = 1747862422;
 
     /**
-     * The reference instance of <code>testdb3.referees</code>
+     * The reference instance of <code>demodb.referees</code>
      */
     public static final Referees REFEREES = new Referees();
 
@@ -48,31 +48,31 @@ public class Referees extends TableImpl<RefereesRecord> {
     }
 
     /**
-     * The column <code>testdb3.referees.refereeID</code>.
+     * The column <code>demodb.referees.refereeID</code>.
      */
     public final TableField<RefereesRecord, String> REFEREEID = createField(DSL.name("refereeID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.referees.roleRef</code>.
+     * The column <code>demodb.referees.roleRef</code>.
      */
     public final TableField<RefereesRecord, RefereesRoleref> ROLEREF = createField(DSL.name("roleRef"), org.jooq.impl.SQLDataType.VARCHAR(9).defaultValue(org.jooq.impl.DSL.field("'MAIN'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(dataLayer.Tables.enums.RefereesRoleref.class), this, "");
 
     /**
-     * Create a <code>testdb3.referees</code> table reference
+     * Create a <code>demodb.referees</code> table reference
      */
     public Referees() {
         this(DSL.name("referees"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.referees</code> table reference
+     * Create an aliased <code>demodb.referees</code> table reference
      */
     public Referees(String alias) {
         this(DSL.name(alias), REFEREES);
     }
 
     /**
-     * Create an aliased <code>testdb3.referees</code> table reference
+     * Create an aliased <code>demodb.referees</code> table reference
      */
     public Referees(Name alias) {
         this(alias, REFEREES);
@@ -92,7 +92,7 @@ public class Referees extends TableImpl<RefereesRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

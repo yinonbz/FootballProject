@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.MatchRefereeRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MatchReferee extends TableImpl<MatchRefereeRecord> {
 
-    private static final long serialVersionUID = 583219881;
+    private static final long serialVersionUID = -749344043;
 
     /**
-     * The reference instance of <code>testdb3.match_referee</code>
+     * The reference instance of <code>demodb.match_referee</code>
      */
     public static final MatchReferee MATCH_REFEREE = new MatchReferee();
 
@@ -48,31 +48,31 @@ public class MatchReferee extends TableImpl<MatchRefereeRecord> {
     }
 
     /**
-     * The column <code>testdb3.match_referee.MatchID</code>.
+     * The column <code>demodb.match_referee.MatchID</code>.
      */
     public final TableField<MatchRefereeRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.match_referee.RefereeID</code>.
+     * The column <code>demodb.match_referee.RefereeID</code>.
      */
     public final TableField<MatchRefereeRecord, String> REFEREEID = createField(DSL.name("RefereeID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>testdb3.match_referee</code> table reference
+     * Create a <code>demodb.match_referee</code> table reference
      */
     public MatchReferee() {
         this(DSL.name("match_referee"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.match_referee</code> table reference
+     * Create an aliased <code>demodb.match_referee</code> table reference
      */
     public MatchReferee(String alias) {
         this(DSL.name(alias), MATCH_REFEREE);
     }
 
     /**
-     * Create an aliased <code>testdb3.match_referee</code> table reference
+     * Create an aliased <code>demodb.match_referee</code> table reference
      */
     public MatchReferee(Name alias) {
         this(alias, MATCH_REFEREE);
@@ -92,7 +92,7 @@ public class MatchReferee extends TableImpl<MatchRefereeRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

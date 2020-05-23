@@ -52,123 +52,123 @@ import dataLayer.Tables.tables.Yellowcard;
 
 
 /**
- * Convenience access to all tables in testdb3
+ * Convenience access to all tables in demodb
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**
-     * The table <code>testdb3.admins</code>.
+     * The table <code>demodb.admins</code>.
      */
     public static final Admins ADMINS = Admins.ADMINS;
 
     /**
-     * The table <code>testdb3.approval_requests</code>.
+     * The table <code>demodb.approval_requests</code>.
      */
     public static final ApprovalRequests APPROVAL_REQUESTS = ApprovalRequests.APPROVAL_REQUESTS;
 
     /**
-     * The table <code>testdb3.ars</code>.
+     * The table <code>demodb.ars</code>.
      */
     public static final Ars ARS = Ars.ARS;
 
     /**
-     * The table <code>testdb3.coach_team</code>.
+     * The table <code>demodb.coach_team</code>.
      */
     public static final CoachTeam COACH_TEAM = CoachTeam.COACH_TEAM;
 
     /**
-     * The table <code>testdb3.coaches</code>.
+     * The table <code>demodb.coaches</code>.
      */
     public static final Coaches COACHES = Coaches.COACHES;
 
     /**
-     * The table <code>testdb3.complaints</code>.
+     * The table <code>demodb.complaints</code>.
      */
     public static final Complaints COMPLAINTS = Complaints.COMPLAINTS;
 
     /**
-     * The table <code>testdb3.eventrecorder</code>.
+     * The table <code>demodb.eventrecorder</code>.
      */
     public static final Eventrecorder EVENTRECORDER = Eventrecorder.EVENTRECORDER;
 
     /**
-     * The table <code>testdb3.eventsrecorder_events</code>.
+     * The table <code>demodb.eventsrecorder_events</code>.
      */
     public static final EventsrecorderEvents EVENTSRECORDER_EVENTS = EventsrecorderEvents.EVENTSRECORDER_EVENTS;
 
     /**
-     * The table <code>testdb3.fans</code>.
+     * The table <code>demodb.fans</code>.
      */
     public static final Fans FANS = Fans.FANS;
 
     /**
-     * The table <code>testdb3.foul</code>.
+     * The table <code>demodb.foul</code>.
      */
     public static final Foul FOUL = Foul.FOUL;
 
     /**
-     * The table <code>testdb3.goal</code>.
+     * The table <code>demodb.goal</code>.
      */
     public static final Goal GOAL = Goal.GOAL;
 
     /**
-     * The table <code>testdb3.injury</code>.
+     * The table <code>demodb.injury</code>.
      */
     public static final Injury INJURY = Injury.INJURY;
 
     /**
-     * The table <code>testdb3.league</code>.
+     * The table <code>demodb.league</code>.
      */
     public static final League LEAGUE = League.LEAGUE;
 
     /**
-     * The table <code>testdb3.logs</code>.
+     * The table <code>demodb.logs</code>.
      */
     public static final Logs LOGS = Logs.LOGS;
 
     /**
-     * The table <code>testdb3.match</code>.
+     * The table <code>demodb.match</code>.
      */
     public static final Match MATCH = Match.MATCH;
 
     /**
-     * The table <code>testdb3.match_referee</code>.
+     * The table <code>demodb.match_referee</code>.
      */
     public static final MatchReferee MATCH_REFEREE = MatchReferee.MATCH_REFEREE;
 
     /**
-     * The table <code>testdb3.matching policy</code>.
+     * The table <code>demodb.matching policy</code>.
      */
     public static final MatchingPolicy MATCHING_POLICY = MatchingPolicy.MATCHING_POLICY;
 
     /**
-     * The table <code>testdb3.offside</code>.
+     * The table <code>demodb.offside</code>.
      */
     public static final Offside OFFSIDE = Offside.OFFSIDE;
 
     /**
-     * The table <code>testdb3.owner_manager_assignings</code>.
+     * The table <code>demodb.owner_manager_assignings</code>.
      */
     public static final OwnerManagerAssignings OWNER_MANAGER_ASSIGNINGS = OwnerManagerAssignings.OWNER_MANAGER_ASSIGNINGS;
 
     /**
-     * The table <code>testdb3.owner_owner_assignings</code>.
+     * The table <code>demodb.owner_owner_assignings</code>.
      */
     public static final OwnerOwnerAssignings OWNER_OWNER_ASSIGNINGS = OwnerOwnerAssignings.OWNER_OWNER_ASSIGNINGS;
 
     /**
-     * The table <code>testdb3.owner_teams</code>.
+     * The table <code>demodb.owner_teams</code>.
      */
     public static final OwnerTeams OWNER_TEAMS = OwnerTeams.OWNER_TEAMS;
 
     /**
-     * The table <code>testdb3.owners_of_stadium</code>.
+     * The table <code>demodb.owners_of_stadium</code>.
      */
     public static final OwnersOfStadium OWNERS_OF_STADIUM = OwnersOfStadium.OWNERS_OF_STADIUM;
 
     /**
-     * The table <code>testdb3.page_owner</code>.
+     * The table <code>demodb.page_owner</code>.
      */
     public static final PageOwner PAGE_OWNER = PageOwner.PAGE_OWNER;
 
@@ -178,97 +178,97 @@ public class Tables {
     public static final PagePost PAGE_POST = PagePost.PAGE_POST;
 
     /**
-     * The table <code>testdb3.pages</code>.
+     * The table <code>demodb.pages</code>.
      */
     public static final Pages PAGES = Pages.PAGES;
 
     /**
-     * The table <code>testdb3.players</code>.
+     * The table <code>demodb.players</code>.
      */
     public static final Players PLAYERS = Players.PLAYERS;
 
     /**
-     * The table <code>testdb3.previous_games_in_stadium</code>.
+     * The table <code>demodb.previous_games_in_stadium</code>.
      */
     public static final PreviousGamesInStadium PREVIOUS_GAMES_IN_STADIUM = PreviousGamesInStadium.PREVIOUS_GAMES_IN_STADIUM;
 
     /**
-     * The table <code>testdb3.rankingpolicy</code>.
+     * The table <code>demodb.rankingpolicy</code>.
      */
     public static final Rankingpolicy RANKINGPOLICY = Rankingpolicy.RANKINGPOLICY;
 
     /**
-     * The table <code>testdb3.redcard</code>.
+     * The table <code>demodb.redcard</code>.
      */
     public static final Redcard REDCARD = Redcard.REDCARD;
 
     /**
-     * The table <code>testdb3.referee_matches</code>.
+     * The table <code>demodb.referee_matches</code>.
      */
     public static final RefereeMatches REFEREE_MATCHES = RefereeMatches.REFEREE_MATCHES;
 
     /**
-     * The table <code>testdb3.referees</code>.
+     * The table <code>demodb.referees</code>.
      */
     public static final Referees REFEREES = Referees.REFEREES;
 
     /**
-     * The table <code>testdb3.season_matches</code>.
+     * The table <code>demodb.season_matches</code>.
      */
     public static final SeasonMatches SEASON_MATCHES = SeasonMatches.SEASON_MATCHES;
 
     /**
-     * The table <code>testdb3.season_referee</code>.
+     * The table <code>demodb.season_referee</code>.
      */
     public static final SeasonReferee SEASON_REFEREE = SeasonReferee.SEASON_REFEREE;
 
     /**
-     * The table <code>testdb3.season_tableleague</code>.
+     * The table <code>demodb.season_tableleague</code>.
      */
     public static final SeasonTableleague SEASON_TABLELEAGUE = SeasonTableleague.SEASON_TABLELEAGUE;
 
     /**
-     * The table <code>testdb3.season_teams</code>.
+     * The table <code>demodb.season_teams</code>.
      */
     public static final SeasonTeams SEASON_TEAMS = SeasonTeams.SEASON_TEAMS;
 
     /**
-     * The table <code>testdb3.seasons</code>.
+     * The table <code>demodb.seasons</code>.
      */
     public static final Seasons SEASONS = Seasons.SEASONS;
 
     /**
-     * The table <code>testdb3.stadium</code>.
+     * The table <code>demodb.stadium</code>.
      */
     public static final Stadium STADIUM = Stadium.STADIUM;
 
     /**
-     * The table <code>testdb3.subscribers</code>.
+     * The table <code>demodb.subscribers</code>.
      */
     public static final Subscribers SUBSCRIBERS = Subscribers.SUBSCRIBERS;
 
     /**
-     * The table <code>testdb3.substitute</code>.
+     * The table <code>demodb.substitute</code>.
      */
     public static final Substitute SUBSTITUTE = Substitute.SUBSTITUTE;
 
     /**
-     * The table <code>testdb3.team_players</code>.
+     * The table <code>demodb.team_players</code>.
      */
     public static final TeamPlayers TEAM_PLAYERS = TeamPlayers.TEAM_PLAYERS;
 
     /**
-     * The table <code>testdb3.teammanagers</code>.
+     * The table <code>demodb.teammanagers</code>.
      */
     public static final Teammanagers TEAMMANAGERS = Teammanagers.TEAMMANAGERS;
 
     /**
-     * The table <code>testdb3.teamowner_ownereligible</code>.
+     * The table <code>demodb.teamowner_ownereligible</code>.
      */
     public static final TeamownerOwnereligible TEAMOWNER_OWNERELIGIBLE = TeamownerOwnereligible.TEAMOWNER_OWNERELIGIBLE;
 
     /**
-     * The table <code>testdb3.teams</code>.
+     * The table <code>demodb.teams</code>.
      */
     public static final Teams TEAMS = Teams.TEAMS;
 
@@ -278,7 +278,7 @@ public class Tables {
     public static final UnconfirmedTeams UNCONFIRMED_TEAMS = UnconfirmedTeams.UNCONFIRMED_TEAMS;
 
     /**
-     * The table <code>testdb3.yellowcard</code>.
+     * The table <code>demodb.yellowcard</code>.
      */
     public static final Yellowcard YELLOWCARD = Yellowcard.YELLOWCARD;
 }

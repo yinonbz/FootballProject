@@ -17,7 +17,7 @@ import org.jooq.impl.CatalogImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultCatalog extends CatalogImpl {
 
-    private static final long serialVersionUID = 1556386506;
+    private static final long serialVersionUID = -1827301378;
 
     /**
      * The reference instance of <code>DEFAULT_CATALOG</code>
@@ -25,9 +25,9 @@ public class DefaultCatalog extends CatalogImpl {
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
     /**
-     * The schema <code>testdb3</code>.
+     * The schema <code>demodb</code>.
      */
-    public final Testdb3 TESTDB3 = Testdb3.TESTDB3;
+    public final Demodb DEMODB = Demodb.DEMODB;
 
     /**
      * No further instances allowed
@@ -39,6 +39,6 @@ public class DefaultCatalog extends CatalogImpl {
     @Override
     public final List<Schema> getSchemas() {
         return Arrays.<Schema>asList(
-            Testdb3.TESTDB3);
+            Demodb.DEMODB);
     }
 }

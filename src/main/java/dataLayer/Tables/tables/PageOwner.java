@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.PageOwnerRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PageOwner extends TableImpl<PageOwnerRecord> {
 
-    private static final long serialVersionUID = -191016418;
+    private static final long serialVersionUID = 685501258;
 
     /**
-     * The reference instance of <code>testdb3.page_owner</code>
+     * The reference instance of <code>demodb.page_owner</code>
      */
     public static final PageOwner PAGE_OWNER = new PageOwner();
 
@@ -48,31 +48,31 @@ public class PageOwner extends TableImpl<PageOwnerRecord> {
     }
 
     /**
-     * The column <code>testdb3.page_owner.pageID</code>.
+     * The column <code>demodb.page_owner.pageID</code>.
      */
     public final TableField<PageOwnerRecord, Integer> PAGEID = createField(DSL.name("pageID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.page_owner.ownerID</code>.
+     * The column <code>demodb.page_owner.ownerID</code>.
      */
     public final TableField<PageOwnerRecord, String> OWNERID = createField(DSL.name("ownerID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>testdb3.page_owner</code> table reference
+     * Create a <code>demodb.page_owner</code> table reference
      */
     public PageOwner() {
         this(DSL.name("page_owner"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.page_owner</code> table reference
+     * Create an aliased <code>demodb.page_owner</code> table reference
      */
     public PageOwner(String alias) {
         this(DSL.name(alias), PAGE_OWNER);
     }
 
     /**
-     * Create an aliased <code>testdb3.page_owner</code> table reference
+     * Create an aliased <code>demodb.page_owner</code> table reference
      */
     public PageOwner(Name alias) {
         this(alias, PAGE_OWNER);
@@ -92,7 +92,7 @@ public class PageOwner extends TableImpl<PageOwnerRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

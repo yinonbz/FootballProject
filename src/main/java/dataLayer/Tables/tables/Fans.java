@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.FansRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Fans extends TableImpl<FansRecord> {
 
-    private static final long serialVersionUID = -802022252;
+    private static final long serialVersionUID = -33970512;
 
     /**
-     * The reference instance of <code>testdb3.fans</code>
+     * The reference instance of <code>demodb.fans</code>
      */
     public static final Fans FANS = new Fans();
 
@@ -47,26 +47,26 @@ public class Fans extends TableImpl<FansRecord> {
     }
 
     /**
-     * The column <code>testdb3.fans.fanID</code>.
+     * The column <code>demodb.fans.fanID</code>.
      */
     public final TableField<FansRecord, String> FANID = createField(DSL.name("fanID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>testdb3.fans</code> table reference
+     * Create a <code>demodb.fans</code> table reference
      */
     public Fans() {
         this(DSL.name("fans"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.fans</code> table reference
+     * Create an aliased <code>demodb.fans</code> table reference
      */
     public Fans(String alias) {
         this(DSL.name(alias), FANS);
     }
 
     /**
-     * Create an aliased <code>testdb3.fans</code> table reference
+     * Create an aliased <code>demodb.fans</code> table reference
      */
     public Fans(Name alias) {
         this(alias, FANS);
@@ -86,7 +86,7 @@ public class Fans extends TableImpl<FansRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

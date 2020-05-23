@@ -19,73 +19,73 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RankingpolicyRecord extends UpdatableRecordImpl<RankingpolicyRecord> implements Record5<String, Integer, Integer, Integer, Integer> {
 
-    private static final long serialVersionUID = -1514791515;
+    private static final long serialVersionUID = -1598584113;
 
     /**
-     * Setter for <code>testdb3.rankingpolicy.LeagueID</code>.
+     * Setter for <code>demodb.rankingpolicy.LeagueID</code>.
      */
     public void setLeagueid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.rankingpolicy.LeagueID</code>.
+     * Getter for <code>demodb.rankingpolicy.LeagueID</code>.
      */
     public String getLeagueid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.rankingpolicy.SeasonID</code>.
+     * Setter for <code>demodb.rankingpolicy.SeasonID</code>.
      */
     public void setSeasonid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.rankingpolicy.SeasonID</code>.
+     * Getter for <code>demodb.rankingpolicy.SeasonID</code>.
      */
     public Integer getSeasonid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.rankingpolicy.win</code>.
+     * Setter for <code>demodb.rankingpolicy.win</code>.
      */
     public void setWin(Integer value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.rankingpolicy.win</code>.
+     * Getter for <code>demodb.rankingpolicy.win</code>.
      */
     public Integer getWin() {
         return (Integer) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.rankingpolicy.lose</code>.
+     * Setter for <code>demodb.rankingpolicy.lose</code>.
      */
     public void setLose(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.rankingpolicy.lose</code>.
+     * Getter for <code>demodb.rankingpolicy.lose</code>.
      */
     public Integer getLose() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>testdb3.rankingpolicy.tie</code>.
+     * Setter for <code>demodb.rankingpolicy.tie</code>.
      */
     public void setTie(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>testdb3.rankingpolicy.tie</code>.
+     * Getter for <code>demodb.rankingpolicy.tie</code>.
      */
     public Integer getTie() {
         return (Integer) get(4);

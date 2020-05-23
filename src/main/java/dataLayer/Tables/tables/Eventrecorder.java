@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.EventrecorderRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Eventrecorder extends TableImpl<EventrecorderRecord> {
 
-    private static final long serialVersionUID = 1718800749;
+    private static final long serialVersionUID = 864116253;
 
     /**
-     * The reference instance of <code>testdb3.eventrecorder</code>
+     * The reference instance of <code>demodb.eventrecorder</code>
      */
     public static final Eventrecorder EVENTRECORDER = new Eventrecorder();
 
@@ -47,26 +47,26 @@ public class Eventrecorder extends TableImpl<EventrecorderRecord> {
     }
 
     /**
-     * The column <code>testdb3.eventrecorder.matchID</code>.
+     * The column <code>demodb.eventrecorder.matchID</code>.
      */
     public final TableField<EventrecorderRecord, Integer> MATCHID = createField(DSL.name("matchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * Create a <code>testdb3.eventrecorder</code> table reference
+     * Create a <code>demodb.eventrecorder</code> table reference
      */
     public Eventrecorder() {
         this(DSL.name("eventrecorder"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.eventrecorder</code> table reference
+     * Create an aliased <code>demodb.eventrecorder</code> table reference
      */
     public Eventrecorder(String alias) {
         this(DSL.name(alias), EVENTRECORDER);
     }
 
     /**
-     * Create an aliased <code>testdb3.eventrecorder</code> table reference
+     * Create an aliased <code>demodb.eventrecorder</code> table reference
      */
     public Eventrecorder(Name alias) {
         this(alias, EVENTRECORDER);
@@ -86,7 +86,7 @@ public class Eventrecorder extends TableImpl<EventrecorderRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

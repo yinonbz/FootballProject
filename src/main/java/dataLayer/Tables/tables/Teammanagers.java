@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.enums.TeammanagersPermissions;
 import dataLayer.Tables.tables.records.TeammanagersRecord;
 
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Teammanagers extends TableImpl<TeammanagersRecord> {
 
-    private static final long serialVersionUID = -625896449;
+    private static final long serialVersionUID = -714741029;
 
     /**
-     * The reference instance of <code>testdb3.teammanagers</code>
+     * The reference instance of <code>demodb.teammanagers</code>
      */
     public static final Teammanagers TEAMMANAGERS = new Teammanagers();
 
@@ -48,46 +48,46 @@ public class Teammanagers extends TableImpl<TeammanagersRecord> {
     }
 
     /**
-     * The column <code>testdb3.teammanagers.managerID</code>.
+     * The column <code>demodb.teammanagers.managerID</code>.
      */
     public final TableField<TeammanagersRecord, String> MANAGERID = createField(DSL.name("managerID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.teammanagers.teamID</code>.
+     * The column <code>demodb.teammanagers.teamID</code>.
      */
     public final TableField<TeammanagersRecord, String> TEAMID = createField(DSL.name("teamID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.teammanagers.teamOwnerID_fictive</code>.
+     * The column <code>demodb.teammanagers.teamOwnerID_fictive</code>.
      */
     public final TableField<TeammanagersRecord, String> TEAMOWNERID_FICTIVE = createField(DSL.name("teamOwnerID_fictive"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.teammanagers.salary</code>.
+     * The column <code>demodb.teammanagers.salary</code>.
      */
     public final TableField<TeammanagersRecord, Integer> SALARY = createField(DSL.name("salary"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.teammanagers.permissions</code>.
+     * The column <code>demodb.teammanagers.permissions</code>.
      */
     public final TableField<TeammanagersRecord, TeammanagersPermissions> PERMISSIONS = createField(DSL.name("permissions"), org.jooq.impl.SQLDataType.VARCHAR(14).nullable(false).defaultValue(org.jooq.impl.DSL.field("'GENERAL'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(dataLayer.Tables.enums.TeammanagersPermissions.class), this, "");
 
     /**
-     * Create a <code>testdb3.teammanagers</code> table reference
+     * Create a <code>demodb.teammanagers</code> table reference
      */
     public Teammanagers() {
         this(DSL.name("teammanagers"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.teammanagers</code> table reference
+     * Create an aliased <code>demodb.teammanagers</code> table reference
      */
     public Teammanagers(String alias) {
         this(DSL.name(alias), TEAMMANAGERS);
     }
 
     /**
-     * Create an aliased <code>testdb3.teammanagers</code> table reference
+     * Create an aliased <code>demodb.teammanagers</code> table reference
      */
     public Teammanagers(Name alias) {
         this(alias, TEAMMANAGERS);
@@ -107,7 +107,7 @@ public class Teammanagers extends TableImpl<TeammanagersRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

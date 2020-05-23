@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.MatchRecord;
 
 import java.time.LocalDate;
@@ -24,7 +24,6 @@ import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UByte;
 
 
 /**
@@ -33,10 +32,10 @@ import org.jooq.types.UByte;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Match extends TableImpl<MatchRecord> {
 
-    private static final long serialVersionUID = 1451300745;
+    private static final long serialVersionUID = 2125991864;
 
     /**
-     * The reference instance of <code>testdb3.match</code>
+     * The reference instance of <code>demodb.match</code>
      */
     public static final Match MATCH = new Match();
 
@@ -49,76 +48,76 @@ public class Match extends TableImpl<MatchRecord> {
     }
 
     /**
-     * The column <code>testdb3.match.MatchID</code>.
+     * The column <code>demodb.match.MatchID</code>.
      */
     public final TableField<MatchRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.match.LeagueID</code>.
+     * The column <code>demodb.match.LeagueID</code>.
      */
     public final TableField<MatchRecord, String> LEAGUEID = createField(DSL.name("LeagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.match.SeasonID</code>.
+     * The column <code>demodb.match.SeasonID</code>.
      */
     public final TableField<MatchRecord, Integer> SEASONID = createField(DSL.name("SeasonID"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.match.TeamHomeID</code>.
+     * The column <code>demodb.match.TeamHomeID</code>.
      */
     public final TableField<MatchRecord, String> TEAMHOMEID = createField(DSL.name("TeamHomeID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.match.TeamAwayID</code>.
+     * The column <code>demodb.match.TeamAwayID</code>.
      */
     public final TableField<MatchRecord, String> TEAMAWAYID = createField(DSL.name("TeamAwayID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.match.StadiumID</code>.
+     * The column <code>demodb.match.StadiumID</code>.
      */
     public final TableField<MatchRecord, String> STADIUMID = createField(DSL.name("StadiumID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.match.Score</code>.
+     * The column <code>demodb.match.Score</code>.
      */
     public final TableField<MatchRecord, String> SCORE = createField(DSL.name("Score"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.match.isFinished</code>.
+     * The column <code>demodb.match.isFinished</code>.
      */
-    public final TableField<MatchRecord, UByte> ISFINISHED = createField(DSL.name("isFinished"), org.jooq.impl.SQLDataType.TINYINTUNSIGNED.defaultValue(org.jooq.impl.DSL.field("000", org.jooq.impl.SQLDataType.TINYINTUNSIGNED)), this, "");
+    public final TableField<MatchRecord, Boolean> ISFINISHED = createField(DSL.name("isFinished"), org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.field("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>testdb3.match.Date</code>.
+     * The column <code>demodb.match.Date</code>.
      */
     public final TableField<MatchRecord, LocalDate> DATE = createField(DSL.name("Date"), org.jooq.impl.SQLDataType.LOCALDATE.defaultValue(org.jooq.impl.DSL.field("curdate()", org.jooq.impl.SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>testdb3.match.numberOfFans</code>.
+     * The column <code>demodb.match.numberOfFans</code>.
      */
     public final TableField<MatchRecord, Integer> NUMBEROFFANS = createField(DSL.name("numberOfFans"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.match.mainRefereeID</code>.
+     * The column <code>demodb.match.mainRefereeID</code>.
      */
     public final TableField<MatchRecord, String> MAINREFEREEID = createField(DSL.name("mainRefereeID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>testdb3.match</code> table reference
+     * Create a <code>demodb.match</code> table reference
      */
     public Match() {
         this(DSL.name("match"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.match</code> table reference
+     * Create an aliased <code>demodb.match</code> table reference
      */
     public Match(String alias) {
         this(DSL.name(alias), MATCH);
     }
 
     /**
-     * Create an aliased <code>testdb3.match</code> table reference
+     * Create an aliased <code>demodb.match</code> table reference
      */
     public Match(Name alias) {
         this(alias, MATCH);
@@ -138,7 +137,7 @@ public class Match extends TableImpl<MatchRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override
@@ -207,7 +206,7 @@ public class Match extends TableImpl<MatchRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, Integer, String, String, String, String, UByte, LocalDate, Integer, String> fieldsRow() {
+    public Row11<Integer, String, Integer, String, String, String, String, Boolean, LocalDate, Integer, String> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 }

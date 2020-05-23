@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.RankingpolicyRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Rankingpolicy extends TableImpl<RankingpolicyRecord> {
 
-    private static final long serialVersionUID = -2015906396;
+    private static final long serialVersionUID = -1262824440;
 
     /**
-     * The reference instance of <code>testdb3.rankingpolicy</code>
+     * The reference instance of <code>demodb.rankingpolicy</code>
      */
     public static final Rankingpolicy RANKINGPOLICY = new Rankingpolicy();
 
@@ -47,46 +47,46 @@ public class Rankingpolicy extends TableImpl<RankingpolicyRecord> {
     }
 
     /**
-     * The column <code>testdb3.rankingpolicy.LeagueID</code>.
+     * The column <code>demodb.rankingpolicy.LeagueID</code>.
      */
     public final TableField<RankingpolicyRecord, String> LEAGUEID = createField(DSL.name("LeagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.rankingpolicy.SeasonID</code>.
+     * The column <code>demodb.rankingpolicy.SeasonID</code>.
      */
     public final TableField<RankingpolicyRecord, Integer> SEASONID = createField(DSL.name("SeasonID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.rankingpolicy.win</code>.
+     * The column <code>demodb.rankingpolicy.win</code>.
      */
     public final TableField<RankingpolicyRecord, Integer> WIN = createField(DSL.name("win"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.rankingpolicy.lose</code>.
+     * The column <code>demodb.rankingpolicy.lose</code>.
      */
     public final TableField<RankingpolicyRecord, Integer> LOSE = createField(DSL.name("lose"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.rankingpolicy.tie</code>.
+     * The column <code>demodb.rankingpolicy.tie</code>.
      */
     public final TableField<RankingpolicyRecord, Integer> TIE = createField(DSL.name("tie"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * Create a <code>testdb3.rankingpolicy</code> table reference
+     * Create a <code>demodb.rankingpolicy</code> table reference
      */
     public Rankingpolicy() {
         this(DSL.name("rankingpolicy"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.rankingpolicy</code> table reference
+     * Create an aliased <code>demodb.rankingpolicy</code> table reference
      */
     public Rankingpolicy(String alias) {
         this(DSL.name(alias), RANKINGPOLICY);
     }
 
     /**
-     * Create an aliased <code>testdb3.rankingpolicy</code> table reference
+     * Create an aliased <code>demodb.rankingpolicy</code> table reference
      */
     public Rankingpolicy(Name alias) {
         this(alias, RANKINGPOLICY);
@@ -106,7 +106,7 @@ public class Rankingpolicy extends TableImpl<RankingpolicyRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

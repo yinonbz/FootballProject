@@ -1,23 +1,30 @@
 package businessLayer.userTypes;
 
+import businessLayer.Exceptions.AlreadyExistException;
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.*;
 import businessLayer.Tournament.Match.*;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
+import businessLayer.Utilities.Page;
 import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.*;
+import dataLayer.DemoDB;
+import serviceLayer.SystemService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class SystemController {
+public class SystemController extends Observable {
 
     private static SystemController single_instance = null; //singleton instance
     private DB_Inter DB; //DBs in use
@@ -32,6 +39,15 @@ public class SystemController {
 
     private SystemController() {
         DB = new DBHandler();
+    }
+
+    /**
+     * The function receives a service and adds it as an observer of the system-controller
+     *
+     * @param service
+     */
+    public void addServiceObservers(SystemService service) {
+        addObserver(service);
     }
 
     public void setLeagueController(LeagueController leagueController) {
@@ -57,8 +73,8 @@ public class SystemController {
      * @param DB
      * @return
      */
-    public boolean connectToDB(DemoDB DB){
-        //this.DB=DB;
+    public boolean connectToDB(DemoDB DB) {
+        //this.DB = DB;
         return true;
     }
 
@@ -137,6 +153,7 @@ public class SystemController {
             connectToSubscriberDB();
             temporaryAdmin = new Admin(userName, password, "tempAdmin", this);
             ((Admin) temporaryAdmin).setApproved(true);
+//            DB.addSubscriberToDB("admin", temporaryAdmin); todo fix it with db
 
             Map<String,ArrayList<String>> adminDetails = new HashMap<>();
             ArrayList<String> approved = new ArrayList<>();
@@ -328,6 +345,7 @@ public class SystemController {
         this.admins = admins;
     }
     */
+
     /**
      * @return
      */
@@ -422,7 +440,6 @@ public class SystemController {
      */
     public boolean closeTeamByAdmin(String teamName, String userType) {
         Subscriber subscriber = getSubscriberByUserName(userType);
-
         if (subscriber instanceof Admin) {
             connectToTeamDB();
             if (DB.containInDB(teamName,null,null)) {
@@ -430,6 +447,7 @@ public class SystemController {
                 //checks what is the status of the team
                 if (chosenTeam.closeTeamPermanently()) {
                     setTeamActive(chosenTeam.getTeamName(),String.valueOf(chosenTeam.getActive()));
+                    updateTeamStatusToUsers(chosenTeam, "The team " + chosenTeam.getTeamName() + " was closed permanently.");
                     return true;
                 }
                 //team is already closed by admin
@@ -462,7 +480,7 @@ public class SystemController {
                 int id = DB.countRecords();
                 complaint.setId(id);
                 addComplaint(complaint);
-                subscriber.addComplaint(complaint);
+                subscriber.addComplaint(complaint); //todo update db
                 return true;
             }
         }
@@ -876,13 +894,6 @@ public class SystemController {
         return null;
     }
 
-
-    public ArrayList<String> getAllRefereeNames() {
-        connectToSubscriberDB();
-        return DB.selectAllRecords(UserTypes.REFEREE).get(0).get("referees");
-
-    }
-
     public ArrayList<String> getAllCoachesNames() {
         connectToSubscriberDB();
         return DB.selectAllRecords(UserTypes.COACH).get(0).get("coaches");
@@ -952,8 +963,6 @@ public class SystemController {
         }
         return false;
     }
-
-
 
     /**
      * the function checks if a player exists in the DB
@@ -1032,7 +1041,6 @@ public class SystemController {
     /**
      * add new league to the DB
      * @param leagueID
-     * @param league
      * @return
      */
     public boolean addLeagueToDB(String leagueID){
@@ -1380,7 +1388,7 @@ public class SystemController {
      */
     public Boolean disableTeamStatus(String teamName, String userName) {
         if (userName == null || teamName == null) {
-            return false;
+           throw new MissingInputException("Please select a team to close.");
         }
         connectToSubscriberDB();
         if (!DB.containInDB(userName,null,null)) {
@@ -1634,31 +1642,35 @@ public class SystemController {
      */
     public String enterLoginDetails(String userName, String password) {
 
-        if(userName == null || password == null){
-            return null;
+        if (userName == null || password == null || userName.equals("") || password.equals("")) {
+            throw new MissingInputException("Missing Input");
+            //return null;
         }
 
         Subscriber subscriber = selectUserFromDB(userName);
 
-        if(subscriber==null)
-            return null;
+        if (subscriber == null)
+            throw new NotFoundInDbException("No such user in the data base.");
+        //return null;
 
-        if(subscriber.getPassword().equals(password)) {
-            if(subscriber instanceof Admin){
-                Admin userCheckIfApproved = ((Admin)subscriber);
-                if(userCheckIfApproved.isApproved() == false){
-                    return null;
+        if (subscriber.getPassword().equals(password)) {
+            if (subscriber instanceof Admin) {
+                Admin userCheckIfApproved = ((Admin) subscriber);
+                if (userCheckIfApproved.isApproved() == false) {
+                    throw new NotApprovedException("You are trying to log in as an unapproved Admin. You have to be approved first by another Admin to log in.");
+                    //return null;
                 }
-            }
-            else if(subscriber instanceof AssociationRepresentative){
-                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative)subscriber);
-                if(userCheckIfAprroved.isApproved() == false){
-                    return null;
+            } else if (subscriber instanceof AssociationRepresentative) {
+                AssociationRepresentative userCheckIfAprroved = ((AssociationRepresentative) subscriber);
+                if (userCheckIfAprroved.isApproved() == false) {
+                    throw new NotApprovedException("You are trying to log in as an unapproved AR. You have to be approved first by an Admin to log in.");
+                    //return null;
                 }
             }
             return subscriber.toString();
         }
-        return null;
+        throw new NotApprovedException("Wrong password. Please try to login again.");
+        //return null;
     }
 
 
@@ -1828,7 +1840,7 @@ public class SystemController {
         if(validateUserName(userName)){
             return false;
         }
-        if(checkPasswordStrength(password,userName) == false){
+        if (checkPasswordStrength(password, userName) == false) {
             return false;
         }
         if(checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
@@ -2193,6 +2205,23 @@ public class SystemController {
         return DB.update(TEAMUPDATES.SETACTIVE,arguments);
     }
 
+    /**
+     * The function receives a user's username and a team's name, adds the user as a follower of the team's page and returns whether the operation was successful
+     *
+     * @param username
+     * @param teamName
+     * @return
+     */
+    public boolean allowUserToFollowTeam(String username, String teamName) {
+
+        Subscriber user = selectUserFromDB(username);
+        Page teamToFollow = getTeamPageByName(teamName);
+        if (user == null || teamToFollow == null) {
+            return false;
+        }
+        //return DB.addFollowerToPage(teamToFollow, username); //todo add table to db
+        return false;
+    }
 
 
 
@@ -2252,5 +2281,524 @@ public class SystemController {
         //convert String to LocalDate
         LocalDate localDate = LocalDate.parse(date, formatter);
         return localDate;
+    }
+
+
+    /**
+     * The function receives a user's username and a player's name, adds the user as a follower of the player's page and returns whether the operation was successful
+     *
+     * @param username
+     * @param playerName
+     * @return
+     */
+    public boolean allowUserToFollowPlayer(String username, String playerName) {
+
+        Subscriber user = selectUserFromDB(username);
+        Page playerToFollow = getPlayerPageByName(playerName);
+        if (user == null || playerToFollow == null) {
+            return false;
+        }
+        //return DB.addFollowerToPage(playerToFollow, username); //todo add table to DB
+        return false;
+    }
+
+    /**
+     * The function receives a user's username and a coach name, adds the user as a follower of the coach page and returns whether the operation was successful
+     *
+     * @param username
+     * @param coachName
+     * @return
+     */
+    public boolean allowUserToFollowCoach(String username, String coachName) {
+
+        Subscriber user = selectUserFromDB(username);
+        Page playerToFollow = getCoachPageByName(coachName);
+        if (user == null || playerToFollow == null) {
+            return false;
+        }
+        //return DB.addFollowerToPage(playerToFollow, username); //todo add table to db
+        return false;
+    }
+
+
+    /**
+     * The function receives a user's username and a match's identifier, adds the user as a follower of the match and returns whether the operation was successful
+     *
+     * @param username
+     * @param matchID
+     * @return
+     */
+    public boolean allowUserToFollowMatch(String username, String matchID) {
+
+        Subscriber user = selectUserFromDB(username);
+        int id = Integer.parseInt(matchID);
+        Match match = findMatch(id);
+        if (user != null && match != null) {
+     //       return DB.addFollowerToMatch(match, username); todo add to db
+        }
+        return false;
+    }
+
+    /**
+     * The function receives a team's name and returns the matching page to the name
+     *
+     * @param teamName
+     * @return
+     */
+    public Page getTeamPageByName(String teamName) {
+        if (teamName == null) {
+            return null;
+        }
+      //  return DB.getTeamPageByName(teamName); todo add to db
+        return null;
+    }
+
+    /**
+     * The function receives a player's name and returns the matching page to the name
+     *
+     * @param playerName
+     * @return
+     */
+    public Page getPlayerPageByName(String playerName) {
+        if (playerName == null) {
+            return null;
+        }
+      //  return DB.getPlayerPageByName(playerName); todo add to db
+        return null;
+    }
+
+    /**
+     * The function receives a coach name and returns the matching page to the name
+     *
+     * @param coachName
+     * @return
+     */
+    public Page getCoachPageByName(String coachName) {
+        if (coachName == null) {
+            return null;
+        }
+      //  return DB.getCoachPageByName(coachName); todo add to db
+        return null;
+    }
+
+    /**
+     * The function receives a page, retrieves a list of its followers usernames and then updates each of them of the new event
+     *
+     * @param page
+     */
+    public void updatePageFollowers(Page page, String event) {
+        /*
+        if (page != null && event != null) {
+            LinkedList<String> followers = DB.getPageFollowers(page); todo db add to db
+            if (followers != null) {
+                followers.add(event);
+                followers.add("Page update");
+                notifyObservers(followers);
+            }
+        }
+        */
+    }
+
+
+    /**
+     * The function receives a page and the page's owner name and sends it to the DB
+     *
+     * @param name
+     * @param page
+     * @return true/false
+     */
+    public boolean addPageToDB(String name, Page page) {
+        if (name == null || page == null) {
+            return false;
+        }
+    //    DB.addPageToDB(name, page); todo add to db
+        return true;
+    }
+
+
+    /**
+     * The function receives a match, retrieves a list of its followers usernames and updates each of them about the new event
+     *
+     * @param match
+     * @param event
+     */
+    public void updateMatchToFollowers(Match match, String event) {
+        /*
+        if (match != null && event != null) {
+            LinkedList<String> followers = DB.getMatchFollowers(match); todo add the db
+            if (followers != null) {
+                followers.add(event);
+                followers.add("Match update");
+                notifyObservers(followers);
+            }
+        }
+        */
+    }
+
+    /**
+     * The function receives a match and a referee and sends them to the DB to be connected to each other
+     *
+     * @param match
+     * @param ref
+     * @return
+     */
+    public boolean addRefereeToMatch(Match match, Referee ref) {
+        if (match != null && ref != null) {
+         //   return DB.addRefereeToMatch(match, ref.getUsername()); todo add the db
+        }
+        return false;
+    }
+
+    /**
+     * The function receives a referee's username and a match, verifies the initiation of the action is from an association representative and
+     * returns whether the operation was successful or not
+     *
+     * @param username
+     * @param matchID
+     * @param refereeUsername
+     * @return
+     */
+    public boolean addRefereeToMatchThroughRepresentative(String username, String matchID, String refereeUsername) {
+
+        if (username == null || matchID == null || refereeUsername == null) {
+            return false;
+        }
+        Subscriber user = getSubscriberByUserName(username);
+        Subscriber userRef = getSubscriberByUserName(refereeUsername);
+        int id = Integer.parseInt(matchID);
+        Match match = findMatch(id);
+        if (user instanceof AssociationRepresentative && userRef instanceof Referee && match != null) {
+            return addRefereeToMatch(match, (Referee) userRef);
+        }
+        return false;
+    }
+
+    /**
+     * The function receives a match, retrieves the referees of the match and notifies the observer about the changes
+     *
+     * @param match
+     * @param event
+     */
+    public void updateMatchChangesToReferees(Match match, String event) {
+        /*
+        if (match != null && event != null) {
+            LinkedList<String> followers = DB.getMatchReferees(match);
+            if (followers != null) {
+                followers.add(event);
+                followers.add("Change in match date&place");
+                notifyObservers(followers);
+            }
+        }
+        */ //todo add this function to the DB
+    }
+
+
+
+    /**
+     * The function receives a coach and a team and binds them together in the database
+     *
+     * @param coach
+     * @param team
+     */
+    public void addCoachToTeam(Coach coach, Team team) {
+
+        if (coach != null && team != null) {
+        //    DB.addCoachToTeam(coach, team); todo add the db
+        }
+    }
+
+    /**
+     * The function receives a stadium and a team and binds them together in the database
+     *
+     * @param stadium
+     * @param team
+     */
+    public void addStadiumToTeam(Stadium stadium, Team team) {
+
+        if (stadium != null && team != null) {
+        //    DB.addStadiumToTeam(stadium, team); todo add the db
+        }
+    }
+
+    /**
+     * The function receives a team-owner and a team and binds them together in the database
+     *
+     * @param owner
+     * @param team
+     */
+    /*
+    public void addOwnerToTeam(TeamOwner owner, Team team) { //todo ido alon check if you need it
+
+        if (owner != null && team != null) {
+            DB.addOwnerToTeam(owner, team);
+        }
+    }
+    */
+
+    /**
+     * The function receives a team and an event that occurred at the team, collects the names of the team's owners and
+     * managers as well as the names of the admins of the system and updates each of them of the event
+     *
+     * @param team
+     * @param event
+     */
+    public void updateTeamStatusToUsers(Team team, String event) {
+
+        if (team != null && event != null) {
+            LinkedList<String> usersToNotify;
+            LinkedList<TeamManager> teamManagers = new LinkedList<>();
+            LinkedList<TeamOwner> teamOwners = new LinkedList<>();
+          //  teamManagers = DB.getTeamTeamManagers(team); //todo need to build a function in db
+        //    teamOwners = DB.getTeamTeamOwners(team); //todo need to build a function in db
+        //    usersToNotify = DB.getAdminsSubscribers(); //todo need to build a function in db
+            if (teamManagers != null) {
+                for (TeamManager manager : teamManagers) {
+                 //   usersToNotify.add(manager.getUsername());
+                }
+            }
+            if (teamOwners != null) {
+                for (TeamOwner owner : teamOwners) {
+               //     usersToNotify.add(owner.getUsername());
+                }
+            }
+    //        usersToNotify.add(event);
+      //      usersToNotify.add("Team status update");
+            setChanged();
+     //       notifyObservers(usersToNotify);
+        }
+    }
+
+    /**
+     * The function receives a team and an owner and removes the owner from the team's data structures
+     *
+     * @param team
+     * @param owner
+     */
+    /*public void updateOwnerOfRemoval(Team team, TeamOwner owner) { //todo not implemented in the db
+
+        if (team != null && owner != null) {
+            LinkedList<String> adminToUpdate = new LinkedList<>();
+            String name = DB.removeOwnerFromTeam(team, owner);
+            if (name != null) {
+               adminToUpdate.add(name);
+                adminToUpdate.add("You have lost your rights as an owner for the team '" + team.getTeamName() + "'.");
+                adminToUpdate.add("Owner privileges removal");
+                notifyObservers(adminToUpdate);
+            }
+        }
+    }*/
+
+    /**
+     * The function receives a username and sends it to the DB to be added into the online users data structure
+     * @param username
+     */
+    public void addOnlineUser(String username) {
+
+        if (username != null) {
+           // DB.addOnlineUser(username); //todo save it on the ram
+        }
+    }
+
+    /**
+     * The function receives a username and sends it to the DB to be removed from the online users data structure
+     * @param username
+     */
+    public void removeOnlineUser(String username) {
+        /*
+        if (username != null) {
+            DB.removeOnlineUser(username); //todo save it on the ram
+        }
+        */
+        return;
+    }
+
+    /**
+     * The function receives a username and sends to the DB to check whether the user is online or not
+     *
+     * @param username
+     * @return
+     */
+    public boolean isUserOnline(String username) {
+
+        if (username != null) {
+      //      return DB.isUserOnline(username); todo save it on the ram
+        }
+        return false;
+    }
+
+
+    /**
+     * The function receives a username and a notification for the user and saves it within the database
+     *
+     * @param username
+     * @param message
+     */
+    public void saveUserMessage(String username, String message, String title) {
+
+        if (username != null && message != null && title != null) {
+        //    DB.saveUserMessage(username, message, title); todo build a notification table
+        }
+    }
+
+    /**    //todo javafx function
+
+     * The function receives a username and returns the list of its notifications
+     * @param username
+     * @return
+     */
+    public LinkedList<String> getOfflineUsersNotifications(String username) {
+        /*
+        if(username != null) {
+            return DB.getOfflineUsersNotifications(username); //todo need to build a db
+        }
+        return null; //todo: might need an exception here
+        */
+        return null;
+    }
+
+    /**
+     * @param userName Team Owner
+     * @return names of the ACTIVE teams
+     */
+    public LinkedList<String> getActiveTeamOfTeamOwner(String userName){
+        /*
+        TeamOwner teamOwner = DB.getTeamOwner(userName); todo need to add a query
+        LinkedList<String> teamNames = new LinkedList<>();
+        HashSet<Team> teams = teamOwner.getTeams();
+        for(Team t: teams){
+            if(t.getActive() == true)
+            teamNames.add(t.getTeamName());
+        }
+        return teamNames;
+        */
+        return null;
+    }
+
+    /**
+     * @param userName Team Owner
+     * @return names of the INACTIVE teams
+     */
+    public LinkedList<String> getInactiveTeamOfTeamOwner(String userName){
+        /*
+        TeamOwner teamOwner = DB.getTeamOwner(userName); //todo need to add a query in the db
+        LinkedList<String> teamNames = new LinkedList<>();
+        HashSet<Team> teams = teamOwner.getTeams();
+        for(Team t: teams){
+            if(t.getActive() == false)
+                teamNames.add(t.getTeamName());
+        }
+        return teamNames;
+        */
+        return null;
+    }
+
+
+    /**
+     * @return get all the unconfirmed team names from the DB
+     */
+    public ArrayList<String> getAllUnconfirmedTeamsInDB() {
+        /*
+        HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams(); todo build a function in the db
+        ArrayList<String> teamNamesInDB = new ArrayList<>();
+        Iterator iterator = teamsInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            teamNamesInDB.add("" + me2.getKey());
+        }
+        return teamNamesInDB;
+        */
+        return null;
+    }
+
+    /**
+     * @return get all the team manager's user names from the DB
+     */
+    public ArrayList<String> getAllTeamManagers(){
+        /*
+        HashMap<String,TeamManager> teamManagersInDB = DB.getTeamManagers(); //todo need to build in the db
+        ArrayList<String> teamManagerNamesInDB = new ArrayList<>();
+        Iterator iterator = teamManagersInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            teamManagerNamesInDB.add("" + me2.getKey());
+        }
+        return teamManagerNamesInDB;
+        */
+        return null;
+    }
+
+    /**
+     * @return get all the league's names from the DB
+     */
+    public ArrayList<String> getAllLeaguesInDB() {
+        /*
+        HashMap<String, League> leaguesInDB = DB.getLeagues(); //todo build in the db
+        ArrayList<String> leagueNamesInDB = new ArrayList<>();
+        Iterator iterator = leaguesInDB.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry me2 = (Map.Entry) iterator.next();
+            leagueNamesInDB.add("" + me2.getKey());
+        }
+        return leagueNamesInDB;
+        */
+        return null;
+    }
+
+    /**
+     * @return get all the team's names from the DB
+     */
+    public ArrayList<String> getAllTeamsNames() {
+        /*
+        if (DB.getTeams() != null && DB.getTeams().size() > 0) { //todo need to add the function the the db
+            ArrayList<String> teamsName = new ArrayList<>();
+            teamsName.addAll(DB.getTeams().keySet());
+            return teamsName;
+        } else {
+            return null;
+        }
+        */
+        return null;
+    }
+
+
+    /**
+     * @param league the league we want to return it's seasons
+     * @return the league's seasons
+     */
+    public ArrayList<String> getAllSeasonsFromLeague(String league) {
+        /*
+        if (DB.selectLeagueFromDB(league) != null) { //todo need to add the function to the db
+            League lg = DB.selectLeagueFromDB(league);
+            HashMap<Integer, Season> seasons = lg.getSeasons();
+            ArrayList<String> seasonsIdInLeague = new ArrayList<>();
+            Iterator iterator = seasons.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry me2 = (Map.Entry) iterator.next();
+                seasonsIdInLeague.add("" + me2.getKey());
+            }
+            return seasonsIdInLeague;
+        }
+        return null;
+        */
+        return null;
+    }
+
+    //todo javafx function
+    public void updatePlayerBDate(String date, String user) {
+    }
+    //todo javafx function
+    public void updatePlayerName(String name, String userName) {
+    }
+    //todo javafx function
+    public void updatePlayerPost(String userName, String post) {
+    }
+    //todo javafx function
+    public void updateCoachName(String name, String userName1) {
+    }
+    //todo javafx function
+    public void updateCoachPost(String userName, String post) {
+    }
+    //todo javafx function
+    public void updateRefereeName(String name, String userName) {
     }
 }

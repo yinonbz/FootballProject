@@ -19,45 +19,45 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MatchingPolicyRecord extends UpdatableRecordImpl<MatchingPolicyRecord> implements Record3<String, Integer, String> {
 
-    private static final long serialVersionUID = 99840225;
+    private static final long serialVersionUID = -1984119659;
 
     /**
-     * Setter for <code>testdb3.matching policy.LeagueID</code>.
+     * Setter for <code>demodb.matching policy.LeagueID</code>.
      */
     public void setLeagueid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.matching policy.LeagueID</code>.
+     * Getter for <code>demodb.matching policy.LeagueID</code>.
      */
     public String getLeagueid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.matching policy.SeasonID</code>.
+     * Setter for <code>demodb.matching policy.SeasonID</code>.
      */
     public void setSeasonid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.matching policy.SeasonID</code>.
+     * Getter for <code>demodb.matching policy.SeasonID</code>.
      */
     public Integer getSeasonid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.matching policy.Type</code>.
+     * Setter for <code>demodb.matching policy.Type</code>.
      */
     public void setType(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.matching policy.Type</code>.
+     * Getter for <code>demodb.matching policy.Type</code>.
      */
     public String getType() {
         return (String) get(2);

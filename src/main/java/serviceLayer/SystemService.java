@@ -1,5 +1,6 @@
 package serviceLayer;
 
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
@@ -7,21 +8,21 @@ import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
-public class SystemService {
+public class SystemService extends Observable implements Observer {
     private SystemController systemController; //business layer system controller.
     private LeagueController leagueController;
     private TeamController teamController;
     private MatchController matchController;
 
 
-    /** initalizing system and controllers as singeltons
-     *
+    /**
+     * initalizing system and controllers as singeltons
      */
-    public SystemService(){
+    public SystemService() {
         this.systemController = SystemController.SystemController();
+        systemController.addServiceObservers(this);
 
     }
 
@@ -48,7 +49,7 @@ public class SystemService {
      * @return true: if the temporary admin user was created successfully by the system. | false: The userName or password didn't match to the default temporary admin details.
      */
     public Boolean insertInfo(String userName, String password) {
-        return systemController.insertInfo(userName,password);
+        return systemController.insertInfo(userName, password);
 
     }
 
@@ -58,7 +59,7 @@ public class SystemService {
      * @return true if the system has initialized successfully
      *          false else
      */
-    public Boolean initializeSystem(String password){
+    public Boolean initializeSystem(String password) {
         return systemController.initializeSystem(password);
     }
 
@@ -68,7 +69,7 @@ public class SystemService {
      * @return true if the passsword has been changed
      *          false else
      */
-    public Boolean changePassword(String newPassword, String userName){
+    public Boolean changePassword(String newPassword, String userName) {
         return systemController.changePassword(newPassword, userName);
     }
 
@@ -81,7 +82,7 @@ public class SystemService {
      * UC 8.1
      */
     public boolean closeTeamByAdmin(String teamName, String username) {
-        return systemController.closeTeamByAdmin(teamName,username);
+        return systemController.closeTeamByAdmin(teamName, username);
     }
 
 
@@ -94,7 +95,7 @@ public class SystemService {
      */
 
     public boolean addComplaint(String content, String username) {
-        return systemController.addComplaint(content,username);
+        return systemController.addComplaint(content, username);
     }
 
 
@@ -107,7 +108,7 @@ public class SystemService {
      * 8.2
      */
     public String removeSubscriber(String subscriberName, String userType) {
-        return systemController.removeSubscriber(subscriberName,userType);
+        return systemController.removeSubscriber(subscriberName, userType);
     }
 
     /**
@@ -121,7 +122,7 @@ public class SystemService {
      * UC 8.3.2
      */
     public boolean replyComplaints(String complaintID, String username, String comment) {
-        return systemController.replyComplaints(complaintID,username,comment);
+        return systemController.replyComplaints(complaintID, username, comment);
     }
 
 
@@ -233,7 +234,7 @@ public class SystemService {
      *         false else
      */
     public boolean enterRegisterDetails_Coach(String userName, String password, String name, String roleInTeam,String training, String teamJob){
-        return systemController.enterRegisterDetails_Coach(userName,password,name,roleInTeam,training,teamJob);
+        return systemController.enterRegisterDetails_Coach(userName,password,name,roleInTeam,training, teamJob);
     }
 
     /**
@@ -279,5 +280,140 @@ public class SystemService {
             return systemController.sendRequestForTeam(teamName, establishedYear, username);
         }
         return false;
+    }
+
+    /**
+     * The function receives a user's username and a team's name and passes them for the
+     * Systemcontroller to allow the fan to follow the taem's page
+     *
+     * @param username
+     * @param teamName
+     * @return
+     */
+    public boolean userRequestToFollowTeam(String username, String teamName) {
+
+        if (username != null && teamName != null) {
+            return systemController.allowUserToFollowTeam(username, teamName);
+        }
+        return false;
+    }
+
+    /**
+     * The function receives a user's username and a player's name and passes them for the
+     * Systemcontroller to allow the fan to follow the taem's page
+     *
+     * @param username
+     * @param playerName
+     * @return
+     */
+    public boolean userRequestToFollowPlayer(String username, String playerName) {
+
+        if (username != null && playerName != null) {
+            return systemController.allowUserToFollowPlayer(username, playerName);
+        }
+        return false;
+    }
+
+    /**
+     * The function receives a user's username and a player's name and passes them to the
+     * Systemcontroller to allow the fan to follow the team's page
+     *
+     * @param username
+     * @param coachName
+     * @return
+     */
+    public boolean userRequestToFollowCoach(String username, String coachName) {
+
+        if (username != null && coachName != null) {
+            return systemController.allowUserToFollowCoach(username, coachName);
+        }
+        return false;
+    }
+
+
+    /**
+     * The function receives a user's username and a match's identifier and passes them to the
+     * Systemcontroller to allow a user to follow the match
+     *
+     * @param username
+     * @param matchID
+     * @return
+     */
+    public boolean userRequestToFollowMatch(String username, String matchID) {
+
+        if (username != null && matchID != null) {
+        //    systemController.allowUserToFollowMatch(username, matchID); todo need to check why we have compliation
+        }
+        return false;
+    }
+
+
+    /**
+     * @param o
+     * @param arg the notifications
+     *            this function updates the presentation layer for new notifications
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof SystemController && arg instanceof LinkedList) {
+            LinkedList<String> users = (LinkedList) arg;
+            String title = users.removeLast(); //title for the message in the interface
+            String event = users.removeLast(); //holds the message to present to the user's interface
+            for (String user : users) {
+                if (systemController.isUserOnline(user)) {
+                    LinkedList<String> notification = new LinkedList<>();
+                    notification.add(title);
+                    notification.add(event);
+                    setChanged();
+                    notifyObservers(notification);
+                } else {
+                    systemController.saveUserMessage(user, event, title);
+                }
+            }
+            throw new NotFoundInDbException("");
+        }
+    }
+
+    /**
+     * @param userName the user's username to add to the online users in DB (when logging in)
+     */
+    public void addToUsersOnline(String userName){
+        systemController.addOnlineUser(userName);
+    }
+
+    /**
+     * @return get all of the system subscribers (online AND offline)
+     */
+    public ArrayList<String> getSystemSubscribers() {
+        //return systemController.getSystemSubscribers(); //todo need to check why compilation
+        return null;
+    }
+    //todo ido add this function
+    public void updatePlayerBDate(String date, String user){
+        systemController.updatePlayerBDate(date,user);
+    }
+    //todo ido add this function
+    public void updatePlayerName(String name, String userName) {
+        systemController.updatePlayerName(name,userName);
+    }
+    //todo ido add this function
+    public void updatePlayerPost(String userName, String post) {
+        systemController.updatePlayerPost(userName,post);
+
+    }
+    //todo ido add this function
+    public void updateCoachName(String name, String userName) {
+        systemController.updateCoachName(name,userName);
+
+    }
+    //todo ido add this function
+    public void updateCoachPost(String userName, String post) {
+        systemController.updateCoachPost(userName,post);
+
+    }
+    //todo ido add this function
+    public void updateRefereeName(String name, String userName) {
+        systemController.updateRefereeName(name,userName);
+
     }
 }

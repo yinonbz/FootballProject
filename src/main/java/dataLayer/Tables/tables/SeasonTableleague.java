@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.SeasonTableleagueRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SeasonTableleague extends TableImpl<SeasonTableleagueRecord> {
 
-    private static final long serialVersionUID = 1964229737;
+    private static final long serialVersionUID = -711637155;
 
     /**
-     * The reference instance of <code>testdb3.season_tableleague</code>
+     * The reference instance of <code>demodb.season_tableleague</code>
      */
     public static final SeasonTableleague SEASON_TABLELEAGUE = new SeasonTableleague();
 
@@ -48,56 +48,56 @@ public class SeasonTableleague extends TableImpl<SeasonTableleagueRecord> {
     }
 
     /**
-     * The column <code>testdb3.season_tableleague.LeagueID</code>.
+     * The column <code>demodb.season_tableleague.LeagueID</code>.
      */
     public final TableField<SeasonTableleagueRecord, String> LEAGUEID = createField(DSL.name("LeagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false).defaultValue(org.jooq.impl.DSL.field("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.season_tableleague.SeasonID</code>.
+     * The column <code>demodb.season_tableleague.SeasonID</code>.
      */
     public final TableField<SeasonTableleagueRecord, Integer> SEASONID = createField(DSL.name("SeasonID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.season_tableleague.TeamID</code>.
+     * The column <code>demodb.season_tableleague.TeamID</code>.
      */
     public final TableField<SeasonTableleagueRecord, String> TEAMID = createField(DSL.name("TeamID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.season_tableleague.numOfGames</code>.
+     * The column <code>demodb.season_tableleague.numOfGames</code>.
      */
     public final TableField<SeasonTableleagueRecord, Integer> NUMOFGAMES = createField(DSL.name("numOfGames"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.season_tableleague.goalsFor</code>.
+     * The column <code>demodb.season_tableleague.goalsFor</code>.
      */
     public final TableField<SeasonTableleagueRecord, Integer> GOALSFOR = createField(DSL.name("goalsFor"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.season_tableleague.goalsAgainst</code>.
+     * The column <code>demodb.season_tableleague.goalsAgainst</code>.
      */
     public final TableField<SeasonTableleagueRecord, Integer> GOALSAGAINST = createField(DSL.name("goalsAgainst"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>testdb3.season_tableleague.Points</code>.
+     * The column <code>demodb.season_tableleague.Points</code>.
      */
     public final TableField<SeasonTableleagueRecord, Integer> POINTS = createField(DSL.name("Points"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * Create a <code>testdb3.season_tableleague</code> table reference
+     * Create a <code>demodb.season_tableleague</code> table reference
      */
     public SeasonTableleague() {
         this(DSL.name("season_tableleague"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.season_tableleague</code> table reference
+     * Create an aliased <code>demodb.season_tableleague</code> table reference
      */
     public SeasonTableleague(String alias) {
         this(DSL.name(alias), SEASON_TABLELEAGUE);
     }
 
     /**
-     * Create an aliased <code>testdb3.season_tableleague</code> table reference
+     * Create an aliased <code>demodb.season_tableleague</code> table reference
      */
     public SeasonTableleague(Name alias) {
         this(alias, SEASON_TABLELEAGUE);
@@ -117,7 +117,7 @@ public class SeasonTableleague extends TableImpl<SeasonTableleagueRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

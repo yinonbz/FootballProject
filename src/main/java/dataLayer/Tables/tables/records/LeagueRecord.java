@@ -18,17 +18,17 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class LeagueRecord extends UpdatableRecordImpl<LeagueRecord> implements Record1<String> {
 
-    private static final long serialVersionUID = 1580285056;
+    private static final long serialVersionUID = 1689444592;
 
     /**
-     * Setter for <code>testdb3.league.leagueID</code>.
+     * Setter for <code>demodb.league.leagueID</code>.
      */
     public void setLeagueid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.league.leagueID</code>.
+     * Getter for <code>demodb.league.leagueID</code>.
      */
     public String getLeagueid() {
         return (String) get(0);

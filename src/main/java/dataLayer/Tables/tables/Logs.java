@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.LogsRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Logs extends TableImpl<LogsRecord> {
 
-    private static final long serialVersionUID = -1077827771;
+    private static final long serialVersionUID = -1571651921;
 
     /**
-     * The reference instance of <code>testdb3.logs</code>
+     * The reference instance of <code>demodb.logs</code>
      */
     public static final Logs LOGS = new Logs();
 
@@ -48,41 +48,41 @@ public class Logs extends TableImpl<LogsRecord> {
     }
 
     /**
-     * The column <code>testdb3.logs.index</code>.
+     * The column <code>demodb.logs.index</code>.
      */
     public final TableField<LogsRecord, Integer> INDEX = createField(DSL.name("index"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>testdb3.logs.time</code>.
+     * The column <code>demodb.logs.time</code>.
      */
     public final TableField<LogsRecord, String> TIME = createField(DSL.name("time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.logs.catrgory</code>.
+     * The column <code>demodb.logs.catrgory</code>.
      */
     public final TableField<LogsRecord, String> CATRGORY = createField(DSL.name("catrgory"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>testdb3.logs.info</code>.
+     * The column <code>demodb.logs.info</code>.
      */
     public final TableField<LogsRecord, String> INFO = createField(DSL.name("info"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>testdb3.logs</code> table reference
+     * Create a <code>demodb.logs</code> table reference
      */
     public Logs() {
         this(DSL.name("logs"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.logs</code> table reference
+     * Create an aliased <code>demodb.logs</code> table reference
      */
     public Logs(String alias) {
         this(DSL.name(alias), LOGS);
     }
 
     /**
-     * Create an aliased <code>testdb3.logs</code> table reference
+     * Create an aliased <code>demodb.logs</code> table reference
      */
     public Logs(Name alias) {
         this(alias, LOGS);
@@ -102,7 +102,7 @@ public class Logs extends TableImpl<LogsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

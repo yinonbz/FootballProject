@@ -18,101 +18,101 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SeasonTableleagueRecord extends TableRecordImpl<SeasonTableleagueRecord> implements Record7<String, Integer, String, Integer, Integer, Integer, Integer> {
 
-    private static final long serialVersionUID = -758385616;
+    private static final long serialVersionUID = -351730900;
 
     /**
-     * Setter for <code>testdb3.season_tableleague.LeagueID</code>.
+     * Setter for <code>demodb.season_tableleague.LeagueID</code>.
      */
     public void setLeagueid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.season_tableleague.LeagueID</code>.
+     * Getter for <code>demodb.season_tableleague.LeagueID</code>.
      */
     public String getLeagueid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.season_tableleague.SeasonID</code>.
+     * Setter for <code>demodb.season_tableleague.SeasonID</code>.
      */
     public void setSeasonid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.season_tableleague.SeasonID</code>.
+     * Getter for <code>demodb.season_tableleague.SeasonID</code>.
      */
     public Integer getSeasonid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.season_tableleague.TeamID</code>.
+     * Setter for <code>demodb.season_tableleague.TeamID</code>.
      */
     public void setTeamid(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.season_tableleague.TeamID</code>.
+     * Getter for <code>demodb.season_tableleague.TeamID</code>.
      */
     public String getTeamid() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.season_tableleague.numOfGames</code>.
+     * Setter for <code>demodb.season_tableleague.numOfGames</code>.
      */
     public void setNumofgames(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.season_tableleague.numOfGames</code>.
+     * Getter for <code>demodb.season_tableleague.numOfGames</code>.
      */
     public Integer getNumofgames() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>testdb3.season_tableleague.goalsFor</code>.
+     * Setter for <code>demodb.season_tableleague.goalsFor</code>.
      */
     public void setGoalsfor(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>testdb3.season_tableleague.goalsFor</code>.
+     * Getter for <code>demodb.season_tableleague.goalsFor</code>.
      */
     public Integer getGoalsfor() {
         return (Integer) get(4);
     }
 
     /**
-     * Setter for <code>testdb3.season_tableleague.goalsAgainst</code>.
+     * Setter for <code>demodb.season_tableleague.goalsAgainst</code>.
      */
     public void setGoalsagainst(Integer value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>testdb3.season_tableleague.goalsAgainst</code>.
+     * Getter for <code>demodb.season_tableleague.goalsAgainst</code>.
      */
     public Integer getGoalsagainst() {
         return (Integer) get(5);
     }
 
     /**
-     * Setter for <code>testdb3.season_tableleague.Points</code>.
+     * Setter for <code>demodb.season_tableleague.Points</code>.
      */
     public void setPoints(Integer value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>testdb3.season_tableleague.Points</code>.
+     * Getter for <code>demodb.season_tableleague.Points</code>.
      */
     public Integer getPoints() {
         return (Integer) get(6);

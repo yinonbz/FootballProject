@@ -36,7 +36,7 @@ import org.jooq.impl.Internal;
 
 
 /**
- * A class modelling indexes of tables of the <code>testdb3</code> schema.
+ * A class modelling indexes of tables of the <code>demodb</code> schema.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Indexes {

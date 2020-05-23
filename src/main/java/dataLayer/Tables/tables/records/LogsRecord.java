@@ -19,59 +19,59 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class LogsRecord extends UpdatableRecordImpl<LogsRecord> implements Record4<Integer, String, String, String> {
 
-    private static final long serialVersionUID = -239494348;
+    private static final long serialVersionUID = 2015602314;
 
     /**
-     * Setter for <code>testdb3.logs.index</code>.
+     * Setter for <code>demodb.logs.index</code>.
      */
     public void setIndex(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.logs.index</code>.
+     * Getter for <code>demodb.logs.index</code>.
      */
     public Integer getIndex() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.logs.time</code>.
+     * Setter for <code>demodb.logs.time</code>.
      */
     public void setTime(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.logs.time</code>.
+     * Getter for <code>demodb.logs.time</code>.
      */
     public String getTime() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.logs.catrgory</code>.
+     * Setter for <code>demodb.logs.catrgory</code>.
      */
     public void setCatrgory(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.logs.catrgory</code>.
+     * Getter for <code>demodb.logs.catrgory</code>.
      */
     public String getCatrgory() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.logs.info</code>.
+     * Setter for <code>demodb.logs.info</code>.
      */
     public void setInfo(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.logs.info</code>.
+     * Getter for <code>demodb.logs.info</code>.
      */
     public String getInfo() {
         return (String) get(3);

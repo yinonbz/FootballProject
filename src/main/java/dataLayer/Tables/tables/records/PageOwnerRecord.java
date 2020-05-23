@@ -18,31 +18,31 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PageOwnerRecord extends TableRecordImpl<PageOwnerRecord> implements Record2<Integer, String> {
 
-    private static final long serialVersionUID = 1802139108;
+    private static final long serialVersionUID = 655766468;
 
     /**
-     * Setter for <code>testdb3.page_owner.pageID</code>.
+     * Setter for <code>demodb.page_owner.pageID</code>.
      */
     public void setPageid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.page_owner.pageID</code>.
+     * Getter for <code>demodb.page_owner.pageID</code>.
      */
     public Integer getPageid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.page_owner.ownerID</code>.
+     * Setter for <code>demodb.page_owner.ownerID</code>.
      */
     public void setOwnerid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.page_owner.ownerID</code>.
+     * Getter for <code>demodb.page_owner.ownerID</code>.
      */
     public String getOwnerid() {
         return (String) get(1);

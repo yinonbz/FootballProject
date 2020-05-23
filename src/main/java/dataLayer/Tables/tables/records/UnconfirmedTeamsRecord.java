@@ -19,45 +19,45 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UnconfirmedTeamsRecord extends UpdatableRecordImpl<UnconfirmedTeamsRecord> implements Record3<String, Integer, String> {
 
-    private static final long serialVersionUID = -1588962419;
+    private static final long serialVersionUID = 1816988529;
 
     /**
-     * Setter for <code>testdb3.unconfirmed_teams.teamID</code>.
+     * Setter for <code>demodb.unconfirmed_teams.teamID</code>.
      */
     public void setTeamid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.unconfirmed_teams.teamID</code>.
+     * Getter for <code>demodb.unconfirmed_teams.teamID</code>.
      */
     public String getTeamid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.unconfirmed_teams.establishedYear</code>.
+     * Setter for <code>demodb.unconfirmed_teams.establishedYear</code>.
      */
     public void setEstablishedyear(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.unconfirmed_teams.establishedYear</code>.
+     * Getter for <code>demodb.unconfirmed_teams.establishedYear</code>.
      */
     public Integer getEstablishedyear() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.unconfirmed_teams.ownerID</code>.
+     * Setter for <code>demodb.unconfirmed_teams.ownerID</code>.
      */
     public void setOwnerid(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.unconfirmed_teams.ownerID</code>.
+     * Getter for <code>demodb.unconfirmed_teams.ownerID</code>.
      */
     public String getOwnerid() {
         return (String) get(2);

@@ -21,59 +21,59 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SeasonsRecord extends UpdatableRecordImpl<SeasonsRecord> implements Record4<String, Integer, LocalDate, LocalDate> {
 
-    private static final long serialVersionUID = -849859772;
+    private static final long serialVersionUID = 1157211418;
 
     /**
-     * Setter for <code>testdb3.seasons.leagueID</code>.
+     * Setter for <code>demodb.seasons.leagueID</code>.
      */
     public void setLeagueid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.seasons.leagueID</code>.
+     * Getter for <code>demodb.seasons.leagueID</code>.
      */
     public String getLeagueid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.seasons.seasonID</code>.
+     * Setter for <code>demodb.seasons.seasonID</code>.
      */
     public void setSeasonid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.seasons.seasonID</code>.
+     * Getter for <code>demodb.seasons.seasonID</code>.
      */
     public Integer getSeasonid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.seasons.startDate</code>.
+     * Setter for <code>demodb.seasons.startDate</code>.
      */
     public void setStartdate(LocalDate value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.seasons.startDate</code>.
+     * Getter for <code>demodb.seasons.startDate</code>.
      */
     public LocalDate getStartdate() {
         return (LocalDate) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.seasons.endDate</code>.
+     * Setter for <code>demodb.seasons.endDate</code>.
      */
     public void setEnddate(LocalDate value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.seasons.endDate</code>.
+     * Getter for <code>demodb.seasons.endDate</code>.
      */
     public LocalDate getEnddate() {
         return (LocalDate) get(3);

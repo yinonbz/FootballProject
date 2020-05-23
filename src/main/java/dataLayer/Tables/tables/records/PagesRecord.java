@@ -21,45 +21,45 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PagesRecord extends UpdatableRecordImpl<PagesRecord> implements Record3<Integer, String, LocalDate> {
 
-    private static final long serialVersionUID = 486893037;
+    private static final long serialVersionUID = -2104565201;
 
     /**
-     * Setter for <code>testdb3.pages.pageID</code>.
+     * Setter for <code>demodb.pages.pageID</code>.
      */
     public void setPageid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.pages.pageID</code>.
+     * Getter for <code>demodb.pages.pageID</code>.
      */
     public Integer getPageid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.pages.name</code>.
+     * Setter for <code>demodb.pages.name</code>.
      */
     public void setName(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.pages.name</code>.
+     * Getter for <code>demodb.pages.name</code>.
      */
     public String getName() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.pages.birthday</code>.
+     * Setter for <code>demodb.pages.birthday</code>.
      */
     public void setBirthday(LocalDate value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.pages.birthday</code>.
+     * Getter for <code>demodb.pages.birthday</code>.
      */
     public LocalDate getBirthday() {
         return (LocalDate) get(2);

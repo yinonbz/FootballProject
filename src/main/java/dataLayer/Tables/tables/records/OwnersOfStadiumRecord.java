@@ -19,31 +19,31 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OwnersOfStadiumRecord extends UpdatableRecordImpl<OwnersOfStadiumRecord> implements Record2<String, String> {
 
-    private static final long serialVersionUID = -1806543105;
+    private static final long serialVersionUID = -1026297031;
 
     /**
-     * Setter for <code>testdb3.owners_of_stadium.StadiumID</code>.
+     * Setter for <code>demodb.owners_of_stadium.StadiumID</code>.
      */
     public void setStadiumid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.owners_of_stadium.StadiumID</code>.
+     * Getter for <code>demodb.owners_of_stadium.StadiumID</code>.
      */
     public String getStadiumid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.owners_of_stadium.TeamID</code>.
+     * Setter for <code>demodb.owners_of_stadium.TeamID</code>.
      */
     public void setTeamid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.owners_of_stadium.TeamID</code>.
+     * Getter for <code>demodb.owners_of_stadium.TeamID</code>.
      */
     public String getTeamid() {
         return (String) get(1);

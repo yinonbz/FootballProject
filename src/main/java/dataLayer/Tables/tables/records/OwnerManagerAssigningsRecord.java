@@ -18,45 +18,45 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OwnerManagerAssigningsRecord extends TableRecordImpl<OwnerManagerAssigningsRecord> implements Record3<String, String, String> {
 
-    private static final long serialVersionUID = 560146319;
+    private static final long serialVersionUID = -870853613;
 
     /**
-     * Setter for <code>testdb3.owner_manager_assignings.ownerID</code>.
+     * Setter for <code>demodb.owner_manager_assignings.ownerID</code>.
      */
     public void setOwnerid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.owner_manager_assignings.ownerID</code>.
+     * Getter for <code>demodb.owner_manager_assignings.ownerID</code>.
      */
     public String getOwnerid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.owner_manager_assignings.teamID</code>.
+     * Setter for <code>demodb.owner_manager_assignings.teamID</code>.
      */
     public void setTeamid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.owner_manager_assignings.teamID</code>.
+     * Getter for <code>demodb.owner_manager_assignings.teamID</code>.
      */
     public String getTeamid() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.owner_manager_assignings.teamManagerID</code>.
+     * Setter for <code>demodb.owner_manager_assignings.teamManagerID</code>.
      */
     public void setTeammanagerid(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.owner_manager_assignings.teamManagerID</code>.
+     * Getter for <code>demodb.owner_manager_assignings.teamManagerID</code>.
      */
     public String getTeammanagerid() {
         return (String) get(2);

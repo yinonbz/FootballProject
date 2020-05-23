@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.AdminsRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Admins extends TableImpl<AdminsRecord> {
 
-    private static final long serialVersionUID = 2052964522;
+    private static final long serialVersionUID = 724243020;
 
     /**
-     * The reference instance of <code>testdb3.admins</code>
+     * The reference instance of <code>demodb.admins</code>
      */
     public static final Admins ADMINS = new Admins();
 
@@ -47,31 +47,31 @@ public class Admins extends TableImpl<AdminsRecord> {
     }
 
     /**
-     * The column <code>testdb3.admins.adminID</code>.
+     * The column <code>demodb.admins.adminID</code>.
      */
     public final TableField<AdminsRecord, String> ADMINID = createField(DSL.name("adminID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.admins.approved</code>.
+     * The column <code>demodb.admins.approved</code>.
      */
     public final TableField<AdminsRecord, Boolean> APPROVED = createField(DSL.name("approved"), org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.field("b'1'", org.jooq.impl.SQLDataType.BIT)), this, "");
 
     /**
-     * Create a <code>testdb3.admins</code> table reference
+     * Create a <code>demodb.admins</code> table reference
      */
     public Admins() {
         this(DSL.name("admins"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.admins</code> table reference
+     * Create an aliased <code>demodb.admins</code> table reference
      */
     public Admins(String alias) {
         this(DSL.name(alias), ADMINS);
     }
 
     /**
-     * Create an aliased <code>testdb3.admins</code> table reference
+     * Create an aliased <code>demodb.admins</code> table reference
      */
     public Admins(Name alias) {
         this(alias, ADMINS);
@@ -91,7 +91,7 @@ public class Admins extends TableImpl<AdminsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

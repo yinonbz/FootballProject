@@ -18,87 +18,87 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GoalRecord extends TableRecordImpl<GoalRecord> implements Record6<Integer, Integer, String, String, String, Boolean> {
 
-    private static final long serialVersionUID = -1366075330;
+    private static final long serialVersionUID = 763334010;
 
     /**
-     * Setter for <code>testdb3.goal.MatchID</code>.
+     * Setter for <code>demodb.goal.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.goal.MatchID</code>.
+     * Getter for <code>demodb.goal.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.goal.EventID</code>.
+     * Setter for <code>demodb.goal.EventID</code>.
      */
     public void setEventid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.goal.EventID</code>.
+     * Getter for <code>demodb.goal.EventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.goal.Time</code>.
+     * Setter for <code>demodb.goal.Time</code>.
      */
     public void setTime(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.goal.Time</code>.
+     * Getter for <code>demodb.goal.Time</code>.
      */
     public String getTime() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.goal.PlayerGoalID</code>.
+     * Setter for <code>demodb.goal.PlayerGoalID</code>.
      */
     public void setPlayergoalid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.goal.PlayerGoalID</code>.
+     * Getter for <code>demodb.goal.PlayerGoalID</code>.
      */
     public String getPlayergoalid() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>testdb3.goal.PlayerAssistID</code>.
+     * Setter for <code>demodb.goal.PlayerAssistID</code>.
      */
     public void setPlayerassistid(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>testdb3.goal.PlayerAssistID</code>.
+     * Getter for <code>demodb.goal.PlayerAssistID</code>.
      */
     public String getPlayerassistid() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>testdb3.goal.isOwnGoal</code>.
+     * Setter for <code>demodb.goal.isOwnGoal</code>.
      */
     public void setIsowngoal(Boolean value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>testdb3.goal.isOwnGoal</code>.
+     * Getter for <code>demodb.goal.isOwnGoal</code>.
      */
     public Boolean getIsowngoal() {
         return (Boolean) get(5);

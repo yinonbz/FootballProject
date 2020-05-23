@@ -19,59 +19,59 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TeamownerOwnereligibleRecord extends UpdatableRecordImpl<TeamownerOwnereligibleRecord> implements Record4<String, String, String, String> {
 
-    private static final long serialVersionUID = -936055603;
+    private static final long serialVersionUID = -632469791;
 
     /**
-     * Setter for <code>testdb3.teamowner_ownereligible.OwnerID</code>.
+     * Setter for <code>demodb.teamowner_ownereligible.OwnerID</code>.
      */
     public void setOwnerid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.teamowner_ownereligible.OwnerID</code>.
+     * Getter for <code>demodb.teamowner_ownereligible.OwnerID</code>.
      */
     public String getOwnerid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.teamowner_ownereligible.playerID</code>.
+     * Setter for <code>demodb.teamowner_ownereligible.playerID</code>.
      */
     public void setPlayerid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.teamowner_ownereligible.playerID</code>.
+     * Getter for <code>demodb.teamowner_ownereligible.playerID</code>.
      */
     public String getPlayerid() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.teamowner_ownereligible.managerID</code>.
+     * Setter for <code>demodb.teamowner_ownereligible.managerID</code>.
      */
     public void setManagerid(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.teamowner_ownereligible.managerID</code>.
+     * Getter for <code>demodb.teamowner_ownereligible.managerID</code>.
      */
     public String getManagerid() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.teamowner_ownereligible.coachID</code>.
+     * Setter for <code>demodb.teamowner_ownereligible.coachID</code>.
      */
     public void setCoachid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.teamowner_ownereligible.coachID</code>.
+     * Getter for <code>demodb.teamowner_ownereligible.coachID</code>.
      */
     public String getCoachid() {
         return (String) get(3);

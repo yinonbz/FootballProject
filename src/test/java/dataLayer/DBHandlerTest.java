@@ -26,7 +26,7 @@ public class DBHandlerTest {
     @Before
     public void DBHandlerTest() {
         db = new DBHandler("root","Messi1Ronaldo2",
-                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/testdb2");
+                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/demodb");
 
         //playerDetails
         detailsPlayer = new HashMap<>();

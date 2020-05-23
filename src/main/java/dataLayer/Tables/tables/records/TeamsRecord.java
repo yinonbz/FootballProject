@@ -19,73 +19,73 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TeamsRecord extends UpdatableRecordImpl<TeamsRecord> implements Record5<String, Integer, Boolean, String, Boolean> {
 
-    private static final long serialVersionUID = -793809180;
+    private static final long serialVersionUID = -2099022400;
 
     /**
-     * Setter for <code>testdb3.teams.name</code>.
+     * Setter for <code>demodb.teams.name</code>.
      */
     public void setName(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.teams.name</code>.
+     * Getter for <code>demodb.teams.name</code>.
      */
     public String getName() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.teams.establishedYear</code>.
+     * Setter for <code>demodb.teams.establishedYear</code>.
      */
     public void setEstablishedyear(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.teams.establishedYear</code>.
+     * Getter for <code>demodb.teams.establishedYear</code>.
      */
     public Integer getEstablishedyear() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.teams.isActive</code>.
+     * Setter for <code>demodb.teams.isActive</code>.
      */
     public void setIsactive(Boolean value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.teams.isActive</code>.
+     * Getter for <code>demodb.teams.isActive</code>.
      */
     public Boolean getIsactive() {
         return (Boolean) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.teams.teamManagerID</code>.
+     * Setter for <code>demodb.teams.teamManagerID</code>.
      */
     public void setTeammanagerid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.teams.teamManagerID</code>.
+     * Getter for <code>demodb.teams.teamManagerID</code>.
      */
     public String getTeammanagerid() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>testdb3.teams.closedByAdmin</code>.
+     * Setter for <code>demodb.teams.closedByAdmin</code>.
      */
     public void setClosedbyadmin(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>testdb3.teams.closedByAdmin</code>.
+     * Getter for <code>demodb.teams.closedByAdmin</code>.
      */
     public Boolean getClosedbyadmin() {
         return (Boolean) get(4);

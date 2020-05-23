@@ -23,10 +23,10 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M4</version>
                     <configuration>
-                        <includes>
-                            <include>**/*Test.java</include>
-                            <include>**/Test*.java</include>
-                        </includes>
+                        <excludes>
+                            <exlude>**/*Test.java</exlude>
+                            <exclude>**/Test*.java</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -42,10 +42,10 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <includes>
-                            <include>**/*Test.java</include>
-                            <include>**/Test*.java</include>
-                        </includes>
+                        <excludes>
+                            <exclude>**/*Test.java</exclude>
+                            <exclude>**/Test*.java</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -72,7 +72,7 @@
                         <!-- Configure the database connection here -->
                         <jdbc>
                             <driver>org.mariadb.jdbc.Driver</driver>
-                            <url>jdbc:mariadb://localhost:3306/testdb3</url>
+                            <url>jdbc:mariadb://132.72.65.33:3306/demodb</url>
                             <user>root</user>
                             <password>Messi1Ronaldo2</password>
                         </jdbc>
@@ -82,7 +82,7 @@
                                 <!-- The database type. The format here is:                         org.util.[database].[database]Database -->
                                 <name>org.jooq.meta.mariadb.MariaDBDatabase</name>
                                 <!-- The database schema (or in the absence of schema support, in your RDBMS this                         can be the owner, user, database name) to be generated -->
-                                <inputSchema>testdb3</inputSchema>
+                                <inputSchema>demodb</inputSchema>
                                 <!-- All elements that are generated from your schema                         (A Java regular expression. Use the pipe to separate several expressions)                         Watch out for case-sensitivity. Depending on your database, this might be important! -->
                                 <includes>.*</includes>
                                 <!-- All elements that are excluded from your schema                         (A Java regular expression. Use the pipe to separate several expressions).                         Excludes match before includes, i.e. excludes have a higher priority -->
@@ -122,11 +122,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>11</version>
         </dependency>
-            <dependency>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-controls</artifactId>
-                <version>11</version>
-            </dependency>
 
         <dependency>
             <groupId>junit</groupId>

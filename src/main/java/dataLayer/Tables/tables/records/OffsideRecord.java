@@ -18,59 +18,59 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OffsideRecord extends TableRecordImpl<OffsideRecord> implements Record4<Integer, Integer, String, String> {
 
-    private static final long serialVersionUID = -218034548;
+    private static final long serialVersionUID = -1918126364;
 
     /**
-     * Setter for <code>testdb3.offside.MatchID</code>.
+     * Setter for <code>demodb.offside.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.offside.MatchID</code>.
+     * Getter for <code>demodb.offside.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.offside.EventID</code>.
+     * Setter for <code>demodb.offside.EventID</code>.
      */
     public void setEventid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.offside.EventID</code>.
+     * Getter for <code>demodb.offside.EventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.offside.Time</code>.
+     * Setter for <code>demodb.offside.Time</code>.
      */
     public void setTime(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.offside.Time</code>.
+     * Getter for <code>demodb.offside.Time</code>.
      */
     public String getTime() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.offside.PlayerOffsideID</code>.
+     * Setter for <code>demodb.offside.PlayerOffsideID</code>.
      */
     public void setPlayeroffsideid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.offside.PlayerOffsideID</code>.
+     * Getter for <code>demodb.offside.PlayerOffsideID</code>.
      */
     public String getPlayeroffsideid() {
         return (String) get(3);

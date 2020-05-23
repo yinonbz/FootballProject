@@ -18,73 +18,73 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SubstituteRecord extends TableRecordImpl<SubstituteRecord> implements Record5<Integer, Integer, String, String, String> {
 
-    private static final long serialVersionUID = -193702789;
+    private static final long serialVersionUID = 853135357;
 
     /**
-     * Setter for <code>testdb3.substitute.MatchID</code>.
+     * Setter for <code>demodb.substitute.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.substitute.MatchID</code>.
+     * Getter for <code>demodb.substitute.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>testdb3.substitute.EventID</code>.
+     * Setter for <code>demodb.substitute.EventID</code>.
      */
     public void setEventid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>testdb3.substitute.EventID</code>.
+     * Getter for <code>demodb.substitute.EventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>testdb3.substitute.Time</code>.
+     * Setter for <code>demodb.substitute.Time</code>.
      */
     public void setTime(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>testdb3.substitute.Time</code>.
+     * Getter for <code>demodb.substitute.Time</code>.
      */
     public String getTime() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>testdb3.substitute.PlayerInID</code>.
+     * Setter for <code>demodb.substitute.PlayerInID</code>.
      */
     public void setPlayerinid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>testdb3.substitute.PlayerInID</code>.
+     * Getter for <code>demodb.substitute.PlayerInID</code>.
      */
     public String getPlayerinid() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>testdb3.substitute.PlayerOutID</code>.
+     * Setter for <code>demodb.substitute.PlayerOutID</code>.
      */
     public void setPlayeroutid(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>testdb3.substitute.PlayerOutID</code>.
+     * Getter for <code>demodb.substitute.PlayerOutID</code>.
      */
     public String getPlayeroutid() {
         return (String) get(4);

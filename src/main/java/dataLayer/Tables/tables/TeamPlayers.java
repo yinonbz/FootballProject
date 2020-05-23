@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.TeamPlayersRecord;
 
 import java.util.Arrays;
@@ -33,10 +33,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TeamPlayers extends TableImpl<TeamPlayersRecord> {
 
-    private static final long serialVersionUID = 192445219;
+    private static final long serialVersionUID = 438554053;
 
     /**
-     * The reference instance of <code>testdb3.team_players</code>
+     * The reference instance of <code>demodb.team_players</code>
      */
     public static final TeamPlayers TEAM_PLAYERS = new TeamPlayers();
 
@@ -49,31 +49,31 @@ public class TeamPlayers extends TableImpl<TeamPlayersRecord> {
     }
 
     /**
-     * The column <code>testdb3.team_players.teamID</code>.
+     * The column <code>demodb.team_players.teamID</code>.
      */
     public final TableField<TeamPlayersRecord, String> TEAMID = createField(DSL.name("teamID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.team_players.PlayerID</code>.
+     * The column <code>demodb.team_players.PlayerID</code>.
      */
     public final TableField<TeamPlayersRecord, String> PLAYERID = createField(DSL.name("PlayerID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>testdb3.team_players</code> table reference
+     * Create a <code>demodb.team_players</code> table reference
      */
     public TeamPlayers() {
         this(DSL.name("team_players"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.team_players</code> table reference
+     * Create an aliased <code>demodb.team_players</code> table reference
      */
     public TeamPlayers(String alias) {
         this(DSL.name(alias), TEAM_PLAYERS);
     }
 
     /**
-     * Create an aliased <code>testdb3.team_players</code> table reference
+     * Create an aliased <code>demodb.team_players</code> table reference
      */
     public TeamPlayers(Name alias) {
         this(alias, TEAM_PLAYERS);
@@ -93,7 +93,7 @@ public class TeamPlayers extends TableImpl<TeamPlayersRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

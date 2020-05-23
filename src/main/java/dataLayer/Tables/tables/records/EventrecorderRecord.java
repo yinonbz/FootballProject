@@ -18,17 +18,17 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EventrecorderRecord extends UpdatableRecordImpl<EventrecorderRecord> implements Record1<Integer> {
 
-    private static final long serialVersionUID = 1922529458;
+    private static final long serialVersionUID = 1317380078;
 
     /**
-     * Setter for <code>testdb3.eventrecorder.matchID</code>.
+     * Setter for <code>demodb.eventrecorder.matchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>testdb3.eventrecorder.matchID</code>.
+     * Getter for <code>demodb.eventrecorder.matchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);

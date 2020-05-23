@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.CoachTeamRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CoachTeam extends TableImpl<CoachTeamRecord> {
 
-    private static final long serialVersionUID = 526040649;
+    private static final long serialVersionUID = -930018201;
 
     /**
-     * The reference instance of <code>testdb3.coach_team</code>
+     * The reference instance of <code>demodb.coach_team</code>
      */
     public static final CoachTeam COACH_TEAM = new CoachTeam();
 
@@ -48,31 +48,31 @@ public class CoachTeam extends TableImpl<CoachTeamRecord> {
     }
 
     /**
-     * The column <code>testdb3.coach_team.coachID</code>.
+     * The column <code>demodb.coach_team.coachID</code>.
      */
     public final TableField<CoachTeamRecord, String> COACHID = createField(DSL.name("coachID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.coach_team.teamID</code>.
+     * The column <code>demodb.coach_team.teamID</code>.
      */
     public final TableField<CoachTeamRecord, String> TEAMID = createField(DSL.name("teamID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>testdb3.coach_team</code> table reference
+     * Create a <code>demodb.coach_team</code> table reference
      */
     public CoachTeam() {
         this(DSL.name("coach_team"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.coach_team</code> table reference
+     * Create an aliased <code>demodb.coach_team</code> table reference
      */
     public CoachTeam(String alias) {
         this(DSL.name(alias), COACH_TEAM);
     }
 
     /**
-     * Create an aliased <code>testdb3.coach_team</code> table reference
+     * Create an aliased <code>demodb.coach_team</code> table reference
      */
     public CoachTeam(Name alias) {
         this(alias, COACH_TEAM);
@@ -92,7 +92,7 @@ public class CoachTeam extends TableImpl<CoachTeamRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

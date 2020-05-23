@@ -20,6 +20,7 @@ public class Season {
     private HashMap<Team, LinkedList<Integer>> leagueTable;
     private HashMap <Integer, Match> matchesOfTheSeason;
 
+
     /**
      * @param seasonId
      * @param startDate
@@ -268,7 +269,6 @@ public class Season {
     public boolean addTeamToSeason(Team team){
         if(team!=null){
             teams.put(team.getTeamName(),team);
-
             return true;
         }
         return false;
@@ -321,6 +321,14 @@ public class Season {
      */
     public HashMap <Integer,Match> getMatchesOfTheSeason(){
         return matchesOfTheSeason;
+    }
+
+    /**
+     * @return true if the season has referees assigned to it
+     *         false else
+     */
+    public boolean checkIfRefereeIsAssignedToSeason(){
+        return !(referees.size() == 0);
     }
 
 }

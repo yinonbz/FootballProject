@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.ApprovalRequestsRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ApprovalRequests extends TableImpl<ApprovalRequestsRecord> {
 
-    private static final long serialVersionUID = 2038228551;
+    private static final long serialVersionUID = 1797622151;
 
     /**
-     * The reference instance of <code>testdb3.approval_requests</code>
+     * The reference instance of <code>demodb.approval_requests</code>
      */
     public static final ApprovalRequests APPROVAL_REQUESTS = new ApprovalRequests();
 
@@ -47,41 +47,41 @@ public class ApprovalRequests extends TableImpl<ApprovalRequestsRecord> {
     }
 
     /**
-     * The column <code>testdb3.approval_requests.username</code>.
+     * The column <code>demodb.approval_requests.username</code>.
      */
     public final TableField<ApprovalRequestsRecord, String> USERNAME = createField(DSL.name("username"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.approval_requests.name</code>.
+     * The column <code>demodb.approval_requests.name</code>.
      */
     public final TableField<ApprovalRequestsRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.approval_requests.password</code>.
+     * The column <code>demodb.approval_requests.password</code>.
      */
     public final TableField<ApprovalRequestsRecord, String> PASSWORD = createField(DSL.name("password"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.approval_requests.userType</code>.
+     * The column <code>demodb.approval_requests.userType</code>.
      */
     public final TableField<ApprovalRequestsRecord, String> USERTYPE = createField(DSL.name("userType"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>testdb3.approval_requests</code> table reference
+     * Create a <code>demodb.approval_requests</code> table reference
      */
     public ApprovalRequests() {
         this(DSL.name("approval_requests"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.approval_requests</code> table reference
+     * Create an aliased <code>demodb.approval_requests</code> table reference
      */
     public ApprovalRequests(String alias) {
         this(DSL.name(alias), APPROVAL_REQUESTS);
     }
 
     /**
-     * Create an aliased <code>testdb3.approval_requests</code> table reference
+     * Create an aliased <code>demodb.approval_requests</code> table reference
      */
     public ApprovalRequests(Name alias) {
         this(alias, APPROVAL_REQUESTS);
@@ -101,7 +101,7 @@ public class ApprovalRequests extends TableImpl<ApprovalRequestsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override

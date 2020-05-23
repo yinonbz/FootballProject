@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Testdb3;
 import dataLayer.Tables.tables.records.OwnerTeamsRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OwnerTeams extends TableImpl<OwnerTeamsRecord> {
 
-    private static final long serialVersionUID = -1300406362;
+    private static final long serialVersionUID = 553168868;
 
     /**
-     * The reference instance of <code>testdb3.owner_teams</code>
+     * The reference instance of <code>demodb.owner_teams</code>
      */
     public static final OwnerTeams OWNER_TEAMS = new OwnerTeams();
 
@@ -48,31 +48,31 @@ public class OwnerTeams extends TableImpl<OwnerTeamsRecord> {
     }
 
     /**
-     * The column <code>testdb3.owner_teams.OwnerID</code>.
+     * The column <code>demodb.owner_teams.OwnerID</code>.
      */
     public final TableField<OwnerTeamsRecord, String> OWNERID = createField(DSL.name("OwnerID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>testdb3.owner_teams.teamID</code>.
+     * The column <code>demodb.owner_teams.teamID</code>.
      */
     public final TableField<OwnerTeamsRecord, String> TEAMID = createField(DSL.name("teamID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>testdb3.owner_teams</code> table reference
+     * Create a <code>demodb.owner_teams</code> table reference
      */
     public OwnerTeams() {
         this(DSL.name("owner_teams"), null);
     }
 
     /**
-     * Create an aliased <code>testdb3.owner_teams</code> table reference
+     * Create an aliased <code>demodb.owner_teams</code> table reference
      */
     public OwnerTeams(String alias) {
         this(DSL.name(alias), OWNER_TEAMS);
     }
 
     /**
-     * Create an aliased <code>testdb3.owner_teams</code> table reference
+     * Create an aliased <code>demodb.owner_teams</code> table reference
      */
     public OwnerTeams(Name alias) {
         this(alias, OWNER_TEAMS);
@@ -92,7 +92,7 @@ public class OwnerTeams extends TableImpl<OwnerTeamsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Testdb3.TESTDB3;
+        return Demodb.DEMODB;
     }
 
     @Override
