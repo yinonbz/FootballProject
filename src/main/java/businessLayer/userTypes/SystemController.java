@@ -300,6 +300,8 @@ public class SystemController extends Observable {
         this.recommendationSystem = recommendationSystem;
     }
 
+
+
     public ArrayList<String> getSystemSubscribers() {
         HashMap<String, Subscriber> users = DB.getSystemSubscribers();
         ArrayList<String> systemUsers = new ArrayList<>();
@@ -1892,7 +1894,6 @@ public class SystemController extends Observable {
         }
         return teamNames;
     }
-
 
 
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {

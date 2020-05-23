@@ -392,30 +392,30 @@ public class SystemService extends Observable implements Observer {
     public ArrayList<String> getSystemSubscribers() {
         return systemController.getSystemSubscribers();
     }
-
+    //todo ido add this function
     public void updatePlayerBDate(String date, String user){
         systemController.updatePlayerBDate(date,user);
     }
-
+    //todo ido add this function
     public void updatePlayerName(String name, String userName) {
         systemController.updatePlayerName(name,userName);
     }
-
+    //todo ido add this function
     public void updatePlayerPost(String userName, String post) {
         systemController.updatePlayerPost(userName,post);
 
     }
-
+    //todo ido add this function
     public void updateCoachName(String name, String userName) {
         systemController.updateCoachName(name,userName);
 
     }
-
+    //todo ido add this function
     public void updateCoachPost(String userName, String post) {
         systemController.updateCoachPost(userName,post);
 
     }
-
+    //todo ido add this function
     public void updateRefereeName(String name, String userName) {
         systemController.updateRefereeName(name,userName);
 
