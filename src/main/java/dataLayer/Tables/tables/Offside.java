@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.OffsideRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Offside extends TableImpl<OffsideRecord> {
 
-    private static final long serialVersionUID = -1979104305;
+    private static final long serialVersionUID = -226025906;
 
     /**
-     * The reference instance of <code>localsoccer.offside</code>
+     * The reference instance of <code>demodb.offside</code>
      */
     public static final Offside OFFSIDE = new Offside();
 
@@ -48,41 +48,41 @@ public class Offside extends TableImpl<OffsideRecord> {
     }
 
     /**
-     * The column <code>localsoccer.offside.MatchID</code>.
+     * The column <code>demodb.offside.MatchID</code>.
      */
     public final TableField<OffsideRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.offside.EventID</code>.
+     * The column <code>demodb.offside.EventID</code>.
      */
     public final TableField<OffsideRecord, Integer> EVENTID = createField(DSL.name("EventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.offside.Time</code>.
+     * The column <code>demodb.offside.Time</code>.
      */
     public final TableField<OffsideRecord, String> TIME = createField(DSL.name("Time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.offside.PlayerOffsideID</code>.
+     * The column <code>demodb.offside.PlayerOffsideID</code>.
      */
     public final TableField<OffsideRecord, String> PLAYEROFFSIDEID = createField(DSL.name("PlayerOffsideID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.offside</code> table reference
+     * Create a <code>demodb.offside</code> table reference
      */
     public Offside() {
         this(DSL.name("offside"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.offside</code> table reference
+     * Create an aliased <code>demodb.offside</code> table reference
      */
     public Offside(String alias) {
         this(DSL.name(alias), OFFSIDE);
     }
 
     /**
-     * Create an aliased <code>localsoccer.offside</code> table reference
+     * Create an aliased <code>demodb.offside</code> table reference
      */
     public Offside(Name alias) {
         this(alias, OFFSIDE);
@@ -102,7 +102,7 @@ public class Offside extends TableImpl<OffsideRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

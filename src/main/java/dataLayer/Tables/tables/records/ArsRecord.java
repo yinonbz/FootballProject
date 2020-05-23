@@ -19,31 +19,31 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ArsRecord extends UpdatableRecordImpl<ArsRecord> implements Record2<String, Boolean> {
 
-    private static final long serialVersionUID = -1645301720;
+    private static final long serialVersionUID = 1343603218;
 
     /**
-     * Setter for <code>localsoccer.ars.AR_ID</code>.
+     * Setter for <code>demodb.ars.AR_ID</code>.
      */
     public void setArId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.ars.AR_ID</code>.
+     * Getter for <code>demodb.ars.AR_ID</code>.
      */
     public String getArId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.ars.approved</code>.
+     * Setter for <code>demodb.ars.approved</code>.
      */
     public void setApproved(Boolean value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.ars.approved</code>.
+     * Getter for <code>demodb.ars.approved</code>.
      */
     public Boolean getApproved() {
         return (Boolean) get(1);

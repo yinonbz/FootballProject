@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.PagePostRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PagePost extends TableImpl<PagePostRecord> {
 
-    private static final long serialVersionUID = -1744106929;
+    private static final long serialVersionUID = -1815713712;
 
     /**
-     * The reference instance of <code>localsoccer.page_post</code>
+     * The reference instance of <code>demodb.page_post</code>
      */
     public static final PagePost PAGE_POST = new PagePost();
 
@@ -48,31 +48,31 @@ public class PagePost extends TableImpl<PagePostRecord> {
     }
 
     /**
-     * The column <code>localsoccer.page_post.usernameID</code>.
+     * The column <code>demodb.page_post.pageID</code>.
      */
-    public final TableField<PagePostRecord, String> USERNAMEID = createField(DSL.name("usernameID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<PagePostRecord, Integer> PAGEID = createField(DSL.name("pageID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.page_post.post</code>.
+     * The column <code>demodb.page_post.post</code>.
      */
     public final TableField<PagePostRecord, String> POST = createField(DSL.name("post"), org.jooq.impl.SQLDataType.VARCHAR(500).nullable(false).defaultValue(org.jooq.impl.DSL.field("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.page_post</code> table reference
+     * Create a <code>demodb.page_post</code> table reference
      */
     public PagePost() {
         this(DSL.name("page_post"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.page_post</code> table reference
+     * Create an aliased <code>demodb.page_post</code> table reference
      */
     public PagePost(String alias) {
         this(DSL.name(alias), PAGE_POST);
     }
 
     /**
-     * Create an aliased <code>localsoccer.page_post</code> table reference
+     * Create an aliased <code>demodb.page_post</code> table reference
      */
     public PagePost(Name alias) {
         this(alias, PAGE_POST);
@@ -92,7 +92,7 @@ public class PagePost extends TableImpl<PagePostRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class PagePost extends TableImpl<PagePostRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row2<String, String> fieldsRow() {
+    public Row2<Integer, String> fieldsRow() {
         return (Row2) super.fieldsRow();
     }
 }

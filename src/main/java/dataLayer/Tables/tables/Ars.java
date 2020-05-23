@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.ArsRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ars extends TableImpl<ArsRecord> {
 
-    private static final long serialVersionUID = 495264364;
+    private static final long serialVersionUID = -595638493;
 
     /**
-     * The reference instance of <code>localsoccer.ars</code>
+     * The reference instance of <code>demodb.ars</code>
      */
     public static final Ars ARS = new Ars();
 
@@ -47,31 +47,31 @@ public class Ars extends TableImpl<ArsRecord> {
     }
 
     /**
-     * The column <code>localsoccer.ars.AR_ID</code>.
+     * The column <code>demodb.ars.AR_ID</code>.
      */
     public final TableField<ArsRecord, String> AR_ID = createField(DSL.name("AR_ID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.ars.approved</code>.
+     * The column <code>demodb.ars.approved</code>.
      */
     public final TableField<ArsRecord, Boolean> APPROVED = createField(DSL.name("approved"), org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.field("b'1'", org.jooq.impl.SQLDataType.BIT)), this, "");
 
     /**
-     * Create a <code>localsoccer.ars</code> table reference
+     * Create a <code>demodb.ars</code> table reference
      */
     public Ars() {
         this(DSL.name("ars"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.ars</code> table reference
+     * Create an aliased <code>demodb.ars</code> table reference
      */
     public Ars(String alias) {
         this(DSL.name(alias), ARS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.ars</code> table reference
+     * Create an aliased <code>demodb.ars</code> table reference
      */
     public Ars(Name alias) {
         this(alias, ARS);
@@ -91,7 +91,7 @@ public class Ars extends TableImpl<ArsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

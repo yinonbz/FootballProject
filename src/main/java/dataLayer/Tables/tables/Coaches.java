@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.enums.CoachesRoleinteam;
 import dataLayer.Tables.enums.CoachesTraining;
 import dataLayer.Tables.tables.records.CoachesRecord;
@@ -33,10 +33,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Coaches extends TableImpl<CoachesRecord> {
 
-    private static final long serialVersionUID = -1609974066;
+    private static final long serialVersionUID = -1258878188;
 
     /**
-     * The reference instance of <code>localsoccer.coaches</code>
+     * The reference instance of <code>demodb.coaches</code>
      */
     public static final Coaches COACHES = new Coaches();
 
@@ -49,46 +49,46 @@ public class Coaches extends TableImpl<CoachesRecord> {
     }
 
     /**
-     * The column <code>localsoccer.coaches.coachID</code>.
+     * The column <code>demodb.coaches.coachID</code>.
      */
     public final TableField<CoachesRecord, String> COACHID = createField(DSL.name("coachID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.coaches.roleInTeam</code>.
+     * The column <code>demodb.coaches.roleInTeam</code>.
      */
     public final TableField<CoachesRecord, CoachesRoleinteam> ROLEINTEAM = createField(DSL.name("roleInTeam"), org.jooq.impl.SQLDataType.VARCHAR(8).nullable(false).defaultValue(org.jooq.impl.DSL.field("'GENERAL'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(dataLayer.Tables.enums.CoachesRoleinteam.class), this, "");
 
     /**
-     * The column <code>localsoccer.coaches.training</code>.
+     * The column <code>demodb.coaches.training</code>.
      */
     public final TableField<CoachesRecord, CoachesTraining> TRAINING = createField(DSL.name("training"), org.jooq.impl.SQLDataType.VARCHAR(7).defaultValue(org.jooq.impl.DSL.field("'GENERAL'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(dataLayer.Tables.enums.CoachesTraining.class), this, "");
 
     /**
-     * The column <code>localsoccer.coaches.salary</code>.
+     * The column <code>demodb.coaches.salary</code>.
      */
     public final TableField<CoachesRecord, Integer> SALARY = createField(DSL.name("salary"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>localsoccer.coaches.teamOwnerID_fictive</code>.
+     * The column <code>demodb.coaches.teamOwnerID_fictive</code>.
      */
     public final TableField<CoachesRecord, String> TEAMOWNERID_FICTIVE = createField(DSL.name("teamOwnerID_fictive"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.coaches</code> table reference
+     * Create a <code>demodb.coaches</code> table reference
      */
     public Coaches() {
         this(DSL.name("coaches"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.coaches</code> table reference
+     * Create an aliased <code>demodb.coaches</code> table reference
      */
     public Coaches(String alias) {
         this(DSL.name(alias), COACHES);
     }
 
     /**
-     * Create an aliased <code>localsoccer.coaches</code> table reference
+     * Create an aliased <code>demodb.coaches</code> table reference
      */
     public Coaches(Name alias) {
         this(alias, COACHES);
@@ -108,7 +108,7 @@ public class Coaches extends TableImpl<CoachesRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

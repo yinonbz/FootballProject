@@ -213,7 +213,7 @@ public class DBEvents implements DB_Inter {
             else if(type.equals("goal")){
                 create.insertInto(GOAL,GOAL.MATCHID,GOAL.TIME,GOAL.EVENTID,
                         GOAL.PLAYERGOALID,GOAL.PLAYERASSISTID,GOAL.ISOWNGOAL).values(matchID,time,eventID,details.get("playerG").get(0),
-                        details.get("playerA").get(0),Byte.valueOf(details.get("isOwnGoal").get(0))).execute();
+                        details.get("playerA").get(0),Boolean.valueOf(details.get("isOwnGoal").get(0))).execute();
             }
             else if(type.equals("offside")){
                 create.insertInto(OFFSIDE,OFFSIDE.MATCHID,OFFSIDE.TIME,OFFSIDE.EVENTID,

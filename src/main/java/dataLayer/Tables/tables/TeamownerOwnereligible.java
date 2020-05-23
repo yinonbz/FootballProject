@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.TeamownerOwnereligibleRecord;
 
 import java.util.Arrays;
@@ -33,10 +33,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TeamownerOwnereligible extends TableImpl<TeamownerOwnereligibleRecord> {
 
-    private static final long serialVersionUID = -1177603218;
+    private static final long serialVersionUID = 371752341;
 
     /**
-     * The reference instance of <code>localsoccer.teamowner_ownereligible</code>
+     * The reference instance of <code>demodb.teamowner_ownereligible</code>
      */
     public static final TeamownerOwnereligible TEAMOWNER_OWNERELIGIBLE = new TeamownerOwnereligible();
 
@@ -49,41 +49,41 @@ public class TeamownerOwnereligible extends TableImpl<TeamownerOwnereligibleReco
     }
 
     /**
-     * The column <code>localsoccer.teamowner_ownereligible.OwnerID</code>.
+     * The column <code>demodb.teamowner_ownereligible.OwnerID</code>.
      */
     public final TableField<TeamownerOwnereligibleRecord, String> OWNERID = createField(DSL.name("OwnerID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.teamowner_ownereligible.playerID</code>.
+     * The column <code>demodb.teamowner_ownereligible.playerID</code>.
      */
     public final TableField<TeamownerOwnereligibleRecord, String> PLAYERID = createField(DSL.name("playerID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.teamowner_ownereligible.managerID</code>.
+     * The column <code>demodb.teamowner_ownereligible.managerID</code>.
      */
     public final TableField<TeamownerOwnereligibleRecord, String> MANAGERID = createField(DSL.name("managerID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.teamowner_ownereligible.coachID</code>.
+     * The column <code>demodb.teamowner_ownereligible.coachID</code>.
      */
     public final TableField<TeamownerOwnereligibleRecord, String> COACHID = createField(DSL.name("coachID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.teamowner_ownereligible</code> table reference
+     * Create a <code>demodb.teamowner_ownereligible</code> table reference
      */
     public TeamownerOwnereligible() {
         this(DSL.name("teamowner_ownereligible"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.teamowner_ownereligible</code> table reference
+     * Create an aliased <code>demodb.teamowner_ownereligible</code> table reference
      */
     public TeamownerOwnereligible(String alias) {
         this(DSL.name(alias), TEAMOWNER_OWNERELIGIBLE);
     }
 
     /**
-     * Create an aliased <code>localsoccer.teamowner_ownereligible</code> table reference
+     * Create an aliased <code>demodb.teamowner_ownereligible</code> table reference
      */
     public TeamownerOwnereligible(Name alias) {
         this(alias, TEAMOWNER_OWNERELIGIBLE);
@@ -103,7 +103,7 @@ public class TeamownerOwnereligible extends TableImpl<TeamownerOwnereligibleReco
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

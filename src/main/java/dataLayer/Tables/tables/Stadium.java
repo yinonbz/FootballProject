@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.StadiumRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Stadium extends TableImpl<StadiumRecord> {
 
-    private static final long serialVersionUID = -92448080;
+    private static final long serialVersionUID = -1474705334;
 
     /**
-     * The reference instance of <code>localsoccer.stadium</code>
+     * The reference instance of <code>demodb.stadium</code>
      */
     public static final Stadium STADIUM = new Stadium();
 
@@ -47,36 +47,36 @@ public class Stadium extends TableImpl<StadiumRecord> {
     }
 
     /**
-     * The column <code>localsoccer.stadium.StadiumID</code>.
+     * The column <code>demodb.stadium.StadiumID</code>.
      */
     public final TableField<StadiumRecord, String> STADIUMID = createField(DSL.name("StadiumID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.stadium.numOfSeats</code>.
+     * The column <code>demodb.stadium.numOfSeats</code>.
      */
     public final TableField<StadiumRecord, Integer> NUMOFSEATS = createField(DSL.name("numOfSeats"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("100", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>localsoccer.stadium.ticketCost</code>.
+     * The column <code>demodb.stadium.ticketCost</code>.
      */
     public final TableField<StadiumRecord, Integer> TICKETCOST = createField(DSL.name("ticketCost"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * Create a <code>localsoccer.stadium</code> table reference
+     * Create a <code>demodb.stadium</code> table reference
      */
     public Stadium() {
         this(DSL.name("stadium"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.stadium</code> table reference
+     * Create an aliased <code>demodb.stadium</code> table reference
      */
     public Stadium(String alias) {
         this(DSL.name(alias), STADIUM);
     }
 
     /**
-     * Create an aliased <code>localsoccer.stadium</code> table reference
+     * Create an aliased <code>demodb.stadium</code> table reference
      */
     public Stadium(Name alias) {
         this(alias, STADIUM);
@@ -96,7 +96,7 @@ public class Stadium extends TableImpl<StadiumRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

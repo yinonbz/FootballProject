@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.enums.PlayersFieldjob;
 import dataLayer.Tables.tables.records.PlayersRecord;
 
@@ -35,10 +35,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Players extends TableImpl<PlayersRecord> {
 
-    private static final long serialVersionUID = -2098441948;
+    private static final long serialVersionUID = -968793415;
 
     /**
-     * The reference instance of <code>localsoccer.players</code>
+     * The reference instance of <code>demodb.players</code>
      */
     public static final Players PLAYERS = new Players();
 
@@ -51,51 +51,51 @@ public class Players extends TableImpl<PlayersRecord> {
     }
 
     /**
-     * The column <code>localsoccer.players.playerID</code>.
+     * The column <code>demodb.players.playerID</code>.
      */
     public final TableField<PlayersRecord, String> PLAYERID = createField(DSL.name("playerID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.players.teamID</code>.
+     * The column <code>demodb.players.teamID</code>.
      */
     public final TableField<PlayersRecord, String> TEAMID = createField(DSL.name("teamID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.players.birthDate</code>.
+     * The column <code>demodb.players.birthDate</code>.
      */
     public final TableField<PlayersRecord, LocalDate> BIRTHDATE = createField(DSL.name("birthDate"), org.jooq.impl.SQLDataType.LOCALDATE.nullable(false).defaultValue(org.jooq.impl.DSL.field("curdate()", org.jooq.impl.SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>localsoccer.players.fieldJob</code>.
+     * The column <code>demodb.players.fieldJob</code>.
      */
     public final TableField<PlayersRecord, PlayersFieldjob> FIELDJOB = createField(DSL.name("fieldJob"), org.jooq.impl.SQLDataType.VARCHAR(2).defaultValue(org.jooq.impl.DSL.field("'S'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(dataLayer.Tables.enums.PlayersFieldjob.class), this, "");
 
     /**
-     * The column <code>localsoccer.players.salary</code>.
+     * The column <code>demodb.players.salary</code>.
      */
     public final TableField<PlayersRecord, Integer> SALARY = createField(DSL.name("salary"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>localsoccer.players.teamOwnerID_fictive</code>.
+     * The column <code>demodb.players.teamOwnerID_fictive</code>.
      */
     public final TableField<PlayersRecord, String> TEAMOWNERID_FICTIVE = createField(DSL.name("teamOwnerID_fictive"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.players</code> table reference
+     * Create a <code>demodb.players</code> table reference
      */
     public Players() {
         this(DSL.name("players"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.players</code> table reference
+     * Create an aliased <code>demodb.players</code> table reference
      */
     public Players(String alias) {
         this(DSL.name(alias), PLAYERS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.players</code> table reference
+     * Create an aliased <code>demodb.players</code> table reference
      */
     public Players(Name alias) {
         this(alias, PLAYERS);
@@ -115,7 +115,7 @@ public class Players extends TableImpl<PlayersRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

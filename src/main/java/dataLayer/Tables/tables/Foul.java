@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.FoulRecord;
 
 import java.util.Arrays;
@@ -33,10 +33,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Foul extends TableImpl<FoulRecord> {
 
-    private static final long serialVersionUID = -1296211123;
+    private static final long serialVersionUID = -436990395;
 
     /**
-     * The reference instance of <code>localsoccer.foul</code>
+     * The reference instance of <code>demodb.foul</code>
      */
     public static final Foul FOUL = new Foul();
 
@@ -49,46 +49,46 @@ public class Foul extends TableImpl<FoulRecord> {
     }
 
     /**
-     * The column <code>localsoccer.foul.MatchID</code>.
+     * The column <code>demodb.foul.MatchID</code>.
      */
     public final TableField<FoulRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.foul.EventID</code>.
+     * The column <code>demodb.foul.EventID</code>.
      */
     public final TableField<FoulRecord, Integer> EVENTID = createField(DSL.name("EventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.foul.Time</code>.
+     * The column <code>demodb.foul.Time</code>.
      */
     public final TableField<FoulRecord, String> TIME = createField(DSL.name("Time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.foul.PlayerAgainstID</code>.
+     * The column <code>demodb.foul.PlayerAgainstID</code>.
      */
     public final TableField<FoulRecord, String> PLAYERAGAINSTID = createField(DSL.name("PlayerAgainstID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.foul.PlayerInFavorID</code>.
+     * The column <code>demodb.foul.PlayerInFavorID</code>.
      */
     public final TableField<FoulRecord, String> PLAYERINFAVORID = createField(DSL.name("PlayerInFavorID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.foul</code> table reference
+     * Create a <code>demodb.foul</code> table reference
      */
     public Foul() {
         this(DSL.name("foul"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.foul</code> table reference
+     * Create an aliased <code>demodb.foul</code> table reference
      */
     public Foul(String alias) {
         this(DSL.name(alias), FOUL);
     }
 
     /**
-     * Create an aliased <code>localsoccer.foul</code> table reference
+     * Create an aliased <code>demodb.foul</code> table reference
      */
     public Foul(Name alias) {
         this(alias, FOUL);
@@ -108,7 +108,7 @@ public class Foul extends TableImpl<FoulRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

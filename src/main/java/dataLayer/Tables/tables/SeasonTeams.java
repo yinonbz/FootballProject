@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.SeasonTeamsRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SeasonTeams extends TableImpl<SeasonTeamsRecord> {
 
-    private static final long serialVersionUID = -255930694;
+    private static final long serialVersionUID = -1152503596;
 
     /**
-     * The reference instance of <code>localsoccer.season_teams</code>
+     * The reference instance of <code>demodb.season_teams</code>
      */
     public static final SeasonTeams SEASON_TEAMS = new SeasonTeams();
 
@@ -48,36 +48,36 @@ public class SeasonTeams extends TableImpl<SeasonTeamsRecord> {
     }
 
     /**
-     * The column <code>localsoccer.season_teams.LeagueID</code>.
+     * The column <code>demodb.season_teams.LeagueID</code>.
      */
     public final TableField<SeasonTeamsRecord, String> LEAGUEID = createField(DSL.name("LeagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.season_teams.SeasonID</code>.
+     * The column <code>demodb.season_teams.SeasonID</code>.
      */
     public final TableField<SeasonTeamsRecord, Integer> SEASONID = createField(DSL.name("SeasonID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.season_teams.TeamID</code>.
+     * The column <code>demodb.season_teams.TeamID</code>.
      */
     public final TableField<SeasonTeamsRecord, String> TEAMID = createField(DSL.name("TeamID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>localsoccer.season_teams</code> table reference
+     * Create a <code>demodb.season_teams</code> table reference
      */
     public SeasonTeams() {
         this(DSL.name("season_teams"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.season_teams</code> table reference
+     * Create an aliased <code>demodb.season_teams</code> table reference
      */
     public SeasonTeams(String alias) {
         this(DSL.name(alias), SEASON_TEAMS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.season_teams</code> table reference
+     * Create an aliased <code>demodb.season_teams</code> table reference
      */
     public SeasonTeams(Name alias) {
         this(alias, SEASON_TEAMS);
@@ -97,7 +97,7 @@ public class SeasonTeams extends TableImpl<SeasonTeamsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

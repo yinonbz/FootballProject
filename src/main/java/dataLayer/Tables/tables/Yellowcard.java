@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.YellowcardRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Yellowcard extends TableImpl<YellowcardRecord> {
 
-    private static final long serialVersionUID = -1117626288;
+    private static final long serialVersionUID = -204153905;
 
     /**
-     * The reference instance of <code>localsoccer.yellowcard</code>
+     * The reference instance of <code>demodb.yellowcard</code>
      */
     public static final Yellowcard YELLOWCARD = new Yellowcard();
 
@@ -48,41 +48,41 @@ public class Yellowcard extends TableImpl<YellowcardRecord> {
     }
 
     /**
-     * The column <code>localsoccer.yellowcard.MatchID</code>.
+     * The column <code>demodb.yellowcard.MatchID</code>.
      */
     public final TableField<YellowcardRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.yellowcard.EventID</code>.
+     * The column <code>demodb.yellowcard.EventID</code>.
      */
     public final TableField<YellowcardRecord, Integer> EVENTID = createField(DSL.name("EventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.yellowcard.Time</code>.
+     * The column <code>demodb.yellowcard.Time</code>.
      */
     public final TableField<YellowcardRecord, String> TIME = createField(DSL.name("Time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.yellowcard.PlayerAgainstID</code>.
+     * The column <code>demodb.yellowcard.PlayerAgainstID</code>.
      */
     public final TableField<YellowcardRecord, String> PLAYERAGAINSTID = createField(DSL.name("PlayerAgainstID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.yellowcard</code> table reference
+     * Create a <code>demodb.yellowcard</code> table reference
      */
     public Yellowcard() {
         this(DSL.name("yellowcard"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.yellowcard</code> table reference
+     * Create an aliased <code>demodb.yellowcard</code> table reference
      */
     public Yellowcard(String alias) {
         this(DSL.name(alias), YELLOWCARD);
     }
 
     /**
-     * Create an aliased <code>localsoccer.yellowcard</code> table reference
+     * Create an aliased <code>demodb.yellowcard</code> table reference
      */
     public Yellowcard(Name alias) {
         this(alias, YELLOWCARD);
@@ -102,7 +102,7 @@ public class Yellowcard extends TableImpl<YellowcardRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

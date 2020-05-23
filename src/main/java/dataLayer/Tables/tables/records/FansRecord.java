@@ -18,17 +18,17 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FansRecord extends UpdatableRecordImpl<FansRecord> implements Record1<String> {
 
-    private static final long serialVersionUID = -1956056033;
+    private static final long serialVersionUID = 1365506959;
 
     /**
-     * Setter for <code>localsoccer.fans.fanID</code>.
+     * Setter for <code>demodb.fans.fanID</code>.
      */
     public void setFanid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.fans.fanID</code>.
+     * Getter for <code>demodb.fans.fanID</code>.
      */
     public String getFanid() {
         return (String) get(0);

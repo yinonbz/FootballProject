@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.ComplaintsRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Complaints extends TableImpl<ComplaintsRecord> {
 
-    private static final long serialVersionUID = 1579701109;
+    private static final long serialVersionUID = 179976014;
 
     /**
-     * The reference instance of <code>localsoccer.complaints</code>
+     * The reference instance of <code>demodb.complaints</code>
      */
     public static final Complaints COMPLAINTS = new Complaints();
 
@@ -47,51 +47,51 @@ public class Complaints extends TableImpl<ComplaintsRecord> {
     }
 
     /**
-     * The column <code>localsoccer.complaints.ComplaintID</code>.
+     * The column <code>demodb.complaints.ComplaintID</code>.
      */
     public final TableField<ComplaintsRecord, Integer> COMPLAINTID = createField(DSL.name("ComplaintID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.complaints.WriterID</code>.
+     * The column <code>demodb.complaints.WriterID</code>.
      */
     public final TableField<ComplaintsRecord, String> WRITERID = createField(DSL.name("WriterID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.complaints.Content</code>.
+     * The column <code>demodb.complaints.Content</code>.
      */
     public final TableField<ComplaintsRecord, String> CONTENT = createField(DSL.name("Content"), org.jooq.impl.SQLDataType.VARCHAR(500).nullable(false).defaultValue(org.jooq.impl.DSL.field("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.complaints.handlerID</code>.
+     * The column <code>demodb.complaints.handlerID</code>.
      */
     public final TableField<ComplaintsRecord, String> HANDLERID = createField(DSL.name("handlerID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.complaints.Comment</code>.
+     * The column <code>demodb.complaints.Comment</code>.
      */
     public final TableField<ComplaintsRecord, String> COMMENT = createField(DSL.name("Comment"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(org.jooq.impl.DSL.field("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.complaints.isAnswered</code>.
+     * The column <code>demodb.complaints.isAnswered</code>.
      */
     public final TableField<ComplaintsRecord, Boolean> ISANSWERED = createField(DSL.name("isAnswered"), org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.field("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "");
 
     /**
-     * Create a <code>localsoccer.complaints</code> table reference
+     * Create a <code>demodb.complaints</code> table reference
      */
     public Complaints() {
         this(DSL.name("complaints"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.complaints</code> table reference
+     * Create an aliased <code>demodb.complaints</code> table reference
      */
     public Complaints(String alias) {
         this(DSL.name(alias), COMPLAINTS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.complaints</code> table reference
+     * Create an aliased <code>demodb.complaints</code> table reference
      */
     public Complaints(Name alias) {
         this(alias, COMPLAINTS);
@@ -111,7 +111,7 @@ public class Complaints extends TableImpl<ComplaintsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

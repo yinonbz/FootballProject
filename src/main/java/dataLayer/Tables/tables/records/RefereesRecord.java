@@ -20,31 +20,31 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RefereesRecord extends UpdatableRecordImpl<RefereesRecord> implements Record2<String, RefereesRoleref> {
 
-    private static final long serialVersionUID = 47856497;
+    private static final long serialVersionUID = -336314513;
 
     /**
-     * Setter for <code>localsoccer.referees.refereeID</code>.
+     * Setter for <code>demodb.referees.refereeID</code>.
      */
     public void setRefereeid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.referees.refereeID</code>.
+     * Getter for <code>demodb.referees.refereeID</code>.
      */
     public String getRefereeid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.referees.roleRef</code>.
+     * Setter for <code>demodb.referees.roleRef</code>.
      */
     public void setRoleref(RefereesRoleref value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.referees.roleRef</code>.
+     * Getter for <code>demodb.referees.roleRef</code>.
      */
     public RefereesRoleref getRoleref() {
         return (RefereesRoleref) get(1);

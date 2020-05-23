@@ -18,59 +18,59 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class YellowcardRecord extends TableRecordImpl<YellowcardRecord> implements Record4<Integer, Integer, String, String> {
 
-    private static final long serialVersionUID = -1778983864;
+    private static final long serialVersionUID = 550896632;
 
     /**
-     * Setter for <code>localsoccer.yellowcard.MatchID</code>.
+     * Setter for <code>demodb.yellowcard.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.yellowcard.MatchID</code>.
+     * Getter for <code>demodb.yellowcard.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.yellowcard.EventID</code>.
+     * Setter for <code>demodb.yellowcard.EventID</code>.
      */
     public void setEventid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.yellowcard.EventID</code>.
+     * Getter for <code>demodb.yellowcard.EventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.yellowcard.Time</code>.
+     * Setter for <code>demodb.yellowcard.Time</code>.
      */
     public void setTime(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.yellowcard.Time</code>.
+     * Getter for <code>demodb.yellowcard.Time</code>.
      */
     public String getTime() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>localsoccer.yellowcard.PlayerAgainstID</code>.
+     * Setter for <code>demodb.yellowcard.PlayerAgainstID</code>.
      */
     public void setPlayeragainstid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>localsoccer.yellowcard.PlayerAgainstID</code>.
+     * Getter for <code>demodb.yellowcard.PlayerAgainstID</code>.
      */
     public String getPlayeragainstid() {
         return (String) get(3);

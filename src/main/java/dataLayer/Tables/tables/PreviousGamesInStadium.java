@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.PreviousGamesInStadiumRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PreviousGamesInStadium extends TableImpl<PreviousGamesInStadiumRecord> {
 
-    private static final long serialVersionUID = 1909940582;
+    private static final long serialVersionUID = 130047205;
 
     /**
-     * The reference instance of <code>localsoccer.previous_games_in_stadium</code>
+     * The reference instance of <code>demodb.previous_games_in_stadium</code>
      */
     public static final PreviousGamesInStadium PREVIOUS_GAMES_IN_STADIUM = new PreviousGamesInStadium();
 
@@ -48,31 +48,31 @@ public class PreviousGamesInStadium extends TableImpl<PreviousGamesInStadiumReco
     }
 
     /**
-     * The column <code>localsoccer.previous_games_in_stadium.StadiumID</code>.
+     * The column <code>demodb.previous_games_in_stadium.StadiumID</code>.
      */
     public final TableField<PreviousGamesInStadiumRecord, String> STADIUMID = createField(DSL.name("StadiumID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.previous_games_in_stadium.MatchID</code>.
+     * The column <code>demodb.previous_games_in_stadium.MatchID</code>.
      */
     public final TableField<PreviousGamesInStadiumRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * Create a <code>localsoccer.previous_games_in_stadium</code> table reference
+     * Create a <code>demodb.previous_games_in_stadium</code> table reference
      */
     public PreviousGamesInStadium() {
         this(DSL.name("previous_games_in_stadium"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.previous_games_in_stadium</code> table reference
+     * Create an aliased <code>demodb.previous_games_in_stadium</code> table reference
      */
     public PreviousGamesInStadium(String alias) {
         this(DSL.name(alias), PREVIOUS_GAMES_IN_STADIUM);
     }
 
     /**
-     * Create an aliased <code>localsoccer.previous_games_in_stadium</code> table reference
+     * Create an aliased <code>demodb.previous_games_in_stadium</code> table reference
      */
     public PreviousGamesInStadium(Name alias) {
         this(alias, PREVIOUS_GAMES_IN_STADIUM);
@@ -92,7 +92,7 @@ public class PreviousGamesInStadium extends TableImpl<PreviousGamesInStadiumReco
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

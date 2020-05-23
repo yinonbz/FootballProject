@@ -18,45 +18,45 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SeasonTeamsRecord extends TableRecordImpl<SeasonTeamsRecord> implements Record3<String, Integer, String> {
 
-    private static final long serialVersionUID = 286319353;
+    private static final long serialVersionUID = -1273055957;
 
     /**
-     * Setter for <code>localsoccer.season_teams.LeagueID</code>.
+     * Setter for <code>demodb.season_teams.LeagueID</code>.
      */
     public void setLeagueid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.season_teams.LeagueID</code>.
+     * Getter for <code>demodb.season_teams.LeagueID</code>.
      */
     public String getLeagueid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.season_teams.SeasonID</code>.
+     * Setter for <code>demodb.season_teams.SeasonID</code>.
      */
     public void setSeasonid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.season_teams.SeasonID</code>.
+     * Getter for <code>demodb.season_teams.SeasonID</code>.
      */
     public Integer getSeasonid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.season_teams.TeamID</code>.
+     * Setter for <code>demodb.season_teams.TeamID</code>.
      */
     public void setTeamid(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.season_teams.TeamID</code>.
+     * Getter for <code>demodb.season_teams.TeamID</code>.
      */
     public String getTeamid() {
         return (String) get(2);

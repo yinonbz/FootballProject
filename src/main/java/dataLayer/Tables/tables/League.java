@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.LeagueRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class League extends TableImpl<LeagueRecord> {
 
-    private static final long serialVersionUID = 1213124613;
+    private static final long serialVersionUID = 265414409;
 
     /**
-     * The reference instance of <code>localsoccer.league</code>
+     * The reference instance of <code>demodb.league</code>
      */
     public static final League LEAGUE = new League();
 
@@ -47,26 +47,26 @@ public class League extends TableImpl<LeagueRecord> {
     }
 
     /**
-     * The column <code>localsoccer.league.leagueID</code>.
+     * The column <code>demodb.league.leagueID</code>.
      */
     public final TableField<LeagueRecord, String> LEAGUEID = createField(DSL.name("leagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>localsoccer.league</code> table reference
+     * Create a <code>demodb.league</code> table reference
      */
     public League() {
         this(DSL.name("league"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.league</code> table reference
+     * Create an aliased <code>demodb.league</code> table reference
      */
     public League(String alias) {
         this(DSL.name(alias), LEAGUE);
     }
 
     /**
-     * Create an aliased <code>localsoccer.league</code> table reference
+     * Create an aliased <code>demodb.league</code> table reference
      */
     public League(Name alias) {
         this(alias, LEAGUE);
@@ -86,7 +86,7 @@ public class League extends TableImpl<LeagueRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

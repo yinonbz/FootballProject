@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.SubstituteRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Substitute extends TableImpl<SubstituteRecord> {
 
-    private static final long serialVersionUID = -31458700;
+    private static final long serialVersionUID = 2103833362;
 
     /**
-     * The reference instance of <code>localsoccer.substitute</code>
+     * The reference instance of <code>demodb.substitute</code>
      */
     public static final Substitute SUBSTITUTE = new Substitute();
 
@@ -48,46 +48,46 @@ public class Substitute extends TableImpl<SubstituteRecord> {
     }
 
     /**
-     * The column <code>localsoccer.substitute.MatchID</code>.
+     * The column <code>demodb.substitute.MatchID</code>.
      */
     public final TableField<SubstituteRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.substitute.EventID</code>.
+     * The column <code>demodb.substitute.EventID</code>.
      */
     public final TableField<SubstituteRecord, Integer> EVENTID = createField(DSL.name("EventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.substitute.Time</code>.
+     * The column <code>demodb.substitute.Time</code>.
      */
     public final TableField<SubstituteRecord, String> TIME = createField(DSL.name("Time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.substitute.PlayerInID</code>.
+     * The column <code>demodb.substitute.PlayerInID</code>.
      */
     public final TableField<SubstituteRecord, String> PLAYERINID = createField(DSL.name("PlayerInID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.substitute.PlayerOutID</code>.
+     * The column <code>demodb.substitute.PlayerOutID</code>.
      */
     public final TableField<SubstituteRecord, String> PLAYEROUTID = createField(DSL.name("PlayerOutID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.substitute</code> table reference
+     * Create a <code>demodb.substitute</code> table reference
      */
     public Substitute() {
         this(DSL.name("substitute"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.substitute</code> table reference
+     * Create an aliased <code>demodb.substitute</code> table reference
      */
     public Substitute(String alias) {
         this(DSL.name(alias), SUBSTITUTE);
     }
 
     /**
-     * Create an aliased <code>localsoccer.substitute</code> table reference
+     * Create an aliased <code>demodb.substitute</code> table reference
      */
     public Substitute(Name alias) {
         this(alias, SUBSTITUTE);
@@ -107,7 +107,7 @@ public class Substitute extends TableImpl<SubstituteRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

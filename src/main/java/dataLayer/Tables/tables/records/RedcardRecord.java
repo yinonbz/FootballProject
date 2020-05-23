@@ -18,59 +18,59 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RedcardRecord extends TableRecordImpl<RedcardRecord> implements Record4<Integer, Integer, String, String> {
 
-    private static final long serialVersionUID = -949396314;
+    private static final long serialVersionUID = -794300370;
 
     /**
-     * Setter for <code>localsoccer.redcard.MatchID</code>.
+     * Setter for <code>demodb.redcard.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.redcard.MatchID</code>.
+     * Getter for <code>demodb.redcard.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.redcard.EventID</code>.
+     * Setter for <code>demodb.redcard.EventID</code>.
      */
     public void setEventid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.redcard.EventID</code>.
+     * Getter for <code>demodb.redcard.EventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.redcard.Time</code>.
+     * Setter for <code>demodb.redcard.Time</code>.
      */
     public void setTime(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.redcard.Time</code>.
+     * Getter for <code>demodb.redcard.Time</code>.
      */
     public String getTime() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>localsoccer.redcard.PlayerAgainstID</code>.
+     * Setter for <code>demodb.redcard.PlayerAgainstID</code>.
      */
     public void setPlayeragainstid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>localsoccer.redcard.PlayerAgainstID</code>.
+     * Getter for <code>demodb.redcard.PlayerAgainstID</code>.
      */
     public String getPlayeragainstid() {
         return (String) get(3);

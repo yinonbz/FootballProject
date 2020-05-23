@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.RedcardRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Redcard extends TableImpl<RedcardRecord> {
 
-    private static final long serialVersionUID = 1160442862;
+    private static final long serialVersionUID = 890394109;
 
     /**
-     * The reference instance of <code>localsoccer.redcard</code>
+     * The reference instance of <code>demodb.redcard</code>
      */
     public static final Redcard REDCARD = new Redcard();
 
@@ -48,41 +48,41 @@ public class Redcard extends TableImpl<RedcardRecord> {
     }
 
     /**
-     * The column <code>localsoccer.redcard.MatchID</code>.
+     * The column <code>demodb.redcard.MatchID</code>.
      */
     public final TableField<RedcardRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.redcard.EventID</code>.
+     * The column <code>demodb.redcard.EventID</code>.
      */
     public final TableField<RedcardRecord, Integer> EVENTID = createField(DSL.name("EventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.redcard.Time</code>.
+     * The column <code>demodb.redcard.Time</code>.
      */
     public final TableField<RedcardRecord, String> TIME = createField(DSL.name("Time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.redcard.PlayerAgainstID</code>.
+     * The column <code>demodb.redcard.PlayerAgainstID</code>.
      */
     public final TableField<RedcardRecord, String> PLAYERAGAINSTID = createField(DSL.name("PlayerAgainstID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.redcard</code> table reference
+     * Create a <code>demodb.redcard</code> table reference
      */
     public Redcard() {
         this(DSL.name("redcard"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.redcard</code> table reference
+     * Create an aliased <code>demodb.redcard</code> table reference
      */
     public Redcard(String alias) {
         this(DSL.name(alias), REDCARD);
     }
 
     /**
-     * Create an aliased <code>localsoccer.redcard</code> table reference
+     * Create an aliased <code>demodb.redcard</code> table reference
      */
     public Redcard(Name alias) {
         this(alias, REDCARD);
@@ -102,7 +102,7 @@ public class Redcard extends TableImpl<RedcardRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

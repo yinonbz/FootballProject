@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.OwnerOwnerAssigningsRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OwnerOwnerAssignings extends TableImpl<OwnerOwnerAssigningsRecord> {
 
-    private static final long serialVersionUID = -562672080;
+    private static final long serialVersionUID = -919860220;
 
     /**
-     * The reference instance of <code>localsoccer.owner_owner_assignings</code>
+     * The reference instance of <code>demodb.owner_owner_assignings</code>
      */
     public static final OwnerOwnerAssignings OWNER_OWNER_ASSIGNINGS = new OwnerOwnerAssignings();
 
@@ -48,36 +48,36 @@ public class OwnerOwnerAssignings extends TableImpl<OwnerOwnerAssigningsRecord> 
     }
 
     /**
-     * The column <code>localsoccer.owner_owner_assignings.ownerID</code>.
+     * The column <code>demodb.owner_owner_assignings.ownerID</code>.
      */
     public final TableField<OwnerOwnerAssigningsRecord, String> OWNERID = createField(DSL.name("ownerID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.owner_owner_assignings.teamID</code>.
+     * The column <code>demodb.owner_owner_assignings.teamID</code>.
      */
     public final TableField<OwnerOwnerAssigningsRecord, String> TEAMID = createField(DSL.name("teamID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.owner_owner_assignings.assigneeID</code>.
+     * The column <code>demodb.owner_owner_assignings.assigneeID</code>.
      */
     public final TableField<OwnerOwnerAssigningsRecord, String> ASSIGNEEID = createField(DSL.name("assigneeID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>localsoccer.owner_owner_assignings</code> table reference
+     * Create a <code>demodb.owner_owner_assignings</code> table reference
      */
     public OwnerOwnerAssignings() {
         this(DSL.name("owner_owner_assignings"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.owner_owner_assignings</code> table reference
+     * Create an aliased <code>demodb.owner_owner_assignings</code> table reference
      */
     public OwnerOwnerAssignings(String alias) {
         this(DSL.name(alias), OWNER_OWNER_ASSIGNINGS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.owner_owner_assignings</code> table reference
+     * Create an aliased <code>demodb.owner_owner_assignings</code> table reference
      */
     public OwnerOwnerAssignings(Name alias) {
         this(alias, OWNER_OWNER_ASSIGNINGS);
@@ -97,7 +97,7 @@ public class OwnerOwnerAssignings extends TableImpl<OwnerOwnerAssigningsRecord> 
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

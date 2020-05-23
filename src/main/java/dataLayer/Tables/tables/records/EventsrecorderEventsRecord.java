@@ -18,59 +18,59 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EventsrecorderEventsRecord extends TableRecordImpl<EventsrecorderEventsRecord> implements Record4<Integer, String, Integer, String> {
 
-    private static final long serialVersionUID = 1786696344;
+    private static final long serialVersionUID = -106603740;
 
     /**
-     * Setter for <code>localsoccer.eventsrecorder_events.matchID</code>.
+     * Setter for <code>demodb.eventsrecorder_events.matchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.eventsrecorder_events.matchID</code>.
+     * Getter for <code>demodb.eventsrecorder_events.matchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.eventsrecorder_events.time</code>.
+     * Setter for <code>demodb.eventsrecorder_events.time</code>.
      */
     public void setTime(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.eventsrecorder_events.time</code>.
+     * Getter for <code>demodb.eventsrecorder_events.time</code>.
      */
     public String getTime() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.eventsrecorder_events.eventID</code>.
+     * Setter for <code>demodb.eventsrecorder_events.eventID</code>.
      */
     public void setEventid(Integer value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.eventsrecorder_events.eventID</code>.
+     * Getter for <code>demodb.eventsrecorder_events.eventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(2);
     }
 
     /**
-     * Setter for <code>localsoccer.eventsrecorder_events.type</code>.
+     * Setter for <code>demodb.eventsrecorder_events.type</code>.
      */
     public void setType(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>localsoccer.eventsrecorder_events.type</code>.
+     * Getter for <code>demodb.eventsrecorder_events.type</code>.
      */
     public String getType() {
         return (String) get(3);

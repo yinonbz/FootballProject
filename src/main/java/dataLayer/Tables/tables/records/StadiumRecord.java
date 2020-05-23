@@ -19,45 +19,45 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class StadiumRecord extends UpdatableRecordImpl<StadiumRecord> implements Record3<String, Integer, Integer> {
 
-    private static final long serialVersionUID = -249937911;
+    private static final long serialVersionUID = -1888114149;
 
     /**
-     * Setter for <code>localsoccer.stadium.StadiumID</code>.
+     * Setter for <code>demodb.stadium.StadiumID</code>.
      */
     public void setStadiumid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.stadium.StadiumID</code>.
+     * Getter for <code>demodb.stadium.StadiumID</code>.
      */
     public String getStadiumid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.stadium.numOfSeats</code>.
+     * Setter for <code>demodb.stadium.numOfSeats</code>.
      */
     public void setNumofseats(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.stadium.numOfSeats</code>.
+     * Getter for <code>demodb.stadium.numOfSeats</code>.
      */
     public Integer getNumofseats() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.stadium.ticketCost</code>.
+     * Setter for <code>demodb.stadium.ticketCost</code>.
      */
     public void setTicketcost(Integer value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.stadium.ticketCost</code>.
+     * Getter for <code>demodb.stadium.ticketCost</code>.
      */
     public Integer getTicketcost() {
         return (Integer) get(2);

@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.PagesRecord;
 
 import java.time.LocalDate;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row3;
@@ -32,10 +33,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Pages extends TableImpl<PagesRecord> {
 
-    private static final long serialVersionUID = -2071021069;
+    private static final long serialVersionUID = -616535821;
 
     /**
-     * The reference instance of <code>localsoccer.pages</code>
+     * The reference instance of <code>demodb.pages</code>
      */
     public static final Pages PAGES = new Pages();
 
@@ -48,36 +49,36 @@ public class Pages extends TableImpl<PagesRecord> {
     }
 
     /**
-     * The column <code>localsoccer.pages.usernameID</code>.
+     * The column <code>demodb.pages.pageID</code>.
      */
-    public final TableField<PagesRecord, String> USERNAMEID = createField(DSL.name("usernameID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<PagesRecord, Integer> PAGEID = createField(DSL.name("pageID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>localsoccer.pages.name</code>.
+     * The column <code>demodb.pages.name</code>.
      */
     public final TableField<PagesRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.pages.birthday</code>.
+     * The column <code>demodb.pages.birthday</code>.
      */
     public final TableField<PagesRecord, LocalDate> BIRTHDAY = createField(DSL.name("birthday"), org.jooq.impl.SQLDataType.LOCALDATE.defaultValue(org.jooq.impl.DSL.field("curdate()", org.jooq.impl.SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * Create a <code>localsoccer.pages</code> table reference
+     * Create a <code>demodb.pages</code> table reference
      */
     public Pages() {
         this(DSL.name("pages"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.pages</code> table reference
+     * Create an aliased <code>demodb.pages</code> table reference
      */
     public Pages(String alias) {
         this(DSL.name(alias), PAGES);
     }
 
     /**
-     * Create an aliased <code>localsoccer.pages</code> table reference
+     * Create an aliased <code>demodb.pages</code> table reference
      */
     public Pages(Name alias) {
         this(alias, PAGES);
@@ -97,7 +98,12 @@ public class Pages extends TableImpl<PagesRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
+    }
+
+    @Override
+    public Identity<PagesRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_PAGES;
     }
 
     @Override
@@ -108,15 +114,6 @@ public class Pages extends TableImpl<PagesRecord> {
     @Override
     public List<UniqueKey<PagesRecord>> getKeys() {
         return Arrays.<UniqueKey<PagesRecord>>asList(Keys.KEY_PAGES_PRIMARY);
-    }
-
-    @Override
-    public List<ForeignKey<PagesRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<PagesRecord, ?>>asList(Keys.FK_PAGES_SUBSCRIBERS);
-    }
-
-    public Subscribers subscribers() {
-        return new Subscribers(this, Keys.FK_PAGES_SUBSCRIBERS);
     }
 
     @Override
@@ -150,7 +147,7 @@ public class Pages extends TableImpl<PagesRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<String, String, LocalDate> fieldsRow() {
+    public Row3<Integer, String, LocalDate> fieldsRow() {
         return (Row3) super.fieldsRow();
     }
 }

@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.TeamsRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Teams extends TableImpl<TeamsRecord> {
 
-    private static final long serialVersionUID = 1749873632;
+    private static final long serialVersionUID = 152788758;
 
     /**
-     * The reference instance of <code>localsoccer.teams</code>
+     * The reference instance of <code>demodb.teams</code>
      */
     public static final Teams TEAMS = new Teams();
 
@@ -47,46 +47,46 @@ public class Teams extends TableImpl<TeamsRecord> {
     }
 
     /**
-     * The column <code>localsoccer.teams.name</code>.
+     * The column <code>demodb.teams.name</code>.
      */
     public final TableField<TeamsRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.teams.establishedYear</code>.
+     * The column <code>demodb.teams.establishedYear</code>.
      */
     public final TableField<TeamsRecord, Integer> ESTABLISHEDYEAR = createField(DSL.name("establishedYear"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>localsoccer.teams.isActive</code>.
+     * The column <code>demodb.teams.isActive</code>.
      */
     public final TableField<TeamsRecord, Boolean> ISACTIVE = createField(DSL.name("isActive"), org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.field("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>localsoccer.teams.teamManagerID</code>.
+     * The column <code>demodb.teams.teamManagerID</code>.
      */
     public final TableField<TeamsRecord, String> TEAMMANAGERID = createField(DSL.name("teamManagerID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.teams.closedByAdmin</code>.
+     * The column <code>demodb.teams.closedByAdmin</code>.
      */
     public final TableField<TeamsRecord, Boolean> CLOSEDBYADMIN = createField(DSL.name("closedByAdmin"), org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.field("b'1'", org.jooq.impl.SQLDataType.BIT)), this, "");
 
     /**
-     * Create a <code>localsoccer.teams</code> table reference
+     * Create a <code>demodb.teams</code> table reference
      */
     public Teams() {
         this(DSL.name("teams"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.teams</code> table reference
+     * Create an aliased <code>demodb.teams</code> table reference
      */
     public Teams(String alias) {
         this(DSL.name(alias), TEAMS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.teams</code> table reference
+     * Create an aliased <code>demodb.teams</code> table reference
      */
     public Teams(Name alias) {
         this(alias, TEAMS);
@@ -106,7 +106,7 @@ public class Teams extends TableImpl<TeamsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override
