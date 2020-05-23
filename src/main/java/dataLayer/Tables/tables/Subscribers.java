@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.SubscribersRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Subscribers extends TableImpl<SubscribersRecord> {
 
-    private static final long serialVersionUID = -156705673;
+    private static final long serialVersionUID = 606879394;
 
     /**
-     * The reference instance of <code>localsoccer.subscribers</code>
+     * The reference instance of <code>demodb.subscribers</code>
      */
     public static final Subscribers SUBSCRIBERS = new Subscribers();
 
@@ -47,41 +47,41 @@ public class Subscribers extends TableImpl<SubscribersRecord> {
     }
 
     /**
-     * The column <code>localsoccer.subscribers.SubscriberID</code>.
+     * The column <code>demodb.subscribers.SubscriberID</code>.
      */
     public final TableField<SubscribersRecord, String> SUBSCRIBERID = createField(DSL.name("SubscriberID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.subscribers.password</code>.
+     * The column <code>demodb.subscribers.password</code>.
      */
     public final TableField<SubscribersRecord, String> PASSWORD = createField(DSL.name("password"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.subscribers.name</code>.
+     * The column <code>demodb.subscribers.name</code>.
      */
     public final TableField<SubscribersRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.subscribers.type</code>.
+     * The column <code>demodb.subscribers.type</code>.
      */
     public final TableField<SubscribersRecord, String> TYPE = createField(DSL.name("type"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>localsoccer.subscribers</code> table reference
+     * Create a <code>demodb.subscribers</code> table reference
      */
     public Subscribers() {
         this(DSL.name("subscribers"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.subscribers</code> table reference
+     * Create an aliased <code>demodb.subscribers</code> table reference
      */
     public Subscribers(String alias) {
         this(DSL.name(alias), SUBSCRIBERS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.subscribers</code> table reference
+     * Create an aliased <code>demodb.subscribers</code> table reference
      */
     public Subscribers(Name alias) {
         this(alias, SUBSCRIBERS);
@@ -101,7 +101,7 @@ public class Subscribers extends TableImpl<SubscribersRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

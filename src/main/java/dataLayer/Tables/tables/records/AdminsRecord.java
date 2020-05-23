@@ -19,31 +19,31 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AdminsRecord extends UpdatableRecordImpl<AdminsRecord> implements Record2<String, Boolean> {
 
-    private static final long serialVersionUID = -469442563;
+    private static final long serialVersionUID = 992908651;
 
     /**
-     * Setter for <code>localsoccer.admins.adminID</code>.
+     * Setter for <code>demodb.admins.adminID</code>.
      */
     public void setAdminid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.admins.adminID</code>.
+     * Getter for <code>demodb.admins.adminID</code>.
      */
     public String getAdminid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.admins.approved</code>.
+     * Setter for <code>demodb.admins.approved</code>.
      */
     public void setApproved(Boolean value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.admins.approved</code>.
+     * Getter for <code>demodb.admins.approved</code>.
      */
     public Boolean getApproved() {
         return (Boolean) get(1);

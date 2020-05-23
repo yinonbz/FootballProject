@@ -18,31 +18,31 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MatchRefereeRecord extends TableRecordImpl<MatchRefereeRecord> implements Record2<Integer, String> {
 
-    private static final long serialVersionUID = 634230384;
+    private static final long serialVersionUID = 854551966;
 
     /**
-     * Setter for <code>localsoccer.match_referee.MatchID</code>.
+     * Setter for <code>demodb.match_referee.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.match_referee.MatchID</code>.
+     * Getter for <code>demodb.match_referee.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.match_referee.RefereeID</code>.
+     * Setter for <code>demodb.match_referee.RefereeID</code>.
      */
     public void setRefereeid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.match_referee.RefereeID</code>.
+     * Getter for <code>demodb.match_referee.RefereeID</code>.
      */
     public String getRefereeid() {
         return (String) get(1);

@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.InjuryRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Injury extends TableImpl<InjuryRecord> {
 
-    private static final long serialVersionUID = -427712860;
+    private static final long serialVersionUID = -1478060363;
 
     /**
-     * The reference instance of <code>localsoccer.injury</code>
+     * The reference instance of <code>demodb.injury</code>
      */
     public static final Injury INJURY = new Injury();
 
@@ -48,41 +48,41 @@ public class Injury extends TableImpl<InjuryRecord> {
     }
 
     /**
-     * The column <code>localsoccer.injury.MatchID</code>.
+     * The column <code>demodb.injury.MatchID</code>.
      */
     public final TableField<InjuryRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.injury.EventID</code>.
+     * The column <code>demodb.injury.EventID</code>.
      */
     public final TableField<InjuryRecord, Integer> EVENTID = createField(DSL.name("EventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.injury.Time</code>.
+     * The column <code>demodb.injury.Time</code>.
      */
     public final TableField<InjuryRecord, String> TIME = createField(DSL.name("Time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.injury.PlayerInjuredID</code>.
+     * The column <code>demodb.injury.PlayerInjuredID</code>.
      */
     public final TableField<InjuryRecord, String> PLAYERINJUREDID = createField(DSL.name("PlayerInjuredID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.injury</code> table reference
+     * Create a <code>demodb.injury</code> table reference
      */
     public Injury() {
         this(DSL.name("injury"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.injury</code> table reference
+     * Create an aliased <code>demodb.injury</code> table reference
      */
     public Injury(String alias) {
         this(DSL.name(alias), INJURY);
     }
 
     /**
-     * Create an aliased <code>localsoccer.injury</code> table reference
+     * Create an aliased <code>demodb.injury</code> table reference
      */
     public Injury(Name alias) {
         this(alias, INJURY);
@@ -102,7 +102,7 @@ public class Injury extends TableImpl<InjuryRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

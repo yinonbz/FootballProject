@@ -18,31 +18,31 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OwnerTeamsRecord extends TableRecordImpl<OwnerTeamsRecord> implements Record2<String, String> {
 
-    private static final long serialVersionUID = 1506931196;
+    private static final long serialVersionUID = -855204222;
 
     /**
-     * Setter for <code>localsoccer.owner_teams.OwnerID</code>.
+     * Setter for <code>demodb.owner_teams.OwnerID</code>.
      */
     public void setOwnerid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.owner_teams.OwnerID</code>.
+     * Getter for <code>demodb.owner_teams.OwnerID</code>.
      */
     public String getOwnerid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.owner_teams.teamID</code>.
+     * Setter for <code>demodb.owner_teams.teamID</code>.
      */
     public void setTeamid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.owner_teams.teamID</code>.
+     * Getter for <code>demodb.owner_teams.teamID</code>.
      */
     public String getTeamid() {
         return (String) get(1);

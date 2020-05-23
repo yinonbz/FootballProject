@@ -18,45 +18,45 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OwnerOwnerAssigningsRecord extends TableRecordImpl<OwnerOwnerAssigningsRecord> implements Record3<String, String, String> {
 
-    private static final long serialVersionUID = 1998832195;
+    private static final long serialVersionUID = 1684239353;
 
     /**
-     * Setter for <code>localsoccer.owner_owner_assignings.ownerID</code>.
+     * Setter for <code>demodb.owner_owner_assignings.ownerID</code>.
      */
     public void setOwnerid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.owner_owner_assignings.ownerID</code>.
+     * Getter for <code>demodb.owner_owner_assignings.ownerID</code>.
      */
     public String getOwnerid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.owner_owner_assignings.teamID</code>.
+     * Setter for <code>demodb.owner_owner_assignings.teamID</code>.
      */
     public void setTeamid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.owner_owner_assignings.teamID</code>.
+     * Getter for <code>demodb.owner_owner_assignings.teamID</code>.
      */
     public String getTeamid() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.owner_owner_assignings.assigneeID</code>.
+     * Setter for <code>demodb.owner_owner_assignings.assigneeID</code>.
      */
     public void setAssigneeid(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.owner_owner_assignings.assigneeID</code>.
+     * Getter for <code>demodb.owner_owner_assignings.assigneeID</code>.
      */
     public String getAssigneeid() {
         return (String) get(2);

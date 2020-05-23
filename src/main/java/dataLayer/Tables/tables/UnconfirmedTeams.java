@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.UnconfirmedTeamsRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UnconfirmedTeams extends TableImpl<UnconfirmedTeamsRecord> {
 
-    private static final long serialVersionUID = 925873550;
+    private static final long serialVersionUID = 1987615312;
 
     /**
-     * The reference instance of <code>localsoccer.unconfirmed_teams</code>
+     * The reference instance of <code>demodb.unconfirmed_teams</code>
      */
     public static final UnconfirmedTeams UNCONFIRMED_TEAMS = new UnconfirmedTeams();
 
@@ -47,36 +47,36 @@ public class UnconfirmedTeams extends TableImpl<UnconfirmedTeamsRecord> {
     }
 
     /**
-     * The column <code>localsoccer.unconfirmed_teams.teamID</code>.
+     * The column <code>demodb.unconfirmed_teams.teamID</code>.
      */
     public final TableField<UnconfirmedTeamsRecord, String> TEAMID = createField(DSL.name("teamID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.unconfirmed_teams.establishedYear</code>.
+     * The column <code>demodb.unconfirmed_teams.establishedYear</code>.
      */
     public final TableField<UnconfirmedTeamsRecord, Integer> ESTABLISHEDYEAR = createField(DSL.name("establishedYear"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>localsoccer.unconfirmed_teams.ownerID</code>.
+     * The column <code>demodb.unconfirmed_teams.ownerID</code>.
      */
     public final TableField<UnconfirmedTeamsRecord, String> OWNERID = createField(DSL.name("ownerID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>localsoccer.unconfirmed_teams</code> table reference
+     * Create a <code>demodb.unconfirmed_teams</code> table reference
      */
     public UnconfirmedTeams() {
         this(DSL.name("unconfirmed_teams"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.unconfirmed_teams</code> table reference
+     * Create an aliased <code>demodb.unconfirmed_teams</code> table reference
      */
     public UnconfirmedTeams(String alias) {
         this(DSL.name(alias), UNCONFIRMED_TEAMS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.unconfirmed_teams</code> table reference
+     * Create an aliased <code>demodb.unconfirmed_teams</code> table reference
      */
     public UnconfirmedTeams(Name alias) {
         this(alias, UNCONFIRMED_TEAMS);
@@ -96,7 +96,7 @@ public class UnconfirmedTeams extends TableImpl<UnconfirmedTeamsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

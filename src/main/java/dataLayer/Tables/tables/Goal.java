@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.GoalRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Goal extends TableImpl<GoalRecord> {
 
-    private static final long serialVersionUID = 183562678;
+    private static final long serialVersionUID = 887592157;
 
     /**
-     * The reference instance of <code>localsoccer.goal</code>
+     * The reference instance of <code>demodb.goal</code>
      */
     public static final Goal GOAL = new Goal();
 
@@ -48,51 +48,51 @@ public class Goal extends TableImpl<GoalRecord> {
     }
 
     /**
-     * The column <code>localsoccer.goal.MatchID</code>.
+     * The column <code>demodb.goal.MatchID</code>.
      */
     public final TableField<GoalRecord, Integer> MATCHID = createField(DSL.name("MatchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.goal.EventID</code>.
+     * The column <code>demodb.goal.EventID</code>.
      */
     public final TableField<GoalRecord, Integer> EVENTID = createField(DSL.name("EventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.goal.Time</code>.
+     * The column <code>demodb.goal.Time</code>.
      */
     public final TableField<GoalRecord, String> TIME = createField(DSL.name("Time"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.goal.PlayerGoalID</code>.
+     * The column <code>demodb.goal.PlayerGoalID</code>.
      */
     public final TableField<GoalRecord, String> PLAYERGOALID = createField(DSL.name("PlayerGoalID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.goal.PlayerAssistID</code>.
+     * The column <code>demodb.goal.PlayerAssistID</code>.
      */
     public final TableField<GoalRecord, String> PLAYERASSISTID = createField(DSL.name("PlayerAssistID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>localsoccer.goal.isOwnGoal</code>.
+     * The column <code>demodb.goal.isOwnGoal</code>.
      */
-    public final TableField<GoalRecord, Byte> ISOWNGOAL = createField(DSL.name("isOwnGoal"), org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.TINYINT)), this, "");
+    public final TableField<GoalRecord, Boolean> ISOWNGOAL = createField(DSL.name("isOwnGoal"), org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.field("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "");
 
     /**
-     * Create a <code>localsoccer.goal</code> table reference
+     * Create a <code>demodb.goal</code> table reference
      */
     public Goal() {
         this(DSL.name("goal"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.goal</code> table reference
+     * Create an aliased <code>demodb.goal</code> table reference
      */
     public Goal(String alias) {
         this(DSL.name(alias), GOAL);
     }
 
     /**
-     * Create an aliased <code>localsoccer.goal</code> table reference
+     * Create an aliased <code>demodb.goal</code> table reference
      */
     public Goal(Name alias) {
         this(alias, GOAL);
@@ -112,7 +112,7 @@ public class Goal extends TableImpl<GoalRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override
@@ -168,7 +168,7 @@ public class Goal extends TableImpl<GoalRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, Integer, String, String, String, Byte> fieldsRow() {
+    public Row6<Integer, Integer, String, String, String, Boolean> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 }

@@ -4,8 +4,8 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.MatchingPolicyRecord;
 
 import java.util.Arrays;
@@ -31,10 +31,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MatchingPolicy extends TableImpl<MatchingPolicyRecord> {
 
-    private static final long serialVersionUID = -1348859649;
+    private static final long serialVersionUID = -1628175279;
 
     /**
-     * The reference instance of <code>localsoccer.matching policy</code>
+     * The reference instance of <code>demodb.matching policy</code>
      */
     public static final MatchingPolicy MATCHING_POLICY = new MatchingPolicy();
 
@@ -47,36 +47,36 @@ public class MatchingPolicy extends TableImpl<MatchingPolicyRecord> {
     }
 
     /**
-     * The column <code>localsoccer.matching policy.LeagueID</code>.
+     * The column <code>demodb.matching policy.LeagueID</code>.
      */
     public final TableField<MatchingPolicyRecord, String> LEAGUEID = createField(DSL.name("LeagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.matching policy.SeasonID</code>.
+     * The column <code>demodb.matching policy.SeasonID</code>.
      */
     public final TableField<MatchingPolicyRecord, Integer> SEASONID = createField(DSL.name("SeasonID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.matching policy.Type</code>.
+     * The column <code>demodb.matching policy.Type</code>.
      */
     public final TableField<MatchingPolicyRecord, String> TYPE = createField(DSL.name("Type"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>localsoccer.matching policy</code> table reference
+     * Create a <code>demodb.matching policy</code> table reference
      */
     public MatchingPolicy() {
         this(DSL.name("matching policy"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.matching policy</code> table reference
+     * Create an aliased <code>demodb.matching policy</code> table reference
      */
     public MatchingPolicy(String alias) {
         this(DSL.name(alias), MATCHING_POLICY);
     }
 
     /**
-     * Create an aliased <code>localsoccer.matching policy</code> table reference
+     * Create an aliased <code>demodb.matching policy</code> table reference
      */
     public MatchingPolicy(Name alias) {
         this(alias, MATCHING_POLICY);
@@ -96,7 +96,7 @@ public class MatchingPolicy extends TableImpl<MatchingPolicyRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

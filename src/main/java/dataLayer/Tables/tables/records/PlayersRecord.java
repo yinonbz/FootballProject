@@ -22,87 +22,87 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PlayersRecord extends UpdatableRecordImpl<PlayersRecord> implements Record6<String, String, LocalDate, PlayersFieldjob, Integer, String> {
 
-    private static final long serialVersionUID = 821115893;
+    private static final long serialVersionUID = -2081050353;
 
     /**
-     * Setter for <code>localsoccer.players.playerID</code>.
+     * Setter for <code>demodb.players.playerID</code>.
      */
     public void setPlayerid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.players.playerID</code>.
+     * Getter for <code>demodb.players.playerID</code>.
      */
     public String getPlayerid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.players.teamID</code>.
+     * Setter for <code>demodb.players.teamID</code>.
      */
     public void setTeamid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.players.teamID</code>.
+     * Getter for <code>demodb.players.teamID</code>.
      */
     public String getTeamid() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.players.birthDate</code>.
+     * Setter for <code>demodb.players.birthDate</code>.
      */
     public void setBirthdate(LocalDate value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.players.birthDate</code>.
+     * Getter for <code>demodb.players.birthDate</code>.
      */
     public LocalDate getBirthdate() {
         return (LocalDate) get(2);
     }
 
     /**
-     * Setter for <code>localsoccer.players.fieldJob</code>.
+     * Setter for <code>demodb.players.fieldJob</code>.
      */
     public void setFieldjob(PlayersFieldjob value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>localsoccer.players.fieldJob</code>.
+     * Getter for <code>demodb.players.fieldJob</code>.
      */
     public PlayersFieldjob getFieldjob() {
         return (PlayersFieldjob) get(3);
     }
 
     /**
-     * Setter for <code>localsoccer.players.salary</code>.
+     * Setter for <code>demodb.players.salary</code>.
      */
     public void setSalary(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>localsoccer.players.salary</code>.
+     * Getter for <code>demodb.players.salary</code>.
      */
     public Integer getSalary() {
         return (Integer) get(4);
     }
 
     /**
-     * Setter for <code>localsoccer.players.teamOwnerID_fictive</code>.
+     * Setter for <code>demodb.players.teamOwnerID_fictive</code>.
      */
     public void setTeamowneridFictive(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>localsoccer.players.teamOwnerID_fictive</code>.
+     * Getter for <code>demodb.players.teamOwnerID_fictive</code>.
      */
     public String getTeamowneridFictive() {
         return (String) get(5);

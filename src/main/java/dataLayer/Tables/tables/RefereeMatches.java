@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.RefereeMatchesRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RefereeMatches extends TableImpl<RefereeMatchesRecord> {
 
-    private static final long serialVersionUID = 1729296316;
+    private static final long serialVersionUID = 1973786023;
 
     /**
-     * The reference instance of <code>localsoccer.referee_matches</code>
+     * The reference instance of <code>demodb.referee_matches</code>
      */
     public static final RefereeMatches REFEREE_MATCHES = new RefereeMatches();
 
@@ -48,31 +48,31 @@ public class RefereeMatches extends TableImpl<RefereeMatchesRecord> {
     }
 
     /**
-     * The column <code>localsoccer.referee_matches.refereeID</code>.
+     * The column <code>demodb.referee_matches.refereeID</code>.
      */
     public final TableField<RefereeMatchesRecord, String> REFEREEID = createField(DSL.name("refereeID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.referee_matches.matchID</code>.
+     * The column <code>demodb.referee_matches.matchID</code>.
      */
     public final TableField<RefereeMatchesRecord, Integer> MATCHID = createField(DSL.name("matchID"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * Create a <code>localsoccer.referee_matches</code> table reference
+     * Create a <code>demodb.referee_matches</code> table reference
      */
     public RefereeMatches() {
         this(DSL.name("referee_matches"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.referee_matches</code> table reference
+     * Create an aliased <code>demodb.referee_matches</code> table reference
      */
     public RefereeMatches(String alias) {
         this(DSL.name(alias), REFEREE_MATCHES);
     }
 
     /**
-     * Create an aliased <code>localsoccer.referee_matches</code> table reference
+     * Create an aliased <code>demodb.referee_matches</code> table reference
      */
     public RefereeMatches(Name alias) {
         this(alias, REFEREE_MATCHES);
@@ -92,7 +92,7 @@ public class RefereeMatches extends TableImpl<RefereeMatchesRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

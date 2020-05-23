@@ -18,31 +18,31 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PreviousGamesInStadiumRecord extends TableRecordImpl<PreviousGamesInStadiumRecord> implements Record2<String, Integer> {
 
-    private static final long serialVersionUID = 739845422;
+    private static final long serialVersionUID = -1103545896;
 
     /**
-     * Setter for <code>localsoccer.previous_games_in_stadium.StadiumID</code>.
+     * Setter for <code>demodb.previous_games_in_stadium.StadiumID</code>.
      */
     public void setStadiumid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.previous_games_in_stadium.StadiumID</code>.
+     * Getter for <code>demodb.previous_games_in_stadium.StadiumID</code>.
      */
     public String getStadiumid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.previous_games_in_stadium.MatchID</code>.
+     * Setter for <code>demodb.previous_games_in_stadium.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.previous_games_in_stadium.MatchID</code>.
+     * Getter for <code>demodb.previous_games_in_stadium.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(1);

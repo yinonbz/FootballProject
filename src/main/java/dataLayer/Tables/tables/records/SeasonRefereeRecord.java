@@ -18,45 +18,45 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SeasonRefereeRecord extends TableRecordImpl<SeasonRefereeRecord> implements Record3<String, Integer, String> {
 
-    private static final long serialVersionUID = 140593713;
+    private static final long serialVersionUID = -856388489;
 
     /**
-     * Setter for <code>localsoccer.season_referee.LeagueID</code>.
+     * Setter for <code>demodb.season_referee.LeagueID</code>.
      */
     public void setLeagueid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.season_referee.LeagueID</code>.
+     * Getter for <code>demodb.season_referee.LeagueID</code>.
      */
     public String getLeagueid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.season_referee.SeasonID</code>.
+     * Setter for <code>demodb.season_referee.SeasonID</code>.
      */
     public void setSeasonid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.season_referee.SeasonID</code>.
+     * Getter for <code>demodb.season_referee.SeasonID</code>.
      */
     public Integer getSeasonid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.season_referee.RefereeID</code>.
+     * Setter for <code>demodb.season_referee.RefereeID</code>.
      */
     public void setRefereeid(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.season_referee.RefereeID</code>.
+     * Getter for <code>demodb.season_referee.RefereeID</code>.
      */
     public String getRefereeid() {
         return (String) get(2);

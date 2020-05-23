@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.SeasonsRecord;
 
 import java.time.LocalDate;
@@ -34,10 +34,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Seasons extends TableImpl<SeasonsRecord> {
 
-    private static final long serialVersionUID = -2037759748;
+    private static final long serialVersionUID = 507979375;
 
     /**
-     * The reference instance of <code>localsoccer.seasons</code>
+     * The reference instance of <code>demodb.seasons</code>
      */
     public static final Seasons SEASONS = new Seasons();
 
@@ -50,41 +50,41 @@ public class Seasons extends TableImpl<SeasonsRecord> {
     }
 
     /**
-     * The column <code>localsoccer.seasons.leagueID</code>.
+     * The column <code>demodb.seasons.leagueID</code>.
      */
     public final TableField<SeasonsRecord, String> LEAGUEID = createField(DSL.name("leagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.seasons.seasonID</code>.
+     * The column <code>demodb.seasons.seasonID</code>.
      */
     public final TableField<SeasonsRecord, Integer> SEASONID = createField(DSL.name("seasonID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.seasons.startDate</code>.
+     * The column <code>demodb.seasons.startDate</code>.
      */
     public final TableField<SeasonsRecord, LocalDate> STARTDATE = createField(DSL.name("startDate"), org.jooq.impl.SQLDataType.LOCALDATE.defaultValue(org.jooq.impl.DSL.field("curdate()", org.jooq.impl.SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>localsoccer.seasons.endDate</code>.
+     * The column <code>demodb.seasons.endDate</code>.
      */
     public final TableField<SeasonsRecord, LocalDate> ENDDATE = createField(DSL.name("endDate"), org.jooq.impl.SQLDataType.LOCALDATE.defaultValue(org.jooq.impl.DSL.field("curdate()", org.jooq.impl.SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * Create a <code>localsoccer.seasons</code> table reference
+     * Create a <code>demodb.seasons</code> table reference
      */
     public Seasons() {
         this(DSL.name("seasons"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.seasons</code> table reference
+     * Create an aliased <code>demodb.seasons</code> table reference
      */
     public Seasons(String alias) {
         this(DSL.name(alias), SEASONS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.seasons</code> table reference
+     * Create an aliased <code>demodb.seasons</code> table reference
      */
     public Seasons(Name alias) {
         this(alias, SEASONS);
@@ -104,7 +104,7 @@ public class Seasons extends TableImpl<SeasonsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

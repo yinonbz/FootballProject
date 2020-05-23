@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.SeasonRefereeRecord;
 
 import java.util.Arrays;
@@ -32,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SeasonReferee extends TableImpl<SeasonRefereeRecord> {
 
-    private static final long serialVersionUID = 1303040207;
+    private static final long serialVersionUID = -1017800397;
 
     /**
-     * The reference instance of <code>localsoccer.season_referee</code>
+     * The reference instance of <code>demodb.season_referee</code>
      */
     public static final SeasonReferee SEASON_REFEREE = new SeasonReferee();
 
@@ -48,36 +48,36 @@ public class SeasonReferee extends TableImpl<SeasonRefereeRecord> {
     }
 
     /**
-     * The column <code>localsoccer.season_referee.LeagueID</code>.
+     * The column <code>demodb.season_referee.LeagueID</code>.
      */
     public final TableField<SeasonRefereeRecord, String> LEAGUEID = createField(DSL.name("LeagueID"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.season_referee.SeasonID</code>.
+     * The column <code>demodb.season_referee.SeasonID</code>.
      */
     public final TableField<SeasonRefereeRecord, Integer> SEASONID = createField(DSL.name("SeasonID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.season_referee.RefereeID</code>.
+     * The column <code>demodb.season_referee.RefereeID</code>.
      */
     public final TableField<SeasonRefereeRecord, String> REFEREEID = createField(DSL.name("RefereeID"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.season_referee</code> table reference
+     * Create a <code>demodb.season_referee</code> table reference
      */
     public SeasonReferee() {
         this(DSL.name("season_referee"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.season_referee</code> table reference
+     * Create an aliased <code>demodb.season_referee</code> table reference
      */
     public SeasonReferee(String alias) {
         this(DSL.name(alias), SEASON_REFEREE);
     }
 
     /**
-     * Create an aliased <code>localsoccer.season_referee</code> table reference
+     * Create an aliased <code>demodb.season_referee</code> table reference
      */
     public SeasonReferee(Name alias) {
         this(alias, SEASON_REFEREE);
@@ -97,7 +97,7 @@ public class SeasonReferee extends TableImpl<SeasonRefereeRecord> {
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

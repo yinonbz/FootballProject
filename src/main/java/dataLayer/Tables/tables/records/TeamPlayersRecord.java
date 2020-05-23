@@ -18,31 +18,31 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TeamPlayersRecord extends TableRecordImpl<TeamPlayersRecord> implements Record2<String, String> {
 
-    private static final long serialVersionUID = 1217012944;
+    private static final long serialVersionUID = -459008418;
 
     /**
-     * Setter for <code>localsoccer.team_players.teamID</code>.
+     * Setter for <code>demodb.team_players.teamID</code>.
      */
     public void setTeamid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.team_players.teamID</code>.
+     * Getter for <code>demodb.team_players.teamID</code>.
      */
     public String getTeamid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.team_players.PlayerID</code>.
+     * Setter for <code>demodb.team_players.PlayerID</code>.
      */
     public void setPlayerid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.team_players.PlayerID</code>.
+     * Getter for <code>demodb.team_players.PlayerID</code>.
      */
     public String getPlayerid() {
         return (String) get(1);

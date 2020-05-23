@@ -14,6 +14,7 @@ import dataLayer.Tables.tables.Offside;
 import dataLayer.Tables.tables.OwnerManagerAssignings;
 import dataLayer.Tables.tables.OwnerOwnerAssignings;
 import dataLayer.Tables.tables.OwnerTeams;
+import dataLayer.Tables.tables.PageOwner;
 import dataLayer.Tables.tables.PagePost;
 import dataLayer.Tables.tables.Players;
 import dataLayer.Tables.tables.PreviousGamesInStadium;
@@ -35,7 +36,7 @@ import org.jooq.impl.Internal;
 
 
 /**
- * A class modelling indexes of tables of the <code>localsoccer</code> schema.
+ * A class modelling indexes of tables of the <code>demodb</code> schema.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Indexes {
@@ -55,6 +56,8 @@ public class Indexes {
     public static final Index OWNER_MANAGER_ASSIGNINGS_OWNERID = Indexes0.OWNER_MANAGER_ASSIGNINGS_OWNERID;
     public static final Index OWNER_OWNER_ASSIGNINGS_OWNERID = Indexes0.OWNER_OWNER_ASSIGNINGS_OWNERID;
     public static final Index OWNER_TEAMS_OWNERID = Indexes0.OWNER_TEAMS_OWNERID;
+    public static final Index PAGE_OWNER_OWNERID = Indexes0.PAGE_OWNER_OWNERID;
+    public static final Index PAGE_OWNER_PAGEID = Indexes0.PAGE_OWNER_PAGEID;
     public static final Index PAGE_POST_USERNAMEID = Indexes0.PAGE_POST_USERNAMEID;
     public static final Index PLAYERS_TEAMOWNERFICTIVE = Indexes0.PLAYERS_TEAMOWNERFICTIVE;
     public static final Index PREVIOUS_GAMES_IN_STADIUM_STADIUMID = Indexes0.PREVIOUS_GAMES_IN_STADIUM_STADIUMID;
@@ -89,7 +92,9 @@ public class Indexes {
         public static Index OWNER_MANAGER_ASSIGNINGS_OWNERID = Internal.createIndex("ownerID", OwnerManagerAssignings.OWNER_MANAGER_ASSIGNINGS, new OrderField[] { OwnerManagerAssignings.OWNER_MANAGER_ASSIGNINGS.OWNERID }, false);
         public static Index OWNER_OWNER_ASSIGNINGS_OWNERID = Internal.createIndex("ownerID", OwnerOwnerAssignings.OWNER_OWNER_ASSIGNINGS, new OrderField[] { OwnerOwnerAssignings.OWNER_OWNER_ASSIGNINGS.OWNERID }, false);
         public static Index OWNER_TEAMS_OWNERID = Internal.createIndex("OwnerID", OwnerTeams.OWNER_TEAMS, new OrderField[] { OwnerTeams.OWNER_TEAMS.OWNERID }, false);
-        public static Index PAGE_POST_USERNAMEID = Internal.createIndex("usernameID", PagePost.PAGE_POST, new OrderField[] { PagePost.PAGE_POST.USERNAMEID }, false);
+        public static Index PAGE_OWNER_OWNERID = Internal.createIndex("ownerID", PageOwner.PAGE_OWNER, new OrderField[] { PageOwner.PAGE_OWNER.OWNERID }, false);
+        public static Index PAGE_OWNER_PAGEID = Internal.createIndex("pageID", PageOwner.PAGE_OWNER, new OrderField[] { PageOwner.PAGE_OWNER.PAGEID }, false);
+        public static Index PAGE_POST_USERNAMEID = Internal.createIndex("usernameID", PagePost.PAGE_POST, new OrderField[] { PagePost.PAGE_POST.PAGEID }, false);
         public static Index PLAYERS_TEAMOWNERFICTIVE = Internal.createIndex("teamOwnerfictive", Players.PLAYERS, new OrderField[] { Players.PLAYERS.TEAMOWNERID_FICTIVE }, false);
         public static Index PREVIOUS_GAMES_IN_STADIUM_STADIUMID = Internal.createIndex("StadiumID", PreviousGamesInStadium.PREVIOUS_GAMES_IN_STADIUM, new OrderField[] { PreviousGamesInStadium.PREVIOUS_GAMES_IN_STADIUM.STADIUMID }, false);
         public static Index REDCARD_MATCHID = Internal.createIndex("MatchID", Redcard.REDCARD, new OrderField[] { Redcard.REDCARD.MATCHID }, false);

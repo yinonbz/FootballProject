@@ -17,6 +17,7 @@ import dataLayer.Tables.tables.Foul;
 import dataLayer.Tables.tables.Goal;
 import dataLayer.Tables.tables.Injury;
 import dataLayer.Tables.tables.League;
+import dataLayer.Tables.tables.Logs;
 import dataLayer.Tables.tables.Match;
 import dataLayer.Tables.tables.MatchReferee;
 import dataLayer.Tables.tables.MatchingPolicy;
@@ -25,6 +26,7 @@ import dataLayer.Tables.tables.OwnerManagerAssignings;
 import dataLayer.Tables.tables.OwnerOwnerAssignings;
 import dataLayer.Tables.tables.OwnerTeams;
 import dataLayer.Tables.tables.OwnersOfStadium;
+import dataLayer.Tables.tables.PageOwner;
 import dataLayer.Tables.tables.PagePost;
 import dataLayer.Tables.tables.Pages;
 import dataLayer.Tables.tables.Players;
@@ -60,6 +62,7 @@ import dataLayer.Tables.tables.records.FoulRecord;
 import dataLayer.Tables.tables.records.GoalRecord;
 import dataLayer.Tables.tables.records.InjuryRecord;
 import dataLayer.Tables.tables.records.LeagueRecord;
+import dataLayer.Tables.tables.records.LogsRecord;
 import dataLayer.Tables.tables.records.MatchRecord;
 import dataLayer.Tables.tables.records.MatchRefereeRecord;
 import dataLayer.Tables.tables.records.MatchingPolicyRecord;
@@ -68,6 +71,7 @@ import dataLayer.Tables.tables.records.OwnerManagerAssigningsRecord;
 import dataLayer.Tables.tables.records.OwnerOwnerAssigningsRecord;
 import dataLayer.Tables.tables.records.OwnerTeamsRecord;
 import dataLayer.Tables.tables.records.OwnersOfStadiumRecord;
+import dataLayer.Tables.tables.records.PageOwnerRecord;
 import dataLayer.Tables.tables.records.PagePostRecord;
 import dataLayer.Tables.tables.records.PagesRecord;
 import dataLayer.Tables.tables.records.PlayersRecord;
@@ -92,6 +96,7 @@ import dataLayer.Tables.tables.records.UnconfirmedTeamsRecord;
 import dataLayer.Tables.tables.records.YellowcardRecord;
 
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;
@@ -99,7 +104,7 @@ import org.jooq.impl.Internal;
 
 /**
  * A class modelling foreign key relationships and constraints of tables of 
- * the <code>localsoccer</code> schema.
+ * the <code>demodb</code> schema.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Keys {
@@ -108,6 +113,8 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
+    public static final Identity<LogsRecord, Integer> IDENTITY_LOGS = Identities0.IDENTITY_LOGS;
+    public static final Identity<PagesRecord, Integer> IDENTITY_PAGES = Identities0.IDENTITY_PAGES;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -123,6 +130,7 @@ public class Keys {
     public static final UniqueKey<FansRecord> KEY_FANS_PRIMARY = UniqueKeys0.KEY_FANS_PRIMARY;
     public static final UniqueKey<FoulRecord> KEY_FOUL_MATCHID_EVENTID = UniqueKeys0.KEY_FOUL_MATCHID_EVENTID;
     public static final UniqueKey<LeagueRecord> KEY_LEAGUE_PRIMARY = UniqueKeys0.KEY_LEAGUE_PRIMARY;
+    public static final UniqueKey<LogsRecord> KEY_LOGS_PRIMARY = UniqueKeys0.KEY_LOGS_PRIMARY;
     public static final UniqueKey<MatchRecord> KEY_MATCH_PRIMARY = UniqueKeys0.KEY_MATCH_PRIMARY;
     public static final UniqueKey<MatchingPolicyRecord> KEY_MATCHING_POLICY_PRIMARY = UniqueKeys0.KEY_MATCHING_POLICY_PRIMARY;
     public static final UniqueKey<OwnersOfStadiumRecord> KEY_OWNERS_OF_STADIUM_PRIMARY = UniqueKeys0.KEY_OWNERS_OF_STADIUM_PRIMARY;
@@ -181,8 +189,8 @@ public class Keys {
     public static final ForeignKey<OwnerTeamsRecord, TeamsRecord> TEAMFK = ForeignKeys0.TEAMFK;
     public static final ForeignKey<OwnersOfStadiumRecord, StadiumRecord> FK_OWNERS_OF_STADIUM_STADIUM = ForeignKeys0.FK_OWNERS_OF_STADIUM_STADIUM;
     public static final ForeignKey<OwnersOfStadiumRecord, TeamsRecord> FK_OWNERS_OF_STADIUM_TEAMS = ForeignKeys0.FK_OWNERS_OF_STADIUM_TEAMS;
+    public static final ForeignKey<PageOwnerRecord, PagesRecord> FK_PAGE_OWNER_PAGES = ForeignKeys0.FK_PAGE_OWNER_PAGES;
     public static final ForeignKey<PagePostRecord, PagesRecord> FK_PAGE_POST_PAGES = ForeignKeys0.FK_PAGE_POST_PAGES;
-    public static final ForeignKey<PagesRecord, SubscribersRecord> FK_PAGES_SUBSCRIBERS = ForeignKeys0.FK_PAGES_SUBSCRIBERS;
     public static final ForeignKey<PlayersRecord, SubscribersRecord> FK_PLAYERS_SUBSCRIBERS = ForeignKeys0.FK_PLAYERS_SUBSCRIBERS;
     public static final ForeignKey<PlayersRecord, TeamsRecord> TEAMID = ForeignKeys0.TEAMID;
     public static final ForeignKey<PreviousGamesInStadiumRecord, StadiumRecord> FK_PREVIOUS_GAMES_IN_STADIUM_STADIUM = ForeignKeys0.FK_PREVIOUS_GAMES_IN_STADIUM_STADIUM;
@@ -223,6 +231,11 @@ public class Keys {
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
+    private static class Identities0 {
+        public static Identity<LogsRecord, Integer> IDENTITY_LOGS = Internal.createIdentity(Logs.LOGS, Logs.LOGS.INDEX);
+        public static Identity<PagesRecord, Integer> IDENTITY_PAGES = Internal.createIdentity(Pages.PAGES, Pages.PAGES.PAGEID);
+    }
+
     private static class UniqueKeys0 {
         public static final UniqueKey<AdminsRecord> KEY_ADMINS_PRIMARY = Internal.createUniqueKey(Admins.ADMINS, "KEY_admins_PRIMARY", new TableField[] { Admins.ADMINS.ADMINID }, true);
         public static final UniqueKey<ApprovalRequestsRecord> KEY_APPROVAL_REQUESTS_PRIMARY = Internal.createUniqueKey(ApprovalRequests.APPROVAL_REQUESTS, "KEY_approval_requests_PRIMARY", new TableField[] { ApprovalRequests.APPROVAL_REQUESTS.USERNAME }, true);
@@ -234,10 +247,11 @@ public class Keys {
         public static final UniqueKey<FansRecord> KEY_FANS_PRIMARY = Internal.createUniqueKey(Fans.FANS, "KEY_fans_PRIMARY", new TableField[] { Fans.FANS.FANID }, true);
         public static final UniqueKey<FoulRecord> KEY_FOUL_MATCHID_EVENTID = Internal.createUniqueKey(Foul.FOUL, "KEY_foul_MatchID_EventID", new TableField[] { Foul.FOUL.MATCHID, Foul.FOUL.EVENTID }, true);
         public static final UniqueKey<LeagueRecord> KEY_LEAGUE_PRIMARY = Internal.createUniqueKey(League.LEAGUE, "KEY_league_PRIMARY", new TableField[] { League.LEAGUE.LEAGUEID }, true);
+        public static final UniqueKey<LogsRecord> KEY_LOGS_PRIMARY = Internal.createUniqueKey(Logs.LOGS, "KEY_logs_PRIMARY", new TableField[] { Logs.LOGS.INDEX }, true);
         public static final UniqueKey<MatchRecord> KEY_MATCH_PRIMARY = Internal.createUniqueKey(Match.MATCH, "KEY_match_PRIMARY", new TableField[] { Match.MATCH.MATCHID }, true);
         public static final UniqueKey<MatchingPolicyRecord> KEY_MATCHING_POLICY_PRIMARY = Internal.createUniqueKey(MatchingPolicy.MATCHING_POLICY, "KEY_matching policy_PRIMARY", new TableField[] { MatchingPolicy.MATCHING_POLICY.LEAGUEID, MatchingPolicy.MATCHING_POLICY.SEASONID }, true);
         public static final UniqueKey<OwnersOfStadiumRecord> KEY_OWNERS_OF_STADIUM_PRIMARY = Internal.createUniqueKey(OwnersOfStadium.OWNERS_OF_STADIUM, "KEY_owners_of_stadium_PRIMARY", new TableField[] { OwnersOfStadium.OWNERS_OF_STADIUM.STADIUMID }, true);
-        public static final UniqueKey<PagesRecord> KEY_PAGES_PRIMARY = Internal.createUniqueKey(Pages.PAGES, "KEY_pages_PRIMARY", new TableField[] { Pages.PAGES.USERNAMEID }, true);
+        public static final UniqueKey<PagesRecord> KEY_PAGES_PRIMARY = Internal.createUniqueKey(Pages.PAGES, "KEY_pages_PRIMARY", new TableField[] { Pages.PAGES.PAGEID }, true);
         public static final UniqueKey<PlayersRecord> KEY_PLAYERS_PRIMARY = Internal.createUniqueKey(Players.PLAYERS, "KEY_players_PRIMARY", new TableField[] { Players.PLAYERS.PLAYERID }, true);
         public static final UniqueKey<RankingpolicyRecord> KEY_RANKINGPOLICY_PRIMARY = Internal.createUniqueKey(Rankingpolicy.RANKINGPOLICY, "KEY_rankingpolicy_PRIMARY", new TableField[] { Rankingpolicy.RANKINGPOLICY.LEAGUEID, Rankingpolicy.RANKINGPOLICY.SEASONID }, true);
         public static final UniqueKey<RefereesRecord> KEY_REFEREES_PRIMARY = Internal.createUniqueKey(Referees.REFEREES, "KEY_referees_PRIMARY", new TableField[] { Referees.REFEREES.REFEREEID }, true);
@@ -290,8 +304,8 @@ public class Keys {
         public static final ForeignKey<OwnerTeamsRecord, TeamsRecord> TEAMFK = Internal.createForeignKey(Keys.KEY_TEAMS_PRIMARY, OwnerTeams.OWNER_TEAMS, "teamfk", new TableField[] { OwnerTeams.OWNER_TEAMS.TEAMID }, true);
         public static final ForeignKey<OwnersOfStadiumRecord, StadiumRecord> FK_OWNERS_OF_STADIUM_STADIUM = Internal.createForeignKey(Keys.KEY_STADIUM_PRIMARY, OwnersOfStadium.OWNERS_OF_STADIUM, "FK_owners_of_stadium_stadium", new TableField[] { OwnersOfStadium.OWNERS_OF_STADIUM.STADIUMID }, true);
         public static final ForeignKey<OwnersOfStadiumRecord, TeamsRecord> FK_OWNERS_OF_STADIUM_TEAMS = Internal.createForeignKey(Keys.KEY_TEAMS_PRIMARY, OwnersOfStadium.OWNERS_OF_STADIUM, "FK_owners_of_stadium_teams", new TableField[] { OwnersOfStadium.OWNERS_OF_STADIUM.TEAMID }, true);
-        public static final ForeignKey<PagePostRecord, PagesRecord> FK_PAGE_POST_PAGES = Internal.createForeignKey(Keys.KEY_PAGES_PRIMARY, PagePost.PAGE_POST, "FK_page_post_pages", new TableField[] { PagePost.PAGE_POST.USERNAMEID }, true);
-        public static final ForeignKey<PagesRecord, SubscribersRecord> FK_PAGES_SUBSCRIBERS = Internal.createForeignKey(Keys.KEY_SUBSCRIBERS_PRIMARY, Pages.PAGES, "FK_pages_subscribers", new TableField[] { Pages.PAGES.USERNAMEID }, true);
+        public static final ForeignKey<PageOwnerRecord, PagesRecord> FK_PAGE_OWNER_PAGES = Internal.createForeignKey(Keys.KEY_PAGES_PRIMARY, PageOwner.PAGE_OWNER, "FK_page_owner_pages", new TableField[] { PageOwner.PAGE_OWNER.PAGEID }, true);
+        public static final ForeignKey<PagePostRecord, PagesRecord> FK_PAGE_POST_PAGES = Internal.createForeignKey(Keys.KEY_PAGES_PRIMARY, PagePost.PAGE_POST, "FK_page_post_pages", new TableField[] { PagePost.PAGE_POST.PAGEID }, true);
         public static final ForeignKey<PlayersRecord, SubscribersRecord> FK_PLAYERS_SUBSCRIBERS = Internal.createForeignKey(Keys.KEY_SUBSCRIBERS_PRIMARY, Players.PLAYERS, "FK_players_subscribers", new TableField[] { Players.PLAYERS.PLAYERID }, true);
         public static final ForeignKey<PlayersRecord, TeamsRecord> TEAMID = Internal.createForeignKey(Keys.KEY_TEAMS_PRIMARY, Players.PLAYERS, "teamID", new TableField[] { Players.PLAYERS.TEAMID }, true);
         public static final ForeignKey<PreviousGamesInStadiumRecord, StadiumRecord> FK_PREVIOUS_GAMES_IN_STADIUM_STADIUM = Internal.createForeignKey(Keys.KEY_STADIUM_PRIMARY, PreviousGamesInStadium.PREVIOUS_GAMES_IN_STADIUM, "FK_previous_games_in_stadium_stadium", new TableField[] { PreviousGamesInStadium.PREVIOUS_GAMES_IN_STADIUM.STADIUMID }, true);

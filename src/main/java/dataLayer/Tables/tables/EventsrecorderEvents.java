@@ -4,9 +4,9 @@
 package dataLayer.Tables.tables;
 
 
+import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
 import dataLayer.Tables.Keys;
-import dataLayer.Tables.Localsoccer;
 import dataLayer.Tables.tables.records.EventsrecorderEventsRecord;
 
 import java.util.Arrays;
@@ -33,10 +33,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EventsrecorderEvents extends TableImpl<EventsrecorderEventsRecord> {
 
-    private static final long serialVersionUID = -1723234565;
+    private static final long serialVersionUID = -260574192;
 
     /**
-     * The reference instance of <code>localsoccer.eventsrecorder_events</code>
+     * The reference instance of <code>demodb.eventsrecorder_events</code>
      */
     public static final EventsrecorderEvents EVENTSRECORDER_EVENTS = new EventsrecorderEvents();
 
@@ -49,41 +49,41 @@ public class EventsrecorderEvents extends TableImpl<EventsrecorderEventsRecord> 
     }
 
     /**
-     * The column <code>localsoccer.eventsrecorder_events.matchID</code>.
+     * The column <code>demodb.eventsrecorder_events.matchID</code>.
      */
     public final TableField<EventsrecorderEventsRecord, Integer> MATCHID = createField(DSL.name("matchID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.eventsrecorder_events.time</code>.
+     * The column <code>demodb.eventsrecorder_events.time</code>.
      */
     public final TableField<EventsrecorderEventsRecord, String> TIME = createField(DSL.name("time"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.eventsrecorder_events.eventID</code>.
+     * The column <code>demodb.eventsrecorder_events.eventID</code>.
      */
     public final TableField<EventsrecorderEventsRecord, Integer> EVENTID = createField(DSL.name("eventID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>localsoccer.eventsrecorder_events.type</code>.
+     * The column <code>demodb.eventsrecorder_events.type</code>.
      */
     public final TableField<EventsrecorderEventsRecord, String> TYPE = createField(DSL.name("type"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
-     * Create a <code>localsoccer.eventsrecorder_events</code> table reference
+     * Create a <code>demodb.eventsrecorder_events</code> table reference
      */
     public EventsrecorderEvents() {
         this(DSL.name("eventsrecorder_events"), null);
     }
 
     /**
-     * Create an aliased <code>localsoccer.eventsrecorder_events</code> table reference
+     * Create an aliased <code>demodb.eventsrecorder_events</code> table reference
      */
     public EventsrecorderEvents(String alias) {
         this(DSL.name(alias), EVENTSRECORDER_EVENTS);
     }
 
     /**
-     * Create an aliased <code>localsoccer.eventsrecorder_events</code> table reference
+     * Create an aliased <code>demodb.eventsrecorder_events</code> table reference
      */
     public EventsrecorderEvents(Name alias) {
         this(alias, EVENTSRECORDER_EVENTS);
@@ -103,7 +103,7 @@ public class EventsrecorderEvents extends TableImpl<EventsrecorderEventsRecord> 
 
     @Override
     public Schema getSchema() {
-        return Localsoccer.LOCALSOCCER;
+        return Demodb.DEMODB;
     }
 
     @Override

@@ -18,73 +18,73 @@ import org.jooq.impl.TableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FoulRecord extends TableRecordImpl<FoulRecord> implements Record5<Integer, Integer, String, String, String> {
 
-    private static final long serialVersionUID = 555057705;
+    private static final long serialVersionUID = -1575005071;
 
     /**
-     * Setter for <code>localsoccer.foul.MatchID</code>.
+     * Setter for <code>demodb.foul.MatchID</code>.
      */
     public void setMatchid(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.foul.MatchID</code>.
+     * Getter for <code>demodb.foul.MatchID</code>.
      */
     public Integer getMatchid() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.foul.EventID</code>.
+     * Setter for <code>demodb.foul.EventID</code>.
      */
     public void setEventid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.foul.EventID</code>.
+     * Getter for <code>demodb.foul.EventID</code>.
      */
     public Integer getEventid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.foul.Time</code>.
+     * Setter for <code>demodb.foul.Time</code>.
      */
     public void setTime(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.foul.Time</code>.
+     * Getter for <code>demodb.foul.Time</code>.
      */
     public String getTime() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>localsoccer.foul.PlayerAgainstID</code>.
+     * Setter for <code>demodb.foul.PlayerAgainstID</code>.
      */
     public void setPlayeragainstid(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>localsoccer.foul.PlayerAgainstID</code>.
+     * Getter for <code>demodb.foul.PlayerAgainstID</code>.
      */
     public String getPlayeragainstid() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>localsoccer.foul.PlayerInFavorID</code>.
+     * Setter for <code>demodb.foul.PlayerInFavorID</code>.
      */
     public void setPlayerinfavorid(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>localsoccer.foul.PlayerInFavorID</code>.
+     * Getter for <code>demodb.foul.PlayerInFavorID</code>.
      */
     public String getPlayerinfavorid() {
         return (String) get(4);

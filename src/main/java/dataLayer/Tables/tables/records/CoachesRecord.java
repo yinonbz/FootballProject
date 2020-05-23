@@ -21,73 +21,73 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CoachesRecord extends UpdatableRecordImpl<CoachesRecord> implements Record5<String, CoachesRoleinteam, CoachesTraining, Integer, String> {
 
-    private static final long serialVersionUID = 454919659;
+    private static final long serialVersionUID = -1125724179;
 
     /**
-     * Setter for <code>localsoccer.coaches.coachID</code>.
+     * Setter for <code>demodb.coaches.coachID</code>.
      */
     public void setCoachid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.coaches.coachID</code>.
+     * Getter for <code>demodb.coaches.coachID</code>.
      */
     public String getCoachid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.coaches.roleInTeam</code>.
+     * Setter for <code>demodb.coaches.roleInTeam</code>.
      */
     public void setRoleinteam(CoachesRoleinteam value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.coaches.roleInTeam</code>.
+     * Getter for <code>demodb.coaches.roleInTeam</code>.
      */
     public CoachesRoleinteam getRoleinteam() {
         return (CoachesRoleinteam) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.coaches.training</code>.
+     * Setter for <code>demodb.coaches.training</code>.
      */
     public void setTraining(CoachesTraining value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.coaches.training</code>.
+     * Getter for <code>demodb.coaches.training</code>.
      */
     public CoachesTraining getTraining() {
         return (CoachesTraining) get(2);
     }
 
     /**
-     * Setter for <code>localsoccer.coaches.salary</code>.
+     * Setter for <code>demodb.coaches.salary</code>.
      */
     public void setSalary(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>localsoccer.coaches.salary</code>.
+     * Getter for <code>demodb.coaches.salary</code>.
      */
     public Integer getSalary() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>localsoccer.coaches.teamOwnerID_fictive</code>.
+     * Setter for <code>demodb.coaches.teamOwnerID_fictive</code>.
      */
     public void setTeamowneridFictive(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>localsoccer.coaches.teamOwnerID_fictive</code>.
+     * Getter for <code>demodb.coaches.teamOwnerID_fictive</code>.
      */
     public String getTeamowneridFictive() {
         return (String) get(4);

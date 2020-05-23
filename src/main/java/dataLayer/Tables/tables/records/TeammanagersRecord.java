@@ -20,73 +20,73 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TeammanagersRecord extends UpdatableRecordImpl<TeammanagersRecord> implements Record5<String, String, String, Integer, TeammanagersPermissions> {
 
-    private static final long serialVersionUID = -2143539407;
+    private static final long serialVersionUID = -1180652967;
 
     /**
-     * Setter for <code>localsoccer.teammanagers.managerID</code>.
+     * Setter for <code>demodb.teammanagers.managerID</code>.
      */
     public void setManagerid(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>localsoccer.teammanagers.managerID</code>.
+     * Getter for <code>demodb.teammanagers.managerID</code>.
      */
     public String getManagerid() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>localsoccer.teammanagers.teamID</code>.
+     * Setter for <code>demodb.teammanagers.teamID</code>.
      */
     public void setTeamid(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>localsoccer.teammanagers.teamID</code>.
+     * Getter for <code>demodb.teammanagers.teamID</code>.
      */
     public String getTeamid() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>localsoccer.teammanagers.teamOwnerID_fictive</code>.
+     * Setter for <code>demodb.teammanagers.teamOwnerID_fictive</code>.
      */
     public void setTeamowneridFictive(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>localsoccer.teammanagers.teamOwnerID_fictive</code>.
+     * Getter for <code>demodb.teammanagers.teamOwnerID_fictive</code>.
      */
     public String getTeamowneridFictive() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>localsoccer.teammanagers.salary</code>.
+     * Setter for <code>demodb.teammanagers.salary</code>.
      */
     public void setSalary(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>localsoccer.teammanagers.salary</code>.
+     * Getter for <code>demodb.teammanagers.salary</code>.
      */
     public Integer getSalary() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>localsoccer.teammanagers.permissions</code>.
+     * Setter for <code>demodb.teammanagers.permissions</code>.
      */
     public void setPermissions(TeammanagersPermissions value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>localsoccer.teammanagers.permissions</code>.
+     * Getter for <code>demodb.teammanagers.permissions</code>.
      */
     public TeammanagersPermissions getPermissions() {
         return (TeammanagersPermissions) get(4);
