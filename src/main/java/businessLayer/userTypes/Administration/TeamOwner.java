@@ -1,5 +1,6 @@
 package businessLayer.userTypes.Administration;
 
+import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
 import businessLayer.userTypes.Subscriber;
@@ -405,7 +406,6 @@ public class TeamOwner extends Subscriber {
                 if (!team.getTeamOwners().contains(subscriber) && (this.teams.contains(team))) {
                     //covert Subsriber to teamManger
 
-
                     //assign to team manager field in the team objects
                     teamManager.setTeam(team);
                     team.setTeamManager(teamManager);
@@ -418,8 +418,11 @@ public class TeamOwner extends Subscriber {
 
                     return true;
                 }
+                else{
+                    throw new AlreadyExistException("This user is already a Team Owner of the team.");
+                }
             } else if ((team.getTeamManager() != null)) {
-                System.out.println("please fire current Manager before appointing a new one");
+                throw new AlreadyExistException("Please fire current Manager before appointing a new one.");
             }
         }
         return false;

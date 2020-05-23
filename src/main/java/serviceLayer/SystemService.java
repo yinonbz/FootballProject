@@ -1,20 +1,16 @@
 package serviceLayer;
 
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
-import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
-public class SystemService implements Observer {
+public class SystemService extends Observable implements Observer {
     private SystemController systemController; //business layer system controller.
     private LeagueController leagueController;
     private TeamController teamController;
@@ -26,6 +22,7 @@ public class SystemService implements Observer {
      */
     public SystemService() {
         this.systemController = SystemController.SystemController();
+        systemController.addServiceObservers(this);
 
     }
 
@@ -165,7 +162,7 @@ public class SystemService implements Observer {
         return systemController.addToTeamConfirmList(details,username);
     }*/
 
-/*    */
+    /*    */
 
     /**
      * the function approves the request by the AR and updates the new team in the system and in the team owner
@@ -176,7 +173,7 @@ public class SystemService implements Observer {
      * Not a UC - A function of Association Represntative
      */
     public boolean confirmTeamByAssociationRepresntative(String teamName, String username) {
-        return systemController.confirmTeamByAssociationRepresentative(teamName,username);
+        return systemController.confirmTeamByAssociationRepresentative(teamName, username);
     }
 
 
@@ -290,8 +287,8 @@ public class SystemService implements Observer {
         return systemController.handleAdminApprovalRequest(userName, userNameToApprove, approve);
     }
 
-    public boolean sendRequestForTeam(String teamName, String establishedYear, String username){
-        if(teamName!=null && establishedYear!=null && username!=null && !teamName.isEmpty()){
+    public boolean sendRequestForTeam(String teamName, String establishedYear, String username) {
+        if (teamName != null && establishedYear != null && username != null && !teamName.isEmpty()) {
             return systemController.sendRequestForTeam(teamName, establishedYear, username);
         }
         return false;
@@ -363,13 +360,71 @@ public class SystemService implements Observer {
     }
 
 
+    /**
+     * @param o
+     * @param arg the notifications
+     *            this function updates the presentation layer for new notifications
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof SystemController && arg instanceof LinkedList) {
-            LinkedList<String> usersAndEvent = (LinkedList) arg;
-            String event = usersAndEvent.getLast();
-            //todo: Here enters the part where we send the message to each user through the interface system
-
+            LinkedList<String> users = (LinkedList) arg;
+            String title = users.removeLast(); //title for the message in the interface
+            String event = users.removeLast(); //holds the message to present to the user's interface
+            for (String user : users) {
+                if (systemController.isUserOnline(user)) {
+                    LinkedList<String> notification = new LinkedList<>();
+                    notification.add(title);
+                    notification.add(event);
+                    setChanged();
+                    notifyObservers(notification);
+                } else {
+                    systemController.saveUserMessage(user, event, title);
+                }
+            }
+            throw new NotFoundInDbException("");
         }
+    }
+
+    /**
+     * @param userName the user's username to add to the online users in DB (when logging in)
+     */
+    public void addToUsersOnline(String userName){
+        systemController.addOnlineUser(userName);
+    }
+
+    /**
+     * @return get all of the system subscribers (online AND offline)
+     */
+    public ArrayList<String> getSystemSubscribers() {
+        return systemController.getSystemSubscribers();
+    }
+    //todo ido add this function
+    public void updatePlayerBDate(String date, String user){
+        systemController.updatePlayerBDate(date,user);
+    }
+    //todo ido add this function
+    public void updatePlayerName(String name, String userName) {
+        systemController.updatePlayerName(name,userName);
+    }
+    //todo ido add this function
+    public void updatePlayerPost(String userName, String post) {
+        systemController.updatePlayerPost(userName,post);
+
+    }
+    //todo ido add this function
+    public void updateCoachName(String name, String userName) {
+        systemController.updateCoachName(name,userName);
+
+    }
+    //todo ido add this function
+    public void updateCoachPost(String userName, String post) {
+        systemController.updateCoachPost(userName,post);
+
+    }
+    //todo ido add this function
+    public void updateRefereeName(String name, String userName) {
+        systemController.updateRefereeName(name,userName);
+
     }
 }

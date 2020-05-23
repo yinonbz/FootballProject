@@ -223,7 +223,7 @@ public class MatchService {
         }
     }
     //todo ido add this function need to connect to db
-    public HashMap<Integer, Match> getAllMatch(String rUserName) {
+    public HashMap<Integer, Match> getAllRefereeMatch(String rUserName) {
         HashMap<Integer, Match> match =  matchController.getRefereeMatch(rUserName);
         if(match!=null && match.size()>0){
             return match;
@@ -232,7 +232,7 @@ public class MatchService {
         }
     }
     //todo ido add this function need to connect to db
-    public ArrayList<String> getAllPlayerMatch(int matchId, String rUserName) {
+    public ArrayList<String> getAllPlayerOfMatch(int matchId, String rUserName) {
         HashMap<Integer, Match> matches = matchController.getRefereeMatch(rUserName);
         if (matches != null && matches.size() > 0 && matches.containsKey(matchId)) {
             Match currMatch = matches.get(matchId);

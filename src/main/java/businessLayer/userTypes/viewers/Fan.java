@@ -113,4 +113,8 @@ public class Fan extends Subscriber {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "Fan";
+    }
 }

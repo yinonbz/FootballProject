@@ -31,6 +31,10 @@ public class DemoDB {
     private HashMap<Team, LinkedList<Coach>> teamCoaches;
     private HashMap<Team, LinkedList<Stadium>> teamStadiums;
     private HashMap<Team, LinkedList<TeamOwner>> teamTeamOwners;
+    private HashMap<String, TeamOwner> teamOwners; // <userNameOfTeamOwner, TeamOwner>
+    private HashMap<String, TeamManager> teamManagers;
+    private LinkedList<String> onlineUsers;
+    private HashMap<String, LinkedList<String>> offlineUsersNotifications; //notifications for offline users
 
     //------------League Controller------------//
     private HashMap<String, League> leagues;
@@ -62,6 +66,10 @@ public class DemoDB {
         teamCoaches = new HashMap<>();
         teamStadiums = new HashMap<>();
         teamTeamOwners = new HashMap<>();
+        onlineUsers = new LinkedList<>();
+        offlineUsersNotifications = new HashMap<>();
+        teamOwners = new HashMap<>();
+        teamManagers = new HashMap<>();
 
     }
 
@@ -468,6 +476,21 @@ public class DemoDB {
         return true;
     }
 
+    public TeamOwner getTeamOwner(String userName){
+        return teamOwners.get(userName);
+    }
+
+    public void addTeamOwnerToDB(String userName, TeamOwner teamOwner){
+        teamOwners.put(userName,teamOwner);
+    }
+
+    public HashMap<String, TeamManager> getTeamManagers(){
+        return teamManagers;
+    }
+
+    public void addTeamManagerToDB(String userName, TeamManager teamManager){
+        teamManagers.put(userName,teamManager);
+    }
 
     /**
      * Adding a follower to a specific match within the database
@@ -675,6 +698,68 @@ public class DemoDB {
         return null;
     }
 
+
+    /**
+     * The function adds the username to the online usernames data structure
+     *
+     * @param username
+     */
+    public void addOnlineUser(String username) {
+        onlineUsers.add(username);
+        if (!offlineUsersNotifications.containsKey(username)) {
+            offlineUsersNotifications.put(username, new LinkedList<>());
+        }
+    }
+
+    /**
+     * The function removes the username from the online usernames data structure
+     *
+     * @param username
+     */
+    public void removeOnlineUser(String username) {
+        onlineUsers.remove(username);
+    }
+
+    /**
+     * The function receives a username and checks whether the user is online at present time or not
+     *
+     * @param username
+     * @return true/false
+     */
+    public boolean isUserOnline(String username) {
+        return onlineUsers.contains(username);
+    }
+
+    /**
+     * The function receives a username, a notification and its title and stores it within the DB
+     *
+     * @param username
+     * @param message
+     * @param title
+     */
+    public void saveUserMessage(String username, String message, String title) {
+
+        if (containsInSystemSubscribers(username)) {
+            if (!offlineUsersNotifications.containsKey(username)) {
+                offlineUsersNotifications.put(username, new LinkedList<>());
+            }
+            offlineUsersNotifications.get(username).add(message + "," + title);
+        }
+    }
+
+    /**
+     * The function receives a username and returns the list of its notifications
+     * @param username
+     * @return
+     */
+    public LinkedList<String> getOfflineUsersNotifications(String username) {
+
+        if (offlineUsersNotifications.containsKey(username)) {
+            return offlineUsersNotifications.get(username);
+        }
+        return null;
+    }
+
     //-------------------------LEAGUE CONTROLLER-------------------------//
 
     /**
@@ -804,6 +889,13 @@ public class DemoDB {
     public boolean addRefereeToDB(String username, Referee ref) {
         referees.put(username, ref);
         return true;
+    }
+
+    /**
+     * @return Get all referees from DB
+     */
+    public HashMap<String, Referee> getReferees() {
+        return referees;
     }
 
     /**
@@ -945,7 +1037,9 @@ public class DemoDB {
         return unconfirmedTeams;
     }
 
-    public void setUnconfirmedTeams(HashMap<String, LinkedList<String>> unconfirmedTeams) { this.unconfirmedTeams = unconfirmedTeams; }
+    public void setUnconfirmedTeams(HashMap<String, LinkedList<String>> unconfirmedTeams) {
+        this.unconfirmedTeams = unconfirmedTeams;
+    }
 
     public HashMap<String, Stadium> getStadiums() {
         return stadiums;
@@ -959,5 +1053,7 @@ public class DemoDB {
         return matches;
     }
 
-    public HashMap<String, League> getLeagues() { return leagues; }
+    public HashMap<String, League> getLeagues() {
+        return leagues;
+    }
 }

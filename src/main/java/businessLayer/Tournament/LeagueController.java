@@ -1,6 +1,8 @@
 package businessLayer.Tournament;
 
 import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
@@ -266,7 +268,7 @@ public class LeagueController {
      * @return
      */
     public boolean addLeagueThroughRepresentative(String leagueID, String username) {
-
+        /*
         if (leagueID != null && username != null) {
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
@@ -274,6 +276,8 @@ public class LeagueController {
                 return userRep.createLeague(leagueID);
             }
         }
+        return false;
+        */
         return false;
     }
 
@@ -291,14 +295,19 @@ public class LeagueController {
      * @return
      */
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
-
+        /*
         if (leagueID != null && username != null && matchingPolicy != null) {
+            if(startingDate.after(endingDate)){
+                throw new MissingInputException("Starting Date must be before the Ending Date.");
+            }
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
                 return userRep.createSeason(leagueID, seasonID, startingDate, win, lose, tie, matchingPolicy, endingDate);
             }
         }
+        throw new MissingInputException("Please complete the form.");
+        */
         return false;
     }
 
@@ -358,7 +367,7 @@ public class LeagueController {
                 return userRep.assignRefereeToSeason(refUsername, leagueName, seasonID);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete this form to add a Referee to a Season.");
     }
 
 
@@ -410,6 +419,7 @@ public class LeagueController {
      * @return true if at least one team was added
      */
     public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID, String seasonID, String userName) {
+        /*
         if (seasonID != null && userName != null && leagueID!=null) {
             Subscriber user = systemController.getSubscriberByUserName(userName);
             if(user instanceof AssociationRepresentative){
@@ -426,6 +436,8 @@ public class LeagueController {
             }
         }
         throw new MissingInputException("Missing Input");
+        */
+        return false;
     }
 
     /**
@@ -436,6 +448,7 @@ public class LeagueController {
      * @return
      */
     public boolean activateMatchPolicy(String leagueID, String seasonID, String userName){
+        /*
         if (seasonID != null && userName != null && leagueID!=null) {
             Subscriber user = systemController.getSubscriberByUserName(userName);
             if (user instanceof AssociationRepresentative) {
@@ -443,12 +456,22 @@ public class LeagueController {
                 if (season != null) {
                     if (season.getTeams() != null) {
                         if (season.getTeams().size() > 1) {
-                            return season.activateMatchPolicy(this);
+                            if(season.checkIfRefereeIsAssignedToSeason()) {
+                                return season.activateMatchPolicy(this);
+                            }
+                            else{
+                                throw new NotApprovedException("The Season must have at least one Referee before activation. Please add Referees for the Season.");
+                            }
+                        }
+                        else{
+                            throw new NotApprovedException("The Season must have at least 2 Teams before activation. Please add more teams for the Season.");
                         }
                     }
                 }
             }
         }
+        throw new MissingInputException("Please select a League and a Season to activate.");
+        */
         return false;
     }
 

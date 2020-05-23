@@ -150,6 +150,7 @@ public class DataBaseValues2 {
     static Match m4;
     static Match m5;
     static Match m6;
+    static Match m7;
 
     //events
     static YellowCard e1;
@@ -222,6 +223,9 @@ public class DataBaseValues2 {
         Harry = new TeamOwner("Harry","jj","Harry",systemController);
         gerrard = new TeamOwner("gerrard","jj","Harry",systemController);
 
+        DB.addTeamOwnerToDB("Tomer",teamOwner);
+
+
 
         DB.addSubscriberToDB("Tomer", teamOwner);
         DB.addSubscriberToDB("gerrard", gerrard);
@@ -274,8 +278,10 @@ public class DataBaseValues2 {
         //add referee
         Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
         DB.addSubscriberToDB("Alon",Alon);
+        DB.addRefereeToDB(Alon.getUsername(),Alon);
         Rayola = new Referee ("Rayola", "1223", "Rayola","main",leagueController,systemController);
         DB.addSubscriberToDB("Rayola",Rayola);
+        DB.addRefereeToDB(Rayola.getUsername(),Rayola);
 
         //add coach
         //6.1
@@ -288,22 +294,25 @@ public class DataBaseValues2 {
         itay = new TeamManager("itayK", "111", "itay",null ,100, systemController);
         itay.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("itayK",itay);
+        DB.addTeamManagerToDB("itayK",itay);
 
         klopp = new TeamManager("kloppJ", "111", "klopp",null ,100, systemController);
         klopp.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("kloppJ",klopp);
+        DB.addTeamManagerToDB("kloppJ",klopp);
 
         pep = new TeamManager("pepG", "111", "pep",null ,100, systemController);
         pep.setPermissions(Permissions.FINANCE);
         DB.addSubscriberToDB("pepG",pep);
+        DB.addTeamManagerToDB("pepG",pep);
 
         //add fan
         fan = new Fan ("Gate13","aviNimni","avi",systemController);
         Ben = new Fan ("Ben","1234","ben",systemController);
         DB.addSubscriberToDB("Gate13",fan);
         DB.addSubscriberToDB("Ben",Ben);
-
-
+        DB.saveUserMessage("Ben","a","b");
+        DB.saveUserMessage("Ben","c","d");
 
         //add teams
         ManchesterUnited = new Team("ManchesterUnited",teamOwner,1888);
@@ -419,9 +428,12 @@ public class DataBaseValues2 {
         DB.addTeamToDB("BeitarJerusalem",BeitarJerusalem);
 
         //add team manager
-        itay = new TeamManager("itayK", "111", "itay",null ,0, systemController);
+        //itay = new TeamManager("itayK", "111", "itay",null ,0, systemController);
         Ronaldinio = new TeamManager("Ronaldinio", "111", "Ronaldinio",null ,0, systemController);
+        DB.addTeamManagerToDB("Ronaldinio",Ronaldinio);
         valverde = new TeamManager("valverde","111","valverde",Liverpool,100,systemController);
+        DB.addTeamManagerToTeam(valverde,Liverpool);
+        DB.addTeamManagerToDB("valverde",valverde);
         DB.addSubscriberToDB("Ronaldinio",Ronaldinio);;
         DB.addSubscriberToDB("itayK",itay);
         DB.addSubscriberToDB("valverde",valverde);
