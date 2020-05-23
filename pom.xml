@@ -23,12 +23,9 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M4</version>
                     <configuration>
-                        <includes>
-                            <include>**/*Test.java</include>
-                            <include>**/Test*.java</include>
-                        </includes>
                         <excludes>
-                            <exclude>**/*DB*Test*.java</exclude>
+                            <exlude>**/*Test.java</exlude>
+                            <exclude>**/Test*.java</exclude>
                         </excludes>
                     </configuration>
                 </plugin>
