@@ -83,12 +83,14 @@ public class DBHandler implements DB_Inter{
 
             Map<String, ArrayList<String>> objDetails = new HashMap<>();
             String username = result.get(0).get(SUBSCRIBERS.SUBSCRIBERID);
-            //String password = result.get(0).get(SUBSCRIBERS.PASSWORD); //todo create constructor withoud password to subscriber
+            String password = result.get(0).get(SUBSCRIBERS.PASSWORD);
             String name = result.get(0).get(SUBSCRIBERS.NAME);
             String type = result.get(0).get(SUBSCRIBERS.TYPE);
 
             objDetails.put("username", new ArrayList<>());
             objDetails.get("username").add(username);
+            objDetails.put("password", new ArrayList<>());
+            objDetails.get("password").add(password);
             objDetails.put("name", new ArrayList<>());
             objDetails.get("name").add(name);
             objDetails.put("type", new ArrayList<>());
