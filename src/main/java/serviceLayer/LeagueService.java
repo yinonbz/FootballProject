@@ -1,5 +1,6 @@
 package serviceLayer;
 
+import businessLayer.Exceptions.MissingInputException;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.userTypes.SystemController;
 
@@ -44,7 +45,6 @@ public class LeagueService {
 
     /**
      * The function receives username, leagueID, seasonID and dates from the interface layer and calls the creation function in the business layer
-     *
      * @param leagueID
      * @param seasonID
      * @param startingDate
@@ -61,9 +61,11 @@ public class LeagueService {
         if (leagueID != null && username != null && matchingPolicy != null) {
             if (seasonID >= 1970 && seasonID <= 2021) {
                 return leagueController.addSeasonThroughRepresentative(leagueID, seasonID, startingDate, endingDate, win, lose, tie, matchingPolicy, username);
+            }else{
+                throw new MissingInputException("Please select a Season ID between 1970 and 2021.");
             }
         }
-        return false;
+        throw new MissingInputException("Please complete the form.");
     }
 
 
@@ -74,10 +76,10 @@ public class LeagueService {
      * @param username
      * @return
      */
-    public boolean createRefereeThroughRepresentative(String refUsername, String username) {
+    public boolean createRefereeThroughRepresentative(String refUsername, String username, String role) {
 
         if (refUsername != null && username != null) {
-            return leagueController.createRefereeThroughRepresentative(refUsername, username);
+            return leagueController.createRefereeThroughRepresentative(refUsername, username, role);
         }
         return false;
     }
@@ -109,11 +111,7 @@ public class LeagueService {
      * @return
      */
     public boolean assignRefereeThroughRepresentative(String refUsername, String leagueName, int seasonID, String username) {
-
-        if (refUsername != null && leagueName != null && username != null) {
             return leagueController.assignRefereeThroughRepresentative(refUsername, leagueName, seasonID, username);
-        }
-        return false;
     }
 
     /**
@@ -124,7 +122,6 @@ public class LeagueService {
      * @return
      */
     public boolean confirmTeamRequestThroughRepresentative(String teamName, String username) {
-
         if (teamName != null && username != null) {
             return leagueController.confirmTeamRequestThroughRepresentative(teamName, username);
         }
@@ -148,33 +145,26 @@ public class LeagueService {
 
     /**
      * the function lets the AR to choose teams and add them to the season
-     *
      * @param teamsNames the teams the AR wants to add
      * @param leagueID   the league ID
      * @param seasonID   the season ID
      * @param username   the username
      * @return true if it done successfully
      */
-    public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID, String seasonID, String username) {
-        if (teamsNames != null && teamsNames.size() > 0 && tryParseInt(seasonID) && username != null) {
-            return leagueController.chooseTeamForSeason(teamsNames, leagueID, seasonID, username);
-        }
-        return false;
+    public boolean chooseTeamForSeason(LinkedList<String> teamsNames, String leagueID , String seasonID, String username){
+        return leagueController.chooseTeamForSeason(teamsNames,leagueID,seasonID,username);
     }
 
     /**
      * the function lets the AR to activate the match policy of a season
-     *
      * @param leagueID
      * @param seasonID
      * @param userName
      * @return
      */
     public boolean activateMatchPolicyForSeason(String leagueID, String seasonID, String userName) {
-        if (tryParseInt(leagueID) && tryParseInt(seasonID) && userName != null) {
             return leagueController.activateMatchPolicy(leagueID, seasonID, userName);
-        }
-        return false;
+
     }
 
     /**
@@ -210,20 +200,57 @@ public class LeagueService {
         }
     }
 
-    public ArrayList<String> getAllUnconfirmedTeams() {
+    /**
+     * @return all of the unconfirmed team names from the DB
+     */
+    public ArrayList<String> getAllUnconfirmedTeams(){
         return systemController.getAllUnconfirmedTeamsInDB();
     }
 
-    public ArrayList<String> getAllULeagues() {
-        return systemController.getAllULeaguesInDB();
+    /**
+     * @return all of the league names from DB
+     */
+    public ArrayList<String> getAllULeagues(){
+        return systemController.getAllLeaguesInDB();
     }
 
-    //אtodo ido added
-    public ArrayList<String> getAllTeamsNames() {
+    /**
+     * @return all of the team names fron DB
+     */
+    //todo ido added
+    public ArrayList<String> getAllTeamsNames(){
         return systemController.getAllTeamsNames();
     }
 
-    public ArrayList<String> getAllSeasonsFromLeague(String league) {
+    /**
+     * @return all of the referee names from the DB
+     */
+    public ArrayList<String> getAllRefereeNames(){
+      //  return systemController.getAllRefereeNames(); todo not implemented in db
+        return null;
+    }
+
+
+    /**
+     * @param league the league's name to get all of it's season
+     * @return the season's names of the league
+     */
+    public ArrayList<String> getAllSeasonsFromLeague(String league){
         return systemController.getAllSeasonsFromLeague(league);
+    }
+
+    /** remove user from the online users DB (when logging out)
+     * @param userName the user's username to remove form the online users
+     */
+    public void removeFromUsersOnline(String userName) {
+        systemController.removeOnlineUser(userName);
+    }
+
+    /**
+     * @param userName the offline user name
+     * @return get all of the user's offline notifications
+     */
+    public LinkedList<String> getOfflineMessages(String userName) {
+        return systemController.getOfflineUsersNotifications(userName);
     }
 }

@@ -1,6 +1,8 @@
 package businessLayer.Tournament;
 
 import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
+import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
@@ -155,8 +157,8 @@ public class LeagueController {
         if (leagueID == null) {
             return false;
         }
-        League newLeague = new League(leagueID);
-        systemController.addLeagueToDB(leagueID, newLeague);
+        //League newLeague = new League(leagueID);
+        systemController.addLeagueToDB(leagueID);
         if (!systemController.containsLeague(leagueID)) {
             return false;
         }
@@ -223,7 +225,9 @@ public class LeagueController {
         if (systemController.containsLeague(leagueName) && systemController.containsReferee(refUserName)) {
             League addingToLeague = systemController.getLeagueFromDB(leagueName);
             Referee refToAssign = systemController.getRefereeFromDB(refUserName);
-            return addingToLeague.addRefereeToSeason(refToAssign, seasonID);
+            if(addingToLeague.addRefereeToSeason(refToAssign, seasonID)){
+                return systemController.addRefereeToSeason(leagueName,seasonID,refUserName);
+            }
         }
         return false;
     }
@@ -237,7 +241,7 @@ public class LeagueController {
     public void addAssociationRepToController(AssociationRepresentative associationRep) {
         if (associationRep != null) {
             if (!systemController.containsInSystemAssociationRepresentative(associationRep.getUsername())) {
-                systemController.addSubscriberToDB(associationRep.getUsername(), associationRep);
+                systemController.addSubscriber(associationRep);
             }
         }
     }
@@ -251,7 +255,7 @@ public class LeagueController {
     public void addRefereeToDataFromSystemController(Referee referee) {
 
         if (referee != null && !systemController.containsReferee(referee.getUsername())) {
-            systemController.addSubscriberToDB(referee.getUsername(), referee);
+            systemController.addSubscriber(referee);
         }
     }
 
@@ -293,13 +297,18 @@ public class LeagueController {
     public boolean addSeasonThroughRepresentative(String leagueID, int seasonID, Date startingDate, Date endingDate, int win, int lose, int tie, String matchingPolicy, String username) {
 
         if (leagueID != null && username != null && matchingPolicy != null) {
+            if(startingDate.after(endingDate)){
+                throw new MissingInputException("Starting Date must be before the Ending Date.");
+            }
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
                 return userRep.createSeason(leagueID, seasonID, startingDate, win, lose, tie, matchingPolicy, endingDate);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete the form.");
+
+        //return false;
     }
 
     /**
@@ -309,13 +318,13 @@ public class LeagueController {
      * @param username
      * @return
      */
-    public boolean createRefereeThroughRepresentative(String refUsername, String username) {
+    public boolean createRefereeThroughRepresentative(String refUsername, String username, String role) {
 
         if (refUsername != null && username != null) {
             Subscriber user = systemController.getSubscriberByUserName(username);
             if (user instanceof AssociationRepresentative) {
                 AssociationRepresentative userRep = (AssociationRepresentative) user;
-                return userRep.createReferee(refUsername);
+                return userRep.createReferee(refUsername, role);
             }
         }
         return false;
@@ -358,7 +367,7 @@ public class LeagueController {
                 return userRep.assignRefereeToSeason(refUsername, leagueName, seasonID);
             }
         }
-        return false;
+        throw new MissingInputException("Please complete this form to add a Referee to a Season.");
     }
 
 
@@ -419,11 +428,13 @@ public class LeagueController {
                         Team team = systemController.getTeamByName(teamName);
                         if(team!=null){
                             season.addTeamToSeason(team);
+                            systemController.addTeamToSeasonDB(leagueID,Integer.parseInt(seasonID),team.getTeamName()); //todo DB
                         }
                     }
                     return true;
                 }
             }
+            return false;
         }
         throw new MissingInputException("Missing Input");
     }
@@ -443,13 +454,27 @@ public class LeagueController {
                 if (season != null) {
                     if (season.getTeams() != null) {
                         if (season.getTeams().size() > 1) {
-                            return season.activateMatchPolicy(this);
+                            if(season.checkIfRefereeIsAssignedToSeason()) {
+                                HashMap <Integer,Match> matches = season.getMatchesOfTheSeason();
+                                //Integer [] keys = (Integer [] )matches.keySet().toArray();
+                                LinkedList<Integer> keys = new LinkedList<>();
+                                keys.addAll(matches.keySet());
+                               systemController.addMatchTableToSeason(leagueID, Integer.parseInt(seasonID), keys); //todo DB
+                               return season.activateMatchPolicy(this);
+                            }
+                            else{
+                                throw new NotApprovedException("The Season must have at least one Referee before activation. Please add Referees for the Season.");
+                            }
+                        }
+                        else{
+                            throw new NotApprovedException("The Season must have at least 2 Teams before activation. Please add more teams for the Season.");
                         }
                     }
                 }
             }
+            return false;
         }
-        return false;
+        throw new MissingInputException("Please select a League and a Season to activate.");
     }
 
     /**
@@ -466,15 +491,33 @@ public class LeagueController {
             if (user instanceof AssociationRepresentative || user instanceof Referee) {
                 Season season = systemController.selectSeasonFromDB(leagueID, seasonID);
                 if (season != null) {
-                        Match match = systemController.selectMatchFromDB(matchID);
+                        Match match = systemController.findMatch(Integer.parseInt(matchID));
                             if(match!=null){
                                 if(season.seasonContainsMatch(Integer.parseInt(matchID))){
-                                    return season.updateMatchTableRank(match);
+                                    if(season.updateMatchTableRank(match)){ //todo DB
+                                        HashMap<Team,LinkedList<Integer>> table = season.getLeagueTable();
+                                        LinkedList<Integer> homeValues = table.get(match.getHomeTeam());
+                                        LinkedList<Integer> awayValues = table.get(match.getAwayTeam());
+                                        systemController.updateMatchTableOFSeason(leagueID,Integer.parseInt(seasonID),
+                                                match.getHomeTeam().getTeamName(),homeValues);
+                                        systemController.updateMatchTableOFSeason(leagueID,Integer.parseInt(seasonID),
+                                                match.getAwayTeam().getTeamName(),awayValues);
+                                        return true;
+                                    }
                                 }
                             }
                         }
                     }
                 }
         return false;
+    }
+
+    /**
+     * the function add the matches of the season to the DB
+     * @param matchesOfTheSeason
+     * @return
+     */
+    public boolean updateMatchTableInDB(HashMap <Integer, Match> matchesOfTheSeason, String leagueID, int seasonID){
+        return systemController.addMatchTableOfSeason(matchesOfTheSeason, leagueID, seasonID);
     }
 }

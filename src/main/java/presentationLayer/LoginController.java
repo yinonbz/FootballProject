@@ -18,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
+import serviceLayer.SystemService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    private SystemController systemController;
+    private SystemService systemService;
 
     private boolean showPass;
 
@@ -52,7 +53,7 @@ public class LoginController implements Initializable {
             FXMLLoader fxmlLoader = null;
             String user;
             //user = "AR";
-            user = systemController.enterLoginDetails(usernameL.getText(), passwordL.getText());
+            user = systemService.enterLoginDetails(usernameL.getText(), passwordL.getText());
             if (user == null) {
                 return;
             }
@@ -90,18 +91,20 @@ public class LoginController implements Initializable {
 
             Parent root1 = null;
             try {
-
+                //Controller.setUser(usernameL.getText());
                 root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 Scene scene = new Scene(root1, 1166, 666);
                 scene.getStylesheets().add("/css/style.css");
                 stage.setScene(scene);
 
-                //IDO ADD
+                //Controller = fxmlLoader.getController();
                 ControllerInterface Controller = fxmlLoader.getController();
-                System.out.println(usernameL.getText());
                 Controller.setUser(usernameL.getText());
-                //
+                //IDO ADD
+
+                systemService.addToUsersOnline(usernameL.getText());
+
                 stage.show();
                 ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
             } catch (IOException e) {
@@ -128,7 +131,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        systemController = SystemController.SystemController();
+        systemService = new SystemService();
         showPass = false;
     }
 

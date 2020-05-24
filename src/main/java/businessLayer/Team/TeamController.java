@@ -1,12 +1,14 @@
 package businessLayer.Team;
 
+import businessLayer.Exceptions.MissingInputException;
+import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.userTypes.Administration.OwnerEligible;
 import businessLayer.userTypes.Administration.Permissions;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
-
-import java.security.acl.Owner;
+import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 
 public class TeamController {
     private SystemController systemController;
@@ -125,9 +127,10 @@ public class TeamController {
                         return owner.addManager(username, Permissions.valueOf(permission), systemController.getTeamByName(teamName), Integer.parseInt(salary));
                     }
                 }
+                throw new NotApprovedException("The selected user must be a Team Owner or a Team Manager.");
             }
         }
-        return false;
+       throw new MissingInputException("Please fill the form completely before adding a new Team Manager.");
     }
 
     public boolean fireManager(String ownerUser, String username, String teamName) {

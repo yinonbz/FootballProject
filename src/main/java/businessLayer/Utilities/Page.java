@@ -13,10 +13,11 @@ private String name;
 private String bDate;
 private HasPage pageOwner;
 private SystemController systemController;
+static int pageId=0;
 
     /**
      * constractor for player and coach
-     * @param  username
+     * @param username
      * @param name
      * @param birthDate
      */
@@ -28,6 +29,7 @@ private SystemController systemController;
         owners.add(username);
         systemController = SystemController.SystemController();
         systemController.addPageToDB(ownerName, this);
+        pageId++;
     }
 
     /**

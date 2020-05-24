@@ -43,6 +43,23 @@ public class Season {
         initializeTable(); // here we initialize the table
     }
 
+    public Season (League league, int seasonID, Date startDate, Date endDate, ARankingPolicy aRankingPolicy, HashMap<Team, LinkedList<Integer>> leagueTable,
+                   HashMap<Integer,Match> matchesOfTheSeason, HashMap<String,Referee> referees, String matchingPolicy) {
+        this.league=league;
+        this.seasonId=seasonID;
+        this.startDate=startDate;
+        this.endDate=endDate;
+        this.rankingPolicy=aRankingPolicy;
+        this.referees=referees;
+        this.leagueTable=leagueTable;
+        this.matchesOfTheSeason=matchesOfTheSeason;
+        if (matchingPolicy.equals("ClassicMatchPolicy")) {
+            this.matchingPolicy = new ClassicMatchPolicy(league, this);
+        } else if (matchingPolicy.equals("SingleMatchPolicy")) {
+            this.matchingPolicy = new SingleMatchPolicy(league, this);
+        }
+    }
+
     /**
      * constructor of a new season without a policy
      *
@@ -265,6 +282,7 @@ public class Season {
         //in order to use the match policy only once
         if(matchesOfTheSeason==null) {
             this.matchesOfTheSeason = matchingPolicy.activatePolicy(teams, leagueController);
+            leagueController.updateMatchTableInDB(matchesOfTheSeason,league.getLeagueName(),seasonId);
             if (matchesOfTheSeason != null) {
                 return true;
             }
@@ -295,6 +313,22 @@ public class Season {
      */
     public void  setMatchesOfTheSeason(HashMap <Integer, Match> matchesOfTheSeason){
         this.matchesOfTheSeason=matchesOfTheSeason;
+    }
+
+    /**
+     * getter of the match table of a season
+     * @return
+     */
+    public HashMap <Integer,Match> getMatchesOfTheSeason(){
+        return matchesOfTheSeason;
+    }
+
+    /**
+     * @return true if the season has referees assigned to it
+     *         false else
+     */
+    public boolean checkIfRefereeIsAssignedToSeason(){
+        return !(referees.size() == 0);
     }
 
 }

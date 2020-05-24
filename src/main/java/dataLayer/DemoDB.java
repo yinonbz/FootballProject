@@ -31,6 +31,8 @@ public class DemoDB {
     private HashMap<Team, LinkedList<Coach>> teamCoaches;
     private HashMap<Team, LinkedList<Stadium>> teamStadiums;
     private HashMap<Team, LinkedList<TeamOwner>> teamTeamOwners;
+    private HashMap<String, TeamOwner> teamOwners; // <userNameOfTeamOwner, TeamOwner>
+    private HashMap<String, TeamManager> teamManagers;
     private LinkedList<String> onlineUsers;
     private HashMap<String, LinkedList<String>> offlineUsersNotifications; //notifications for offline users
 
@@ -66,6 +68,8 @@ public class DemoDB {
         teamTeamOwners = new HashMap<>();
         onlineUsers = new LinkedList<>();
         offlineUsersNotifications = new HashMap<>();
+        teamOwners = new HashMap<>();
+        teamManagers = new HashMap<>();
 
     }
 
@@ -472,6 +476,21 @@ public class DemoDB {
         return true;
     }
 
+    public TeamOwner getTeamOwner(String userName){
+        return teamOwners.get(userName);
+    }
+
+    public void addTeamOwnerToDB(String userName, TeamOwner teamOwner){
+        teamOwners.put(userName,teamOwner);
+    }
+
+    public HashMap<String, TeamManager> getTeamManagers(){
+        return teamManagers;
+    }
+
+    public void addTeamManagerToDB(String userName, TeamManager teamManager){
+        teamManagers.put(userName,teamManager);
+    }
 
     /**
      * Adding a follower to a specific match within the database
@@ -931,6 +950,13 @@ public class DemoDB {
     public boolean addRefereeToDB(String username, Referee ref) {
         referees.put(username, ref);
         return true;
+    }
+
+    /**
+     * @return Get all referees from DB
+     */
+    public HashMap<String, Referee> getReferees() {
+        return referees;
     }
 
     /**
