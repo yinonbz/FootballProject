@@ -36,6 +36,21 @@ public class SystemController extends Observable {
     private TeamController teamController;
     private MatchController matchController;
 
+    //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
+    //private HashMap<String, Team> teams; //name of the team, the team object
+    //private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
+    //private Map<Subscriber, List<String>> userNotifications;
+    //private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
+    //private HashMap<String, LinkedList<String>> unconfirmedTeams;
+    //private HashMap<String, Stadium> stadiums;
+
+
+    //----------------OLD DATA STRUCTURES THAT ARE NOT USED-------------------------------//
+
+    //private List<Guest> onlineGuests;
+    //private List<Admin> admins;
+    //private List<League> leagues;
+
 
     private SystemController() {
         DB = new DBHandler();
@@ -2393,6 +2408,7 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Page update");
+                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -2429,6 +2445,7 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Match update");
+                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -2486,6 +2503,7 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Change in match date&place");
+                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -2561,10 +2579,10 @@ public class SystemController extends Observable {
                //     usersToNotify.add(owner.getUsername());
                 }
             }
-    //        usersToNotify.add(event);
-      //      usersToNotify.add("Team status update");
-            setChanged();
-     //       notifyObservers(usersToNotify);
+            //usersToNotify.add(event);
+            //usersToNotify.add("Team status update");
+            //setChanged();
+            //notifyObservers(usersToNotify);
         }
     }
 
@@ -2583,6 +2601,7 @@ public class SystemController extends Observable {
                adminToUpdate.add(name);
                 adminToUpdate.add("You have lost your rights as an owner for the team '" + team.getTeamName() + "'.");
                 adminToUpdate.add("Owner privileges removal");
+                setChanged();
                 notifyObservers(adminToUpdate);
             }
         }
@@ -2692,6 +2711,34 @@ public class SystemController extends Observable {
         return null;
     }
 
+    /**
+     * The function receives a team name and returns the matching team. If the name does not exist, returns close
+     * names to the original
+     * @param teamName
+     * @return possibleNames
+     */
+    /*
+    public LinkedList<Team> getSimilarTeams(String teamName) {
+        LinkedList<Team> possibleNames;
+        char firstTeamNameLetter = teamName.charAt(0);
+        possibleNames = DB.getTeamsWithCloseNames(firstTeamNameLetter);
+        return possibleNames;
+    }
+    */
+    /**
+     * The function receives a player name and returns the matching team. If the name does not exist, returns close
+     * names to the original
+     * @param playerName
+     * @return possibleNames
+     */
+    /*
+    public LinkedList<Player> getSimilarPlayers(String playerName) {
+        LinkedList<Player> possibleNames;
+        char firstPlayerNameLetter = playerName.charAt(0);
+        possibleNames = DB.getPlayersWithCloseNames(firstPlayerNameLetter);
+        return possibleNames;
+    }
+    */
 
     /**
      * @return get all the unconfirmed team names from the DB

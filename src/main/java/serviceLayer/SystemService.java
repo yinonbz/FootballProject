@@ -1,10 +1,12 @@
 package serviceLayer;
 
+import businessLayer.Team.Team;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
+import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
@@ -16,14 +18,12 @@ public class SystemService extends Observable implements Observer {
     private TeamController teamController;
     private MatchController matchController;
 
-
     /**
      * initalizing system and controllers as singeltons
      */
     public SystemService() {
         this.systemController = SystemController.SystemController();
         systemController.addServiceObservers(this);
-
     }
 
     /**
@@ -347,7 +347,47 @@ public class SystemService extends Observable implements Observer {
         return false;
     }
 
+    /**
+     * The function receives a team name and returns the matching team or teams with close names to the one given
+     * @param teamName
+     */
+    /*
+    public void findTeamWithName(String teamName) { //todo: fix the returning value once we decide how to present at GUI
 
+        Team team = systemController.getTeamByName(teamName);
+        if (team != null) {
+            //here we return the user the team he was searching for
+        } else {
+            LinkedList<Team> similarTeamNames = systemController.getSimilarTeams(teamName);
+            if (similarTeamNames.size() == 0) {
+                //here we let the user know there were no teams with similar names to the one he entered
+            } else {
+                //here we return the names that were retrieved in a way to present at the GUI
+            }
+        }
+    }
+    */
+
+    /**
+     * The function receives a player name and returns the matching player or players with close names to the one given
+     * @param playerName
+     */
+    /*
+    public void findPlayerWithName(String playerName) { //todo: fix the returning value once we decide how to present at GUI
+
+        Subscriber user = systemController.getSubscriberByUserName(playerName);
+        if (user instanceof Player) {
+            //here we return the user the player he was searching for
+        } else {
+            LinkedList<Player> similarPlayerNames = systemController.getSimilarPlayers(playerName);
+            if (similarPlayerNames.size() == 0) {
+                //here we let the user know there were no players with similar names to the one he entered
+            } else {
+                //here we return the names that were retrieved in a way to present at the GUI
+            }
+        }
+    }
+    */
     /**
      * @param o
      * @param arg the notifications

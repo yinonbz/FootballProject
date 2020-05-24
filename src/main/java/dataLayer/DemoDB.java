@@ -760,6 +760,67 @@ public class DemoDB {
         return null;
     }
 
+    /**
+     * The function receives a letter and returns the teams that begin with that letter. If there are none, tries to
+     * find a team that starts with a close letter to the one given
+     * @param letter
+     * @return relevantNames
+     */
+    public LinkedList<Team> getTeamsWithCloseNames(char letter){
+
+        LinkedList<Team> relevantTeams = new LinkedList<>();
+        int count = 0;
+        while(relevantTeams.size() == 0 && count < 26){
+            for(Map.Entry team : teams.entrySet()){
+                String name = (String)team.getKey();
+                if(name.charAt(0) == letter){
+                    relevantTeams.add((Team)team.getValue());
+                }
+            }
+            if(letter=='z'){
+                letter = 'a';
+            } else if(letter == 'Z'){
+                letter = 'A';
+            } else {
+                letter = (char) ((int) letter + 1); //searches for teams which their names begins with the next letter
+            }
+            count++;
+        }
+        return relevantTeams;
+    }
+
+
+    /**
+     * The function receives a letter and returns the players that begin with that letter. If there are none, tries to
+     * find a player that starts with a close letter to the one given
+     * @param letter
+     * @return relevantNames
+     */
+    public LinkedList<Player> getPlayersWithCloseNames(char letter){
+
+        LinkedList<Player> relevantPlayers = new LinkedList<>();
+        int count = 0;
+        while(relevantPlayers.size() == 0 && count < 26){
+            for(Map.Entry player : systemSubscribers.entrySet()) {
+                if (player.getValue() instanceof Player) {
+                    String name = (String) player.getKey();
+                    if (name.charAt(0) == letter) {
+                        relevantPlayers.add((Player) player.getValue());
+                    }
+                }
+            }
+            if(letter=='z'){
+                letter = 'a';
+            } else if(letter == 'Z'){
+                letter = 'A';
+            } else {
+                letter = (char) ((int) letter + 1); //searches for teams which their names begins with the next letter
+            }
+            count++;
+        }
+        return relevantPlayers;
+    }
+
     //-------------------------LEAGUE CONTROLLER-------------------------//
 
     /**
