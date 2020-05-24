@@ -1521,7 +1521,7 @@ public class SystemController extends Observable {
      * @return
      */
     public Match findMatch(int matchID){
-
+        connectToMatchDB();
         Map<String, ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID),null,null);
         if(details!=null){
             connectToTeamDB();
