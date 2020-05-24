@@ -26,10 +26,11 @@ public class Main extends Application {
         primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();
-/*
-        ////////////////////////////////////////////////////////////////STUB!! Delete after cpnnecting the real DB
         SystemService testingSystemService = new SystemService();
         testingSystemService.initializeSystem("admin");
+/*
+        ////////////////////////////////////////////////////////////////STUB!! Delete after cpnnecting the real DB
+
         LeagueService leagueService = new LeagueService();
         DataBaseValues2 testingDBValues = new DataBaseValues2();
         DemoDB testingDB = testingDBValues.getDB();

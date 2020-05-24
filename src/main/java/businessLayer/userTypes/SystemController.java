@@ -428,9 +428,14 @@ public class SystemController extends Observable {
                 }
                 teamDetails.put("teamOwners", teamOwners);
 
+                if(team.getTeamManager() != null)
                 DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
                         , String.valueOf(team.getActive()), team.getTeamManager().getUsername()
                         , teamDetails);
+                else
+                    DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
+                            , String.valueOf(team.getActive()), null
+                            , teamDetails);
             }
         }
     }
@@ -962,9 +967,11 @@ public class SystemController extends Observable {
                             ((TeamOwner) teamOwner).getTeams().add(team);
                             //updates the structure of the updated subscriber with the team
                             connectToSubscriberDB();
-                            DB.removeFromDB(teamOwner.getUsername(), null, null);
+                            DB.removeFromDB(teamName, null, null);
                             addSubscriber(teamOwner);
+                            //todo update the db
                             addTeamToOwner(teamOwner.getUsername(), team.getTeamName());
+                            //todo update the db
                             return true;
                         }
                     }
