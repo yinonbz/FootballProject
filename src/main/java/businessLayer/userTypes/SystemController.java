@@ -1169,7 +1169,7 @@ public class SystemController extends Observable {
             String type = subDetails.get("type").get(0);
             if (type.equalsIgnoreCase("player")) {
                 sub = new Player(userName, subDetails.get("password").get(0)
-                        , subDetails.get("name").get(0), subDetails.get("birthDate").get(0)
+                        , subDetails.get("name").get(0), subDetails.get("birthDay").get(0)
                         , FIELDJOB.valueOf(subDetails.get("fieldJob").get(0)),
                         Integer.parseInt(subDetails.get("salary").get(0))
                         , getTeamByName(subDetails.get("teamID").get(0)), this);
