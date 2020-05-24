@@ -1103,9 +1103,9 @@ public class SystemController extends Observable {
         connectToStadiumDB();
         Map<String, ArrayList<String>> stadium = DB.selectFromDB(stadiumID, null, null);
         HashMap<String, Team> owners = new HashMap<>();
-        for (String str : stadium.get("teams")) {
+  /*      for (String str : stadium.get("teams")) {
             owners.put(str, getTeamByName(str));
-        }
+        }*/
 
         return new Stadium(stadiumID, null
                 , Integer.parseInt(stadium.get("numOfSeats").get(0))
@@ -1172,7 +1172,8 @@ public class SystemController extends Observable {
                         , subDetails.get("name").get(0), subDetails.get("birthDay").get(0)
                         , FIELDJOB.valueOf(subDetails.get("fieldJob").get(0)),
                         Integer.parseInt(subDetails.get("salary").get(0))
-                        , getTeamByName(subDetails.get("teamID").get(0)), this);
+                        , /*getTeamByName(subDetails.get("teamID").get(0))*/null, this);
+
             }
 
             if (type.equalsIgnoreCase("coach")) {
@@ -1184,14 +1185,14 @@ public class SystemController extends Observable {
                         , Integer.parseInt(subDetails.get("salary").get(0))
                         , this);
                 for (String str : subDetails.get("teams")) {
-                    Team team = getTeamByName(str);
+                    Team team = /*getTeamByName(str);*/ null;
                     ((Coach) sub).addTeam(team);
                 }
             }
             if (type.equalsIgnoreCase("TEAMMANAGER")) {
                 sub = new TeamManager(userName, subDetails.get("password").get(0)
                         , subDetails.get("name").get(0)
-                        , getTeamByName(subDetails.get("teamID").get(0))
+                        ,/* getTeamByName(subDetails.get("teamID").get(0))*/null
                         , Integer.parseInt(subDetails.get("salary").get(0))
                         , this);
             }
@@ -1200,15 +1201,15 @@ public class SystemController extends Observable {
                         , subDetails.get("name").get(0)
                         , this);
                 for (String str : subDetails.get("teams")) {
-                    ((TeamOwner) sub).addTeam(getTeamByName(str));
+                    ((TeamOwner) sub).addTeam(/*getTeamByName(str)*/null);
                 }
                 for (int i = 0; i < subDetails.get("ownerAssigned").size(); i++) {
-                    Team team = getTeamByName(subDetails.get("ownerTeam").get(i));
+                    Team team = /*getTeamByName(subDetails.get("ownerTeam").get(i));*/ null;
                     TeamOwner to = (TeamOwner) getSubscriberByUserName(subDetails.get("ownerAssigned").get(0));
                     ((TeamOwner) sub).addAssignedOwner(team, to);
                 }
                 for (int i = 0; i < subDetails.get("managersAssigned").size(); i++) {
-                    Team team = getTeamByName(subDetails.get("managerTeam").get(i));
+                    Team team = /*getTeamByName(subDetails.get("managerTeam").get(i));*/ null;
                     TeamManager TM = (TeamManager) getSubscriberByUserName(subDetails.get("managersAssigned").get(0));
                     ((TeamOwner) sub).addAssignedManager(team, TM);
                 }
@@ -1246,7 +1247,7 @@ public class SystemController extends Observable {
      */
     public Team getTeamByName(String teamName) {
         connectToTeamDB();
-        if (DB.containInDB(teamName, null, null)) {
+        if ( DB.containInDB(teamName, null, null)) {
             Map<String, ArrayList<String>> teamDetails = DB.selectFromDB(teamName, null, null);
             HashSet<Player> players = new HashSet<>();
             HashSet<Coach> coaches = new HashSet<>();
@@ -1262,14 +1263,13 @@ public class SystemController extends Observable {
             for (String str : teamDetails.get("matches")) {
                 matches.add(findMatch(Integer.parseInt(str)));
             }
-            for (String str : teamDetails.get("teamOwners")) {
+            for (String str : teamDetails.get("ownerID")) {
                 teamOwners.add((TeamOwner) getSubscriberByUserName(str));
             }
-            for (int i = 0; i < teamDetails.get("seasons").size(); i++) {
+  /*          for (int i = 0; i < teamDetails.get("seasons").size(); i++) {
                 seasons.add(selectSeasonFromDB(teamDetails.get("seasons").get(i),
                         teamDetails.get("leagues").get(i)));
-            }
-
+            }*/
             Stadium stadium = findStadium(teamDetails.get("stadium").get(0));
             TeamManager TM = (TeamManager) getSubscriberByUserName(teamDetails.get("teamManagerID").get(0));
             return new Team(players, coaches, TM
@@ -1904,7 +1904,8 @@ public class SystemController extends Observable {
      * @param seasonID
      * @return
      */
-    public Season selectSeasonFromDB(String leagueID, String seasonID) {
+    public Season selectSeasonFromDB(String seasonID, String leagueID) {
+        connectToSeasonDB();
         Map<String, ArrayList<String>> details = DB.selectFromDB(leagueID, String.valueOf(seasonID), null);
         ArrayList<String> matchesString = details.get("matches");
         HashMap<Integer, Match> matches = new HashMap<>();

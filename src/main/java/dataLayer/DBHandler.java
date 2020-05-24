@@ -166,7 +166,8 @@ public class DBHandler implements DB_Inter{
                 //data extraction
 
                 //String teamOwnerID = result.get(0).get(TEAMOWNER_OWNERELIGIBLE.OWNERID);
-                String eligible = Stream.of(result.get(0).get(TEAMOWNER_OWNERELIGIBLE.PLAYERID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.COACHID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.MANAGERID)).filter(Objects::nonNull).findFirst().orElse(null);
+                //TODO: Check by Inon
+                //String eligible = Stream.of(result.get(0).get(TEAMOWNER_OWNERELIGIBLE.PLAYERID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.COACHID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.MANAGERID)).filter(Objects::nonNull).findFirst().orElse(null);
                 ArrayList<String> teams = new ArrayList<>();
 
                 for (Record r : result) {
@@ -200,7 +201,7 @@ public class DBHandler implements DB_Inter{
                 objDetails.put("managersAssigned", managersAssignedByMe);
                 objDetails.put("managerTeam", managerTeam);
                 objDetails.put("eligible", new ArrayList<>());
-                objDetails.get("eligible").add(eligible);
+                //objDetails.get("eligible").add(eligible);
             }
             if (type.equalsIgnoreCase("admin")) {
                 result = create.select().

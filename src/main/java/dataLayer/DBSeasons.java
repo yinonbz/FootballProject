@@ -126,26 +126,26 @@ public class DBSeasons implements DB_Inter {
             ArrayList<String> referee = new ArrayList<>();
             ArrayList<String> teams = new ArrayList<>();
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select().from(SEASON_MATCHES).where(SEASONS.LEAGUEID.eq(leagueID).
-                    and(SEASONS.SEASONID.eq(seasonID))).fetch();
+            Result<?> result = create.select().from(SEASON_MATCHES).where(SEASON_MATCHES.LEAGUEID.eq(leagueID).
+                    and(SEASON_MATCHES.SEASONID.eq(seasonID))).fetch();
             for (Record r : result){
                 matches.add(r.get(SEASON_MATCHES.MATCHID).toString());
             }
             allDetails.put("matches",matches);
-            result = create.select().from(SEASON_REFEREE).where(SEASONS.LEAGUEID.eq(leagueID).
-                    and(SEASONS.SEASONID.eq(seasonID))).fetch();
+            result = create.select().from(SEASON_REFEREE).where(SEASON_REFEREE.LEAGUEID.eq(leagueID).
+                    and(SEASON_REFEREE.SEASONID.eq(seasonID))).fetch();
             for (Record r : result){
                 referee.add(r.get(SEASON_REFEREE.REFEREEID));
             }
             allDetails.put("referees",referee);
-            result = create.select().from(SEASON_TEAMS).where(SEASONS.LEAGUEID.eq(leagueID).
-                    and(SEASONS.SEASONID.eq(seasonID))).fetch();
+            result = create.select().from(SEASON_TEAMS).where(SEASON_TEAMS.LEAGUEID.eq(leagueID).
+                    and(SEASON_TEAMS.SEASONID.eq(seasonID))).fetch();
             for (Record r : result){
                 teams.add(r.get(SEASON_TEAMS.TEAMID));
             }
             allDetails.put("teams",teams);
-            result = create.select().from(SEASON_TABLELEAGUE).where(SEASONS.LEAGUEID.eq(leagueID).
-                    and(SEASONS.SEASONID.eq(seasonID))).fetch();
+            result = create.select().from(SEASON_TABLELEAGUE).where(SEASON_TABLELEAGUE.LEAGUEID.eq(leagueID).
+                    and(SEASON_TABLELEAGUE.SEASONID.eq(seasonID))).fetch();
             ArrayList <String> table = new ArrayList<>();
             for (Record r : result){
                 table.add(r.get(SEASON_TABLELEAGUE.TEAMID));
@@ -156,8 +156,8 @@ public class DBSeasons implements DB_Inter {
             }
             allDetails.put("table",table);
             ArrayList<String> rankingPolicy = new ArrayList<>();
-            result = create.select().from(RANKINGPOLICY).where(SEASONS.LEAGUEID.eq(leagueID).
-                    and(SEASONS.SEASONID.eq(seasonID))).fetch();
+            result = create.select().from(RANKINGPOLICY).where(RANKINGPOLICY.LEAGUEID.eq(leagueID).
+                    and(RANKINGPOLICY.SEASONID.eq(seasonID))).fetch();
             for (Record r : result){
                 rankingPolicy.add(r.get(RANKINGPOLICY.LEAGUEID));
                 rankingPolicy.add(r.get(RANKINGPOLICY.SEASONID).toString());
@@ -166,8 +166,8 @@ public class DBSeasons implements DB_Inter {
                 rankingPolicy.add(r.get(RANKINGPOLICY.TIE).toString());
             }
             allDetails.put("rankingPolicy",rankingPolicy);
-            result = create.select().from(MATCHING_POLICY).where(SEASONS.LEAGUEID.eq(leagueID).
-                    and(SEASONS.SEASONID.eq(seasonID))).fetch();
+            result = create.select().from(MATCHING_POLICY).where(MATCHING_POLICY.LEAGUEID.eq(leagueID).
+                    and(MATCHING_POLICY.SEASONID.eq(seasonID))).fetch();
             ArrayList <String> matchingPolicy = new ArrayList<>();
             for (Record r : result){
                 matchingPolicy.add(r.get(MATCHING_POLICY.TYPE));

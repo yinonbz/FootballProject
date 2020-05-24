@@ -45,7 +45,7 @@ static int pageId=0;
         this.bDate = String.valueOf(establishedYear);
         owners = new HashSet<>();
         for (TeamOwner teamOwner: teamOwners) {
-            owners.add(teamOwner.getUsername());
+            //owners.add(teamOwner.getUsername());
         }
         systemController = SystemController.SystemController();
         this.pageOwner = pageOwner;

@@ -32,7 +32,7 @@ public class TestSystemController {
 
     @BeforeClass
 
-    public static void createTestValuesForSystemController(){
+    public static void createTestValuesForSystemController() {
 /*        tDB = new DataBaseValues();
         DB = tDB.getDB();
         fan = (Fan) DB.selectSubscriberFromDB("Gate13");
@@ -49,7 +49,7 @@ public class TestSystemController {
 
     @Test
     //unit test
-    public void UT_checkCloseTeam(){
+    public void UT_checkCloseTeam() {
         //1
         //close a team 1st time
         //todo: check with new DB
@@ -70,7 +70,7 @@ public class TestSystemController {
 
     @Test
     //unit
-    public void IT_checkDeleteSubscriber(){
+    public void IT_checkDeleteSubscriber() {
         //1
         //checks if we can delete a fan from the system
 
@@ -104,7 +104,7 @@ public class TestSystemController {
 
     @Test
     //unit
-    public void IT_checkDisplayComplaints(){
+    public void IT_checkDisplayComplaints() {
 
         //1
         //check if the complaints are displayed
@@ -116,7 +116,7 @@ public class TestSystemController {
 
     @Test
     //unit
-    public void IT_checkReplyComments(){
+    public void IT_checkReplyComments() {
 
         //1
         //regular test add a comment
@@ -124,7 +124,7 @@ public class TestSystemController {
         //assertTrue(admin.replyComplaints("0",admin.getUsername(), "Solved"));
 
         //1.1 check the field were updated
-       // Complaint c1 = DB.selectComplaintFromDB(0);
+        // Complaint c1 = DB.selectComplaintFromDB(0);
         //todo: check with new DB
         //assertEquals("Solved",c1.getComment());
         //todo: check with new DB
@@ -146,21 +146,22 @@ public class TestSystemController {
 
     //Unit Test - Check singleton functionality
     @Test
-    public void UT_singleton () {
+    public void UT_singleton() {
         SystemController systemController1 = SystemController.SystemController();
         SystemController systemController2 = SystemController.SystemController();
-        assertEquals(systemController1,systemController2);
+        assertEquals(systemController1, systemController2);
     }
 
     //Unit Test - insertInfo(String userName, String password)
     @Test
     public void UT_insertInfo() {
         SystemController systemController = SystemController.SystemController();
-        assertTrue(systemController.insertInfo("admin","admin"));
-        assertFalse(systemController.insertInfo("admin","wrongPass"));
+        assertTrue(systemController.insertInfo("admin", "admin"));
+        assertFalse(systemController.insertInfo("admin", "wrongPass"));
     }
 
     //Unit Test - Test changePassword(String password,String userName)
+
     /**
      * Check the password guidelines
      */
@@ -180,19 +181,20 @@ public class TestSystemController {
         /*
         System.out.println(s.toUpperCase());
         */
-        assertFalse(systemController.changePassword("a2","admin")); //too short
-        assertFalse(systemController.changePassword("abcdefghijklmnopqrstuvwxyz1234567890","admin")); //too long
-        assertFalse(systemController.changePassword("abcdefg","admin")); //include only letters
-        assertFalse(systemController.changePassword("123456","admin"));//include only numbers
-        assertTrue(systemController.changePassword("123456abcde@","admin")); //include both numbers and letters
-        assertFalse(systemController.changePassword("123456abcde&","admin")); //include &,' or "
-        assertFalse(systemController.changePassword("123456abcde\"","admin"));
-        assertFalse(systemController.changePassword("123456abcde'","admin"));
-        assertFalse(systemController.changePassword("123456 abcde'","admin")); //include space
-        assertFalse(systemController.changePassword("123456admin","admin")); //include the user name
+        assertFalse(systemController.changePassword("a2", "admin")); //too short
+        assertFalse(systemController.changePassword("abcdefghijklmnopqrstuvwxyz1234567890", "admin")); //too long
+        assertFalse(systemController.changePassword("abcdefg", "admin")); //include only letters
+        assertFalse(systemController.changePassword("123456", "admin"));//include only numbers
+        assertTrue(systemController.changePassword("123456abcde@", "admin")); //include both numbers and letters
+        assertFalse(systemController.changePassword("123456abcde&", "admin")); //include &,' or "
+        assertFalse(systemController.changePassword("123456abcde\"", "admin"));
+        assertFalse(systemController.changePassword("123456abcde'", "admin"));
+        assertFalse(systemController.changePassword("123456 abcde'", "admin")); //include space
+        assertFalse(systemController.changePassword("123456admin", "admin")); //include the user name
     }
 
     //Unit Test -initializeSystem(String Password)
+
     /**
      * Test wrong/right password in the initialize system process
      */
@@ -206,38 +208,38 @@ public class TestSystemController {
     }
 
     @Test
-    public void UT_TestgetSubscriberByUserName(){
+    public void UT_TestgetSubscriberByUserName() {
         SystemController systemController = SystemController.SystemController();
         assertNull(systemController.getSubscriberByUserName("Itzik"));
     }
 
     @Test
-    public void UT_enterUserDetails(){
+    public void UT_enterUserDetails() {
         SystemController systemController = SystemController.SystemController();
         expectedException.expect(NotFoundInDbException.class);
-        assertNull(systemController.enterLoginDetails("Itzik","abc123"));
+        assertNull(systemController.enterLoginDetails("Itzik", "abc123"));
         expectedException.expect(MissingInputException.class);
-        systemController.enterLoginDetails(null,"abc123");
+        systemController.enterLoginDetails(null, "abc123");
         expectedException.expect(NotApprovedException.class);
-        systemController.enterLoginDetails("Buzaglo","abc123");
-        assertNull(systemController.enterLoginDetails("Itzik",null));
+        systemController.enterLoginDetails("Buzaglo", "abc123");
+        assertNull(systemController.enterLoginDetails("Itzik", null));
     }
 
     @Test
-    public void UT_enterRegisterDetails_Admin(){
+    public void UT_enterRegisterDetails_Admin() {
         SystemController systemController = SystemController.SystemController();
-        assertFalse(systemController.enterRegisterDetails_Admin(null,"a","a"));
-        assertFalse(systemController.enterRegisterDetails_Admin("a",null,"a"));
-        assertFalse(systemController.enterRegisterDetails_Admin("a","a",null));
+        assertFalse(systemController.enterRegisterDetails_Admin(null, "a", "a"));
+        assertFalse(systemController.enterRegisterDetails_Admin("a", null, "a"));
+        assertFalse(systemController.enterRegisterDetails_Admin("a", "a", null));
 
-        assertFalse(systemController.enterRegisterDetails_Admin("TomerSein","a","a")); //already exist userName
+        assertFalse(systemController.enterRegisterDetails_Admin("TomerSein", "a", "a")); //already exist userName
 
-        assertTrue(systemController.enterRegisterDetails_Admin("AlonGolo","abc123","b"));
+        assertTrue(systemController.enterRegisterDetails_Admin("AlonGolo", "abc123", "b"));
         //todo: check with new DB
         //assertNotNull(DB.selectAdminToApproveFromDB("AlonGolo"));
         //todo: check with new DB
         //assertFalse(((Admin)DB.selectAdminToApproveFromDB("AlonGolo")).isApproved());
-        assertTrue(systemController.enterRegisterDetails_Admin("Roni","abc123","b"));
+        assertTrue(systemController.enterRegisterDetails_Admin("Roni", "abc123", "b"));
         //todo: check with new DB
         //assertEquals(DB.selectAllAdminApprovalRequests().size(),2);
     }
@@ -282,6 +284,7 @@ public class TestSystemController {
         //todo - check again later
         //assertEquals(systemController.enterLoginDetails("NewAR", "abc123"), "AssociationRepresentative");
     }
+
     @Test
     public void UT_handleAdminApprovalRequest_3() {
         //check AR disapproval request
@@ -298,21 +301,21 @@ public class TestSystemController {
 
     @Test
     public void UC_1_1_a() {
-        assertTrue(systemService.insertInfo("admin","admin"));
+        assertTrue(systemService.insertInfo("admin", "admin"));
         assertTrue(systemService.initializeSystem("admin"));
-        assertTrue(systemService.changePassword("ad123456","admin"));
+        assertTrue(systemService.changePassword("ad123456", "admin"));
     }
 
     @Test
     public void UC_1_1_b() {
-        systemService.insertInfo("admin","admin");
+        systemService.insertInfo("admin", "admin");
         systemService.initializeSystem("admin");
-        systemService.changePassword("ad123456","admin");
-        assertEquals(systemService.enterLoginDetails("admin","ad123456"),"Admin");
+        systemService.changePassword("ad123456", "admin");
+        assertEquals(systemService.enterLoginDetails("admin", "ad123456"), "Admin");
     }
 
     @Test
-    public void UC_2_2_a(){
+    public void UC_2_2_a() {
         //todo: check with new DB
         //assertTrue(systemService.enterRegisterDetails_Player("Tomer1","abc123","Tomer","1.1.1993","GK","BeerSheva"));
         //todo: check with new DB
@@ -320,9 +323,9 @@ public class TestSystemController {
     }
 
     @Test
-    public void UC_2_2_b(){
-        assertFalse(systemService.enterRegisterDetails_Player("Tomer2",null,"Tomer","1.1.1993","GK","BeerSheva"));
-        assertFalse(systemService.enterRegisterDetails_Player("Tomer3","","Tomer","1.1.1993","GK","BeerSheva"));
+    public void UC_2_2_b() {
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer2", null, "Tomer", "1.1.1993", "GK", "BeerSheva"));
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer3", "", "Tomer", "1.1.1993", "GK", "BeerSheva"));
         //todo: check with new DB
         //assertFalse(DB.containsInSystemSubscribers("Tomer2"));
         //todo: check with new DB
@@ -330,32 +333,57 @@ public class TestSystemController {
     }
 
     @Test
-    public void UC_2_2_c(){
-        assertFalse(systemService.enterRegisterDetails_Player("Tomer@",null,"Tomer","1.1.1993","GK","BeerSheva"));
+    public void UC_2_2_c() {
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer@", null, "Tomer", "1.1.1993", "GK", "BeerSheva"));
         //todo: check with new DB
-       // assertFalse(DB.containsInSystemSubscribers("Tomer@"));
+        // assertFalse(DB.containsInSystemSubscribers("Tomer@"));
     }
 
     @Test
-    public void UC_2_2_d(){
-        systemService.enterRegisterDetails_Player("Tomer4","abc123","Tomer","1.1.1993","GK","BeerSheva");
-        assertFalse(systemService.enterRegisterDetails_Player("Tomer4","abc123","Tomer","1.1.1993","GK","BeerSheva"));
+    public void UC_2_2_d() {
+        systemService.enterRegisterDetails_Player("Tomer4", "abc123", "Tomer", "1.1.1993", "GK", "BeerSheva");
+        assertFalse(systemService.enterRegisterDetails_Player("Tomer4", "abc123", "Tomer", "1.1.1993", "GK", "BeerSheva"));
     }
 
     @Test
     public void UC_2_3_a() {
-        assertEquals(systemService.enterLoginDetails("Bailly","Bailly1"),"Player");
+
+        SystemController systemController = SystemController.SystemController();
+        systemController.getTeamByName("Manchester United");
+
+
+        //check Admin
+        assertEquals(systemService.enterLoginDetails("adminA", "adminA1"), "Admin");
+
+        //check AR
+        assertEquals(systemService.enterLoginDetails("Altman", "Altman1"), "AR");
+
+        //check Coach
+        assertEquals(systemService.enterLoginDetails("Cohen", "Cohen1"), "Coach");
+
+        //check player
+        assertEquals(systemService.enterLoginDetails("Bailly", "Bailly1"), "Player");
+
+        //check Referee
+        assertEquals(systemService.enterLoginDetails("Nelson", "Nelson1"), "Referee");
+
+        //check Team Manager
+        assertEquals(systemService.enterLoginDetails("Zavaleta", "Zavaleta1"), "TeamManager");
+
+        //check Team Owner
+        assertEquals(systemService.enterLoginDetails("PiqueTO", "Pique1"), "TeamOwner");
+
     }
 
     @Test
-    public void UC_2_3_b(){
+    public void UC_2_3_b() {
         expectedException.expect(MissingInputException.class);
-        systemService.enterLoginDetails("Buzaglo",null);
+        systemService.enterLoginDetails("Buzaglo", null);
     }
 
     @Test
-    public void UC_2_3_c(){
+    public void UC_2_3_c() {
         expectedException.expect(NotFoundInDbException.class);
-        assertNull(systemService.enterLoginDetails("Dudidu","Dudidu123"));
+        assertNull(systemService.enterLoginDetails("Dudidu", "Dudidu123"));
     }
 }

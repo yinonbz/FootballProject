@@ -17,7 +17,7 @@ public class Admin extends Subscriber {
     public Admin(String username, String password, String name, SystemController systemController) {
         super(username, password,name,systemController);
         this.systemController=systemController;
-        approved = false;
+        approved = true;
     }
 
     /**
