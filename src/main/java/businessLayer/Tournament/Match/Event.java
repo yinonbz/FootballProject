@@ -16,12 +16,14 @@ public abstract class Event {
     public Event(MatchController matchController, Player playerSubject) {
         this.matchController = matchController;
         this.playerSubject=playerSubject;
+        //id++;
     }
 
     /**
      * setter of id if we want to identify two events that occurred in the same time
      * @param id
      */
+
     public void setID(int id){
         this.id=id;
     }
@@ -36,4 +38,7 @@ public abstract class Event {
 
     abstract Player getSecondPlayer();
 
+    public int getId(){
+        return id;
+    }
 }

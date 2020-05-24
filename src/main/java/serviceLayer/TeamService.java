@@ -90,11 +90,17 @@ public class TeamService {
      * @param salary
      * @return action was successful or failed.
      */
-
     public Boolean addManager(String teamOwner, String username, String permission, String teamName, String salary) {
         return teamController.addManager(teamOwner, username, permission, teamName, salary);
     }
 
+    /**
+     * @param ownerUser the team owner who fires the team manager
+     * @param username the team manager user name which is being fired by the team owner
+     * @param teamName the team name of the team which the team manager is being fired from
+     * @return true if the team manager was fired.
+     *          false else.
+     */
     public boolean fireManager(String ownerUser, String username, String teamName) {
         return teamController.fireManager(ownerUser, username, teamName);
     }
@@ -119,10 +125,10 @@ public class TeamService {
         return systemController.getActiveTeamOfTeamOwner(userName);
     }
 
-    public ArrayList<String> getAllTeamManagers(){
-        return systemController.getAllTeamManagers();
-    }
-
+    /**
+     * @param userName the team owner's username
+     * @return all of the inactive teams of the teamOwner
+     */
     public LinkedList<String> getInactiveTeamOfTeamOwner(String userName) {
         return systemController.getInactiveTeamOfTeamOwner(userName);
     }

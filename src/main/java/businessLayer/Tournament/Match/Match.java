@@ -71,6 +71,21 @@ public class Match {
         index++;
     }
 
+    public Match (League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, int [] score,
+                  Date date, Boolean isFinished, Stadium stadium, int numberOfFans, EventRecord eventRecord, Referee mainReferee){
+        this.league=league;
+        this.season=season;
+        this.homeTeam=homeTeam;
+        this.awayTeam=awayTeam;
+        this.score=score;
+        this.date=date;
+        this.isFinished=isFinished;
+        this.stadium=stadium;
+        this.numberOfFans=numberOfFans;
+        this.eventRecord=eventRecord;
+        this.mainReferee=mainReferee;
+    }
+
     /**
      * function that let to choose a main referee to a game
      * @param mainReferee

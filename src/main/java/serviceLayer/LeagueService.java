@@ -76,10 +76,10 @@ public class LeagueService {
      * @param username
      * @return
      */
-    public boolean createRefereeThroughRepresentative(String refUsername, String username) {
+    public boolean createRefereeThroughRepresentative(String refUsername, String username, String role) {
 
         if (refUsername != null && username != null) {
-            return leagueController.createRefereeThroughRepresentative(refUsername, username);
+            return leagueController.createRefereeThroughRepresentative(refUsername, username, role);
         }
         return false;
     }
@@ -200,32 +200,56 @@ public class LeagueService {
         }
     }
 
+    /**
+     * @return all of the unconfirmed team names from the DB
+     */
     public ArrayList<String> getAllUnconfirmedTeams(){
         return systemController.getAllUnconfirmedTeamsInDB();
     }
 
+    /**
+     * @return all of the league names from DB
+     */
     public ArrayList<String> getAllULeagues(){
-        return systemController.getAllULeaguesInDB();
+        return systemController.getAllLeaguesInDB();
     }
 
-    //אtodo ido added
+    /**
+     * @return all of the team names fron DB
+     */
+    //todo ido added
     public ArrayList<String> getAllTeamsNames(){
         return systemController.getAllTeamsNames();
     }
 
+    /**
+     * @return all of the referee names from the DB
+     */
     public ArrayList<String> getAllRefereeNames(){
-        return systemController.getAllRefereeNames();
+      //  return systemController.getAllRefereeNames(); todo not implemented in db
+        return null;
     }
 
 
+    /**
+     * @param league the league's name to get all of it's season
+     * @return the season's names of the league
+     */
     public ArrayList<String> getAllSeasonsFromLeague(String league){
         return systemController.getAllSeasonsFromLeague(league);
     }
 
+    /** remove user from the online users DB (when logging out)
+     * @param userName the user's username to remove form the online users
+     */
     public void removeFromUsersOnline(String userName) {
         systemController.removeOnlineUser(userName);
     }
 
+    /**
+     * @param userName the offline user name
+     * @return get all of the user's offline notifications
+     */
     public LinkedList<String> getOfflineMessages(String userName) {
         return systemController.getOfflineUsersNotifications(userName);
     }

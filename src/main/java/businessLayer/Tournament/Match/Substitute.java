@@ -24,7 +24,7 @@ public class Substitute extends Event {
     }
 
     @Override
-    Player getSecondPlayer() {
+    public Player getSecondPlayer() {
         return out;
     }
 }

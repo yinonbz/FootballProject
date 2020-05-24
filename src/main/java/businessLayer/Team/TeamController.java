@@ -10,12 +10,9 @@ import businessLayer.userTypes.SystemController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
-
 public class TeamController {
     private SystemController systemController;
     private static TeamController single_instance;
-
-
 
     public TeamController() {
         //systemController = SystemController.SystemController();
@@ -201,6 +198,4 @@ public class TeamController {
         }
         return -1;
     }
-
-
 }

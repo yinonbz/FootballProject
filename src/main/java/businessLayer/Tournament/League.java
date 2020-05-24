@@ -177,6 +177,14 @@ public class League {
         return seasons.get(id);
     }
 
+    public String getLeagueName() {
+        return leagueName;
+    }
+
+    public void setLeagueName(String leagueName) {
+        this.leagueName = leagueName;
+    }
+
     public HashMap<Integer, Season> getSeasons() {
         return seasons;
     }
