@@ -201,8 +201,8 @@ public class DataBaseValues {
         s7 = new Stadium("s7", 900);
         s8 = new Stadium("s8", 1000);
         s9 = new Stadium("Default", 500);
-        samiOfer = new Stadium("samiOfer", null, null, 30000, null);
-        Tedi = new Stadium("Tedi", null, null, 30000, null);
+        samiOfer = new Stadium("samiOfer", null, 30000, null);
+        Tedi = new Stadium("Tedi", null, 30000, null);
 
 
         //add team owners
@@ -272,15 +272,15 @@ public class DataBaseValues {
 
 
         //add referee
-        Alon = new Referee("Alon","Alon123456","Alon","main",null,systemController,matchController);
+        Alon = new Referee("Alon","Alon123456","Alon", roleRef.valueOf("MAIN"),leagueController,systemController);
         DB.addSubscriberToDB("Alon",Alon);
-        Rayola = new Referee ("Rayola", "1223", "Rayola","main",leagueController,systemController);
+        Rayola = new Referee ("Rayola", "1223", "Rayola",roleRef.valueOf("MAIN"),leagueController,systemController);
         DB.addSubscriberToDB("Rayola",Rayola);
 
         //add coach
         //6.1
-        Ido = new Coach("efronio", "111", "ido", TRAINING.valueOf("GK"), "mainCoach",0, systemController);
-        Tomer = new Coach("TomerZ", "111", "tomer", TRAINING.valueOf("FITNESS"), "subCoach",0, systemController);
+        Ido = new Coach("efronio", "111", "ido", RoleInTeam.valueOf("GENERAL"),TRAINING.valueOf("GK"), "mainCoach",0, systemController);
+        Tomer = new Coach("TomerZ", "111", "tomer", RoleInTeam.valueOf("GENERAL"),TRAINING.valueOf("FITNESS"), "subCoach",0, systemController);
         DB.addSubscriberToDB("efronio",Ido);
         DB.addSubscriberToDB("TomerZ",Tomer);
 

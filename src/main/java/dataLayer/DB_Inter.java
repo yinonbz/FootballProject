@@ -1,15 +1,28 @@
 package dataLayer;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public interface DB_Inter {
 
-    boolean containInDB(String objectName, String table,String where,String groupby);
 
-    Object selectFromDB(String objectName,String table,String where,String groupby);
 
-    boolean removeFromDB(String objectName, String table,String where,String groupby);
+    boolean containInDB(String objectName,String arg2,String arg3);
 
-    boolean addToDb(String name,Object obj,String table,String where,String groupby);
+    Map<String,ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3);
 
-    //void queryMethod(String method);
+    boolean removeFromDB(String objectName,String arg2,String arg3);
+
+    boolean addToDB(String str1,String str2,String str3,String str4, Map<String,ArrayList<String>> objDetails);
+
+    int countRecords();
+
+    ArrayList<Map<String,ArrayList<String>>> selectAllRecords(Enum<?> e);
+
+    boolean update (Enum<?> e,Map<String,String> arguments);
+
+    boolean TerminateDB();
+
+
 
 }

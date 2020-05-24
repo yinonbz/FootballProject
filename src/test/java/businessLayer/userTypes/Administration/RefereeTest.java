@@ -217,7 +217,6 @@ public class RefereeTest {
     }
 
 
-    //todo ido mutation test
     @Test
     public void IT_checkFalseSubnit(){
         assertFalse(Rayola.isSubmittedToAGame("TOMER"));
@@ -232,11 +231,13 @@ public class RefereeTest {
         assertEquals(Rayola.getName(),"RayolaR");
         Rayola.setName("Rayola");
     }
+    /*
     @Test
     public void IT_checkSetTraining(){
         Rayola.setTraining("nothing");
         assertEquals(Rayola.getTraining(),"nothing");
     }
+    */
     @Test
     public void IT_checkLeaguesController(){
         Rayola.setLeaguesController(null);

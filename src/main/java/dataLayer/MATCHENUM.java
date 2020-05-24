@@ -1,0 +1,5 @@
+package dataLayer;
+
+public enum MATCHENUM {
+    MAINREFEREE,ADDREFEREE,SCORE,NUMBEROFFANS;
+}

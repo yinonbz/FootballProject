@@ -10,12 +10,9 @@ import businessLayer.userTypes.SystemController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
-
 public class TeamController {
     private SystemController systemController;
     private static TeamController single_instance;
-
-
 
     public TeamController() {
         //systemController = SystemController.SystemController();
@@ -116,7 +113,6 @@ public class TeamController {
         return false;
     }
 
-
     public Boolean addManager(String teamOwner, String username, String permission, String teamName, String salary) {
         if (teamOwner != null && username != null && teamName != null && salary != null) {
             Subscriber subscriber = systemController.getSubscriberByUserName(teamOwner);
@@ -202,6 +198,4 @@ public class TeamController {
         }
         return -1;
     }
-
-
 }
