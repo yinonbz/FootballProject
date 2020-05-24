@@ -73,7 +73,26 @@ public class DBSeasons implements DB_Inter {
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+        if(e == SEASONENUM.ALLSEASON){
+            return selectAllSeasonOfLeague(SEASONENUM.ALLSEASON);
+        }
         return null;
+    }
+
+    private ArrayList<Map<String, ArrayList<String>>> selectAllSeasonOfLeague(Enum<?> e){
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Result<?> result = create.select(SEASONS.LEAGUEID,SEASONS.SEASONID).from(SEASONS).fetch();
+        ArrayList<Map<String,ArrayList<String>>> details = new ArrayList<>();
+        for (Record record : result){
+            HashMap<String,ArrayList<String>> seasonDetails = new HashMap <>();
+            ArrayList<String> temp = new ArrayList<>();
+            String seasonID = record.get(SEASONS.SEASONID).toString();
+            String leagueID = record.get(SEASONS.LEAGUEID);
+            temp.add(seasonID);
+            seasonDetails.put(leagueID,temp);
+            details.add(seasonDetails);
+        }
+        return details;
     }
 
     @Override

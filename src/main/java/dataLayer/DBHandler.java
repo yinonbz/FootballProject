@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import static dataLayer.Tables.Tables.*;
 import static dataLayer.Tables.tables.Subscribers.SUBSCRIBERS;
+import static dataLayer.Tables.tables.Teams.TEAMS;
 
 public class DBHandler implements DB_Inter{
 
@@ -458,10 +459,27 @@ public class DBHandler implements DB_Inter{
             }
             return allReferees;
         }
+        if(userType == UserTypes.TEAMMANAGER){
+            return selectAllTeamManagers();
+        }
         else{
             System.out.println("invalid select from subscriberDB");
         }
         return null;
+    }
+
+    private ArrayList<Map<String, ArrayList<String>>> selectAllTeamManagers(){
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Result<?> result = create.select(TEAMMANAGERS.MANAGERID).from(TEAMMANAGERS).fetch();
+        ArrayList<Map<String,ArrayList<String>>> details = new ArrayList<>();
+        for (Record record : result){
+            HashMap<String,ArrayList<String>> seasonDetails = new HashMap <>();
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(record.get(TEAMMANAGERS.MANAGERID));
+            seasonDetails.put("managerID",temp);
+            details.add(seasonDetails);
+        }
+        return details;
     }
 
     @Override

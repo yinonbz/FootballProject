@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static dataLayer.Tables.Tables.SEASONS;
 import static dataLayer.Tables.tables.CoachTeam.COACH_TEAM;
 import static dataLayer.Tables.tables.Match.MATCH;
 import static dataLayer.Tables.tables.OwnerTeams.OWNER_TEAMS;
@@ -232,8 +233,33 @@ public class TeamDB implements DB_Inter {
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType) {
-        System.out.println("can't get all teams from the system");
-        return null;
+        ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        if(userType == TEAMUPDATES.ALLTEAMS) {
+            Result<?> result = create.select(TEAMS.NAME).from(TEAMS).fetch();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(TEAMS.NAME));
+                seasonDetails.put("teamID", temp);
+                details.add(seasonDetails);
+            }
+        }
+        else if(userType == TEAMUPDATES.TEAMOFOWNER){
+            Result<?> result = create.select(OWNER_TEAMS.OWNERID,OWNER_TEAMS.TEAMID).from(OWNER_TEAMS).fetch();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> teams = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(OWNER_TEAMS.OWNERID));
+                temp.add(record.get(OWNER_TEAMS.TEAMID));
+                teams.put("teamDetails", temp);
+                details.add(teams);
+            }
+        }
+        else if(userType == TEAMUPDATES.ONLYACTIVE){
+
+        }
+        return details;
     }
 
     @Override

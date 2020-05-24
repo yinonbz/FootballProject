@@ -2679,17 +2679,21 @@ public class SystemController extends Observable {
      * @return names of the INACTIVE teams
      */
     public LinkedList<String> getInactiveTeamOfTeamOwner(String userName){
-        /*
-        TeamOwner teamOwner = DB.getTeamOwner(userName); //todo need to add a query in the db
-        LinkedList<String> teamNames = new LinkedList<>();
-        HashSet<Team> teams = teamOwner.getTeams();
-        for(Team t: teams){
-            if(t.getActive() == false)
-                teamNames.add(t.getTeamName());
+        connectToTeamDB();
+        ArrayList<String> teamsOfOwner = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.TEAMOFOWNER);
+        //here we are collecting all of the teams the owner owns
+        for(Map map : details){
+            ArrayList <String> temp = (ArrayList<String>) map.get("teamDetails");
+            if(temp.get(0).equals(userName)){
+                teamsOfOwner.add(temp.get(1));
+            }
         }
-        return teamNames;
-        */
-        return null;
+        //here we will take all of the teams with the inactive status
+        LinkedList<String> finalList = new LinkedList<>();
+
+        return finalList;
+
     }
 
 
@@ -2697,68 +2701,59 @@ public class SystemController extends Observable {
      * @return get all the unconfirmed team names from the DB
      */
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {
-        /*
-        HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams(); todo build a function in the db
-        ArrayList<String> teamNamesInDB = new ArrayList<>();
-        Iterator iterator = teamsInDB.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry me2 = (Map.Entry) iterator.next();
-            teamNamesInDB.add("" + me2.getKey());
+        connectToLeagueDB();
+        ArrayList<String> unconfirmedTeams = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.UNCONONFIRMED);
+        for(Map map : details){
+            ArrayList <String> temp = (ArrayList<String>) map.get("unconfirmedID");
+            unconfirmedTeams.add(temp.get(0));
         }
-        return teamNamesInDB;
-        */
-        return null;
+        return unconfirmedTeams;
     }
 
     /**
      * @return get all the team manager's user names from the DB
      */
     public ArrayList<String> getAllTeamManagers(){
-        /*
-        HashMap<String,TeamManager> teamManagersInDB = DB.getTeamManagers(); //todo need to build in the db
-        ArrayList<String> teamManagerNamesInDB = new ArrayList<>();
-        Iterator iterator = teamManagersInDB.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry me2 = (Map.Entry) iterator.next();
-            teamManagerNamesInDB.add("" + me2.getKey());
+        connectToLeagueDB();
+        ArrayList<String> teamManagers = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(UserTypes.TEAMMANAGER);
+        for(Map map : details){
+            ArrayList <String> temp = (ArrayList<String>) map.get("managerID");
+            teamManagers.add(temp.get(0));
         }
-        return teamManagerNamesInDB;
-        */
-        return null;
+        return teamManagers;
     }
+
 
     /**
      * @return get all the league's names from the DB
      */
     public ArrayList<String> getAllLeaguesInDB() {
-        /*
-        HashMap<String, League> leaguesInDB = DB.getLeagues(); //todo build in the db
-        ArrayList<String> leagueNamesInDB = new ArrayList<>();
-        Iterator iterator = leaguesInDB.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry me2 = (Map.Entry) iterator.next();
-            leagueNamesInDB.add("" + me2.getKey());
+        connectToLeagueDB();
+        ArrayList<String> leagues = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES);
+        for(Map map : details){
+            ArrayList <String> temp = (ArrayList<String>) map.get("leagueID");
+            leagues.add(temp.get(0));
         }
-        return leagueNamesInDB;
-        */
-        return null;
+        return leagues;
     }
 
     /**
      * @return get all the team's names from the DB
      */
     public ArrayList<String> getAllTeamsNames() {
-        /*
-        if (DB.getTeams() != null && DB.getTeams().size() > 0) { //todo need to add the function the the db
-            ArrayList<String> teamsName = new ArrayList<>();
-            teamsName.addAll(DB.getTeams().keySet());
-            return teamsName;
-        } else {
-            return null;
+        connectToTeamDB();
+        ArrayList<String> teams = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.ALLTEAMS);
+        for(Map map : details){
+            ArrayList <String> temp = (ArrayList<String>) map.get("teamID");
+            teams.add(temp.get(0));
         }
-        */
-        return null;
+        return teams;
     }
+
 
 
     /**
@@ -2766,21 +2761,16 @@ public class SystemController extends Observable {
      * @return the league's seasons
      */
     public ArrayList<String> getAllSeasonsFromLeague(String league) {
-        /*
-        if (DB.selectLeagueFromDB(league) != null) { //todo need to add the function to the db
-            League lg = DB.selectLeagueFromDB(league);
-            HashMap<Integer, Season> seasons = lg.getSeasons();
-            ArrayList<String> seasonsIdInLeague = new ArrayList<>();
-            Iterator iterator = seasons.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry me2 = (Map.Entry) iterator.next();
-                seasonsIdInLeague.add("" + me2.getKey());
-            }
-            return seasonsIdInLeague;
-        }
-        return null;
-        */
-        return null;
+         connectToSeasonDB();
+         ArrayList<String> seasons = new ArrayList<>();
+         ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLSEASON);
+         for(Map map : details){
+             if(map.get(league)!=null){
+                 ArrayList <String> temp = (ArrayList<String>) map.get(league);
+                seasons.add(temp.get(0));
+             }
+         }
+         return seasons;
     }
 
     //todo javafx function
