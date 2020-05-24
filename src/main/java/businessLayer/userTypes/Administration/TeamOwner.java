@@ -3,6 +3,7 @@ package businessLayer.userTypes.Administration;
 import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Stadium;
+import businessLayer.Utilities.Financial.FinancialProxy;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
@@ -785,8 +786,9 @@ public class TeamOwner extends Subscriber {
      * @param teamName
      * @return
      */
-    public int calculateFinancial(String teamName) {
-        return reportIncome(teamName) - reportExpanse(teamName);
+    public double calculateFinancial(String teamName) {
+        FinancialProxy financialProxy = new FinancialProxy();
+        return financialProxy.getTaxRate(reportIncome(teamName) - reportExpanse(teamName));
     }
 
     /**
