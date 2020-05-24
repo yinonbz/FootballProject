@@ -2717,26 +2717,28 @@ public class SystemController extends Observable {
      * @param teamName
      * @return possibleNames
      */
+    /*
     public LinkedList<Team> getSimilarTeams(String teamName) {
         LinkedList<Team> possibleNames;
         char firstTeamNameLetter = teamName.charAt(0);
         possibleNames = DB.getTeamsWithCloseNames(firstTeamNameLetter);
         return possibleNames;
     }
-
+    */
     /**
      * The function receives a player name and returns the matching team. If the name does not exist, returns close
      * names to the original
      * @param playerName
      * @return possibleNames
      */
+    /*
     public LinkedList<Player> getSimilarPlayers(String playerName) {
         LinkedList<Player> possibleNames;
         char firstPlayerNameLetter = playerName.charAt(0);
         possibleNames = DB.getPlayersWithCloseNames(firstPlayerNameLetter);
         return possibleNames;
     }
-
+    */
 
     /**
      * @return get all the unconfirmed team names from the DB

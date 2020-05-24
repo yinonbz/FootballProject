@@ -351,6 +351,7 @@ public class SystemService extends Observable implements Observer {
      * The function receives a team name and returns the matching team or teams with close names to the one given
      * @param teamName
      */
+    /*
     public void findTeamWithName(String teamName) { //todo: fix the returning value once we decide how to present at GUI
 
         Team team = systemController.getTeamByName(teamName);
@@ -365,12 +366,13 @@ public class SystemService extends Observable implements Observer {
             }
         }
     }
-
+    */
 
     /**
      * The function receives a player name and returns the matching player or players with close names to the one given
      * @param playerName
      */
+    /*
     public void findPlayerWithName(String playerName) { //todo: fix the returning value once we decide how to present at GUI
 
         Subscriber user = systemController.getSubscriberByUserName(playerName);
@@ -385,7 +387,7 @@ public class SystemService extends Observable implements Observer {
             }
         }
     }
-
+    */
     /**
      * @param o
      * @param arg the notifications
