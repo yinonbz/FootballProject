@@ -50,50 +50,53 @@ public class AssociationRepresentativeTest {
         testingSystemService = new SystemService();
         testingSystemService.initializeSystem("admin");
         testingLeagueService = new LeagueService();
-        testingDBValues = new DataBaseValues();
-        testingDB = testingDBValues.getDB();
-        gal = (AssociationRepresentative) testingDB.selectSubscriberFromDB("gal5");
-        dor = (AssociationRepresentative) testingDB.selectSubscriberFromDB("dor12");
-        tali = (AssociationRepresentative) testingDB.selectSubscriberFromDB("tali5");
+        //testingDBValues = new DataBaseValues();
+        //testingDB = testingDBValues.getDB();
+        //gal = (AssociationRepresentative) testingDB.selectSubscriberFromDB("gal5");
+        //dor = (AssociationRepresentative) testingDB.selectSubscriberFromDB("dor12");
+        //tali = (AssociationRepresentative) testingDB.selectSubscriberFromDB("tali5");
         systemController = SystemController.SystemController();
-        Barkat = (TeamOwner) testingDB.selectSubscriberFromDB("AlonaBarkat");
-        systemController.sendRequestForTeam("HapoelBeerSheva1", "1888","Tomer");
+        //Barkat = (TeamOwner) testingDB.selectSubscriberFromDB("AlonaBarkat");
+        //systemController.sendRequestForTeam("HapoelBeerSheva1", "1888","Tomer");
         LinkedList <String> temp = new LinkedList<>();
         temp.add("HapoelBeerSheva1");
         temp.add("1888");
         temp.add("Tomer");
-        testingDB.addUnconfirmedTeamsToDB("HapoelBeerSheva",temp);
+        //testingDB.addUnconfirmedTeamsToDB("HapoelBeerSheva",temp);
 
         //Barkat.sendRequestForTeam("HapoelBeerSheva", "1888");
-        EliLuzon = (AssociationRepresentative) testingDB.selectSubscriberFromDB("EliLuzon");
+        //EliLuzon = (AssociationRepresentative) testingDB.selectSubscriberFromDB("EliLuzon");
 
-        l1 = testingDB.selectLeagueFromDB("11");
+        //l1 = testingDB.selectLeagueFromDB("11");
 
     }
 
     @Test
     public void test_UC9_1() {
         //1. gal creates a new league successfully
+        assertTrue(testingLeagueService.addLeagueThroughRepresentative("Itai's_League", "Altman"));
         //assertTrue(gal.createLeague("This is the first league created for the first test"));
-        //todo: check with new DB
+        //
         //assertTrue(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "gal5"));
 
         //2. dor tries to create the same league without success
         //todo: check with new DB
         //expectedException.expect(AlreadyExistException.class);
         //assertFalse(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "dor12"));
+        assertFalse(testingLeagueService.addLeagueThroughRepresentative("Itai's_League", "Altman"));
 
         //3. tali tries to create a new league with null
-        assertFalse(testingLeagueService.addLeagueThroughRepresentative(null, "tali5"));
+        //assertFalse(testingLeagueService.addLeagueThroughRepresentative(null, "tali5"));
     }
 
     @Test
     public void test_UC9_2() {
-        testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
+        //testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
 
         //1. gal creates a new season successfully
         //todo: check with new DB
         //assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5"));
+        assertTrue(testingLeagueService.addSeasonThroughRepresentative("Itai's_League", 2005, new Date(), new Date(), 5,3, 1, "ClassicMatchPolicy", "Altman"));
 
         //2. dor tries to create the same season without success
         //todo: check with new DB
@@ -101,7 +104,7 @@ public class AssociationRepresentativeTest {
         //testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "dor12");
 
         //3. tali tries to create a season where the starting date is after the ending date
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 2005, new Date(2000, 1, 11), new Date(2000, 1, 10), 5, 1, 3, "ClassicMatchPolicy", "tali5"));
+        //assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 2005, new Date(2000, 1, 11), new Date(2000, 1, 10), 5, 1, 3, "ClassicMatchPolicy", "tali5"));
     }
 
     @Test
