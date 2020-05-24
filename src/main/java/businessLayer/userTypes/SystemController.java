@@ -1653,7 +1653,7 @@ public class SystemController extends Observable {
             throw new NotFoundInDbException("No such user in the data base.");
         //return null;
 
-        if (subscriber.getPassword().equals(password)) {
+        if (subscriber.getPassword().equals(password)) {//todo change the password to hash
             if (subscriber instanceof Admin) {
                 Admin userCheckIfApproved = ((Admin) subscriber);
                 if (userCheckIfApproved.isApproved() == false) {

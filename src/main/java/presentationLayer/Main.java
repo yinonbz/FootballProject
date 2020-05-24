@@ -26,6 +26,9 @@ public class Main extends Application {
         primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();
+        //todo check if its ok for inon and tomer 
+        SystemService testingSystemService = new SystemService();
+        testingSystemService.initializeSystem("admin");
 /*
         ////////////////////////////////////////////////////////////////STUB!! Delete after cpnnecting the real DB
         SystemService testingSystemService = new SystemService();
