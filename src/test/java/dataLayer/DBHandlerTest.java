@@ -26,7 +26,7 @@ public class DBHandlerTest {
     @Before
     public void DBHandlerTest() {
         db = new DBHandler("root","Messi1Ronaldo2",
-                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/demodb");
+                "org.mariadb.jdbc.Driver","jdbc:mysql://132.72.65.33:3306/demodb");
 
         //playerDetails
         detailsPlayer = new HashMap<>();
@@ -167,6 +167,7 @@ public class DBHandlerTest {
 
     @Test
     public void update() {
+        /*
         Map<String,String> arguments = new HashMap<>();
         arguments.put("setApproved","true");
         arguments.put("adminID","AdminInon");
@@ -246,6 +247,27 @@ public class DBHandlerTest {
         arguments.put("ownerID","Ben-Harush");
         assertTrue(db.update(SUBSCRIBERSUPDATES.ADDTEAMTOOWNER,arguments));
         arguments.clear();
+
+*/
+        //change passwords to hash
+       /* ArrayList<Map<String, ArrayList<String>>> subscribers = db.selectAllRecords(UserTypes.SUBSCRIBER);
+        for(String str: subscribers.get(0).get("subscribers")){
+            String pass=null;
+            try{
+                Map<String, ArrayList<String>> sub = db.selectFromDB(str,null,null);
+                pass = String.valueOf(sub.get("password"));
+                Map<String,String> arguments = new HashMap<>();
+                String hashPass = String.valueOf(pass.hashCode());
+                arguments.put("password",hashPass);
+                arguments.put("subscriberID",str);
+                db.update(SUBSCRIBERSUPDATES.SETSUBSCRIBERPASSWORD,arguments);
+            }
+            catch(Exception e){
+                System.out.println(str);
+                e.printStackTrace();
+            }
+
+        }*/
     }
 
     @Test
