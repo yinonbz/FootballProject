@@ -21,6 +21,9 @@ import dataLayer.*;
 import dataLayer.DemoDB;
 import serviceLayer.SystemService;
 
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -2933,6 +2936,20 @@ public class SystemController extends Observable {
             }
         }
         return matchID;
+    }
+
+    public ArrayList<String> getPlayerInMatch(int matchID){
+        Match match = findMatch(matchID);
+        String home = match.getHomeTeam().getTeamName();
+        String away = match.getAwayTeam().getTeamName();
+        ArrayList<String> playersNames = new ArrayList<>();
+        for (Player p : match.getHomeTeam().getPlayers()){
+            playersNames.add(p.getName()+"-"+home);
+        }
+        for (Player p : match.getAwayTeam().getPlayers()){
+            playersNames.add(p.getName()+"-"+away);
+        }
+        return playersNames;
     }
 
     public String getDetailsOnMatch(int matchID){
