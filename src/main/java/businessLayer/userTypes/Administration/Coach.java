@@ -35,7 +35,7 @@ public class Coach extends Subscriber implements OwnerEligible, HasPage {
         this.teamOwner =null;
         this.salary = salary;
         this.teams = new HashSet<>();
-        coachPage = new Page(username,name,"", this, name);
+        coachPage = new Page(username,name,"", this);
     }
 
     /**

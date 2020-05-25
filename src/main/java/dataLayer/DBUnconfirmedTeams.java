@@ -96,7 +96,7 @@ public class DBUnconfirmedTeams implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         return null;
     }
 

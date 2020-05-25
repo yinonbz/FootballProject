@@ -17,7 +17,7 @@ public interface DB_Inter {
 
     int countRecords();
 
-    ArrayList<Map<String,ArrayList<String>>> selectAllRecords(Enum<?> e);
+    ArrayList<Map<String,ArrayList<String>>> selectAllRecords(Enum<?> e, Map<String,String> arguments);
 
     boolean update (Enum<?> e,Map<String,String> arguments);
 

@@ -233,8 +233,36 @@ public class TeamDB implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType) {
-        System.out.println("can't get all teams from the system");
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> teamObject,Map<String,String> arguments) {
+        if(teamObject == TEAMOBJECTS.TEAM_TEAM_MANAGERS){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(TEAMS.TEAMMANAGERID).
+                    from(TEAMS).
+                    where(TEAMS.NAME.eq(arguments.get("teamID")))
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allManagers = new ArrayList<>();
+            allManagers.add(new HashMap<>());
+            allManagers.get(0).put("teamManagers",new ArrayList<>());
+            for(Record r: result){
+                allManagers.get(0).get("teamManagers").add(r.get(TEAMS.TEAMMANAGERID));
+
+            }
+            return allManagers;
+        }
+        if(teamObject==TEAMOBJECTS.TEAM_TEAM_OWNERES){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(OWNER_TEAMS.OWNERID).
+                    from(OWNER_TEAMS).
+                    where(OWNER_TEAMS.TEAMID.eq(arguments.get("teamID")))
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allOwner = new ArrayList<>();
+            allOwner.add(new HashMap<>());
+            allOwner.get(0).put("teamOwners",new ArrayList<>());
+            for(Record r: result){
+                allOwner.get(0).get("teamOwners").add(r.get(TEAMS.TEAMMANAGERID));
+            }
+            return allOwner;
+        }
         return null;
     }
 
@@ -260,12 +288,40 @@ public class TeamDB implements DB_Inter {
                     .execute();
             return true;
         }
+        if(e==TEAMUPDATES.ADDOWNER){
+            create.insertInto(OWNER_TEAMS
+                    ,OWNER_TEAMS.OWNERID
+                    ,OWNER_TEAMS.TEAMID)
+                    .values(arguments.get("ownerID")
+                            ,arguments.get("teamID"))
+                    .onDuplicateKeyUpdate()
+                    .set(TEAM_PLAYERS.PLAYERID,arguments.get("ownerID"))
+                    .set(TEAM_PLAYERS.TEAMID,arguments.get("teamID"))
+                    .execute();
+            return true;
+        }
         if(e==TEAMUPDATES.SETTEAMMANAGER){
             create.update(TEAMS)
                     .set(TEAMS.TEAMMANAGERID, arguments.get("managerID"))
                     .where(TEAMS.NAME.eq(arguments.get("teamID")))
                     .execute();
             return true;
+        }
+        if(e==TEAMUPDATES.ADDSTADIUM){
+            create.insertInto(OWNERS_OF_STADIUM,
+                    OWNERS_OF_STADIUM.STADIUMID,
+                    OWNERS_OF_STADIUM.TEAMID)
+            .values(arguments.get("stadiumID"),arguments.get("teamID"))
+                    .execute();
+            return true;
+        }
+        if(e==TEAMUPDATES.ADDCOACH){
+        create.insertInto(COACH_TEAM,
+                COACH_TEAM.COACHID,
+                COACH_TEAM.TEAMID)
+        .values(arguments.get("coachID"),arguments.get("teamID"))
+                .execute();
+        return true;
         }
         return false;
     }

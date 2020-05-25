@@ -429,9 +429,9 @@ public class SystemController extends Observable {
                 teamDetails.put("teamOwners", teamOwners);
 
                 if(team.getTeamManager() != null)
-                DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
-                        , String.valueOf(team.getActive()), team.getTeamManager().getUsername()
-                        , teamDetails);
+                    DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
+                            , String.valueOf(team.getActive()), team.getTeamManager().getUsername()
+                            , teamDetails);
                 else
                     DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
                             , String.valueOf(team.getActive()), null
