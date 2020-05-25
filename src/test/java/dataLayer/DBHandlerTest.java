@@ -250,7 +250,7 @@ public class DBHandlerTest {
 
 */
         //change passwords to hash
-       /* ArrayList<Map<String, ArrayList<String>>> subscribers = db.selectAllRecords(UserTypes.SUBSCRIBER);
+        ArrayList<Map<String, ArrayList<String>>> subscribers = db.selectAllRecords(UserTypes.SUBSCRIBER,null);
         for(String str: subscribers.get(0).get("subscribers")){
             String pass=null;
             try{
@@ -267,7 +267,7 @@ public class DBHandlerTest {
                 e.printStackTrace();
             }
 
-        }*/
+        }
     }
 
     @Test

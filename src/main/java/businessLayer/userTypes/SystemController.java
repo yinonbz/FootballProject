@@ -1687,7 +1687,7 @@ public class SystemController extends Observable {
         //return null;
 
         String s = String.valueOf(password.hashCode());
-        if (subscriber.getPassword().equals(password)) {
+        if (subscriber.getPassword().equals(s)) {
             if (subscriber instanceof Admin) {
                 Admin userCheckIfApproved = ((Admin) subscriber);
                 if (userCheckIfApproved.isApproved() == false) {
