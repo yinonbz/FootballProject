@@ -192,11 +192,13 @@ public class TeamDB implements DB_Inter {
                             ,Boolean.valueOf(isActive))
                     .execute();
 
+/* //todo: check where we need to add the stadium
             create.insertInto(OWNERS_OF_STADIUM
                     ,OWNERS_OF_STADIUM.TEAMID
                     ,OWNERS_OF_STADIUM.STADIUMID)
                     .values(name,objDetails.get("stadium").get(0))
             .execute();
+*/
 
             for(String str: objDetails.get("players")){
                 create.insertInto(TEAM_PLAYERS

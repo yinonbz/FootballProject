@@ -49,7 +49,7 @@ static int pageCounter=0;
         this.bDate = String.valueOf(establishedYear);
         owners = new ArrayList<>();
         for (TeamOwner teamOwner: teamOwners) {
-            owners.add(teamOwner.getUsername());
+            //owners.add(teamOwner.getUsername());
         }
         systemController = SystemController.SystemController();
         this.pageOwner = pageOwner;

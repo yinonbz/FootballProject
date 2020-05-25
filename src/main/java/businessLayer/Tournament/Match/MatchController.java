@@ -42,10 +42,10 @@ public class MatchController {
             Player playerA = getPlayerFromDB(playerAgainst);
             Player playerO= getPlayerFromDB(playerOn);
             if (playerA != null && playerO != null) {
-                if(!checkSameTeam(playerA,playerO)) {
+               // if(!checkSameTeam(playerA,playerO)) {
                     Foul foul = new Foul(playerA, playerO, this);
                     return handleEvent(foul, time, matchID);
-                }
+          //      }
             }
         }
         return false;
@@ -225,22 +225,24 @@ public class MatchController {
         int id = Integer.parseInt(matchID);
         Match match = systemController.findMatch(id);
         if(match!=null){
-            Player player1 = event.getFirstPlayer();
-            Player player2 = event.getSecondPlayer();
+            //Player player1 = event.getFirstPlayer();
+            //Player player2 = event.getSecondPlayer();
             //here we will check events that have two player, we will check each one of the player participates in the game
+            /*
             if(player2!=null){
                 if(!checkPlayerParticipates(player2,match)){
                     return false;
                 }
             }
+            */
             //we will always check that the player that is involved actually plays in one of the teams
-            if(checkPlayerParticipates(player1,match)) {
+           // if(checkPlayerParticipates(player1,match)) {
                 EventRecord eventRecord = match.getEventRecord();
                 eventRecord.addEvent(time, event);
                 systemController.addEvent(Integer.parseInt(matchID),time,event.getId(),event);
                 systemController.updateMatchToFollowers(match, event.toString());
                 return true;
-            }
+           // }
         }
         return false;
     }

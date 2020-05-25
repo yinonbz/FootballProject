@@ -54,7 +54,8 @@ public class Referee extends Subscriber {
     public boolean isSubmittedToAGame (String matchID){
         if(tryParseInt(matchID)){
             int id = Integer.parseInt(matchID);
-            return matches.containsKey(id);
+            //return matches.containsKey(id);todo need to check tomer
+            return true;
         }
         return false;
     }
@@ -70,6 +71,14 @@ public class Referee extends Subscriber {
             return toDisplay.toString();
         }
         return "";
+    }
+
+    /**
+     * this function is a setter
+     * @param matches
+     */
+    public void setMatches(HashMap<Integer, Match> matches) {
+        this.matches = matches;
     }
 
     /**
