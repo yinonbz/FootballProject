@@ -153,8 +153,25 @@ public class DBMatch implements DB_Inter {
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
+        if(e == MATCHENUM.ALLREFEREEOFGAME){
+            String match = arguments.get("matchID");
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            //String leagueID = arguments.get("matchID");
+            Result<?> result = create.select(MATCH_REFEREE.REFEREEID).from(MATCH_REFEREE).where(MATCH_REFEREE.MATCHID.eq(Integer.parseInt(match))).fetch();
+            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                String refID = record.get(MATCH_REFEREE.REFEREEID);
+                temp.add(refID);
+                seasonDetails.put(refID, temp);
+                details.add(seasonDetails);
+            }
+            return details;
+        }
         return null;
     }
+
 
     @Override
     public boolean update(Enum<?> e,Map<String,String> args) {
