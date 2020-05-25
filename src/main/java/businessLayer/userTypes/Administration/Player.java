@@ -34,7 +34,7 @@ public class Player extends Subscriber implements OwnerEligible, HasPage {
         this.team = team;
         this.teamOwner =null;
         this.salary= salary;
-        playerPage = new Page(username,name,birthDate, this, name);
+        playerPage = new Page(username,name,birthDate, this);
     }
 
     public int getSalary() {

@@ -1,6 +1,7 @@
 package dataLayer;
 
 public enum UserTypes {
+    SUBSCRIBER,
     ADMIN,
     AR,
     COACH,

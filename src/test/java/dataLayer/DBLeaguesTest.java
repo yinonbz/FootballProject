@@ -3,6 +3,9 @@ package dataLayer;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class DBLeaguesTest {
@@ -20,6 +23,14 @@ public class DBLeaguesTest {
     public void containsLeagueInDB(){
         //assertFalse(DB.containInDB("Ligue11"));
         //assertTrue(DB.containInDB("Champions"));
+    }
+
+
+    @Test
+    public void selectFromDB(){
+        Map<String, ArrayList<String>> leagueID = DB.selectFromDB("Itai's_League",null,null);
+        int k=0;
+
     }
 
     @Test

@@ -3,17 +3,19 @@ package businessLayer.Utilities;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.SystemController;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 
 public class Page {
-private HashSet<String> owners;
-private Stack<String> posts;
+private ArrayList<String> owners;
+private LinkedList<String> posts;
 private String name;
 private String bDate;
 private HasPage pageOwner;
 private SystemController systemController;
-static int pageId=0;
+private int pageID;
+static int pageCounter=0;
 
     /**
      * constractor for player and coach
@@ -21,15 +23,17 @@ static int pageId=0;
      * @param name
      * @param birthDate
      */
-    public Page(String username, String name, String birthDate, HasPage pageOwner, String ownerName) {
-        posts = new Stack<>();
+    public Page(String username, String name, String birthDate, HasPage pageOwner) {
+        posts = new LinkedList<>();
         this.name = name;
         this.bDate = birthDate;
-        owners = new HashSet<>();
+        owners = new ArrayList<>();
         owners.add(username);
+        this.pageOwner = pageOwner;
         systemController = SystemController.SystemController();
-        systemController.addPageToDB(ownerName, this);
-        pageId++;
+        systemController.addPageToDB(username, this);
+        pageID=pageCounter;
+        pageCounter++;
     }
 
     /**
@@ -39,11 +43,11 @@ static int pageId=0;
      * @param establishedYear
      * @param pageOwner
      */
-    public Page(HashSet<TeamOwner> teamOwners, String teamName, int establishedYear, HasPage pageOwner, String ownerName) {
-        posts = new Stack<>();
+    public Page(ArrayList<TeamOwner> teamOwners, String teamName, int establishedYear, HasPage pageOwner, String ownerName) {
+        posts = new LinkedList<>();
         this.name = teamName;
         this.bDate = String.valueOf(establishedYear);
-        owners = new HashSet<>();
+        owners = new ArrayList<>();
         for (TeamOwner teamOwner: teamOwners) {
             owners.add(teamOwner.getUsername());
         }
@@ -67,4 +71,54 @@ static int pageId=0;
         }
         return false;
     }
+
+
+    public ArrayList<String> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(ArrayList<String> owners) {
+        this.owners = owners;
+    }
+
+    public LinkedList<String> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(LinkedList<String> posts) {
+        this.posts = posts;
+    }
+
+    public int getPageID() {
+        return pageID;
+    }
+
+    public void setPageID(int pageID) {
+        this.pageID = pageID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getbDate() {
+        return bDate;
+    }
+
+    public void setbDate(String bDate) {
+        this.bDate = bDate;
+    }
+
+    public HasPage getPageOwner() {
+        return pageOwner;
+    }
+
+    public void setPageOwner(HasPage pageOwner) {
+        this.pageOwner = pageOwner;
+    }
+
 }
