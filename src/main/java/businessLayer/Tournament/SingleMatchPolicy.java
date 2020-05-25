@@ -63,8 +63,8 @@ public class SingleMatchPolicy extends AMatchPolicy {
                             }
                         }
                         tempMatchTable.add(match);
-                        home.getMatches().add(match); //todo need to call the system controller
-                        away.getMatches().add(match); //todo need to call the system controller
+                        //home.getMatches().add(match); //todo need to call the system controller
+                        //away.getMatches().add(match); //todo need to call the system controller
                     }
                 }
             }

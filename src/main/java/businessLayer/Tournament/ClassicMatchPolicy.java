@@ -54,8 +54,8 @@ public class ClassicMatchPolicy extends AMatchPolicy {
                             match = new Match(home, away, leagueController.getRandomStadium());
                         }
                         tempMatchTable.add(match);
-                        away.getMatches().add(match); //todo need to call the system controller
-                        home.getMatches().add(match); //todo need to call the system controller
+                        //away.getMatches().add(match); //todo need to call the system controller
+                        //home.getMatches().add(match); //todo need to call the system controller
                     }
                 }
             }
