@@ -134,7 +134,7 @@ public class DBSeasons implements DB_Inter {
                 updateSeasonTable(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), args.get("teamID"), details);
                 return true;
             } else if (e == SEASONENUM.TEAM) {
-                addTeamInSeason(args.get("matchID"), Integer.parseInt(args.get("seasonID")), args.get("teamID"));
+                addTeamInSeason(args.get("leagueID"),Integer.parseInt(args.get("seasonID")), args.get("teamID"));
                 return true;
             }
             return false;
@@ -287,8 +287,9 @@ public class DBSeasons implements DB_Inter {
             return false;
         }
 
-        public boolean addTeamInSeason (String leagueID,int seasonID, String teamID){
+        public boolean addTeamInSeason (String leagueID ,int seasonID, String teamID){
             if (containsInDB(leagueID, seasonID)) {
+
                 DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
                 create.insertInto(SEASON_TEAMS, SEASON_TEAMS.LEAGUEID, SEASON_TEAMS.SEASONID,
                         SEASON_TEAMS.TEAMID).values(leagueID, seasonID, teamID).execute();

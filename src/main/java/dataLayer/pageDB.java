@@ -175,6 +175,7 @@ public class pageDB implements DB_Inter{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
         //convert String to LocalDate
+        date = date.replace("-", "/");
         LocalDate localDate = LocalDate.parse(date, formatter);
         return localDate;
     }

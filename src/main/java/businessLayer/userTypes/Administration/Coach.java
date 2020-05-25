@@ -36,6 +36,7 @@ public class Coach extends Subscriber implements OwnerEligible, HasPage {
         this.salary = salary;
         this.teams = new HashSet<>();
         coachPage = new Page(username,name,"", this);
+        systemController.addPageToDB(username, coachPage);
     }
 
     /**

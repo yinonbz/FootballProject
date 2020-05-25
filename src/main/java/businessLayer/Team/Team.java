@@ -65,7 +65,7 @@ public class Team implements HasPage {
         this.establishedYear = establishedYear;
         this.isActive = isActive;
         this.closedByAdmin = closedByAdmin;
-        teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+        //teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName); //todo might have to fix later
 
     }
     //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited
@@ -91,6 +91,7 @@ public class Team implements HasPage {
         this.matches = new HashSet<>();
         this.teamManager = null;
         teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+        SystemController.SystemController().addPageToDB(teamName, teamPage);
 
 
     }

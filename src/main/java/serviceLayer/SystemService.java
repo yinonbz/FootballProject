@@ -400,7 +400,7 @@ public class SystemService extends Observable implements Observer {
             String title = users.removeLast(); //title for the message in the interface
             String event = users.removeLast(); //holds the message to present to the user's interface
             for (String user : users) {
-                if (systemController.isUserOnline(user)) {
+                if (systemController.isUserOnline(user)) { //todo: need to hold a datastructure that says which user is online
                     LinkedList<String> notification = new LinkedList<>();
                     notification.add(title);
                     notification.add(event);
