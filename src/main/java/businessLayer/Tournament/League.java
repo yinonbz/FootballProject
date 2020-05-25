@@ -137,7 +137,9 @@ public class League {
         if (matchingPolicy == null){
             return false;
         }
-        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy));
+        Season seasonToAdd = new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy);
+        seasons.put(seasonID, seasonToAdd);
+        //todo: need to call system-controller to add season to the DB
         return true;
     }
 

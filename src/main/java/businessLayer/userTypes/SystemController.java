@@ -1045,7 +1045,7 @@ public class SystemController extends Observable {
      */
     public League getLeagueFromDB(String leagueID){
         connectToLeagueDB();
-        Map<String,ArrayList<String>> details = DB.selectFromDB("leagueID",null,null);
+        Map<String,ArrayList<String>> details = DB.selectFromDB(leagueID,null,null);
         if(details!=null){
             League league = new League(leagueID);
             return league;
