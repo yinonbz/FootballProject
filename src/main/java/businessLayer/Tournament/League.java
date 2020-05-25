@@ -26,6 +26,7 @@ public class League {
         //scoreTable = new HashMap<>();
         seasons = new HashMap<>();
         //matches = new ArrayList<>();
+        systemController = SystemController.SystemController();
     }
 /*
     /**

@@ -82,7 +82,7 @@ public class AssociationRepresentativeTest {
 
         //2. dor tries to create the same league without success
 
-        //expectedException.expect(AlreadyExistException.class);
+        expectedException.expect(AlreadyExistException.class);
         //assertFalse(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "dor12"));
         assertFalse(testingLeagueService.addLeagueThroughRepresentative("Itai's_League", "Altman"));
 
