@@ -250,12 +250,12 @@ public class DBHandlerTest {
 
 */
         //change passwords to hash
-        ArrayList<Map<String, ArrayList<String>>> subscribers = db.selectAllRecords(UserTypes.SUBSCRIBER,null);
+       /* ArrayList<Map<String, ArrayList<String>>> subscribers = db.selectAllRecords(UserTypes.SUBSCRIBER,null);
         for(String str: subscribers.get(0).get("subscribers")){
             String pass=null;
             try{
                 Map<String, ArrayList<String>> sub = db.selectFromDB(str,null,null);
-                pass = String.valueOf(sub.get("password"));
+                pass = sub.get("password").get(0);
                 Map<String,String> arguments = new HashMap<>();
                 String hashPass = String.valueOf(pass.hashCode());
                 arguments.put("password",hashPass);
@@ -267,9 +267,9 @@ public class DBHandlerTest {
                 e.printStackTrace();
             }
 
-        }
-    }
+        }*/
 
+    }
     @Test
     public void selectAllRecords() {
         //retreive all referees

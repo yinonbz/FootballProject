@@ -372,7 +372,7 @@ public class TestSystemController {
         assertEquals(systemService.enterLoginDetails("Zavaleta", "Zavaleta1"), "TeamManager");
 
         //check Team Owner
-        assertEquals(systemService.enterLoginDetails("PiqueTO", "Pique1"), "TeamOwner");
+        assertEquals(systemService.enterLoginDetails("Bradley", "Bradley1"), "TeamOwner");
 
     }
 
