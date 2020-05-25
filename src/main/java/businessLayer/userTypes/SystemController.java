@@ -444,7 +444,7 @@ public class SystemController extends Observable {
                 }
                 teamDetails.put("teamOwners", teamOwners);
 
-                if(team.getTeamManager() != null)
+                if (team.getTeamManager() != null)
                     DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
                             , String.valueOf(team.getActive()), team.getTeamManager().getUsername()
                             , teamDetails);
@@ -566,8 +566,8 @@ public class SystemController extends Observable {
         Subscriber subscriber = getSubscriberByUserName(username);
         HashMap<Integer, Complaint> complaintsReturn = new HashMap<>();
         connectToComplaintsDB();
-        ArrayList<Map<String, ArrayList<String>>> allComplaints = DB.selectAllRecords(null,null);
-        for(Map<String, ArrayList<String>> complaint: allComplaints){
+        ArrayList<Map<String, ArrayList<String>>> allComplaints = DB.selectAllRecords(null, null);
+        for (Map<String, ArrayList<String>> complaint : allComplaints) {
             String complaintID = complaint.get("complaintID").get(0);
             complaintsReturn.put(Integer.parseInt(complaintID), getComplaintByID(complaintID));
         }
@@ -926,7 +926,7 @@ public class SystemController extends Observable {
 
     public ArrayList<String> getAllCoachesNames() {
         connectToSubscriberDB();
-        return DB.selectAllRecords(UserTypes.COACH,null).get(0).get("coaches");
+        return DB.selectAllRecords(UserTypes.COACH, null).get(0).get("coaches");
 
     }
 
@@ -1255,7 +1255,7 @@ public class SystemController extends Observable {
                         , roleRef.valueOf(subDetails.get("roleRef").get(0))
                         , getLeagueController()
                         , this);
-                HashMap<Integer,Match> mapMatch = new HashMap<>();
+                HashMap<Integer, Match> mapMatch = new HashMap<>();
                 for (String str : subDetails.get("matches")) {
                     ((Referee) sub).addMatch(findMatch(Integer.parseInt(str)));
                 }
@@ -1273,7 +1273,7 @@ public class SystemController extends Observable {
      */
     public Team getTeamByName(String teamName) {
         connectToTeamDB();
-        if ( DB.containInDB(teamName, null, null)) {
+        if (DB.containInDB(teamName, null, null)) {
             Map<String, ArrayList<String>> teamDetails = DB.selectFromDB(teamName, null, null);
             HashSet<Player> players = new HashSet<>();
             HashSet<Coach> coaches = new HashSet<>();
@@ -1940,7 +1940,7 @@ public class SystemController extends Observable {
         connectToSeasonDB();
         Map<String, ArrayList<String>> details = DB.selectFromDB(leagueID, String.valueOf(seasonID), null);
         ArrayList<String> matchesString = details.get("matches");
-        HashMap<Integer,Match> matches = new HashMap<>();
+        HashMap<Integer, Match> matches = new HashMap<>();
         connectToMatchDB();
         for (String matchID : matchesString) {
             Match match = findMatch(Integer.parseInt(matchID));
@@ -2269,10 +2269,12 @@ public class SystemController extends Observable {
         DB.TerminateDB();
         DB = new DBHandler();
     }
-    private void connectToPageDB(){
+
+    private void connectToPageDB() {
         DB.TerminateDB();
         DB = new pageDB();
     }
+
     private void connectToTeamDB() {
         DB.TerminateDB();
         DB = new TeamDB();
@@ -2412,12 +2414,12 @@ public class SystemController extends Observable {
             return null;
         }
         connectToPageDB();
-        Map<String, ArrayList<String>> objDetails = DB.selectFromDB(subName,null,null);
+        Map<String, ArrayList<String>> objDetails = DB.selectFromDB(subName, null, null);
 
         Page page = new Page(objDetails.get("ownerID").get(0),
                 objDetails.get("name").get(0),
                 objDetails.get("birthDay").get(0),
-                (HasPage)selectUserFromDB(objDetails.get("ownerID").get(0)));
+                (HasPage) selectUserFromDB(objDetails.get("ownerID").get(0)));
 
         page.setPosts(new LinkedList<>(objDetails.get("posts")));
 
@@ -2466,12 +2468,12 @@ public class SystemController extends Observable {
             return false;
         }
         connectToPageDB();
-        Map<String,ArrayList<String>> objDetails = new HashMap<>();
+        Map<String, ArrayList<String>> objDetails = new HashMap<>();
         objDetails.put("posts", new ArrayList<>());
-        for(String str: page.getPosts()){
+        for (String str : page.getPosts()) {
             objDetails.get("posts").add(str);
         }
-        DB.addToDB(name, String.valueOf(page.getPageID()),page.getbDate(),page.getName(),objDetails);
+        DB.addToDB(name, String.valueOf(page.getPageID()), page.getbDate(), page.getName(), objDetails);
         return true;
     }
 
@@ -2506,9 +2508,9 @@ public class SystemController extends Observable {
     public boolean addRefereeToMatch(Match match, Referee ref) {
         if (match != null && ref != null) {
             connectToMatchDB();
-            Map<String,String> arguments = new HashMap<>();
-            arguments.put("matchID",String.valueOf(match.getMatchId()));
-            arguments.put("refID",ref.getName());
+            Map<String, String> arguments = new HashMap<>();
+            arguments.put("matchID", String.valueOf(match.getMatchId()));
+            arguments.put("refID", ref.getName());
             return DB.update(MATCHENUM.ADDREFEREE, arguments);
         }
         return false;
@@ -2559,7 +2561,6 @@ public class SystemController extends Observable {
     }
 
 
-
     /**
      * The function receives a coach and a team and binds them together in the database
      *
@@ -2570,9 +2571,9 @@ public class SystemController extends Observable {
 
         if (coach != null && team != null) {
             connectToTeamDB();
-            Map<String,String> arguments = new HashMap<>();
-            arguments.put("coachID",coach.getName());
-            arguments.put("teamID",team.getTeamName());
+            Map<String, String> arguments = new HashMap<>();
+            arguments.put("coachID", coach.getName());
+            arguments.put("teamID", team.getTeamName());
             DB.update(TEAMUPDATES.ADDCOACH, arguments);
         }
     }
@@ -2587,10 +2588,10 @@ public class SystemController extends Observable {
 
         if (stadium != null && team != null) {
             connectToTeamDB();
-            Map<String,String> arguments = new HashMap<>();
-            arguments.put("stadiumID",stadium.getName());
-            arguments.put("teamID",team.getTeamName());
-            DB.update(TEAMUPDATES.ADDSTADIUM,arguments);
+            Map<String, String> arguments = new HashMap<>();
+            arguments.put("stadiumID", stadium.getName());
+            arguments.put("teamID", team.getTeamName());
+            DB.update(TEAMUPDATES.ADDSTADIUM, arguments);
         }
     }
 
@@ -2604,9 +2605,9 @@ public class SystemController extends Observable {
 
         if (owner != null && team != null) {
             connectToTeamDB();
-            Map<String,String> arguments = new HashMap<>();
-            arguments.put("ownerID",owner.getUsername());
-            arguments.put("teamID",team.getTeamName());
+            Map<String, String> arguments = new HashMap<>();
+            arguments.put("ownerID", owner.getUsername());
+            arguments.put("teamID", team.getTeamName());
             DB.update(TEAMUPDATES.ADDOWNER, arguments);
         }
     }
@@ -2626,13 +2627,13 @@ public class SystemController extends Observable {
             ArrayList<String> teamOwners;
 
             connectToSubscriberDB();
-            Map<String,String> arguments = new HashMap<>();
-            arguments.put("teamID",team.getTeamName());
-            teamManagers = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_MANAGERS,arguments).get(0).get("teamManagers");
-            teamOwners = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_OWNERES,arguments).get(0).get("teamOwners");
+            Map<String, String> arguments = new HashMap<>();
+            arguments.put("teamID", team.getTeamName());
+            teamManagers = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_MANAGERS, arguments).get(0).get("teamManagers");
+            teamOwners = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_OWNERES, arguments).get(0).get("teamOwners");
 
             connectToSubscriberDB();
-            usersToNotify = new LinkedList<>(DB.selectAllRecords(UserTypes.ADMIN,arguments).get(0).get("admins"));
+            usersToNotify = new LinkedList<>(DB.selectAllRecords(UserTypes.ADMIN, arguments).get(0).get("admins"));
 
             if (teamManagers != null) {
                 for (String manager : teamManagers) {
@@ -2902,41 +2903,47 @@ public class SystemController extends Observable {
 
     //todo javafx function
     public void updatePlayerBDate(String date, String user) {
-        SetPlayerBirthdate(user,date);
+        SetPlayerBirthdate(user, date);
     }
+
     //todo javafx function
     public void updatePlayerName(String name, String userName) {
         updateSubscriberName(name, userName);
     }
+
     //todo javafx function
     public void updatePlayerPost(String userName, String post) {
         updatePage(userName, post);
     }
+
     //todo javafx function
     public void updateCoachName(String name, String userName1) {
         updateSubscriberName(name, userName1);
     }
+
     //todo javafx function
     public void updateCoachPost(String userName, String post) {
         updatePage(userName, post);
     }
+
     private void updateSubscriberName(String name, String userName1) {
         connectToSubscriberDB();
-        Map<String,String> arguments = new HashMap<>();
-        arguments.put("subscriberID",userName1);
-        arguments.put("name",name);
-        DB.update(SUBSCRIBERSUPDATES.SETSUBSCRIBERNAME,arguments);
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put("subscriberID", userName1);
+        arguments.put("name", name);
+        DB.update(SUBSCRIBERSUPDATES.SETSUBSCRIBERNAME, arguments);
     }
 
     private void updatePage(String userName, String post) {
         connectToPageDB();
-        Map<String,String> arguments = new HashMap<>();
-        arguments.put("userName",userName);
-        arguments.put("post",post);
-        DB.update(PAGEUPDATES.SUMBIT,arguments);
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put("userName", userName);
+        arguments.put("post", post);
+        DB.update(PAGEUPDATES.SUMBIT, arguments);
     }
+
     //todo javafx function
     public void updateRefereeName(String name, String userName) {
-        updateSubscriberName(name,userName);
+        updateSubscriberName(name, userName);
     }
 }
