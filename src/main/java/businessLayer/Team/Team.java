@@ -11,6 +11,7 @@ import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.SystemController;
+import org.jooq.meta.derby.sys.Sys;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -66,6 +67,11 @@ public class Team implements HasPage {
         this.isActive = isActive;
         this.closedByAdmin = closedByAdmin;
         teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+        SystemController systemController = SystemController.SystemController();
+        for(TeamOwner teamOwner: teamOwners) {
+            systemController.addPageToDB(teamOwner.getUsername(), teamPage);
+        }
+
 
     }
     //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited

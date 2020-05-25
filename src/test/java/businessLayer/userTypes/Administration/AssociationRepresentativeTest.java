@@ -95,6 +95,7 @@ public class AssociationRepresentativeTest {
         //1. gal creates a new season successfully
         //todo: check with new DB
         //assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5"));
+        assertTrue(testingLeagueService.addSeasonThroughRepresentative("Itai's League", 2005, new Date(),new Date(),5,3,1,"ClassicMatchPolicy","Altman"));
 
         //2. dor tries to create the same season without success
         //todo: check with new DB
