@@ -1,6 +1,7 @@
 package dataLayer;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import static dataLayer.Tables.Tables.LEAGUE;
 import static dataLayer.Tables.Tables.UNCONFIRMED_TEAMS;
+import static dataLayer.Tables.tables.Teams.TEAMS;
 
 public class DBUnconfirmedTeams implements DB_Inter {
 
@@ -96,7 +98,20 @@ public class DBUnconfirmedTeams implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
+        if(e==TEAMUPDATES.UNCONONFIRMED){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(UNCONFIRMED_TEAMS.TEAMID).from(UNCONFIRMED_TEAMS).fetch();
+            ArrayList<Map<String,ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result){
+                HashMap<String,ArrayList<String>> seasonDetails = new HashMap <>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(UNCONFIRMED_TEAMS.TEAMID));
+                seasonDetails.put("unconfirmedID",temp);
+                details.add(seasonDetails);
+            }
+            return details;
+        }
         return null;
     }
 

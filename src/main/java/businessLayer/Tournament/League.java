@@ -139,7 +139,7 @@ public class League {
         }
         Season seasonToAdd = new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy);
         seasons.put(seasonID, seasonToAdd);
-        //todo: need to call system-controller to add season to the DB
+        systemController.addNewSeasonToDB(leagueName,seasonID,startingDate,endingDate,win,lose,tie,matchingPolicy,seasonToAdd);
         return true;
     }
 

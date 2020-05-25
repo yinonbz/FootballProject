@@ -25,21 +25,21 @@ import static org.junit.Assert.assertFalse;
 
 public class AssociationRepresentativeTest {
 
-    private AssociationRepresentative gal;
+/*    private AssociationRepresentative gal;
     private AssociationRepresentative dor;
-    private AssociationRepresentative tali;
+    private AssociationRepresentative tali;*/
     private LeagueService testingLeagueService;
     private SystemService testingSystemService;
-    private League l1;
+    //private League l1;
     private SystemController systemController;
 
     static private DataBaseValues testingDBValues;
-    static private DemoDB testingDB;
+    //static private DemoDB testingDB;
 
     //-------tomer's part-------------
 
-    static TeamOwner Barkat;
-    static AssociationRepresentative EliLuzon;
+    //static TeamOwner Barkat;
+    //static AssociationRepresentative EliLuzon;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -48,16 +48,17 @@ public class AssociationRepresentativeTest {
     public void createTestValues() {
 
         testingSystemService = new SystemService();
+        systemController = SystemController.SystemController();
         testingSystemService.initializeSystem("admin");
         testingLeagueService = new LeagueService();
-        //testingDBValues = new DataBaseValues();
-        //testingDB = testingDBValues.getDB();
-        //gal = (AssociationRepresentative) testingDB.selectSubscriberFromDB("gal5");
-        //dor = (AssociationRepresentative) testingDB.selectSubscriberFromDB("dor12");
-        //tali = (AssociationRepresentative) testingDB.selectSubscriberFromDB("tali5");
-        systemController = SystemController.SystemController();
-        //Barkat = (TeamOwner) testingDB.selectSubscriberFromDB("AlonaBarkat");
-        //systemController.sendRequestForTeam("HapoelBeerSheva1", "1888","Tomer");
+/*        testingDBValues = new DataBaseValues();
+        testingDB = testingDBValues.getDB();
+        gal = (AssociationRepresentative) testingDB.selectSubscriberFromDB("gal5");
+        dor = (AssociationRepresentative) testingDB.selectSubscriberFromDB("dor12");
+        tali = (AssociationRepresentative) testingDB.selectSubscriberFromDB("tali5");
+
+        Barkat = (TeamOwner) testingDB.selectSubscriberFromDB("AlonaBarkat");
+        systemController.sendRequestForTeam("HapoelBeerSheva1", "1888","Tomer");
         LinkedList <String> temp = new LinkedList<>();
         temp.add("HapoelBeerSheva1");
         temp.add("1888");
@@ -68,7 +69,7 @@ public class AssociationRepresentativeTest {
         //EliLuzon = (AssociationRepresentative) testingDB.selectSubscriberFromDB("EliLuzon");
 
         //l1 = testingDB.selectLeagueFromDB("11");
-
+*/
     }
 
     @Test
@@ -80,7 +81,7 @@ public class AssociationRepresentativeTest {
         //assertTrue(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "gal5"));
 
         //2. dor tries to create the same league without success
-        //todo: check with new DB
+
         //expectedException.expect(AlreadyExistException.class);
         //assertFalse(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "dor12"));
         assertFalse(testingLeagueService.addLeagueThroughRepresentative("Itai's_League", "Altman"));
@@ -228,12 +229,12 @@ public class AssociationRepresentativeTest {
     @Test
     public void UT_checkAddTeams(){
         LinkedList<String> teamsName = new LinkedList<>();
-        teamsName.add("ManchesterUnited");
+        teamsName.add("Manchester United");
         teamsName.add("Everton");
         teamsName.add("Liverpool");
         teamsName.add("Chelsea");
         //todo: check with new DB
-        //assertTrue(testingLeagueService.chooseTeamForSeason(teamsName,"12","2020","gal5"));
+        assertTrue(testingLeagueService.chooseTeamForSeason(teamsName,"12","2020","gal5"));
     }
 
 
@@ -241,44 +242,47 @@ public class AssociationRepresentativeTest {
 
     @Test
     public void checkTeamConfirmation() {
-        //1
-        //check if a regular confirmation
-        //todo: check with new DB
-        //assertTrue(EliLuzon.confirmTeamRequest("HapoelBeerSheva"));
+
+        //check with tomer
+        AssociationRepresentative ar = ((AssociationRepresentative)systemController.getSubscriberByUserName("Altman"));
+        assertTrue(ar.confirmTeamRequest("BGU Team"));
 
         //2
         //check if a team that already exists get false
-        assertFalse(EliLuzon.confirmTeamRequest("Beer Sheva"));
+        assertFalse(ar.confirmTeamRequest("Ajax"));
 
         //3
         //check that a team that doesn't exist get false
-        assertFalse(EliLuzon.confirmTeamRequest(""));
+        assertFalse(ar.confirmTeamRequest(""));
 
         //4
         //check that a team that doesn't exist get false
-        assertFalse(EliLuzon.confirmTeamRequest("HTA"));
+        assertFalse(ar.confirmTeamRequest("HTA"));
     }
 
     @Test
     public void checkAddStadium() {
 
+        AssociationRepresentative ar = ((AssociationRepresentative)systemController.getSubscriberByUserName("Altman"));
+
         //1
         //check that a regular stadium is being updated
-        assertTrue(EliLuzon.createNewStadium("S1", "200"));
+        assertTrue(ar.createNewStadium("S1", "200"));
 
         //2
         //check the stadium was added
-        assertTrue(testingDB.getStadiums().containsKey("S1"));
+        //todo: check with new DB
+        //assertTrue(testingDB.getStadiums().containsKey("S1"));
 
         //3
         //see we can't add the same stadium again
-        assertFalse(EliLuzon.createNewStadium("S1", "200"));
+        assertFalse(ar.createNewStadium("S1", "200"));
 
         //4
         //see wa can't add a stadium with corrupt value
-        assertFalse(EliLuzon.createNewStadium("", "200"));
+        assertFalse(ar.createNewStadium("", "200"));
 
         //5
-        assertFalse(EliLuzon.createNewStadium("S3", ""));
+        assertFalse(ar.createNewStadium("S3", ""));
     }
 }

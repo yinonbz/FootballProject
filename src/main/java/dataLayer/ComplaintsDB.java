@@ -25,7 +25,7 @@ public class ComplaintsDB implements DB_Inter{
 
     public ComplaintsDB(){
         this("root","Messi1Ronaldo2",
-                "org.mariadb.jdbc.Driver","jdbc:mysql://localhost:3306/demodb");
+                "org.mariadb.jdbc.Driver","jdbc:mysql://132.72.65.33:3306/demodb");
     }
 
     public ComplaintsDB(String username,String password, String myDriver, String myUrl){
@@ -134,7 +134,7 @@ public class ComplaintsDB implements DB_Inter{
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         ArrayList<Map<String, ArrayList<String>>> allComplaints = new ArrayList<>();
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select(COMPLAINTS.COMPLAINTID).

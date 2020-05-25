@@ -230,8 +230,8 @@ public class AssociationRepresentative extends Subscriber {
     public boolean confirmTeamRequest(String teamName) {
         if (!approved)
             return false;
-        //return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());fixme take out of comment
-        return false;
+        return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());
+        //return false;
     }
 
     @Override

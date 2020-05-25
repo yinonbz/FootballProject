@@ -6,6 +6,8 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,18 @@ public class EventRecordDB implements DB_Inter {
     String myUrl = "jdbc:mysql://132.72.65.33:3306/demodb";
     Connection connection = null;
 
+    public EventRecordDB(){
+        //connect to DB and save to field in class.
+        try {
+            Class.forName(myDriver);
+            connection = DriverManager.getConnection(myUrl,username,password);
+            System.out.println("Successful connection to server db ");
+        } catch (SQLException e) {
+            System.out.println("error connecting to server. connection is now null");
+        } catch (ClassNotFoundException e) {
+            System.out.println("error connecting to driver");
+        }
+    }
 
     @Override
     public boolean containInDB(String objectName, String arg2, String arg3) {
@@ -61,7 +75,7 @@ public class EventRecordDB implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         return null;
     }
 

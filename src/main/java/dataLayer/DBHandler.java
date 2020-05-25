@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import static dataLayer.Tables.Tables.*;
 import static dataLayer.Tables.tables.Subscribers.SUBSCRIBERS;
+import static dataLayer.Tables.tables.Teams.TEAMS;
 
 public class DBHandler implements DB_Inter{
 
@@ -74,171 +75,182 @@ public class DBHandler implements DB_Inter{
     @Override
     public Map<String,ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
         //create sql query to select record from db using ObjectName
-        if(containInDB(objectName,null,null)) {
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select().
-                    from(SUBSCRIBERS)
-                    .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName))
-                    .fetch();
 
-            Map<String, ArrayList<String>> objDetails = new HashMap<>();
-            String username = result.get(0).get(SUBSCRIBERS.SUBSCRIBERID);
-            String password = result.get(0).get(SUBSCRIBERS.PASSWORD);
-            String name = result.get(0).get(SUBSCRIBERS.NAME);
-            String type = result.get(0).get(SUBSCRIBERS.TYPE);
-
-            objDetails.put("username", new ArrayList<>());
-            objDetails.get("username").add(username);
-            objDetails.put("password", new ArrayList<>());
-            objDetails.get("password").add(password);
-            objDetails.put("name", new ArrayList<>());
-            objDetails.get("name").add(name);
-            objDetails.put("type", new ArrayList<>());
-            objDetails.get("type").add(type);
-
-            if (type.equalsIgnoreCase("player")) {
-                result = create.select().from(PLAYERS).where(PLAYERS.PLAYERID.eq(objectName)).fetch();
-                String teamID = result.get(0).get(PLAYERS.TEAMID);
-                String birthDay = result.get(0).get(PLAYERS.BIRTHDATE).toString();
-                String fieldJob = result.get(0).get(PLAYERS.FIELDJOB).name();
-                int salary = result.get(0).get(PLAYERS.SALARY);
-                String teamOwnerID = result.get(0).get(PLAYERS.TEAMOWNERID_FICTIVE);
-
-                objDetails.put("teamID", new ArrayList<>());
-                objDetails.get("teamID").add(teamID);
-                objDetails.put("birthDay", new ArrayList<>());
-                objDetails.get("birthDay").add(birthDay);
-                objDetails.put("fieldJob", new ArrayList<>());
-                objDetails.get("fieldJob").add(fieldJob);
-                objDetails.put("salary", new ArrayList<>());
-                objDetails.get("salary").add(String.valueOf(salary));
-                objDetails.put("teamOwnerID", new ArrayList<>());
-                objDetails.get("teamOwnerID").add(teamOwnerID);
-            }
-            if (type.equalsIgnoreCase("coach")) {
-                result = create.select().from(COACHES
-                        .join(COACH_TEAM).on(COACHES.COACHID.eq(COACH_TEAM.COACHID)))
-                        .where(COACHES.COACHID.eq(objectName)).fetch();
-                ArrayList<String> teams = new ArrayList<>();
-                String roleInTeam = result.get(0).get(COACHES.ROLEINTEAM).name();
-                String training = result.get(0).get(COACHES.TRAINING).name();
-                int salary = result.get(0).get(COACHES.SALARY);
-                String teamOwnerID = result.get(0).get(COACHES.TEAMOWNERID_FICTIVE);
-
-                for (Record r : result) {
-                    teams.add(r.get(COACH_TEAM.TEAMID));
-                }
-
-                objDetails.put("roleInTeam", new ArrayList<>());
-                objDetails.get("roleInTeam").add(roleInTeam);
-                objDetails.put("teams", teams);
-                objDetails.put("training", new ArrayList<>());
-                objDetails.get("training").add(training);
-                objDetails.put("salary", new ArrayList<>());
-                objDetails.get("salary").add(String.valueOf(salary));
-                objDetails.put("teamOwnerID", new ArrayList<>());
-                objDetails.get("teamOwnerID").add(teamOwnerID);
-            }
-            if (type.equalsIgnoreCase("teammanager")) {
-                result = create.select().from(TEAMMANAGERS).where(TEAMMANAGERS.MANAGERID.eq(objectName)).fetch();
-                String teamID = result.get(0).get(TEAMMANAGERS.TEAMID);
-                String permissions = result.get(0).get(TEAMMANAGERS.PERMISSIONS).name();
-                int salary = result.get(0).get(TEAMMANAGERS.SALARY);
-                String teamOwnerID = result.get(0).get(TEAMMANAGERS.TEAMOWNERID_FICTIVE);
-
-                objDetails.put("teamID", new ArrayList<>());
-                objDetails.get("teamID").add(teamID);
-                objDetails.put("permissions", new ArrayList<>());
-                objDetails.get("permissions").add(permissions);
-                objDetails.put("salary", new ArrayList<>());
-                objDetails.get("salary").add(String.valueOf(salary));
-                objDetails.put("teamOwnerID", new ArrayList<>());
-                objDetails.get("teamOwnerID").add(teamOwnerID);
-            }
-            if (type.equalsIgnoreCase("teamowner")) {
-                //query
-                result = create.select().
-                        from(TEAMOWNER_OWNERELIGIBLE.
-                                join(OWNER_TEAMS).on(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(OWNER_TEAMS.OWNERID))).
-                        where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(objectName)).
-                        fetch();
-
-                //data extraction
-
-                //String teamOwnerID = result.get(0).get(TEAMOWNER_OWNERELIGIBLE.OWNERID);
-                String eligible = Stream.of(result.get(0).get(TEAMOWNER_OWNERELIGIBLE.PLAYERID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.COACHID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.MANAGERID)).filter(Objects::nonNull).findFirst().orElse(null);
-                ArrayList<String> teams = new ArrayList<>();
-
-                for (Record r : result) {
-                    teams.add(r.get(OWNER_TEAMS.TEAMID));
-                }
-
-                ArrayList<String> managersAssignedByMe = new ArrayList<>();
-                ArrayList<String> managerTeam = new ArrayList<>();
-                Result<?> result2 = create.select().
-                        from(OWNER_MANAGER_ASSIGNINGS).
-                        where(OWNER_MANAGER_ASSIGNINGS.OWNERID.eq(objectName))
-                        .fetch();
-                for (Record r : result2) {
-                    managersAssignedByMe.add(r.get(OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID));
-                    managerTeam.add(r.get(OWNER_MANAGER_ASSIGNINGS.TEAMID));
-                }
-                Result<?> result3 = create.select().
-                        from(OWNER_OWNER_ASSIGNINGS).
-                        where(OWNER_OWNER_ASSIGNINGS.OWNERID.eq(objectName))
+        try {
+            if (containInDB(objectName, null, null)) {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select().
+                        from(SUBSCRIBERS)
+                        .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName))
                         .fetch();
 
-                ArrayList<String> ownerAssignedByMe = new ArrayList<>();
-                ArrayList<String> ownerTeam = new ArrayList<>();
-                for (Record r : result3) {
-                    ownerAssignedByMe.add(r.get(OWNER_OWNER_ASSIGNINGS.ASSIGNEEID));
-                    ownerTeam.add(r.get(OWNER_OWNER_ASSIGNINGS.TEAMID));
+                Map<String, ArrayList<String>> objDetails = new HashMap<>();
+                String username = result.get(0).get(SUBSCRIBERS.SUBSCRIBERID);
+                String password = result.get(0).get(SUBSCRIBERS.PASSWORD);
+                String name = result.get(0).get(SUBSCRIBERS.NAME);
+                String type = result.get(0).get(SUBSCRIBERS.TYPE);
+
+                objDetails.put("username", new ArrayList<>());
+                objDetails.get("username").add(username);
+                objDetails.put("password", new ArrayList<>());
+                objDetails.get("password").add(password);
+                objDetails.put("name", new ArrayList<>());
+                objDetails.get("name").add(name);
+                objDetails.put("type", new ArrayList<>());
+                objDetails.get("type").add(type);
+
+                try {
+                    if (type.equalsIgnoreCase("player")) {
+                        result = create.select().from(PLAYERS).where(PLAYERS.PLAYERID.eq(objectName)).fetch();
+                        String teamID = result.get(0).get(PLAYERS.TEAMID);
+                        String birthDay = result.get(0).get(PLAYERS.BIRTHDATE).toString();
+                        String fieldJob = result.get(0).get(PLAYERS.FIELDJOB).name();
+                        int salary = result.get(0).get(PLAYERS.SALARY);
+                        String teamOwnerID = result.get(0).get(PLAYERS.TEAMOWNERID_FICTIVE);
+
+                        objDetails.put("teamID", new ArrayList<>());
+                        objDetails.get("teamID").add(teamID);
+                        objDetails.put("birthDay", new ArrayList<>());
+                        objDetails.get("birthDay").add(birthDay);
+                        objDetails.put("fieldJob", new ArrayList<>());
+                        objDetails.get("fieldJob").add(fieldJob);
+                        objDetails.put("salary", new ArrayList<>());
+                        objDetails.get("salary").add(String.valueOf(salary));
+                        objDetails.put("teamOwnerID", new ArrayList<>());
+                        objDetails.get("teamOwnerID").add(teamOwnerID);
+                    }
+                    if (type.equalsIgnoreCase("coach")) {
+                        result = create.select().from(COACHES
+                                .join(COACH_TEAM).on(COACHES.COACHID.eq(COACH_TEAM.COACHID)))
+                                .where(COACHES.COACHID.eq(objectName)).fetch();
+                        ArrayList<String> teams = new ArrayList<>();
+                        String roleInTeam = result.get(0).get(COACHES.ROLEINTEAM).name();
+                        String training = result.get(0).get(COACHES.TRAINING).name();
+                        int salary = result.get(0).get(COACHES.SALARY);
+                        String teamOwnerID = result.get(0).get(COACHES.TEAMOWNERID_FICTIVE);
+
+                        for (Record r : result) {
+                            teams.add(r.get(COACH_TEAM.TEAMID));
+                        }
+
+                        objDetails.put("roleInTeam", new ArrayList<>());
+                        objDetails.get("roleInTeam").add(roleInTeam);
+                        objDetails.put("teams", teams);
+                        objDetails.put("training", new ArrayList<>());
+                        objDetails.get("training").add(training);
+                        objDetails.put("salary", new ArrayList<>());
+                        objDetails.get("salary").add(String.valueOf(salary));
+                        objDetails.put("teamOwnerID", new ArrayList<>());
+                        objDetails.get("teamOwnerID").add(teamOwnerID);
+                    }
+                    if (type.equalsIgnoreCase("teammanager")) {
+                        result = create.select().from(TEAMMANAGERS).where(TEAMMANAGERS.MANAGERID.eq(objectName)).fetch();
+                        String teamID = result.get(0).get(TEAMMANAGERS.TEAMID);
+                        String permissions = result.get(0).get(TEAMMANAGERS.PERMISSIONS).name();
+                        int salary = result.get(0).get(TEAMMANAGERS.SALARY);
+                        String teamOwnerID = result.get(0).get(TEAMMANAGERS.TEAMOWNERID_FICTIVE);
+
+                        objDetails.put("teamID", new ArrayList<>());
+                        objDetails.get("teamID").add(teamID);
+                        objDetails.put("permissions", new ArrayList<>());
+                        objDetails.get("permissions").add(permissions);
+                        objDetails.put("salary", new ArrayList<>());
+                        objDetails.get("salary").add(String.valueOf(salary));
+                        objDetails.put("teamOwnerID", new ArrayList<>());
+                        objDetails.get("teamOwnerID").add(teamOwnerID);
+                    }
+                    if (type.equalsIgnoreCase("teamowner")) {
+                        //query
+                        result = create.select().
+                                from(TEAMOWNER_OWNERELIGIBLE.
+                                        join(OWNER_TEAMS).on(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(OWNER_TEAMS.OWNERID))).
+                                where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(objectName)).
+                                fetch();
+
+                        //data extraction
+
+                        //String teamOwnerID = result.get(0).get(TEAMOWNER_OWNERELIGIBLE.OWNERID);
+                        String eligible = Stream.of(result.get(0).get(TEAMOWNER_OWNERELIGIBLE.PLAYERID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.COACHID), result.get(0).get(TEAMOWNER_OWNERELIGIBLE.MANAGERID)).filter(Objects::nonNull).findFirst().orElse(null);
+                        ArrayList<String> teams = new ArrayList<>();
+
+                        for (Record r : result) {
+                            teams.add(r.get(OWNER_TEAMS.TEAMID));
+                        }
+
+                        ArrayList<String> managersAssignedByMe = new ArrayList<>();
+                        ArrayList<String> managerTeam = new ArrayList<>();
+                        Result<?> result2 = create.select().
+                                from(OWNER_MANAGER_ASSIGNINGS).
+                                where(OWNER_MANAGER_ASSIGNINGS.OWNERID.eq(objectName))
+                                .fetch();
+                        for (Record r : result2) {
+                            managersAssignedByMe.add(r.get(OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID));
+                            managerTeam.add(r.get(OWNER_MANAGER_ASSIGNINGS.TEAMID));
+                        }
+                        Result<?> result3 = create.select().
+                                from(OWNER_OWNER_ASSIGNINGS).
+                                where(OWNER_OWNER_ASSIGNINGS.OWNERID.eq(objectName))
+                                .fetch();
+
+                        ArrayList<String> ownerAssignedByMe = new ArrayList<>();
+                        ArrayList<String> ownerTeam = new ArrayList<>();
+                        for (Record r : result3) {
+                            ownerAssignedByMe.add(r.get(OWNER_OWNER_ASSIGNINGS.ASSIGNEEID));
+                            ownerTeam.add(r.get(OWNER_OWNER_ASSIGNINGS.TEAMID));
+                        }
+                        objDetails.put("teams", teams);
+                        objDetails.put("ownerAssigned", ownerAssignedByMe);
+                        objDetails.put("ownerTeam", ownerTeam);
+                        objDetails.put("managersAssigned", managersAssignedByMe);
+                        objDetails.put("managerTeam", managerTeam);
+                        objDetails.put("eligible", new ArrayList<>());
+                        objDetails.get("eligible").add(eligible);
+                    }
+                    if (type.equalsIgnoreCase("admin")) {
+                        result = create.select().
+                                from(ADMINS).where(ADMINS.ADMINID.eq(objectName)).fetch();
+                        boolean approved = result.get(0).get(ADMINS.APPROVED);
+
+                        objDetails.put("approved", new ArrayList<>());
+                        objDetails.get("approved").add(Boolean.toString(approved));
+
+                    }
+                    if (type.equalsIgnoreCase("ar")) {
+                        result = create.select().
+                                from(ARS).where(ARS.AR_ID.eq(objectName)).fetch();
+                        boolean approved = result.get(0).get(ARS.APPROVED);
+
+                        objDetails.put("approved", new ArrayList<>());
+                        objDetails.get("approved").add(Boolean.toString(approved));
+                    }
+                    if (type.equalsIgnoreCase("referee")) {
+                        result = create.select().
+                                from(REFEREES)
+                                //.join().on(REFEREES.REFEREEID.eq(REFEREE_MATCHES.REFEREEID)))
+                                .where(REFEREES.REFEREEID.eq(objectName)).fetch();
+                        Result<?> result2 = create.select()
+                                .from(REFEREE_MATCHES)
+                                .where(REFEREE_MATCHES.REFEREEID.eq(objectName))
+                                .fetch();
+                        String roleRef = result.get(0).get(REFEREES.ROLEREF).name();
+                        ArrayList<String> matches = new ArrayList<>();
+                        for (Record r : result2) {
+                            matches.add(String.valueOf(r.get(REFEREE_MATCHES.MATCHID)));
+                        }
+
+                        objDetails.put("matches", matches);
+                        objDetails.put("roleRef", new ArrayList<>());
+                        objDetails.get("roleRef").add(roleRef);
+                    }
+                    return objDetails;
+                } catch (Exception e) {
+                    System.out.println("user is subscriber only");
+                    return objDetails;
                 }
-                objDetails.put("teams", teams);
-                objDetails.put("ownerAssigned", ownerAssignedByMe);
-                objDetails.put("ownerTeam", ownerTeam);
-                objDetails.put("managersAssigned", managersAssignedByMe);
-                objDetails.put("managerTeam", managerTeam);
-                objDetails.put("eligible", new ArrayList<>());
-                objDetails.get("eligible").add(eligible);
             }
-            if (type.equalsIgnoreCase("admin")) {
-                result = create.select().
-                        from(ADMINS).where(ADMINS.ADMINID.eq(objectName)).fetch();
-                boolean approved = result.get(0).get(ADMINS.APPROVED);
-
-                objDetails.put("approved", new ArrayList<>());
-                objDetails.get("approved").add(Boolean.toString(approved));
-
-            }
-            if (type.equalsIgnoreCase("ar")) {
-                result = create.select().
-                        from(ARS).where(ARS.AR_ID.eq(objectName)).fetch();
-                boolean approved = result.get(0).get(ARS.APPROVED);
-
-                objDetails.put("approved", new ArrayList<>());
-                objDetails.get("approved").add(Boolean.toString(approved));
-            }
-            if (type.equalsIgnoreCase("referee")) {
-                result = create.select().
-                        from(REFEREES)
-                        //.join().on(REFEREES.REFEREEID.eq(REFEREE_MATCHES.REFEREEID)))
-                        .where(REFEREES.REFEREEID.eq(objectName)).fetch();
-                Result<?> result2 = create.select()
-                        .from(REFEREE_MATCHES)
-                        .where(REFEREE_MATCHES.REFEREEID.eq(objectName))
-                        .fetch();
-                String roleRef = result.get(0).get(REFEREES.ROLEREF).name();
-                ArrayList<String> matches = new ArrayList<>();
-                for (Record r : result2) {
-                    matches.add(String.valueOf(r.get(REFEREE_MATCHES.MATCHID)));
-                }
-
-                objDetails.put("matches", matches);
-                objDetails.put("roleRef", new ArrayList<>());
-                objDetails.get("roleRef").add(roleRef);
-            }
-            return objDetails;
+        }
+        catch(Exception e){
+            System.out.println("user has not found");
         }
         return null;
     }
@@ -431,7 +443,21 @@ public class DBHandler implements DB_Inter{
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType,Map<String,String> arguments) {
+        if(userType == UserTypes.SUBSCRIBER){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(SUBSCRIBERS.SUBSCRIBERID).
+                    from(SUBSCRIBERS)
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allSubscribers = new ArrayList<>();
+            allSubscribers.add(new HashMap<>());
+            allSubscribers.get(0).put("subscribers",new ArrayList<>());
+            for(Record r: result){
+                allSubscribers.get(0).get("subscribers").add(r.get(SUBSCRIBERS.SUBSCRIBERID));
+
+            }
+            return allSubscribers;
+        }
         if(userType ==UserTypes.COACH){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select(COACHES.COACHID).
@@ -445,6 +471,20 @@ public class DBHandler implements DB_Inter{
 
             }
             return allCoaches;
+        }
+        if(userType ==UserTypes.ADMIN){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(ADMINS.ADMINID).
+                    from(ADMINS)
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allAdmins = new ArrayList<>();
+            allAdmins.add(new HashMap<>());
+            allAdmins.get(0).put("admins",new ArrayList<>());
+            for(Record r: result){
+                allAdmins.get(0).get("admins").add(r.get(COACHES.COACHID));
+
+            }
+            return allAdmins;
         }
         if(userType ==UserTypes.REFEREE){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
@@ -460,10 +500,27 @@ public class DBHandler implements DB_Inter{
             }
             return allReferees;
         }
+        if(userType == UserTypes.TEAMMANAGER){
+            return selectAllTeamManagers();
+        }
         else{
             System.out.println("invalid select from subscriberDB");
         }
         return null;
+    }
+
+    private ArrayList<Map<String, ArrayList<String>>> selectAllTeamManagers(){
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Result<?> result = create.select(TEAMMANAGERS.MANAGERID).from(TEAMMANAGERS).fetch();
+        ArrayList<Map<String,ArrayList<String>>> details = new ArrayList<>();
+        for (Record record : result){
+            HashMap<String,ArrayList<String>> seasonDetails = new HashMap <>();
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(record.get(TEAMMANAGERS.MANAGERID));
+            seasonDetails.put("managerID",temp);
+            details.add(seasonDetails);
+        }
+        return details;
     }
 
     @Override
@@ -584,6 +641,13 @@ public class DBHandler implements DB_Inter{
                     ,OWNER_TEAMS.TEAMID)
                     .values(arguments.get("ownerID")
                             ,arguments.get("teamID"))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.SETSUBSCRIBERPASSWORD){
+            create.update(SUBSCRIBERS)
+                    .set(SUBSCRIBERS.PASSWORD, arguments.get("password"))
+                    .where(SUBSCRIBERS.SUBSCRIBERID.eq(arguments.get("subscriberID")))
                     .execute();
             return true;
         }

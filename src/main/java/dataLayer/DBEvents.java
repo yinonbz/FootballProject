@@ -52,7 +52,7 @@ public class DBEvents implements DB_Inter {
     }
 
     @Override
-    public Map<String, ArrayList<String>> selectFromDB(String eventID,String matchID,String time) {
+    public Map<String, ArrayList<String>> selectFromDB(String matchID,String time,String eventID) {
         return selectEventFromDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID));
     }
 
@@ -158,7 +158,7 @@ public class DBEvents implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         return null;
     }
 
