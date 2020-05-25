@@ -72,10 +72,12 @@ public class MatchController {
                 isOwnG=false;
             }
             if (playerG != null && playerA != null) {
-                if(checkSameTeam(playerG,playerA)) {
+               // todo ido put this because it is implemented in the gui layer
+                //if(checkSameTeam(playerG,playerA)) {
                     Goal goal = new Goal(playerG, playerA, isOwnG, this);
                     return handleEvent(goal, time, matchID);
-                }
+               // }
+
             }
             else if(playerG != null){
                 Goal goal = new Goal(playerG, isOwnG, this);
@@ -156,10 +158,10 @@ public class MatchController {
             Player playerO = getPlayerFromDB(playerOn);
             Player playerOf= getPlayerFromDB(playerOff);
             if (playerO != null && playerOf != null && !playerO.equals(playerOf)) {
-                if(checkSameTeam(playerO,playerOf)) {
+               // if(checkSameTeam(playerO,playerOf)) {//todo ido implemented this on the gui layer
                     Substitute sub = new Substitute(playerO, playerOf, this);
                     return handleEvent(sub, time, matchID);
-                }
+               // }
             }
         }
         return false;

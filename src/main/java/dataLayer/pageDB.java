@@ -104,6 +104,7 @@ public class pageDB implements DB_Inter{
     @Override
     public boolean addToDB(String userName, String pageID, String birthDay, String name, Map<String, ArrayList<String>> objDetails) {
         if (!containInDB(userName, null, null)) {
+            System.out.println(userName);
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             create.insertInto(PAGE_OWNER
                     ,PAGE_OWNER.PAGEID
@@ -175,6 +176,7 @@ public class pageDB implements DB_Inter{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
         //convert String to LocalDate
+        date = date.replace("-","/");
         LocalDate localDate = LocalDate.parse(date, formatter);
         return localDate;
     }
