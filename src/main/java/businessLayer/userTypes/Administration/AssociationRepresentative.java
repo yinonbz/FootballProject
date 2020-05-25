@@ -26,7 +26,7 @@ public class AssociationRepresentative extends Subscriber {
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leaguesController;
         leaguesController.addAssociationRepToController(this);
-        approved = false;
+        approved = true;
     }
 
     /**
@@ -39,7 +39,7 @@ public class AssociationRepresentative extends Subscriber {
     public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
         super(username, password,name, systemController);
         this.systemController=systemController;
-        approved = false;
+        approved = true;
     }
 
     /**
@@ -224,8 +224,8 @@ public class AssociationRepresentative extends Subscriber {
     public boolean confirmTeamRequest(String teamName){
         if(!approved)
             return false;
-        //return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());fixme take out of comment
-        return false;
+        return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());
+        //return false;
     }
 
     @Override

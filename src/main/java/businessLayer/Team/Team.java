@@ -55,7 +55,7 @@ public class Team implements HasPage {
         Iterator<TeamOwner> it = teamOwners.iterator();
         while (it.hasNext()) {
             TeamOwner teamOwner = it.next();
-            teamOwner.getTeams().add(this);
+            //teamOwner.getTeams().add(this);
         }
         this.financialMonitoring = financialMonitoring;
         this.matches = matches;
