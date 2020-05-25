@@ -1,6 +1,7 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Exceptions.AlreadyExistException;
+import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Subscriber;
@@ -21,39 +22,42 @@ public class AssociationRepresentative extends Subscriber {
      * @param leaguesController
      */
     public AssociationRepresentative(String username, String password, String name, FinancialMonitoring financialMonitoring, LeagueController leaguesController, SystemController systemController) {
-        super(username, password,name,systemController);
+        super(username, password, name, systemController);
         this.name = name;
         this.financialMonitoring = financialMonitoring;
         this.leagueController = leaguesController;
         leaguesController.addAssociationRepToController(this);
-        approved = true;
+        approved = true; //once Admin's functionality's ready connect to his approval
     }
 
     /**
      * constructor
+     *
      * @param username
      * @param password
      * @param name
      * @param systemController
      */
-    public AssociationRepresentative (String username, String password, String name, SystemController systemController) {
-        super(username, password,name, systemController);
-        this.systemController=systemController;
-        approved = true;
+    public AssociationRepresentative(String username, String password, String name, SystemController systemController, LeagueController leagueController) {
+        super(username, password, name, systemController);
+        this.systemController = systemController;
+        this.leagueController = leagueController;
+        approved = true; //once Admin's functionality's ready connect to his approval
     }
 
     /**
      * the function gets the name of the stadium and the number of seats it has
-     * @param nameStadium the name of the stadium
+     *
+     * @param nameStadium   the name of the stadium
      * @param numberOfSeats the number of seats in the stadium
      * @return true if the stadium was added successfully
      */
-    public boolean createNewStadium(String nameStadium, String numberOfSeats){
-        if(!isApproved())
+    public boolean createNewStadium(String nameStadium, String numberOfSeats) {
+        if (!isApproved())
             return false;
-        if(!nameStadium.isEmpty() && !numberOfSeats.isEmpty()){
-            if(tryParseInt(numberOfSeats)){
-                return systemController.addNewStadium(nameStadium,numberOfSeats);
+        if (!nameStadium.isEmpty() && !numberOfSeats.isEmpty()) {
+            if (tryParseInt(numberOfSeats)) {
+                return systemController.addNewStadium(nameStadium, numberOfSeats);
             }
         }
         return false;
@@ -66,7 +70,7 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public Boolean createLeague(String newLeagueID) {
-        if(!isApproved())
+        if (!isApproved())
             return false;
         if (newLeagueID == null) {
             return false;
@@ -79,6 +83,7 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * The function creates a season within a league and returns whether the creation was successful or not
+     *
      * @param leagueName
      * @param seasonID
      * @param startingDate
@@ -90,7 +95,7 @@ public class AssociationRepresentative extends Subscriber {
      * @return
      */
     public Boolean createSeason(String leagueName, int seasonID, Date startingDate, int win, int lose, int tie, String matchingPolicy, Date endingDate) {
-        if(!isApproved())
+        if (!isApproved())
             return false;
         if (!leagueController.doesLeagueExist(leagueName)) {
             return false;
@@ -108,13 +113,13 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public boolean createReferee(String username, String role) {
-        if(!isApproved())
+        if (!isApproved())
             return false;
         if (username == null) {
             return false;
         }
-        if(!role.equals("MAIN") && !role.equals("ASSISTANT")){
-            role="MAIN";
+        if (!role.equals("MAIN") && !role.equals("ASSISTANT")) {
+            role = "MAIN";
         }
         return super.getSystemController().addReferee(username, "1111", "default", role, this.getUsername());
     }
@@ -126,7 +131,7 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public boolean removeReferee(String username) {
-        if(!isApproved())
+        if (!isApproved())
             return false;
         if (username == null) {
             return false;
@@ -144,7 +149,7 @@ public class AssociationRepresentative extends Subscriber {
      * @return true/false
      */
     public boolean assignRefereeToSeason(String username, String leagueName, int seasonID) {
-        if(!isApproved())
+        if (!isApproved())
             return false;
         if (username == null || leagueName == null) {
             return false;
@@ -218,11 +223,12 @@ public class AssociationRepresentative extends Subscriber {
 
     /**
      * the function lets the AR to confirm new teams in the system
+     *
      * @param teamName the team the AR wants to approve
      * @return true if the team was approved
      */
-    public boolean confirmTeamRequest(String teamName){
-        if(!approved)
+    public boolean confirmTeamRequest(String teamName) {
+        if (!approved)
             return false;
         return systemController.confirmTeamByAssociationRepresentative(teamName,this.getUsername());
         //return false;
