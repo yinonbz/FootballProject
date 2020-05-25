@@ -98,7 +98,7 @@ public class DBUnconfirmedTeams implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         if(e==TEAMUPDATES.UNCONONFIRMED){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select(UNCONFIRMED_TEAMS.TEAMID).from(UNCONFIRMED_TEAMS).fetch();

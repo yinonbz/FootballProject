@@ -138,7 +138,10 @@ public class League {
             return false;
         }
         seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy));
-        
+        Season season = new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy);
+
+        systemController.addNewSeasonToDB(leagueName,seasonID,startingDate,endingDate,win,lose,tie,matchingPolicy,season);
+
         return true;
     }
 

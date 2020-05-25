@@ -87,7 +87,7 @@ public class ComplaintsDBTest {
 
     @Test
     public void getAllRecords(){
-        ArrayList<Map<String, ArrayList<String>>> allRecords = db.selectAllRecords(null);
+        ArrayList<Map<String, ArrayList<String>>> allRecords = db.selectAllRecords(null,null);
         for(Map<String,ArrayList<String>> map: allRecords){
             for(Map.Entry<String,ArrayList<String>> entry: map.entrySet()){
                 System.out.print(entry.getKey()+": ");

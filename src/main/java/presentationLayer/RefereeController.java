@@ -120,6 +120,8 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     @Override
     public void setUser(String usernameL)
     {
+        matchService = new MatchService();
+        systemService = new SystemService();
         ObservableList<String> list = FXCollections.observableArrayList();
         userLabel.setText(usernameL);
         leagueService = new LeagueService();
