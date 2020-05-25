@@ -2916,6 +2916,26 @@ public class SystemController extends Observable {
          return seasons;
     }
 
+    public LinkedList<String> getAllRefsGameID(String userID){
+        connectToMatchDB();
+        LinkedList<String> matchID = new LinkedList<>();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("refID",userID);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLGAMEREFEREE,args);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                matchID.add(temp.get(0));
+            }
+        }
+        return matchID;
+    }
+
+    public String getDetailsOnMatch(int matchID){
+        Match match = findMatch(matchID);
+        return match.toString();
+    }
+
     //todo javafx function
     public void updatePlayerBDate(String date, String user) {
         SetPlayerBirthdate(user, date);
