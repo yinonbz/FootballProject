@@ -69,7 +69,7 @@ public class Team implements HasPage {
         teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
         SystemController systemController = SystemController.SystemController();
         for(TeamOwner teamOwner: teamOwners) {
-            systemController.addPageToDB(teamOwner.getUsername(), teamPage);
+            //systemController.addPageToDB(teamOwner.getUsername(), teamPage);
         }
 
 

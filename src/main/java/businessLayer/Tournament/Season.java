@@ -47,6 +47,7 @@ public class Season {
                    HashMap<Integer,Match> matchesOfTheSeason, HashMap<String,Referee> referees, String matchingPolicy) {
         this.league=league;
         this.seasonId=seasonID;
+        this.teams = new HashMap<>();
         this.startDate=startDate;
         this.endDate=endDate;
         this.rankingPolicy=aRankingPolicy;
@@ -74,7 +75,7 @@ public class Season {
         this.endDate = endDate;
         this.league = league;
         referees = new HashMap<>();
-        teams = new HashMap<>();
+        this.teams = new HashMap<>();
         //matches = new ArrayList<>();
         leagueTable = new HashMap<>();
         this.rankingPolicy = new ARankingPolicy(win, lose, tie);

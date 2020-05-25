@@ -1203,22 +1203,29 @@ public class SystemController extends Observable {
                         , Integer.parseInt(subDetails.get("salary").get(0))
                         , this);
             }
+
             if (type.equalsIgnoreCase("teamowner")) {
                 sub = new TeamOwner(userName, subDetails.get("password").get(0)
                         , subDetails.get("name").get(0)
                         , this);
-                for (String str : subDetails.get("teams")) {
-                    ((TeamOwner) sub).addTeam(/*getTeamByName(str)*/null);
+                if(subDetails.get("teams") != null) {
+                    for (String str : subDetails.get("teams")) {
+                        ((TeamOwner) sub).addTeam(/*getTeamByName(str)*/null);
+                    }
                 }
-                for (int i = 0; i < subDetails.get("ownerAssigned").size(); i++) {
-                    Team team = /*getTeamByName(subDetails.get("ownerTeam").get(i));*/ null;
-                    TeamOwner to = (TeamOwner) getSubscriberByUserName(subDetails.get("ownerAssigned").get(0));
-                    ((TeamOwner) sub).addAssignedOwner(team, to);
+                if(subDetails.get("ownerAssigned") != null) {
+                    for (int i = 0; i < subDetails.get("ownerAssigned").size(); i++) {
+                        Team team = /*getTeamByName(subDetails.get("ownerTeam").get(i));*/ null;
+                        TeamOwner to = (TeamOwner) getSubscriberByUserName(subDetails.get("ownerAssigned").get(0));
+                        ((TeamOwner) sub).addAssignedOwner(team, to);
+                    }
                 }
-                for (int i = 0; i < subDetails.get("managersAssigned").size(); i++) {
-                    Team team = /*getTeamByName(subDetails.get("managerTeam").get(i));*/ null;
-                    TeamManager TM = (TeamManager) getSubscriberByUserName(subDetails.get("managersAssigned").get(0));
-                    ((TeamOwner) sub).addAssignedManager(team, TM);
+                if(subDetails.get("managersAssigned") != null) {
+                    for (int i = 0; i < subDetails.get("managersAssigned").size(); i++) {
+                        Team team = /*getTeamByName(subDetails.get("managerTeam").get(i));*/ null;
+                        TeamManager TM = (TeamManager) getSubscriberByUserName(subDetails.get("managersAssigned").get(0));
+                        ((TeamOwner) sub).addAssignedManager(team, TM);
+                    }
                 }
             }
             if (type.equalsIgnoreCase("admin")) {
