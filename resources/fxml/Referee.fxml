@@ -22,7 +22,7 @@
     <top>
         <HBox id="actions" prefHeight="52.0" prefWidth="1100.0" spacing="10.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#getAllMatches" prefHeight="31.0" prefWidth="200.0" text="View Assigned games " textAlignment="CENTER">
+                <Button mnemonicParsing="false" onAction="#switchMatchPane" prefHeight="31.0" prefWidth="200.0" text="View Assigned games " textAlignment="CENTER">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
@@ -86,6 +86,13 @@
             <center>
                 <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
+                  <Pane fx:id="matchPane" prefHeight="550.0" prefWidth="650.0" visible="false">
+                     <children>
+                        <ComboBox fx:id="matchDisplay" layoutX="70.0" layoutY="95.0" prefWidth="150.0" promptText="Choose Match:" />
+                        <Button layoutX="261.0" layoutY="95.0" mnemonicParsing="false" onAction="#getAllMatches" text="View Match Details" />
+                        <Label layoutX="106.0" layoutY="70.0" text="Choose Match:" />
+                     </children>
+                  </Pane>
                   <Pane id="menuPane" fx:id="foulPane" prefHeight="550.0" prefWidth="958.0" visible="false">
                      <children>
                         <Spinner fx:id="timeFoul" layoutX="46.0" layoutY="62.0" prefHeight="31.0" prefWidth="90.0" />

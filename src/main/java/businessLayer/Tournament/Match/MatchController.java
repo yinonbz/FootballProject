@@ -7,9 +7,9 @@ import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedList;
 
 
 public class MatchController {
@@ -389,11 +389,15 @@ public class MatchController {
     }
 
     //todo ido added this function need to connect to DB!!
-    public HashMap<Integer, Match> getRefereeMatch(String rUserName) {
+    public ArrayList<String> getRefereeMatch(String rUserName) {
         if (systemController.containsReferee(rUserName)) {
-            return systemController.getRefereeFromDB(rUserName).getRefMatches();
+            return systemController.getAllRefsGameID(rUserName);
         } else {
             return null;
         }
+    }
+
+    public String getDetailsOnMatch(int match) {
+        return systemController.getDetailsOnMatch(match);
     }
 }

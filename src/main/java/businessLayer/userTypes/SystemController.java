@@ -86,7 +86,6 @@ public class SystemController extends Observable {
 
     /**
      * this function connects to the DB
-     *
      * @param DB
      * @return
      */
@@ -98,7 +97,6 @@ public class SystemController extends Observable {
 
     /**
      * Getter function for the league controller
-     *
      * @return
      */
     public LeagueController getLeagueController() {
@@ -107,7 +105,6 @@ public class SystemController extends Observable {
 
     /**
      * Getter function for the match controller
-     *
      * @return
      */
     public MatchController getMatchController() {
@@ -136,6 +133,7 @@ public class SystemController extends Observable {
     }
 
     /**
+     *
      * @return
      */
     public TeamController getTeamController() {
@@ -143,6 +141,7 @@ public class SystemController extends Observable {
     }
 
     /**
+     *
      * @param teamController
      */
     public void setTeamController(TeamController teamController) {
@@ -160,9 +159,7 @@ public class SystemController extends Observable {
         return true;
     }
 
-    /**
-     * UC-1.1
-     *
+    /** UC-1.1
      * @param userName The user name of the default temporary admin, as mentioned in the Readme file.
      * @param password The password of the default temporary admin, as mentioned in the Readme file.
      * @return true: if the temporary admin user was created successfully by the system. | false: The userName or password didn't match to the default temporary admin details.
@@ -174,7 +171,7 @@ public class SystemController extends Observable {
             ((Admin) temporaryAdmin).setApproved(true);
 //            DB.addSubscriberToDB("admin", temporaryAdmin); todo fix it with db
 
-            Map<String, ArrayList<String>> adminDetails = new HashMap<>();
+            Map<String,ArrayList<String>> adminDetails = new HashMap<>();
             ArrayList<String> approved = new ArrayList<>();
             approved.add("true");
             adminDetails.put("approved", approved);
@@ -189,9 +186,7 @@ public class SystemController extends Observable {
         return false;
     }
 
-    /**
-     * UC-1.1 (get input from System Service)
-     *
+    /** UC-1.1 (get input from System Service)
      * @param password temporary admin password.
      * @return true if the temporary admin entered the sufficient password to initialize the system.
      * false else.
@@ -280,7 +275,6 @@ public class SystemController extends Observable {
         this.userNotifications = userNotifications;
     }
     */
-
     /**
      * @return
      */
@@ -495,8 +489,7 @@ public class SystemController extends Observable {
 
     /**
      * the function lets the subscriber to upload a complaint
-     *
-     * @param content  the content of the complaint
+     *  @param content    the content of the complaint
      * @param username the subscriber who wants to complain
      */
     public boolean addComplaint(String content, String username) {
@@ -884,7 +877,7 @@ public class SystemController extends Observable {
     /**
      * the function takes a request for opening a new team and puts it in the data structure
      *
-     * @param details  of the new team
+     * @param details of the new team
      * @param username
      */
     public boolean addToTeamConfirmList(LinkedList<String> details, String username) {
@@ -898,7 +891,6 @@ public class SystemController extends Observable {
 
     /**
      * the function checks if the referee exists in the system
-     *
      * @param username
      * @return
      */
@@ -912,7 +904,6 @@ public class SystemController extends Observable {
 
     /**
      * a functions that returns the referee from the DB
-     *
      * @param username
      * @return
      */
@@ -932,7 +923,6 @@ public class SystemController extends Observable {
 
     /**
      * checks if the Association Representative exists in the DB
-     *
      * @param username
      * @return
      */
@@ -950,7 +940,7 @@ public class SystemController extends Observable {
     /**
      * the function approves the request by the AR and updates the new team in the system and in the team owner
      *
-     * @param teamName the name of the team
+     * @param teamName   the name of the team
      * @param username the subscriber who tries to confirm the request
      * @return true if it done successfully
      */
@@ -999,7 +989,6 @@ public class SystemController extends Observable {
 
     /**
      * the function checks if a player exists in the DB
-     *
      * @param playerName
      * @return
      */
@@ -1010,7 +999,6 @@ public class SystemController extends Observable {
 
     /**
      * brings back a subscriber from the data base if he exists in the system
-     *
      * @param username
      * @return
      */
@@ -1023,7 +1011,6 @@ public class SystemController extends Observable {
 
     /**
      * add a subscriber to the DB
-     *
      * @param username
      * @param subscriber
      * @return
@@ -1035,7 +1022,6 @@ public class SystemController extends Observable {
 
     /**
      * this function find the player according to is user name and return it if the player exist in the system
-     *
      * @param username the user name of the player
      * @return the player
      */
@@ -1052,7 +1038,6 @@ public class SystemController extends Observable {
 
     /**
      * the function checks if the DB contains the league
-     *
      * @param leagueID
      * @return
      */
@@ -1063,7 +1048,6 @@ public class SystemController extends Observable {
 
     /**
      * the function returns the league value from DB
-     *
      * @param leagueID
      * @return
      */
@@ -1079,7 +1063,6 @@ public class SystemController extends Observable {
 
     /**
      * add new league to the DB
-     *
      * @param leagueID
      * @return
      */
@@ -1087,6 +1070,7 @@ public class SystemController extends Observable {
         connectToLeagueDB();
         return DB.addToDB(leagueID, null, null, null, null);
     }
+
 
 
     /**
@@ -1108,7 +1092,6 @@ public class SystemController extends Observable {
 
     /**
      * this function find the Coach according to is user name and return it if the Coach exist in the system
-     *
      * @param assetUserName the user name of the Coach
      * @return the Coach
      */
@@ -1352,7 +1335,6 @@ public class SystemController extends Observable {
 
     /**
      * add stadium to stadiumDB
-     *
      * @param stadium
      */
     public boolean addStadium(Stadium stadium) {
@@ -1376,7 +1358,6 @@ public class SystemController extends Observable {
 
     /**
      * the function adds
-     *
      * @param nameStadium
      * @param numberOfSeats
      * @return
@@ -1546,7 +1527,6 @@ public class SystemController extends Observable {
 
     /**
      * finds a match in the DB
-     *
      * @param matchID
      * @return
      */
@@ -1557,7 +1537,6 @@ public class SystemController extends Observable {
             connectToTeamDB();
             Team home = getTeamByName(details.get("homeTeam").get(0));
             Team away = getTeamByName(details.get("awayTeam").get(0));
-            connectToLeagueDB();
             League league = getLeagueFromDB(details.get("leagueID").get(0));
             connectToSeasonDB();
             Stadium stadium = getStadiumByID(details.get("stadium").get(0));
@@ -1671,7 +1650,6 @@ public class SystemController extends Observable {
 
     /**
      * Login UC-2.3
-     *
      * @param userName the User Name as the user's input
      * @param password the Password as the user's input
      * @return the user type if there is a Subscriber in the DB with the @userName and the @password
@@ -1808,7 +1786,6 @@ public class SystemController extends Observable {
     /**
      * Registration for Team Manager:
      * Creates a new team manager in the DB
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the team manager
@@ -1840,7 +1817,6 @@ public class SystemController extends Observable {
     /**
      * Registration for Admin:
      * Creates a new Admin in the DB
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the admin
@@ -1868,7 +1844,6 @@ public class SystemController extends Observable {
     /**
      * Registration for AR:
      * Creates a new AR in the DB
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the AR
@@ -1935,7 +1910,6 @@ public class SystemController extends Observable {
 
     /**
      * function that asks from the DB to get a Season
-     *
      * @param leagueID
      * @param seasonID
      * @return
@@ -2023,7 +1997,6 @@ public class SystemController extends Observable {
 
     /**
      * the function updates the referee ID and attach it to the season in the DB
-     *
      * @param leagueID
      * @param seasonID
      * @param refereeID
@@ -2115,21 +2088,33 @@ public class SystemController extends Observable {
         return DB.update(MATCHENUM.ADDREFEREE, details);
     }
 
-    public List<Referee> getRefsOfMatch(int matchID) {
-
-        Match match = findMatch(matchID);
-        return match.getReferee();
+    public LinkedList<String> getRefsOfMatch(int matchID){
+        //Match match = findMatch(matchID);
+        connectToMatchDB();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("matchID",String.valueOf(matchID));
+        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLREFEREEOFGAME,args);
+        LinkedList<String> refs = new LinkedList<>();
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                refs.add(temp.get(0));
+            }
+        }
+        return refs;
     }
 
 
-    public boolean addMatchTableOfSeason(HashMap<Integer, Match> matchesOfTheSeason, String leagueID, int seasonID) {
+    public boolean addMatchTableOfSeason(HashMap <Integer, Match> matchesOfTheSeason, String leagueID, int seasonID){
         LinkedList<Integer> matchID = new LinkedList<>();
-        for (HashMap.Entry<Integer, Match> entry : matchesOfTheSeason.entrySet()) {
+        for (HashMap.Entry<Integer,Match> entry : matchesOfTheSeason.entrySet()){
             Match match = entry.getValue();
             addNewMatch(match, leagueID, seasonID);
             matchID.add(match.getMatchId());
         }
         connectToSeasonDB();
+        HashMap <String,String> args = new HashMap<>();
+        DB.update(SEASONENUM.MATCHESTABLE,args);
         return addMatchTableToSeason(leagueID, seasonID, matchID);
     }
 
@@ -2754,36 +2739,56 @@ public class SystemController extends Observable {
      * @param userName Team Owner
      * @return names of the ACTIVE teams
      */
-    public LinkedList<String> getActiveTeamOfTeamOwner(String userName) {
-        /*
-        TeamOwner teamOwner = DB.getTeamOwner(userName); todo need to add a query
-        LinkedList<String> teamNames = new LinkedList<>();
-        HashSet<Team> teams = teamOwner.getTeams();
-        for(Team t: teams){
-            if(t.getActive() == true)
-            teamNames.add(t.getTeamName());
+    public LinkedList<String> getActiveTeamOfTeamOwner(String userName){
+        connectToTeamDB();
+        HashSet <String> allTeamsOfUser = getAllTeamsOFTeamOwner(userName);
+        LinkedList<String> teamsOfOwner = new LinkedList<>();
+        //here we are collecting all of the teams the owner owns
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.ONLYACTIVE,null);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                if(allTeamsOfUser.contains(temp.get(0))){
+                    teamsOfOwner.add(temp.get(0));
+                }
+            }
         }
-        return teamNames;
-        */
-        return null;
+        return teamsOfOwner;
     }
 
     /**
      * @param userName Team Owner
      * @return names of the INACTIVE teams
      */
-    public LinkedList<String> getInactiveTeamOfTeamOwner(String userName) {
-        /*
-        TeamOwner teamOwner = DB.getTeamOwner(userName); //todo need to add a query in the db
-        LinkedList<String> teamNames = new LinkedList<>();
-        HashSet<Team> teams = teamOwner.getTeams();
-        for(Team t: teams){
-            if(t.getActive() == false)
-                teamNames.add(t.getTeamName());
+    public LinkedList<String> getInactiveTeamOfTeamOwner(String userName){
+        connectToTeamDB();
+        HashSet <String> allTeamsOfUser = getAllTeamsOFTeamOwner(userName);
+        LinkedList<String> teamsOfOwner = new LinkedList<>();
+        //here we are collecting all of the teams the owner owns
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.ONLYNOTACTIVE,null);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                if(allTeamsOfUser.contains(temp.get(0))){
+                    teamsOfOwner.add(temp.get(0));
+                }
+            }
         }
-        return teamNames;
-        */
-        return null;
+        return teamsOfOwner;
+    }
+
+    private HashSet<String> getAllTeamsOFTeamOwner(String userName){
+        HashMap<String,String> args = new HashMap<>();
+        args.put("userName",userName);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.TEAMOFOWNER,args);
+        HashSet<String> teamsOfTeamOwner = new HashSet<>();
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                teamsOfTeamOwner.add(temp.get(0));
+            }
+        }
+        return teamsOfTeamOwner;
     }
 
     /**
@@ -2819,67 +2824,80 @@ public class SystemController extends Observable {
      * @return get all the unconfirmed team names from the DB
      */
     public ArrayList<String> getAllUnconfirmedTeamsInDB() {
-        /*
-        HashMap<String, LinkedList<String>> teamsInDB = DB.getUnconfirmedTeams(); todo build a function in the db
-        ArrayList<String> teamNamesInDB = new ArrayList<>();
-        Iterator iterator = teamsInDB.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry me2 = (Map.Entry) iterator.next();
-            teamNamesInDB.add("" + me2.getKey());
+        connectToUnconfirmedTeamsDB();
+        ArrayList<String> unconfirmedTeams = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.UNCONONFIRMED,null);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                unconfirmedTeams.add(temp.get(0));
+            }
         }
-        return teamNamesInDB;
-        */
-        return null;
+        return unconfirmedTeams;
     }
 
     /**
      * @return get all the team manager's user names from the DB
      */
-    public ArrayList<String> getAllTeamManagers() {
-        /*
-        HashMap<String,TeamManager> teamManagersInDB = DB.getTeamManagers(); //todo need to build in the db
-        ArrayList<String> teamManagerNamesInDB = new ArrayList<>();
-        Iterator iterator = teamManagersInDB.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry me2 = (Map.Entry) iterator.next();
-            teamManagerNamesInDB.add("" + me2.getKey());
+    public ArrayList<String> getAllTeamManagers(){
+        connectToSubscriberDB();
+        ArrayList<String> teamManagers = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(UserTypes.TEAMMANAGER,null);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                teamManagers.add(temp.get(0));
+            }
         }
-        return teamManagerNamesInDB;
-        */
-        return null;
+        return teamManagers;
     }
 
     /**
      * @return get all the league's names from the DB
      */
     public ArrayList<String> getAllLeaguesInDB() {
-        /*
-        HashMap<String, League> leaguesInDB = DB.getLeagues(); //todo build in the db
-        ArrayList<String> leagueNamesInDB = new ArrayList<>();
-        Iterator iterator = leaguesInDB.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry me2 = (Map.Entry) iterator.next();
-            leagueNamesInDB.add("" + me2.getKey());
+        connectToLeagueDB();
+        ArrayList<String> leagues = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES,null);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                leagues.add(temp.get(0));
+            }
         }
-        return leagueNamesInDB;
-        */
-        return null;
+        return leagues;
     }
 
     /**
      * @return get all the team's names from the DB
      */
     public ArrayList<String> getAllTeamsNames() {
-        /*
-        if (DB.getTeams() != null && DB.getTeams().size() > 0) { //todo need to add the function the the db
-            ArrayList<String> teamsName = new ArrayList<>();
-            teamsName.addAll(DB.getTeams().keySet());
-            return teamsName;
-        } else {
-            return null;
+        connectToTeamDB();
+        ArrayList<String> teams = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.ALLTEAMS,null);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                teams.add(temp.get(0));
+            }
         }
-        */
-        return null;
+        return teams;
+    }
+
+    public boolean addNewSeasonToDB(String leagueID, int seasonID, Date start, Date end, int win, int lose, int tie, String matchingPolicy, Season season){
+        HashMap <String, ArrayList<String>> details = new HashMap<>();
+        connectToSeasonDB();
+        ArrayList<String> matchPolicy = new ArrayList<>();
+        matchPolicy.add(matchingPolicy);
+        details.put("matchingPolicy",matchPolicy);
+        ArrayList<String> rank = new ArrayList<>();
+        rank.add(String.valueOf(win));
+        rank.add(String.valueOf(lose));
+        rank.add(String.valueOf(tie));
+        details.put("rankingPolicy",rank);
+        DB.addToDB(leagueID,String.valueOf(seasonID),start.toString(),end.toString(),details);
+        //NOTICE MATCH, REFEREE AND TABLE ARE NOT NEEDED TO BE ADDED IN THIS FUNCTION!!!
+        return true;
     }
 
 
@@ -2888,21 +2906,38 @@ public class SystemController extends Observable {
      * @return the league's seasons
      */
     public ArrayList<String> getAllSeasonsFromLeague(String league) {
-        /*
-        if (DB.selectLeagueFromDB(league) != null) { //todo need to add the function to the db
-            League lg = DB.selectLeagueFromDB(league);
-            HashMap<Integer, Season> seasons = lg.getSeasons();
-            ArrayList<String> seasonsIdInLeague = new ArrayList<>();
-            Iterator iterator = seasons.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry me2 = (Map.Entry) iterator.next();
-                seasonsIdInLeague.add("" + me2.getKey());
+         connectToSeasonDB();
+         ArrayList<String> seasons = new ArrayList<>();
+         HashMap<String,String> args = new HashMap<>();
+         args.put("leagueID",league);
+         ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLSEASON,args);
+         for(Map <String,ArrayList<String>> map : details){
+             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                 ArrayList<String> temp = entry.getValue();
+                 seasons.add(temp.get(0));
+             }
+         }
+         return seasons;
+    }
+
+    public ArrayList<String> getAllRefsGameID(String userID){
+        connectToMatchDB();
+        ArrayList<String> matchID = new ArrayList<>();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("refID",userID);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLGAMEREFEREE,args);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                matchID.add(temp.get(0));
             }
-            return seasonsIdInLeague;
         }
-        return null;
-        */
-        return null;
+        return matchID;
+    }
+
+    public String getDetailsOnMatch(int matchID){
+        Match match = findMatch(matchID);
+        return match.toString();
     }
 
     //todo javafx function

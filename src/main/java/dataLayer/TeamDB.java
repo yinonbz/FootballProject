@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static dataLayer.Tables.Tables.SEASONS;
 import static dataLayer.Tables.tables.CoachTeam.COACH_TEAM;
 import static dataLayer.Tables.tables.Match.MATCH;
 import static dataLayer.Tables.tables.OwnerTeams.OWNER_TEAMS;
@@ -263,7 +264,56 @@ public class TeamDB implements DB_Inter {
             }
             return allOwner;
         }
-        return null;
+        ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+        if(teamObject == TEAMUPDATES.ALLTEAMS) {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(TEAMS.NAME).from(TEAMS).fetch();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(TEAMS.NAME));
+                seasonDetails.put("teamID", temp);
+                details.add(seasonDetails);
+            }
+        }
+        else if(teamObject == TEAMUPDATES.TEAMOFOWNER){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            String userName = arguments.get("userName");
+            Result<?> result = create.select(OWNER_TEAMS.OWNERID,OWNER_TEAMS.TEAMID).from(OWNER_TEAMS).where(OWNER_TEAMS.OWNERID.eq(userName)).fetch();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> teams = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                //temp.add(record.get(OWNER_TEAMS.OWNERID));
+                temp.add(record.get(OWNER_TEAMS.TEAMID));
+                teams.put("teamDetails", temp);
+                details.add(teams);
+            }
+            return details;
+        }
+        else if(teamObject == TEAMUPDATES.ONLYACTIVE){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(TEAMS.NAME,TEAMS.ISACTIVE).from(TEAMS).where(TEAMS.ISACTIVE.eq(true)).fetch();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> teams = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(TEAMS.NAME));
+                teams.put("teamDetails",temp);
+                details.add(teams);
+            }
+            return details;
+        }
+        else if(teamObject == TEAMUPDATES.ONLYNOTACTIVE) {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(TEAMS.NAME, TEAMS.ISACTIVE).from(TEAMS).where(TEAMS.ISACTIVE.eq(false)).fetch();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> teams = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(TEAMS.NAME));
+                teams.put("teamDetails", temp);
+                details.add(teams);
+            }
+        }
+        return details;
     }
 
     @Override

@@ -6,10 +6,7 @@ import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.SystemController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Date;
+import java.util.*;
 
 public class MatchService {
     private SystemController systemController;
@@ -223,16 +220,20 @@ public class MatchService {
         }
     }
     //todo ido add this function need to connect to db
-    public HashMap<Integer, Match> getAllRefereeMatch(String rUserName) {
+    public ArrayList<String> getAllRefereeMatch(String rUserName) {
+        return matchController.getRefereeMatch(rUserName);
+        /*
         HashMap<Integer, Match> match =  matchController.getRefereeMatch(rUserName);
         if(match!=null && match.size()>0){
             return match;
         }else{
             return null;
         }
+        */
     }
     //todo ido add this function need to connect to db
     public ArrayList<String> getAllPlayerOfMatch(int matchId, String rUserName) {
+        /*
         HashMap<Integer, Match> matches = matchController.getRefereeMatch(rUserName);
         if (matches != null && matches.size() > 0 && matches.containsKey(matchId)) {
             Match currMatch = matches.get(matchId);
@@ -249,6 +250,8 @@ public class MatchService {
         } else {
             return null;
         }
+        */
+        return null;
     }
 
 
@@ -291,5 +294,9 @@ public class MatchService {
             return matchController.setStadiumForMatch(username, matchID, stadiumName);
         }
         return false;
+    }
+
+    public String getDetailsOnMatch(int match) {
+        return matchController.getDetailsOnMatch(match);
     }
 }
