@@ -509,7 +509,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         int matchId = matchFoul.getValue();
         iFoulPlayer.setDisable(false);
         aFoulPlayer.setDisable(false);
-        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId);
         if (players != null && players.size() > 0) {
             iFoulPlayer.getItems().clear();
             aFoulPlayer.getItems().clear();
@@ -525,7 +525,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         int matchId = matchSubstituteId.getValue();
         playerOn.setDisable(false);
         playerOff.setDisable(false);
-        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId);
         if (players != null && players.size() > 0) {
             playerOn.getItems().clear();
             playerOn.getItems().addAll(players);
@@ -557,7 +557,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         playerGoal.setDisable(false);
         playerAssisted.setDisable(false);
         isOwnGoal.setDisable(false);
-        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId);
         if (players != null && players.size() > 0) {
             playerGoal.getItems().clear();
             playerGoal.getItems().addAll(players);
@@ -599,7 +599,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         int matchId = match.getValue();
         playerName.setDisable(false);
         playerName.getItems().removeAll();
-        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId, userLabel.getText());
+        ArrayList<String> players = matchService.getAllPlayerOfMatch(matchId);
         if (players != null && players.size() > 0) {
             playerName.getItems().clear();
             playerName.getItems().addAll(players);

@@ -232,7 +232,8 @@ public class MatchService {
         */
     }
     //todo ido add this function need to connect to db
-    public ArrayList<String> getAllPlayerOfMatch(int matchId, String rUserName) {
+    public ArrayList<String> getAllPlayerOfMatch(int matchId) {
+        return matchController.getAllPlayerOfMatch(matchId);
         /*
         HashMap<Integer, Match> matches = matchController.getRefereeMatch(rUserName);
         if (matches != null && matches.size() > 0 && matches.containsKey(matchId)) {
@@ -251,7 +252,6 @@ public class MatchService {
             return null;
         }
         */
-        return null;
     }
 
 

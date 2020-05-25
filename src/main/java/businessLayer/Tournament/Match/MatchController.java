@@ -400,4 +400,8 @@ public class MatchController {
     public String getDetailsOnMatch(int match) {
         return systemController.getDetailsOnMatch(match);
     }
+
+    public ArrayList<String> getAllPlayerOfMatch(int matchId) {
+        return systemController.getPlayerInMatch(matchId);
+    }
 }

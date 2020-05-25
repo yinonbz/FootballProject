@@ -1621,30 +1621,30 @@ public class SystemController extends Observable {
         String type = "";
         if (event instanceof Goal) {
             type = "goal";
-            details.put("playerG", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
-            details.put("playerA", new ArrayList<>(Arrays.asList(((Goal) event).getSecondPlayer().getName())));
+            details.put("playerG", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
+            details.put("playerA", new ArrayList<>(Arrays.asList(((Goal) event).getSecondPlayer().getUsername())));
             String isOwnGoal = String.valueOf(((Goal) event).isOwnGoal());
             details.put("isOwnGoal", new ArrayList<>(Arrays.asList(((isOwnGoal)))));
         } else if (event instanceof YellowCard) {
             type = "yellowcard";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof RedCard) {
             type = "redcard";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof Offside) {
             type = "offside";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof Injury) {
             type = "injury";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof Foul) {
             type = "foul";
-            details.put("playerA", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
-            details.put("playerF", new ArrayList<>(Arrays.asList(((Foul) event).getSecondPlayer().getName())));
+            details.put("playerA", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
+            details.put("playerF", new ArrayList<>(Arrays.asList(((Foul) event).getSecondPlayer().getUsername())));
         } else if (event instanceof Substitute) {
             type = "sub";
-            details.put("playerIn", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
-            details.put("playerOut", new ArrayList<>(Arrays.asList(((Substitute) event).getSecondPlayer().getName())));
+            details.put("playerIn", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
+            details.put("playerOut", new ArrayList<>(Arrays.asList(((Substitute) event).getSecondPlayer().getUsername())));
         }
         connectToEventDB();
         DB.addToDB(String.valueOf(matchID), time, String.valueOf(eventID), type, details);
@@ -2944,10 +2944,10 @@ public class SystemController extends Observable {
         String away = match.getAwayTeam().getTeamName();
         ArrayList<String> playersNames = new ArrayList<>();
         for (Player p : match.getHomeTeam().getPlayers()){
-            playersNames.add(p.getName()+"-"+home);
+            playersNames.add(p.getUsername()+"-"+home);
         }
         for (Player p : match.getAwayTeam().getPlayers()){
-            playersNames.add(p.getName()+"-"+away);
+            playersNames.add(p.getUsername()+"-"+away);
         }
         return playersNames;
     }
