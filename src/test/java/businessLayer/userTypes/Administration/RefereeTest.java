@@ -120,7 +120,7 @@ public class RefereeTest {
         //1
         //checks that the referee can add an event to a game he is submitted to
         //todo: check with new DB
-        assertTrue(matchService.reportFoulThroughReferee("3","Cillessen","Fred","200003","Love"));
+        assertTrue(matchService.reportFoulThroughReferee("119","Fred","Cillessen","200003","Love"));
 
         //2
         //checks yellow card event

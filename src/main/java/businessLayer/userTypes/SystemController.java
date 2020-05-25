@@ -36,21 +36,6 @@ public class SystemController extends Observable {
     private TeamController teamController;
     private MatchController matchController;
 
-    //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
-    //private HashMap<String, Team> teams; //name of the team, the team object
-    //private HashMap<String, Subscriber> systemSubscribers; //name of the username, subscriber
-    //private Map<Subscriber, List<String>> userNotifications;
-    //private HashMap<Integer, Complaint> systemComplaints; //complaint id, complaint object
-    //private HashMap<String, LinkedList<String>> unconfirmedTeams;
-    //private HashMap<String, Stadium> stadiums;
-
-
-    //----------------OLD DATA STRUCTURES THAT ARE NOT USED-------------------------------//
-
-    //private List<Guest> onlineGuests;
-    //private List<Admin> admins;
-    //private List<League> leagues;
-
 
     private SystemController() {
         DB = new DBHandler();
@@ -86,7 +71,6 @@ public class SystemController extends Observable {
     /**
      * this function connects to the DB
      *
-     *
      * @param DB
      * @return
      */
@@ -99,7 +83,6 @@ public class SystemController extends Observable {
     /**
      * Getter function for the league controller
      *
-     *
      * @return
      */
     public LeagueController getLeagueController() {
@@ -108,7 +91,6 @@ public class SystemController extends Observable {
 
     /**
      * Getter function for the match controller
-     *
      *
      * @return
      */
@@ -283,7 +265,6 @@ public class SystemController extends Observable {
     }
     */
 
-
     /**
      * @return
      */
@@ -447,9 +428,14 @@ public class SystemController extends Observable {
                 }
                 teamDetails.put("teamOwners", teamOwners);
 
+                if(team.getTeamManager() != null)
                 DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
                         , String.valueOf(team.getActive()), team.getTeamManager().getUsername()
                         , teamDetails);
+                else
+                    DB.addToDB(team.getTeamName(), String.valueOf(team.getEstablishedYear())
+                            , String.valueOf(team.getActive()), null
+                            , teamDetails);
             }
         }
     }
@@ -897,7 +883,6 @@ public class SystemController extends Observable {
     /**
      * the function checks if the referee exists in the system
      *
-     *
      * @param username
      * @return
      */
@@ -911,7 +896,6 @@ public class SystemController extends Observable {
 
     /**
      * a functions that returns the referee from the DB
-     *
      *
      * @param username
      * @return
@@ -932,7 +916,6 @@ public class SystemController extends Observable {
 
     /**
      * checks if the Association Representative exists in the DB
-     *
      *
      * @param username
      * @return
@@ -984,9 +967,11 @@ public class SystemController extends Observable {
                             ((TeamOwner) teamOwner).getTeams().add(team);
                             //updates the structure of the updated subscriber with the team
                             connectToSubscriberDB();
-                            DB.removeFromDB(teamOwner.getUsername(), null, null);
+                            DB.removeFromDB(teamName, null, null);
                             addSubscriber(teamOwner);
+                            //todo update the db
                             addTeamToOwner(teamOwner.getUsername(), team.getTeamName());
+                            //todo update the db
                             return true;
                         }
                     }
@@ -999,7 +984,6 @@ public class SystemController extends Observable {
     /**
      * the function checks if a player exists in the DB
      *
-     *
      * @param playerName
      * @return
      */
@@ -1010,7 +994,6 @@ public class SystemController extends Observable {
 
     /**
      * brings back a subscriber from the data base if he exists in the system
-     *
      *
      * @param username
      * @return
@@ -1025,7 +1008,6 @@ public class SystemController extends Observable {
     /**
      * add a subscriber to the DB
      *
-     *
      * @param username
      * @param subscriber
      * @return
@@ -1037,7 +1019,6 @@ public class SystemController extends Observable {
 
     /**
      * this function find the player according to is user name and return it if the player exist in the system
-     *
      *
      * @param username the user name of the player
      * @return the player
@@ -1056,7 +1037,6 @@ public class SystemController extends Observable {
     /**
      * the function checks if the DB contains the league
      *
-     *
      * @param leagueID
      * @return
      */
@@ -1068,13 +1048,12 @@ public class SystemController extends Observable {
     /**
      * the function returns the league value from DB
      *
-     *
      * @param leagueID
      * @return
      */
     public League getLeagueFromDB(String leagueID) {
         connectToLeagueDB();
-        Map<String, ArrayList<String>> details = DB.selectFromDB("leagueID", null, null);
+        Map<String, ArrayList<String>> details = DB.selectFromDB(leagueID, null, null);
         if (details != null) {
             League league = new League(leagueID);
             return league;
@@ -1084,7 +1063,6 @@ public class SystemController extends Observable {
 
     /**
      * add new league to the DB
-     *
      *
      * @param leagueID
      * @return
@@ -1097,7 +1075,6 @@ public class SystemController extends Observable {
 
     /**
      * this function find the TeamManager according to is user name and return it if the TeamManager exist in the system
-     *
      *
      * @param assetUserName the user name of the TeamManager
      * @return the TeamManager
@@ -1115,7 +1092,6 @@ public class SystemController extends Observable {
 
     /**
      * this function find the Coach according to is user name and return it if the Coach exist in the system
-     *
      *
      * @param assetUserName the user name of the Coach
      * @return the Coach
@@ -1153,7 +1129,6 @@ public class SystemController extends Observable {
 
     /**
      * return a default stadium to the matches policies
-     *
      *
      * @return
      */
@@ -1194,9 +1169,10 @@ public class SystemController extends Observable {
      * NULL if there is no user in the system with the input user name
      */
     public Subscriber getSubscriberByUserName(String userName) {
+        connectToSubscriberDB();
         Subscriber sub = null;
         if (DB.containInDB(userName, null, null)) {
-            connectToSubscriberDB();
+            //connectToSubscriberDB();
             Map<String, ArrayList<String>> subDetails = DB.selectFromDB(userName, null, null);
             String type = subDetails.get("type").get(0);
             if (type.equalsIgnoreCase("player")) {
@@ -1263,9 +1239,12 @@ public class SystemController extends Observable {
                         , roleRef.valueOf(subDetails.get("roleRef").get(0))
                         , getLeagueController()
                         , this);
+                HashMap<Integer,Match> mapMatch = new HashMap<>();
                 for (String str : subDetails.get("matches")) {
                     ((Referee) sub).addMatch(findMatch(Integer.parseInt(str)));
+                    System.out.println("delete");
                 }
+
             }
             return sub;
         }
@@ -1292,9 +1271,11 @@ public class SystemController extends Observable {
             for (String str : teamDetails.get("coaches")) {
                 coaches.add((Coach) getSubscriberByUserName(str));
             }
+            /*//todo need to be implemented in next iteration
             for (String str : teamDetails.get("matches")) {
                 matches.add(findMatch(Integer.parseInt(str)));
             }
+            */
             for (String str : teamDetails.get("ownerID")) {
                 teamOwners.add((TeamOwner) getSubscriberByUserName(str));
             }
@@ -1353,7 +1334,6 @@ public class SystemController extends Observable {
     /**
      * add stadium to stadiumDB
      *
-     *
      * @param stadium
      */
     public boolean addStadium(Stadium stadium) {
@@ -1378,7 +1358,6 @@ public class SystemController extends Observable {
     /**
      * the function adds
      *
-     *
      * @param nameStadium
      * @param numberOfSeats
      * @return
@@ -1399,10 +1378,6 @@ public class SystemController extends Observable {
      * @param teamName the name of the team from input
      * @param userName the user who wants to enable the team status
      * @return true if the team's status has been enabled.
-     * false else.
-    /**
-     * UC-6.6 - enable team status by Team Owner todo-write tests
-     *
      * false else.
      */
     public Boolean enableTeamStatus(String teamName, String userName) {
@@ -1443,10 +1418,6 @@ public class SystemController extends Observable {
      * @param teamName the name of the team from input
      * @param userName the user who wants to disable the team status
      * @return true if the team's status has been disabled.
-     * false else.
-    /**
-     * UC-6.6 - disable team status by Team Owner todo-write tests
-     *
      * false else.
      */
     public Boolean disableTeamStatus(String teamName, String userName) {
@@ -1489,10 +1460,6 @@ public class SystemController extends Observable {
      * @param newUserName the new team owner's user name
      * @param userName    the user which wants to add the user newUserName the the team owners
      * @return true if newUserName was added to the team's owners
-     * false else
-     *
-     * @param teamName    the team's name of the team which the user wants to add to it's owners
-     * @param userName    the user which wants to add the user newUserName the the team owners
      * false else
      */
     public Boolean appoinTeamOwnerToTeam(String teamName, String newUserName, String userName) {
@@ -1561,7 +1528,6 @@ public class SystemController extends Observable {
     /**
      * finds a match in the DB
      *
-     *
      * @param matchID
      * @return
      */
@@ -1572,38 +1538,41 @@ public class SystemController extends Observable {
             connectToTeamDB();
             Team home = getTeamByName(details.get("homeTeam").get(0));
             Team away = getTeamByName(details.get("awayTeam").get(0));
+            connectToLeagueDB();
             League league = getLeagueFromDB(details.get("leagueID").get(0));
             connectToSeasonDB();
             Stadium stadium = getStadiumByID(details.get("stadium").get(0));
             connectToSeasonDB();
-            Season season = selectSeasonFromDB(league.getLeagueName(), details.get("seasonID").get(0));
+            //Season season = selectSeasonFromDB(league.getLeagueName(), details.get("seasonID").get(0));
             String scoreString = details.get("score").get(0);
             String[] arr = scoreString.split(":");
             int[] score = new int[2];
             score[0] = Integer.parseInt(arr[0]);
             score[1] = Integer.parseInt(arr[1]);
             connectToSubscriberDB();
-            Referee mainReferee = (Referee) selectUserFromDB(details.get("mainRef").get(0));
+            //Referee mainReferee = (Referee) selectUserFromDB(details.get("mainRef").get(0));
+            String mainReferee = details.get("mainRef").get(0);
             ArrayList<String> refID = details.get("allRefs");
-            LinkedList<Referee> refs = new LinkedList<>();
+            LinkedList<String> refs = new LinkedList<>();
             for (String allRefID : refID) {
-                refs.add((Referee) selectUserFromDB(allRefID));
+                refs.add(allRefID);
             }
             int numOfFans = Integer.parseInt(details.get("numberOFFans").get(0));
             connectToEventRecordDB();
             EventRecord eventRecord = selectEventRecord(matchID);
             boolean isFinished = Boolean.valueOf(details.get("isFinished").get(0));
-            Match match = new Match(league, season, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee);
+            Match match = new Match(league, null, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee);
             return match;
         }
         return null;
     }
 
     public EventRecord selectEventRecord(int matchID) {
+        connectToEventRecordDB();
         Map<String, ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID), null, null);
         connectToMatchDB();
-        Match match = findMatch(matchID);
-        EventRecord eventRecord = new EventRecord(match);
+        ////Match match = findMatch(matchID);
+        EventRecord eventRecord = new EventRecord(matchID);
         connectToEventDB();
         for (Map.Entry<String, ArrayList<String>> arr : details.entrySet()) {
             Event event = selectEvent(Integer.parseInt(arr.getValue().get(0)), arr.getValue().get(1), Integer.parseInt(arr.getValue().get(2)));
@@ -1617,28 +1586,28 @@ public class SystemController extends Observable {
         String type = "";
         Map<String, ArrayList<String>> details = DB.selectFromDB(String.valueOf(matchID), time, String.valueOf(eventID));
 
-        if (details.get("type").equals("goal")) {
+        if (details.get("type").get(0).equals("goal")) {
             Player playerG = (Player) getSubscriberByUserName(details.get("playerG").get(0));
             Player playerA = (Player) getSubscriberByUserName(details.get("playerA").get(0));
             boolean isOwnGoal = Boolean.valueOf(details.get("isOwnGoal").get(0));
             return new Goal(playerG, playerA, isOwnGoal, matchController);
-        } else if (details.get("type").equals("yellowcard")) {
+        } else if (details.get("type").get(0).equals("yellowcard")) {
             Player player = (Player) getSubscriberByUserName(details.get("player").get(0));
             return new YellowCard(player, matchController);
-        } else if (details.get("type").equals("redcard")) {
+        } else if (details.get("type").get(0).equals("redcard")) {
             Player player = (Player) getSubscriberByUserName(details.get("player").get(0));
             return new RedCard(player, matchController);
-        } else if (details.get("type").equals("offside")) {
+        } else if (details.get("type").get(0).equals("offside")) {
             Player player = (Player) getSubscriberByUserName(details.get("player").get(0));
             return new Offside(player, matchController);
-        } else if (details.get("type").equals("injury")) {
+        } else if (details.get("type").get(0).equals("injury")) {
             Player player = (Player) getSubscriberByUserName(details.get("player").get(0));
             return new Injury(player, matchController);
-        } else if (details.get("type").equals("foul")) {
+        } else if (details.get("type").get(0).equals("foul")) {
             Player playerA = (Player) getSubscriberByUserName(details.get("playerA").get(0));
             Player playerF = (Player) getSubscriberByUserName(details.get("playerF").get(0));
             return new Foul(playerA, playerF, matchController);
-        } else if (details.get("type").equals("sub")) {
+        } else if (details.get("type").get(0).equals("sub")) {
             Player playerON = (Player) getSubscriberByUserName(details.get("playerON").get(0));
             Player playerOff = (Player) getSubscriberByUserName(details.get("playerOff").get(0));
             return new Substitute(playerON, playerOff, matchController);
@@ -1684,11 +1653,9 @@ public class SystemController extends Observable {
     /**
      * Login UC-2.3
      *
-     *
      * @param userName the User Name as the user's input
      * @param password the Password as the user's input
      * @return the user type if there is a Subscriber in the DB with the @userName and the @password
-     * null - else, or one of the inputs are null
      * null - else, or one of the inputs are null
      */
     public String enterLoginDetails(String userName, String password) {
@@ -1704,7 +1671,8 @@ public class SystemController extends Observable {
             throw new NotFoundInDbException("No such user in the data base.");
         //return null;
 
-        if (subscriber.getPassword().equals(password)) {//todo change the password to hash
+        String s = String.valueOf(password.hashCode());
+        if (subscriber.getPassword().equals(password)) {
             if (subscriber instanceof Admin) {
                 Admin userCheckIfApproved = ((Admin) subscriber);
                 if (userCheckIfApproved.isApproved() == false) {
@@ -1739,13 +1707,6 @@ public class SystemController extends Observable {
      * @param teamName  the team name of the player
      * @return true if the new player was created successfully in the DB
      * false else
-     *
-     * @param userName  the user name of the subscriber
-     * @param password  the password of the subscriber
-     * @param name      the name of the player
-     * @param fieldJob  the field job of the player
-     * @param teamName  the team name of the player
-     * false else
      */
     public boolean enterRegisterDetails_Player(String userName, String password, String name, String birthDate, String fieldJob, String teamName) {
         if (userName == null || password == null || name == null || birthDate == null || fieldJob == null || teamName == null) {
@@ -1773,16 +1734,12 @@ public class SystemController extends Observable {
      * Registration for Coach:
      * Creates a new coach in the DB
      *
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the coach
      * @param training the training of the new coach
      * @param teamJob  the team job of the new coach
      * @return true if the new coach was created successfully in the DB
-     * false else
-     * @param name     the name of the coach
-     * @param teamJob  the team job of the new coach
      * false else
      */
     public boolean enterRegisterDetails_Coach(String userName, String password, String name, String roleInTeam, String training, String teamJob) {
@@ -1806,13 +1763,10 @@ public class SystemController extends Observable {
      * Registration for Team Owner:
      * Creates a new team owner in the DB
      *
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the team owner
      * @return true if the new team owner was created successfully in the DB
-     * false else
-     * @param name     the name of the team owner
      * false else
      */
     public boolean enterRegisterDetails_TeamOwner(String userName, String password, String name) {
@@ -1836,14 +1790,11 @@ public class SystemController extends Observable {
      * Registration for Team Manager:
      * Creates a new team manager in the DB
      *
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the team manager
      * @param teamName the team name of the team owner
      * @return true if the new team manager was created successfully in the DB
-     * false else
-     * @param name     the name of the team manager
      * false else
      */
     public boolean enterRegisterDetails_TeamManager(String userName, String password, String name, String teamName) {
@@ -1871,13 +1822,10 @@ public class SystemController extends Observable {
      * Registration for Admin:
      * Creates a new Admin in the DB
      *
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the admin
      * @return true if the new admin was created successfully in the DB
-     * false else
-     * @param name     the name of the admin
      * false else
      */
     public boolean enterRegisterDetails_Admin(String userName, String password, String name) {
@@ -1902,13 +1850,10 @@ public class SystemController extends Observable {
      * Registration for AR:
      * Creates a new AR in the DB
      *
-     *
      * @param userName the user name of the subscriber
      * @param password the password of the subscriber
      * @param name     the name of the AR
      * @return true if the new AR was created successfully in the DB
-     * false else
-     * @param name     the name of the AR
      * false else
      */
     public boolean enterRegisterDetails_AssociationRepresentative(String userName, String password, String name) {
@@ -1953,10 +1898,6 @@ public class SystemController extends Observable {
      * @param approve           = true, disapprove = false
      * @return true if the userNameToApprove was approved/disapproved by userName
      * false else
-     *
-     * @param userName          the user name of the user which approves
-     * @param approve           = true, disapprove = false
-     * false else
      */
     public boolean handleAdminApprovalRequest(String userName, String userNameToApprove, boolean approve) {
         Subscriber approved = selectUserFromDB(userName);
@@ -1976,12 +1917,11 @@ public class SystemController extends Observable {
     /**
      * function that asks from the DB to get a Season
      *
-     *
      * @param leagueID
      * @param seasonID
      * @return
      */
-    public Season selectSeasonFromDB(String seasonID, String leagueID) {
+    public Season selectSeasonFromDB(String leagueID, String seasonID) {
         connectToSeasonDB();
         Map<String, ArrayList<String>> details = DB.selectFromDB(leagueID, String.valueOf(seasonID), null);
         ArrayList<String> matchesString = details.get("matches");
@@ -2064,7 +2004,6 @@ public class SystemController extends Observable {
 
     /**
      * the function updates the referee ID and attach it to the season in the DB
-     *
      *
      * @param leagueID
      * @param seasonID
@@ -2480,7 +2419,6 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Page update");
-                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -2517,7 +2455,6 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Match update");
-                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -2575,7 +2512,6 @@ public class SystemController extends Observable {
             if (followers != null) {
                 followers.add(event);
                 followers.add("Change in match date&place");
-                setChanged();
                 notifyObservers(followers);
             }
         }
@@ -2672,7 +2608,6 @@ public class SystemController extends Observable {
                adminToUpdate.add(name);
                 adminToUpdate.add("You have lost your rights as an owner for the team '" + team.getTeamName() + "'.");
                 adminToUpdate.add("Owner privileges removal");
-                setChanged();
                 notifyObservers(adminToUpdate);
             }
         }
@@ -2680,7 +2615,6 @@ public class SystemController extends Observable {
 
     /**
      * The function receives a username and sends it to the DB to be added into the online users data structure
-     *
      *
      * @param username
      */
@@ -2693,7 +2627,6 @@ public class SystemController extends Observable {
 
     /**
      * The function receives a username and sends it to the DB to be removed from the online users data structure
-     *
      *
      * @param username
      */
@@ -2738,10 +2671,6 @@ public class SystemController extends Observable {
      * //todo javafx function
      * <p>
      * The function receives a username and returns the list of its notifications
-     *
-    /**
-     * //todo javafx function
-     * <p>
      *
      * @param username
      * @return
@@ -2792,34 +2721,6 @@ public class SystemController extends Observable {
         return null;
     }
 
-    /**
-     * The function receives a team name and returns the matching team. If the name does not exist, returns close
-     * names to the original
-     * @param teamName
-     * @return possibleNames
-     */
-    /*
-    public LinkedList<Team> getSimilarTeams(String teamName) {
-        LinkedList<Team> possibleNames;
-        char firstTeamNameLetter = teamName.charAt(0);
-        possibleNames = DB.getTeamsWithCloseNames(firstTeamNameLetter);
-        return possibleNames;
-    }
-    */
-    /**
-     * The function receives a player name and returns the matching team. If the name does not exist, returns close
-     * names to the original
-     * @param playerName
-     * @return possibleNames
-     */
-    /*
-    public LinkedList<Player> getSimilarPlayers(String playerName) {
-        LinkedList<Player> possibleNames;
-        char firstPlayerNameLetter = playerName.charAt(0);
-        possibleNames = DB.getPlayersWithCloseNames(firstPlayerNameLetter);
-        return possibleNames;
-    }
-    */
 
     /**
      * @return get all the unconfirmed team names from the DB
@@ -2915,26 +2816,21 @@ public class SystemController extends Observable {
     public void updatePlayerBDate(String date, String user) {
     }
 
-
     //todo javafx function
     public void updatePlayerName(String name, String userName) {
     }
-
 
     //todo javafx function
     public void updatePlayerPost(String userName, String post) {
     }
 
-
     //todo javafx function
     public void updateCoachName(String name, String userName1) {
     }
 
-
     //todo javafx function
     public void updateCoachPost(String userName, String post) {
     }
-
 
     //todo javafx function
     public void updateRefereeName(String name, String userName) {

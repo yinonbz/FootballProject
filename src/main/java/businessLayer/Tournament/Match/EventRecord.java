@@ -1,12 +1,13 @@
 package businessLayer.Tournament.Match;
 
 import businessLayer.Team.Team;
+import businessLayer.userTypes.SystemController;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class EventRecord {
-
+    private int matchId;
     private Match match;
     private HashMap<String, LinkedList <Event>> gameEvents;
 
@@ -19,7 +20,14 @@ public class EventRecord {
         this.match=match;
         gameEvents = new HashMap<>();
     }
-
+    /**
+     * constructor
+     * @param matchId the match that the events belongs to
+     */
+    public EventRecord (int matchId){
+        this.matchId=matchId;
+        gameEvents = new HashMap<>();
+    }
     /**
      * adding a new event to the event recorder
      * @param time the time that the event have occurred
@@ -42,6 +50,11 @@ public class EventRecord {
             }
             //here we will update the score of the game
             if(event instanceof Goal){
+                if(this.match==null){
+                    //SystemController systemController = SystemController.SystemController();
+                    //this.match = systemController.findMatch(matchId);
+                }
+                /*
                 Team home = match.getHomeTeam();
                 int numGoalsHome = match.getScore()[0];
                 int numGoalsAway = match.getScore()[1];
@@ -61,6 +74,7 @@ public class EventRecord {
                     int [] newScore = {numGoalsHome,numGoalsAway+1};
                     match.setScore(newScore);
                 }
+                */
             }
         }
     }
