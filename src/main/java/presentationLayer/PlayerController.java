@@ -54,7 +54,7 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
         try {
             String date = bDate.getValue().toString();
             if(date!=null &&!date.equals("")) {
-                systemService.updatePlayerBDate(date, userName);
+                systemService.updatePlayerBDate(date.replace("-","/"), userName);
                 success("changing BirthDate to " +date );
             }else{
                 missingAlert();

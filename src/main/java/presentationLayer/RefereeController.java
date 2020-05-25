@@ -541,7 +541,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         try {
             String name = nameField.getText();
             if (name != null && !name.equals("")) {
-                systemService.updateRefereeName(name, userName);
+                systemService.updateRefereeName(name, this.userLabel.getText());
                 success("changing name to " + name);
             } else {
                 missingAlert();
