@@ -273,7 +273,7 @@ public class DBHandlerTest {
     @Test
     public void selectAllRecords() {
         //retreive all referees
-        ArrayList<Map<String, ArrayList<String>>> allRecords = db.selectAllRecords(UserTypes.REFEREE);
+        ArrayList<Map<String, ArrayList<String>>> allRecords = db.selectAllRecords(UserTypes.REFEREE,null);
         for(Map<String,ArrayList<String>> map: allRecords){
             for(Map.Entry<String,ArrayList<String>> entry: map.entrySet()){
                 System.out.print(entry.getKey()+": ");

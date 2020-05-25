@@ -442,7 +442,7 @@ public class DBHandler implements DB_Inter{
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType,Map<String,String> arguments) {
         if(userType == UserTypes.SUBSCRIBER){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select(SUBSCRIBERS.SUBSCRIBERID).
@@ -470,6 +470,20 @@ public class DBHandler implements DB_Inter{
 
             }
             return allCoaches;
+        }
+        if(userType ==UserTypes.ADMIN){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(ADMINS.ADMINID).
+                    from(ADMINS)
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allAdmins = new ArrayList<>();
+            allAdmins.add(new HashMap<>());
+            allAdmins.get(0).put("admins",new ArrayList<>());
+            for(Record r: result){
+                allAdmins.get(0).get("admins").add(r.get(COACHES.COACHID));
+
+            }
+            return allAdmins;
         }
         if(userType ==UserTypes.REFEREE){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);

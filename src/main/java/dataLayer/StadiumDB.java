@@ -173,7 +173,7 @@ public class StadiumDB implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType,Map<String,String> arguments) {
         System.out.println("can't get all stadium from the system");
         return null;
     }

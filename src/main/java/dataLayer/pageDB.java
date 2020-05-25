@@ -139,18 +139,20 @@ public class pageDB implements DB_Inter{
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e) {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         return null;
     }
 
     @Override
     public boolean update(Enum<?> e, Map<String, String> arguments) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Map<String, ArrayList<String>> str = selectFromDB(arguments.get("userName"),null,null);
+        int pageID = Integer.parseInt(str.get("pageID").get(0));
         if(e==PAGEUPDATES.SUMBIT){
             create.insertInto(PAGE_POST
                     ,PAGE_POST.PAGEID
                     ,PAGE_POST.POST)
-                    .values(Integer.parseInt(arguments.get("pageID"))
+                    .values(pageID
                             ,arguments.get("post"))
                     .execute();
         }

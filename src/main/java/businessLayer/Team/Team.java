@@ -12,6 +12,7 @@ import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.SystemController;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -64,7 +65,7 @@ public class Team implements HasPage {
         this.establishedYear = establishedYear;
         this.isActive = isActive;
         this.closedByAdmin = closedByAdmin;
-        teamPage = new Page(teamOwners, teamName, establishedYear, this, teamName);
+        teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
 
     }
     //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited
@@ -89,7 +90,7 @@ public class Team implements HasPage {
         this.seasons = new HashSet<>();
         this.matches = new HashSet<>();
         this.teamManager = null;
-        teamPage = new Page(teamOwners, teamName, establishedYear, this, teamName);
+        teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
 
 
     }
