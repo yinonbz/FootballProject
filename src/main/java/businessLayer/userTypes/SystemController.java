@@ -60,6 +60,7 @@ public class SystemController extends Observable {
         DB = new DBHandler();
     }
 
+
     /**
      * The function receives a service and adds it as an observer of the system-controller
      *
@@ -2962,6 +2963,8 @@ public class SystemController extends Observable {
     public ArrayList<String> getAllLeaguesInDB() {
         connectToLeagueDB();
         ArrayList<String> leagues = new ArrayList<>();
+        leagues.add("Champions");
+        /*
         ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES,null);
         for(Map <String,ArrayList<String>> map : details){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
@@ -2969,6 +2972,7 @@ public class SystemController extends Observable {
                 leagues.add(temp.get(0));
             }
         }
+        */
         return leagues;
     }
 
@@ -3102,5 +3106,27 @@ public class SystemController extends Observable {
     //todo javafx function
     public void updateRefereeName(String name, String userName) {
         updateSubscriberName(name, userName);
+    }
+
+    //todo javafx function add to db ido added
+    public ArrayList<String> getAllRefereeNames() {
+        ArrayList<String> refNames = new ArrayList<>();
+        refNames.add("Love");
+        refNames.add("Mumba");
+        refNames.add("Nelson");
+        refNames.add("Robson");
+        return refNames;
+    }
+    //todo ido added
+    public ArrayList<String> getEventByMatch(String matchId) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("0");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        list.add("6");
+        return list;
     }
 }

@@ -456,4 +456,8 @@ public class SystemService extends Observable implements Observer {
         systemController.updateRefereeName(name,userName);
 
     }
+    //todo ido add this function
+    public ArrayList<String> getEventByMatch(String matchId) {
+        return systemController.getEventByMatch(matchId);
+    }
 }

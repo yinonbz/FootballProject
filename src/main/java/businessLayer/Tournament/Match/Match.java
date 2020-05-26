@@ -123,12 +123,15 @@ public class Match {
      * @return
      */
     public boolean isMainReferee(Referee otherReferee){
+        /*
         if(mainReferee!=null && otherReferee!=null){
             if(mainReferee.equals(otherReferee)){
                 return true;
             }
         }
         return false;
+        */
+        return otherReferee.getUsername().equals(this.mainRefereeStr);
     }
 
     /**

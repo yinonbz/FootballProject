@@ -224,10 +224,11 @@ public class LeagueService {
 
     /**
      * @return all of the referee names from the DB
+     * todo not implemented in db
      */
     public ArrayList<String> getAllRefereeNames(){
-      //  return systemController.getAllRefereeNames(); todo not implemented in db
-        return null;
+       return systemController.getAllRefereeNames();
+       // return null;
     }
 
 

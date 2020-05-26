@@ -124,13 +124,11 @@ public class ARController implements ControllerInterface, Initializable, Observe
         approveTeamPane.setVisible(false);
         createLeaguePane.setVisible(false);
         addTeamToSeasonPane.setVisible(false);
-
         leagueCombo.getItems().setAll(
                 leagueService.getAllULeagues()
         );
-
-
     }
+
 
     public void activatePolicy() {
         //int leagueId = leagueTeamsSpinner.getValue();

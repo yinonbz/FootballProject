@@ -161,9 +161,14 @@ public class DBEvents implements DB_Inter {
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         return null;
     }
-
+    //todo ido write this code!!!!!! need to check!!!!
     @Override
     public boolean update(Enum<?> e, Map<String, String> arguments) {
+        /*
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        create.insertInto(SEASON_REFEREE).values(arguments.get("leagueID"),Integer.parseInt(arguments.get("seasonID")),arguments.get("refID")).execute();
+        return true;
+        */
         return false;
     }
 
