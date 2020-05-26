@@ -177,11 +177,9 @@
                      <children>
                         <Button layoutX="76.0" layoutY="141.0" mnemonicParsing="false" onAction="#removeCurrEvent" text="Submit" />
                         <ComboBox fx:id="matchRemoveId" layoutX="51.0" layoutY="93.0" onAction="#fillRemove" prefHeight="25.0" prefWidth="100.0" promptText="Match ID:" />
-                        <Spinner fx:id="timeRemove" disable="true" layoutX="314.0" layoutY="93.0" prefHeight="25.0" prefWidth="100.0" />
-                        <ComboBox fx:id="eventRemove" disable="true" layoutX="188.0" layoutY="93.0" prefHeight="25.0" prefWidth="100.0" promptText="Event ID:" />
+                        <ComboBox fx:id="eventRemove" disable="true" layoutX="188.0" layoutY="93.0" prefHeight="25.0" prefWidth="220.0" promptText="Event ID:" />
                         <Label layoutX="57.0" layoutY="69.0" prefHeight="17.0" prefWidth="89.0" text="Choose Match:" />
-                        <Label layoutX="343.0" layoutY="69.0" prefHeight="17.0" prefWidth="42.0" text="Time:" />
-                        <Label layoutX="202.0" layoutY="69.0" text="Choose Event" />
+                        <Label layoutX="262.0" layoutY="69.0" text="Choose Event" />
                      </children></Pane>
                    <Pane id="menuPane" fx:id="namePane" prefHeight="550.0" prefWidth="1018.0" visible="false">
                        <children>

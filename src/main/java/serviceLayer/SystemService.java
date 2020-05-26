@@ -460,4 +460,8 @@ public class SystemService extends Observable implements Observer {
     public ArrayList<String> getEventByMatch(String matchId) {
         return systemController.getEventByMatch(matchId);
     }
+
+    public ArrayList<String> allEventFromMatch(Integer matchId) {
+        return systemController.allEventFromMatch(matchId);
+    }
 }

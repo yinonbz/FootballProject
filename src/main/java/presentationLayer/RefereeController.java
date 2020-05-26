@@ -109,8 +109,10 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     private ComboBox<Integer> matchSubstituteId;
     @FXML
     private ComboBox<Integer> matchRemoveId;
+    /*
     @FXML
     private Spinner<Integer> timeRemove;
+    */
     @FXML
     private ComboBox<String> eventRemove;
     @FXML
@@ -311,7 +313,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         namePane.setVisible(false);
         removeEventPane.setVisible(true);
         matchPane.setVisible(false);
-        timeRemove.getValueFactory().setValue(0);
+        //timeRemove.getValueFactory().setValue(0);
     }
 
     public void switchNamePane() {
@@ -494,9 +496,11 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     public void removeCurrEvent() {
         try {
             int matchId = matchRemoveId.getValue();
-            int time = timeRemove.getValue();
+            //int time = timeRemove.getValue();
+            //int time =0;
             String eventId = eventRemove.getValue();
-            matchService.removeEventByMainReferee(String.valueOf(time), String.valueOf(matchId), userLabel.getText(), eventId);
+            String[] Arr = eventId.split("-");
+            matchService.removeEventByMainReferee(Arr[1].substring(14), String.valueOf(matchId), userLabel.getText(), Arr[0].substring(9));
         } catch (NotApprovedException e) {
             showAlert("Access Denied", e.getMessage(), Alert.AlertType.WARNING);
         } catch (Exception e) {
@@ -569,10 +573,22 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
 
     @FXML
     public void fillRemove() {
-        timeRemove.setDisable(false);
-        eventRemove.getItems().addAll(systemService.getEventByMatch(String.valueOf(matchRemoveId.getValue())));
-        eventRemove.setDisable(false);
+        //timeRemove.setDisable(false);
+        ArrayList<String> detail = new ArrayList<>();
+        ArrayList<String> list = systemService.allEventFromMatch(matchRemoveId.getValue());
+        if(list!=null && list.size()>0) {
+            for (String s:list) {
+                String [] strArr = s.split("-");
+                detail.add("Event ID:"+strArr[0] + "-Time Of Event:"+strArr[1]+ "-Event Type:"+strArr[2]);
+            }
+            eventRemove.getItems().addAll(detail);
+            eventRemove.setDisable(false);
+        }else{
+            noEventAlert();
+        }
     }
+
+
 
     @FXML
     public void fillPlayerInjury() {
@@ -617,6 +633,13 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     }
 
     private void noPlayerAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("no Players assigned ");
+        alert.setHeaderText("matches doesnt have any Players");
+        alert.setContentText("matches doesnt have any Players.");
+        alert.showAndWait();
+    }
+    private void noEventAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("no Players assigned ");
         alert.setHeaderText("matches doesnt have any Players");
@@ -678,7 +701,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         timeRed.setValueFactory(valueFactory);
         timeYellow.setValueFactory(valueFactory);
         timeSubstitute.setValueFactory(valueFactory);
-        timeRemove.setValueFactory(valueFactory);
+        //timeRemove.setValueFactory(valueFactory);
         //SpinnerValueFactory<Integer> valueFactoryEvent = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
        // eventRemove.setValueFactory(valueFactoryEvent);
     }
