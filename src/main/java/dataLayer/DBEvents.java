@@ -124,7 +124,7 @@ public class DBEvents implements DB_Inter {
             result = create.select().from(OFFSIDE).where(OFFSIDE.MATCHID.eq(matchID).and(OFFSIDE.EVENTID.eq(eventID)
                     .and(OFFSIDE.TIME.eq(time)))).fetch();
             ArrayList<String> player = new ArrayList<>();
-            player.add(result.get(0).get(GOAL.PLAYERGOALID));
+            player.add(result.get(0).get(OFFSIDE.PLAYEROFFSIDEID));
             details.put("player",player);
         }
         else if(type.equals("foul")){

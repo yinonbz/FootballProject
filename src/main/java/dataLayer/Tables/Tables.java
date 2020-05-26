@@ -19,13 +19,16 @@ import dataLayer.Tables.tables.Injury;
 import dataLayer.Tables.tables.League;
 import dataLayer.Tables.tables.Logs;
 import dataLayer.Tables.tables.Match;
+import dataLayer.Tables.tables.MatchFollowers;
 import dataLayer.Tables.tables.MatchReferee;
 import dataLayer.Tables.tables.MatchingPolicy;
+import dataLayer.Tables.tables.Notifications;
 import dataLayer.Tables.tables.Offside;
 import dataLayer.Tables.tables.OwnerManagerAssignings;
 import dataLayer.Tables.tables.OwnerOwnerAssignings;
 import dataLayer.Tables.tables.OwnerTeams;
 import dataLayer.Tables.tables.OwnersOfStadium;
+import dataLayer.Tables.tables.PageFollowers;
 import dataLayer.Tables.tables.PageOwner;
 import dataLayer.Tables.tables.PagePost;
 import dataLayer.Tables.tables.Pages;
@@ -133,6 +136,11 @@ public class Tables {
     public static final Match MATCH = Match.MATCH;
 
     /**
+     * The table <code>demodb.match_followers</code>.
+     */
+    public static final MatchFollowers MATCH_FOLLOWERS = MatchFollowers.MATCH_FOLLOWERS;
+
+    /**
      * The table <code>demodb.match_referee</code>.
      */
     public static final MatchReferee MATCH_REFEREE = MatchReferee.MATCH_REFEREE;
@@ -141,6 +149,11 @@ public class Tables {
      * The table <code>demodb.matching policy</code>.
      */
     public static final MatchingPolicy MATCHING_POLICY = MatchingPolicy.MATCHING_POLICY;
+
+    /**
+     * The table <code>demodb.notifications</code>.
+     */
+    public static final Notifications NOTIFICATIONS = Notifications.NOTIFICATIONS;
 
     /**
      * The table <code>demodb.offside</code>.
@@ -166,6 +179,11 @@ public class Tables {
      * The table <code>demodb.owners_of_stadium</code>.
      */
     public static final OwnersOfStadium OWNERS_OF_STADIUM = OwnersOfStadium.OWNERS_OF_STADIUM;
+
+    /**
+     * The table <code>demodb.page_followers</code>.
+     */
+    public static final PageFollowers PAGE_FOLLOWERS = PageFollowers.PAGE_FOLLOWERS;
 
     /**
      * The table <code>demodb.page_owner</code>.

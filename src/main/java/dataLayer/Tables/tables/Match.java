@@ -24,6 +24,7 @@ import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UByte;
 
 
 /**
@@ -32,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Match extends TableImpl<MatchRecord> {
 
-    private static final long serialVersionUID = 2125991864;
+    private static final long serialVersionUID = 14729645;
 
     /**
      * The reference instance of <code>demodb.match</code>
@@ -85,7 +86,7 @@ public class Match extends TableImpl<MatchRecord> {
     /**
      * The column <code>demodb.match.isFinished</code>.
      */
-    public final TableField<MatchRecord, Boolean> ISFINISHED = createField(DSL.name("isFinished"), org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.field("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "");
+    public final TableField<MatchRecord, UByte> ISFINISHED = createField(DSL.name("isFinished"), org.jooq.impl.SQLDataType.TINYINTUNSIGNED.defaultValue(org.jooq.impl.DSL.field("000", org.jooq.impl.SQLDataType.TINYINTUNSIGNED)), this, "");
 
     /**
      * The column <code>demodb.match.Date</code>.
@@ -206,7 +207,7 @@ public class Match extends TableImpl<MatchRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, Integer, String, String, String, String, Boolean, LocalDate, Integer, String> fieldsRow() {
+    public Row11<Integer, String, Integer, String, String, String, String, UByte, LocalDate, Integer, String> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 }

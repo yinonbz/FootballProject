@@ -30,10 +30,9 @@ static int pageCounter=0;
         owners = new ArrayList<>();
         owners.add(username);
         this.pageOwner = pageOwner;
-        systemController = SystemController.SystemController();
-        //systemController.addPageToDB(username, this);
         pageID=pageCounter;
         pageCounter++;
+        systemController = SystemController.SystemController();
     }
 
     /**

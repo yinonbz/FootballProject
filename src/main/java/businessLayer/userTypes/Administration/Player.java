@@ -35,7 +35,7 @@ public class Player extends Subscriber implements OwnerEligible, HasPage {
         this.teamOwner =null;
         this.salary= salary;
         playerPage = new Page(username,name,birthDate, this);
-        systemController.addPageToDB(username, playerPage);
+        systemController.addPageToDB(username,playerPage);
     }
 
     public int getSalary() {
@@ -46,6 +46,10 @@ public class Player extends Subscriber implements OwnerEligible, HasPage {
         this.salary = salary;
     }
 
+    @Override
+    public String getUserName() {
+        return this.getUsername();
+    }
     /**
      * @param name
      */

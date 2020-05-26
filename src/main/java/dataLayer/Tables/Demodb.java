@@ -19,13 +19,16 @@ import dataLayer.Tables.tables.Injury;
 import dataLayer.Tables.tables.League;
 import dataLayer.Tables.tables.Logs;
 import dataLayer.Tables.tables.Match;
+import dataLayer.Tables.tables.MatchFollowers;
 import dataLayer.Tables.tables.MatchReferee;
 import dataLayer.Tables.tables.MatchingPolicy;
+import dataLayer.Tables.tables.Notifications;
 import dataLayer.Tables.tables.Offside;
 import dataLayer.Tables.tables.OwnerManagerAssignings;
 import dataLayer.Tables.tables.OwnerOwnerAssignings;
 import dataLayer.Tables.tables.OwnerTeams;
 import dataLayer.Tables.tables.OwnersOfStadium;
+import dataLayer.Tables.tables.PageFollowers;
 import dataLayer.Tables.tables.PageOwner;
 import dataLayer.Tables.tables.PagePost;
 import dataLayer.Tables.tables.Pages;
@@ -64,7 +67,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Demodb extends SchemaImpl {
 
-    private static final long serialVersionUID = 1507307732;
+    private static final long serialVersionUID = -509878001;
 
     /**
      * The reference instance of <code>demodb</code>
@@ -147,6 +150,11 @@ public class Demodb extends SchemaImpl {
     public final Match MATCH = Match.MATCH;
 
     /**
+     * The table <code>demodb.match_followers</code>.
+     */
+    public final MatchFollowers MATCH_FOLLOWERS = MatchFollowers.MATCH_FOLLOWERS;
+
+    /**
      * The table <code>demodb.match_referee</code>.
      */
     public final MatchReferee MATCH_REFEREE = MatchReferee.MATCH_REFEREE;
@@ -155,6 +163,11 @@ public class Demodb extends SchemaImpl {
      * The table <code>demodb.matching policy</code>.
      */
     public final MatchingPolicy MATCHING_POLICY = MatchingPolicy.MATCHING_POLICY;
+
+    /**
+     * The table <code>demodb.notifications</code>.
+     */
+    public final Notifications NOTIFICATIONS = Notifications.NOTIFICATIONS;
 
     /**
      * The table <code>demodb.offside</code>.
@@ -180,6 +193,11 @@ public class Demodb extends SchemaImpl {
      * The table <code>demodb.owners_of_stadium</code>.
      */
     public final OwnersOfStadium OWNERS_OF_STADIUM = OwnersOfStadium.OWNERS_OF_STADIUM;
+
+    /**
+     * The table <code>demodb.page_followers</code>.
+     */
+    public final PageFollowers PAGE_FOLLOWERS = PageFollowers.PAGE_FOLLOWERS;
 
     /**
      * The table <code>demodb.page_owner</code>.
@@ -327,13 +345,16 @@ public class Demodb extends SchemaImpl {
             League.LEAGUE,
             Logs.LOGS,
             Match.MATCH,
+            MatchFollowers.MATCH_FOLLOWERS,
             MatchReferee.MATCH_REFEREE,
             MatchingPolicy.MATCHING_POLICY,
+            Notifications.NOTIFICATIONS,
             Offside.OFFSIDE,
             OwnerManagerAssignings.OWNER_MANAGER_ASSIGNINGS,
             OwnerOwnerAssignings.OWNER_OWNER_ASSIGNINGS,
             OwnerTeams.OWNER_TEAMS,
             OwnersOfStadium.OWNERS_OF_STADIUM,
+            PageFollowers.PAGE_FOLLOWERS,
             PageOwner.PAGE_OWNER,
             PagePost.PAGE_POST,
             Pages.PAGES,
