@@ -128,7 +128,7 @@ public class CoachController implements Initializable,ControllerInterface, Obser
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        systemService.addObserverForService(this);
     }
 
     public void logoutB(ActionEvent actionEvent) {

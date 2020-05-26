@@ -3,7 +3,6 @@ package presentationLayer;
 import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.userTypes.SystemController;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -28,10 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 
@@ -130,6 +126,16 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
     private Pane reopenTeamPane;
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+        LinkedList<String> message = ((LinkedList<String>)arg);
+        notificationPanesCollection= new ArrayList<>();
+        AnchorPane newPanelContent = new AnchorPane();
+        newPanelContent.getChildren().add(new Label(message.get(1)));
+        TitledPane pane = new TitledPane(message.get(0), newPanelContent);
+        notificationsPane.getPanes().add(pane);
+    }
+
 
 
     public void addNewTeam(ActionEvent actionEvent) {
@@ -185,8 +191,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         leagueService = new LeagueService();
         teamService = new TeamService();
         systemService = new SystemService();
-
-
+        systemService.addObserverForService(this);
     }
 
     public void logoutB(ActionEvent actionEvent) {

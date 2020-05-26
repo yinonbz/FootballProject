@@ -98,7 +98,7 @@ public class FanController implements Initializable,ControllerInterface, Observe
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         systemService = new SystemService();
-
+        systemService.addObserverForService(this);
     }
 
     public void logoutB(ActionEvent actionEvent) {

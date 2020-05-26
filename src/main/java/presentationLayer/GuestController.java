@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import java.awt.*;
 import java.io.IOException;
 
-public class GuestController implements ControllerInterface{
+public class GuestController{
 
 
     @FXML
@@ -28,8 +28,5 @@ public class GuestController implements ControllerInterface{
         removeTeamP.setVisible(true);
     }
 
-    @Override
-    public void setUser(String usernameL) {
 
-    }
 }

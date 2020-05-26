@@ -150,7 +150,7 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
         leagueService = new LeagueService();
         systemService = new SystemService();
         notificationPanesCollection= new ArrayList<>();
-
+        systemService.addObserverForService(this);
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if(messages != null) {
             for (String msg : messages) {

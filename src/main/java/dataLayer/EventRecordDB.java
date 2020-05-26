@@ -76,7 +76,7 @@ public class EventRecordDB implements DB_Inter {
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
-        if(e == MATCHENUM.ALLEVENTSFROMMATCH){
+        if(e == MATCHENUM.ALLMATCHES){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select().from(EVENTSRECORDER_EVENTS).
                     where(EVENTSRECORDER_EVENTS.MATCHID.eq(Integer.parseInt(arguments.get("matchID")))).fetch();
