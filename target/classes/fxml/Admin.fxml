@@ -27,7 +27,7 @@
                         <Insets top="5.0" />
                     </padding>
                 </Label>
-                <Button minHeight="30.0" minWidth="65.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Logout">
+                <Button minHeight="30.0" minWidth="65.0" mnemonicParsing="false" onAction="#logoutB" prefHeight="30.0" prefWidth="74.0" text="Logout">
                     <HBox.margin>
                         <Insets right="20.0" />
                     </HBox.margin></Button>

@@ -18,15 +18,25 @@ import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.*;
+import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.log4j.xml.XmlConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mariadb.jdbc.internal.logging.LoggerFactory;
+import org.apache.logging.log4j.core.LoggerContext;
+
+
+import org.apache.logging.log4j.core.config.ConfigurationSource;
 import serviceLayer.SystemService;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
@@ -44,8 +54,10 @@ public class SystemController extends Observable {
     private MatchController matchController;
     private static final Logger events = LogManager.getLogger("Events");
     private static final Logger errors = LogManager.getLogger("Errors");
-    private FileHandler fileHandlerEve;
-    private FileHandler fileHandlerErr;
+    LoggerContext context = (LoggerContext) LogManager.getContext(false);
+
+    //private FileHandler fileHandlerEve;
+    //private FileHandler fileHandlerErr;
 
     //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
     //private HashMap<String, Team> teams; //name of the team, the team object
@@ -65,13 +77,18 @@ public class SystemController extends Observable {
 
     private SystemController() {
         DB = new DBHandler();
+        /*
         try{
+            ConsoleHandler handler
+                    = new ConsoleHandler();
             fileHandlerErr = new FileHandler("./resources/logs/errors.log");
-            //events.addHandler(fileHandlerErr);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fileHandlerErr.setFormatter(formatter);
             fileHandlerEve = new FileHandler("./resources/logs/events.log");
         }catch (Exception e){
 
         }
+        */
     }
 
 
@@ -205,7 +222,7 @@ public class SystemController extends Observable {
             events.info("The user"+" "+"logged in");
             return true;
         }
-        errors.info("The user"+" "+"didn't insert the right password");
+        errors.error("The user"+" "+"didn't insert the right password");
         return false;
     }
 
@@ -234,7 +251,7 @@ public class SystemController extends Observable {
             events.info("system is up");
             return true;
         }
-        errors.info("The system could not get initialize");
+        errors.error("The system could not get initialize");
         return false;
     }
 
@@ -503,18 +520,18 @@ public class SystemController extends Observable {
                 }
                 //team is already closed by admin
                 else {
-                    errors.info("Team is already closed");
+                    errors.error("Team is already closed");
                     return false;
                 }
             }
             //team doesn't exist
             else {
-                errors.info("The user "+userType+" "+"tried to close a team that doesn't exist");
+                errors.error("The user "+userType+" "+"tried to close a team that doesn't exist");
                 return false;
             }
         }
         //not an admin
-        errors.info("The user "+userType+" "+"doesn't have permissions to close a team");
+        errors.error("The user "+userType+" "+"doesn't have permissions to close a team");
         return false;
     }
 
@@ -540,7 +557,7 @@ public class SystemController extends Observable {
                 return true;
             }
         }
-        errors.info("The complaint of "+username+" "+"is not valid");
+        errors.error("The complaint of "+username+" "+"is not valid");
         return false;
     }
 
@@ -576,8 +593,10 @@ public class SystemController extends Observable {
                     /*if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
                         DB.removeNotificationFromDB(tempSubscriber.getUsername());
                     }*/ //fixme take out of comment
+                    events.info("The User" + subscriberName + " was removed");
                     return "The User " + subscriberName + " was removed";
                 }
+                errors.error("The admin "+userType+" could not delete the user because it doesn't exist");
                 return "User doesn't exist in the system";
             }
         }
@@ -925,7 +944,7 @@ public class SystemController extends Observable {
             events.info("The user "+username+" added a request for a team");
             return true;
         }
-        errors.info("The user "+username+" had an invalid request");
+        errors.error("The user "+username+" had an invalid request");
         return false;
     }
 
@@ -1119,6 +1138,7 @@ public class SystemController extends Observable {
      */
     public boolean addLeagueToDB(String leagueID) {
         connectToLeagueDB();
+        events.info("The league "+leagueID+" was added to the system");
         return DB.addToDB(leagueID, null, null, null, null);
     }
 
@@ -1502,6 +1522,7 @@ public class SystemController extends Observable {
                 events.info("The user "+userName+"changed the status of the team "+teamName);
                 return teamOwner.disableStatus(teamOwner.getTeam(teamName));
             } else {
+                errors.error("The user "+userName+"could not change the status of the team "+teamName);
                 return false; //the team owner doesn't own the team
             }
         } else if (possibleTeamOwner instanceof OwnerEligible) {
@@ -1511,8 +1532,11 @@ public class SystemController extends Observable {
                 events.info("The user "+userName+"changed the status of the team "+teamName);
                 return teamOwner.disableStatus(teamOwner.getTeam(teamName));
             } else
-                return false;
+                errors.error("The user "+userName+"could not change the status of the team "+teamName);
+            return false;
+
         } else {
+            errors.error("The user "+userName+"could not change the status of the team "+teamName);
             return false; //the user isn't a team owner
         }
     }
@@ -1553,7 +1577,8 @@ public class SystemController extends Observable {
                 events.info("The user "+userName+"added the team owner "+newUserName);
                 return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
             } else
-                return false;
+                errors.error("The user "+userName+"could not change the status of the team "+teamName);
+            return false;
         } else {
             return false; //the user isn't a team owner
         }
@@ -1716,8 +1741,8 @@ public class SystemController extends Observable {
         }
         connectToEventDB();
         events.info("An event was added to the match "+matchID);
-        DB.addToDB(String.valueOf(matchID), time, String.valueOf(eventID), type, details);
-        return false;
+        return DB.addToDB(String.valueOf(matchID), time, String.valueOf(eventID), type, details);
+        //return false;
     }
 
     /**
@@ -1759,7 +1784,7 @@ public class SystemController extends Observable {
             events.info("The user "+userName+" logged in");
             return subscriber.toString();
         }
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         throw new NotApprovedException("Wrong password. Please try to login again.");
         //return null;
     }
@@ -1798,7 +1823,7 @@ public class SystemController extends Observable {
             return false;
         }
         Subscriber newPlayer = new Player(userName, password, name, birthDate, FIELDJOB.valueOf(fieldJob), 0, team, this);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         addSubscriber(newPlayer);
         return true;
     }
@@ -1829,7 +1854,7 @@ public class SystemController extends Observable {
             return false;
         Subscriber newCoach = new Coach(userName, password, name, RoleInTeam.valueOf(roleInTeam), TRAINING.valueOf(training), teamJob, 0, this);
         addSubscriber(newCoach);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1857,7 +1882,7 @@ public class SystemController extends Observable {
             return false;
         Subscriber newTeamOwner = new TeamOwner(userName, password, name, this);
         addSubscriber(newTeamOwner);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1890,7 +1915,7 @@ public class SystemController extends Observable {
         }
         Subscriber newTeamManager = new TeamManager(userName, password, name, team, 0, this);
         addSubscriber(newTeamManager);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1919,7 +1944,7 @@ public class SystemController extends Observable {
         Subscriber newAdmin = new Admin(userName, password, name, this);
         addSubscriber(newAdmin);
         addAdminApprovalRequest(userName, newAdmin);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1949,7 +1974,7 @@ public class SystemController extends Observable {
         Subscriber newAssociationRepresentative = new AssociationRepresentative(userName, password, name, this, leagueController);
         addSubscriber(newAssociationRepresentative);
         addAdminApprovalRequest(userName, newAssociationRepresentative);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
 
         return true;
     }
