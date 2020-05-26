@@ -469,4 +469,12 @@ public class SystemService extends Observable implements Observer {
         systemController.updateRefereeName(name,userName);
 
     }
+    //todo ido add this function
+    public ArrayList<String> getEventByMatch(String matchId) {
+        return systemController.getEventByMatch(matchId);
+    }
+
+    public ArrayList<String> allEventFromMatch(Integer matchId) {
+        return systemController.allEventFromMatch(matchId);
+    }
 }

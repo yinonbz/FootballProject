@@ -173,15 +173,13 @@
                          <Label layoutX="286.0" layoutY="78.0" text="Player On:" />
                          <Label layoutX="481.0" layoutY="68.0" text="Player Off" />
                      </children></Pane>
-                  <Pane id="menuPane" fx:id="removeEventPane" layoutX="-2.0" layoutY="-2.0" prefHeight="550.0" prefWidth="1058.0" visible="false">
+                  <Pane id="menuPane" fx:id="removeEventPane" layoutX="-2.0" layoutY="-2.0" prefHeight="550.0" prefWidth="650.0">
                      <children>
                         <Button layoutX="76.0" layoutY="141.0" mnemonicParsing="false" onAction="#removeCurrEvent" text="Submit" />
-                        <ComboBox fx:id="matchRemoveId" layoutX="51.0" layoutY="93.0" onAction="#fillRemove" prefHeight="25.0" prefWidth="100.0" promptText="Match ID:" />
-                        <Spinner fx:id="timeRemove" disable="true" layoutX="188.0" layoutY="93.0" prefHeight="25.0" prefWidth="100.0" />
-                        <Spinner fx:id="eventRemove" disable="true" layoutX="314.0" layoutY="93.0" prefHeight="25.0" prefWidth="100.0" />
+                        <ComboBox fx:id="matchRemoveId" layoutX="50.0" layoutY="90.0" onAction="#fillRemove" prefHeight="25.0" prefWidth="100.0" promptText="Match ID:" />
                         <Label layoutX="57.0" layoutY="69.0" prefHeight="17.0" prefWidth="89.0" text="Choose Match:" />
-                        <Label layoutX="217.0" layoutY="69.0" prefHeight="17.0" prefWidth="42.0" text="Time:" />
-                        <Label layoutX="341.0" layoutY="69.0" text="Event ID:" />
+                        <ComboBox fx:id="eventCombo" disable="true" layoutX="225.0" layoutY="90.0" prefWidth="150.0" promptText="Choose Event:" />
+                        <Label layoutX="262.0" layoutY="69.0" text="Choose Event" />
                      </children></Pane>
                    <Pane id="menuPane" fx:id="namePane" prefHeight="550.0" prefWidth="1018.0" visible="false">
                        <children>
