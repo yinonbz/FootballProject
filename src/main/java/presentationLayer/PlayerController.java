@@ -62,7 +62,7 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
         }catch (Exception e){
             missingAlert();
         }
-    }
+     }
     @FXML
     public void changeName(){
         try {
