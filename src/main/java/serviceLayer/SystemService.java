@@ -9,6 +9,7 @@ import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
+import presentationLayer.ControllerInterface;
 
 import java.util.*;
 
@@ -26,6 +27,10 @@ public class SystemService extends Observable implements Observer {
         onlineUsers = new ArrayList<>();
         this.systemController = SystemController.SystemController();
         systemController.addServiceObservers(this);
+    }
+
+    public void addObserverForService(ControllerInterface controller){
+        addObserver(controller);
     }
 
     /**

@@ -1630,7 +1630,7 @@ public class SystemController extends Observable {
             connectToEventRecordDB();
             EventRecord eventRecord = selectEventRecord(matchID);
             boolean isFinished = Boolean.valueOf(details.get("isFinished").get(0));
-            Match match = new Match(league, null, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee);
+            Match match = new Match(league, null, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee, matchID);
             return match;
         }
         return null;
@@ -2696,10 +2696,10 @@ public class SystemController extends Observable {
         if (match != null && event != null) {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
-            arguments.put("pageID",String.valueOf(match.getMatchId()));
+            arguments.put("matchID",String.valueOf(match.getMatchId()));
             ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETMATCHFOLLOWERS,arguments);
             LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
-            if (followers != null) {
+            if (!followers.isEmpty()) {
                 followers.add(event);
                 followers.add("Match update");
                 setChanged();
@@ -2964,6 +2964,8 @@ public class SystemController extends Observable {
             return new LinkedList<>(
                     DB.selectAllRecords(NOTIFICATIONENUMS.GETUSERNOTIFICATIONS,arguments)
                     .get(0).get("notifications"));
+            //add another cell with generic title
+            //return the linkedlist
         }
         return null; //todo: might need an exception here
     }

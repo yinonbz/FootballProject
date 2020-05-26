@@ -71,7 +71,7 @@ public class DBMatch implements DB_Inter {
         if(containInDB(String.valueOf(matchID),null,null)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(matchID)).fetch();
-            String id = result.get(0).get(MATCH.MATCHID).toString();
+            String id = String.valueOf(result.get(0).get(MATCH.MATCHID));
             String home = result.get(0).get(MATCH.TEAMHOMEID);
             String away = result.get(0).get(MATCH.TEAMAWAYID);
             String leagueID = result.get(0).get(MATCH.LEAGUEID);
