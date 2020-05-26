@@ -312,6 +312,21 @@ public class TeamDB implements DB_Inter {
                 teams.put("teamDetails", temp);
                 details.add(teams);
             }
+            return details;
+        }
+        else if(teamObject == TEAMUPDATES.TEAMSOFSEASON){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(SEASON_TEAMS.TEAMID).from(SEASON_TEAMS).where(SEASON_TEAMS.LEAGUEID.
+                    eq(arguments.get("leagueID")).and(SEASON_TEAMS.SEASONID.
+                    eq(Integer.parseInt(arguments.get("seasonID"))))).fetch();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> teams = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(SEASON_TEAMS.TEAMID));
+                teams.put("teamDetails", temp);
+                details.add(teams);
+            }
+            return details;
         }
         return details;
     }
