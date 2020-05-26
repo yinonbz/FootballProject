@@ -472,6 +472,20 @@ public class DBHandler implements DB_Inter{
             }
             return allCoaches;
         }
+        if(userType ==UserTypes.PLAYER){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(PLAYERS.PLAYERID).
+                    from(PLAYERS)
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allPlayers = new ArrayList<>();
+            allPlayers.add(new HashMap<>());
+            allPlayers.get(0).put("players",new ArrayList<>());
+            for(Record r: result){
+                allPlayers.get(0).get("players").add(r.get(PLAYERS.PLAYERID));
+
+            }
+            return allPlayers;
+        }
         if(userType ==UserTypes.ADMIN){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select(ADMINS.ADMINID).

@@ -3083,6 +3083,13 @@ public class SystemController extends Observable {
         return teamManagers;
     }
 
+    public ArrayList<String> getAllPlayers() {
+        connectToSubscriberDB();
+        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(UserTypes.PLAYER, null);
+        ArrayList<String> players = details.get(0).get("players");
+        return players;
+    }
+
     /**
      * @return get all the league's names from the DB
      */
