@@ -455,12 +455,13 @@ public class LeagueController {
                     if (season.getTeams() != null) {
                         if (season.getTeams().size() > 1) {
                             if(season.checkIfRefereeIsAssignedToSeason()) {
+                                boolean success = season.activateMatchPolicy(this);
                                 HashMap <Integer,Match> matches = season.getMatchesOfTheSeason();
                                 //Integer [] keys = (Integer [] )matches.keySet().toArray();
                                 LinkedList<Integer> keys = new LinkedList<>();
                                 keys.addAll(matches.keySet());
                                systemController.addMatchTableToSeason(leagueID, Integer.parseInt(seasonID), keys); //todo DB
-                               return season.activateMatchPolicy(this);
+                               return success;
                             }
                             else{
                                 throw new NotApprovedException("The Season must have at least one Referee before activation. Please add Referees for the Season.");
@@ -494,7 +495,7 @@ public class LeagueController {
                         Match match = systemController.findMatch(Integer.parseInt(matchID));
                             if(match!=null){
                                 if(season.seasonContainsMatch(Integer.parseInt(matchID))){
-                                    if(season.updateMatchTableRank(match)){ //todo DB
+                                    if(season.updateMatchTableRank(match)){
                                         HashMap<Team,LinkedList<Integer>> table = season.getLeagueTable();
                                         LinkedList<Integer> homeValues = table.get(match.getHomeTeam());
                                         LinkedList<Integer> awayValues = table.get(match.getAwayTeam());

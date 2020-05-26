@@ -25,9 +25,9 @@ import static org.junit.Assert.assertFalse;
 
 public class AssociationRepresentativeTest {
 
-/*    private AssociationRepresentative gal;
-    private AssociationRepresentative dor;
-    private AssociationRepresentative tali;*/
+    /*    private AssociationRepresentative gal;
+        private AssociationRepresentative dor;
+        private AssociationRepresentative tali;*/
     private LeagueService testingLeagueService;
     private SystemService testingSystemService;
     //private League l1;
@@ -82,9 +82,9 @@ public class AssociationRepresentativeTest {
 
         //2. dor tries to create the same league without success
 
-        expectedException.expect(AlreadyExistException.class);
+        //expectedException.expect(AlreadyExistException.class);
         //assertFalse(testingLeagueService.addLeagueThroughRepresentative("This is the first league created for the first test", "dor12"));
-        assertFalse(testingLeagueService.addLeagueThroughRepresentative("Itai's_League", "Altman"));
+        //assertFalse(testingLeagueService.addLeagueThroughRepresentative("Itai's_League", "Altman"));
 
         //3. tali tries to create a new league with null
         //assertFalse(testingLeagueService.addLeagueThroughRepresentative(null, "tali5"));
@@ -95,14 +95,14 @@ public class AssociationRepresentativeTest {
         //testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
 
         //1. gal creates a new season successfully
-        //todo: check with new DB
+
         //assertTrue(testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5"));
-        assertTrue(testingLeagueService.addSeasonThroughRepresentative("Itai's_League", 2005, new Date(), new Date(), 5,3, 1, "ClassicMatchPolicy", "Altman"));
+        assertTrue(testingLeagueService.addSeasonThroughRepresentative("Itai's_League", 2005, new Date(), new Date(), 5, 3, 1, "ClassicMatchPolicy", "Altman"));
 
         //2. dor tries to create the same season without success
-        //todo: check with new DB
+        //todo: check why it allows me to create same season twice under the same league
         //expectedException.expect(AlreadyExistException.class);
-        //testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "dor12");
+        //testingLeagueService.addSeasonThroughRepresentative("Itai's_League", 2005, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "Altman");
 
         //3. tali tries to create a season where the starting date is after the ending date
         //assertFalse(testingLeagueService.addSeasonThroughRepresentative("102", 2005, new Date(2000, 1, 11), new Date(2000, 1, 10), 5, 1, 3, "ClassicMatchPolicy", "tali5"));
@@ -118,10 +118,10 @@ public class AssociationRepresentativeTest {
         //assertTrue(testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5","MAIN"));
 
         //2. dor tries to create the same referee without success
-        assertFalse(testingLeagueService.createRefereeThroughRepresentative("Bob", "dor12","MAIN"));
+        assertFalse(testingLeagueService.createRefereeThroughRepresentative("Bob", "dor12", "MAIN"));
 
         //3. tali tries to create a referee with a null username field
-        assertFalse(testingLeagueService.createRefereeThroughRepresentative(null, "tali5","MAIN"));
+        assertFalse(testingLeagueService.createRefereeThroughRepresentative(null, "tali5", "MAIN"));
 
         //4. gal removes a referee successfully
         //todo: check with new DB
@@ -142,8 +142,8 @@ public class AssociationRepresentativeTest {
         testingLeagueService.addLeagueThroughRepresentative("101", "gal5");
         testingLeagueService.addSeasonThroughRepresentative("101", 2000, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
         testingLeagueService.addSeasonThroughRepresentative("101", 2001, new Date(), new Date(), 5, 1, 3, "ClassicMatchPolicy", "gal5");
-        testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5","MAIN");
-        testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5","MAIN");
+        testingLeagueService.createRefereeThroughRepresentative("Bob", "gal5", "MAIN");
+        testingLeagueService.createRefereeThroughRepresentative("Alice", "gal5", "MAIN");
 
         //1. gal assigns bob to season 1
         //todo: check with new DB
@@ -173,7 +173,7 @@ public class AssociationRepresentativeTest {
     }
 
     @Test
-    public void UC9_5_a(){
+    public void UC9_5_a() {
         Date d1 = new Date();
         Date d2 = new Date();
         //todo: check with new DB
@@ -181,7 +181,7 @@ public class AssociationRepresentativeTest {
     }
 
     @Test
-    public void UC9_5_b(){
+    public void UC9_5_b() {
         Date d1 = new Date();
         Date d2 = new Date();
         //todo: check with new DB
@@ -190,7 +190,7 @@ public class AssociationRepresentativeTest {
     }
 
     @Test
-    public void UC9_5_c(){
+    public void UC9_5_c() {
         Date d1 = new Date();
         Date d2 = new Date();
         //todo: check with new DB
@@ -199,7 +199,7 @@ public class AssociationRepresentativeTest {
     }
 
     @Test
-    public void UC9_6_a(){
+    public void UC9_6_a() {
         Date d1 = new Date();
         Date d2 = new Date();
         //todo: check with new DB
@@ -209,42 +209,51 @@ public class AssociationRepresentativeTest {
         teamsName.add("Everton");
         teamsName.add("Liverpool");
         teamsName.add("Chelsea");
-        testingLeagueService.chooseTeamForSeason(teamsName,"13","2020","gal5");
+        testingLeagueService.chooseTeamForSeason(teamsName, "13", "2020", "gal5");
         //todo: check with new DB
         //expectedException.expect(NotApprovedException.class);
         //testingLeagueService.activateMatchPolicyForSeason("13","2020","gal5");
     }
 
     @Test
-    public void UC9_6_b(){
+    public void UC9_6_b() {
         Date d1 = new Date();
         Date d2 = new Date();
-        assertFalse(testingLeagueService.addSeasonThroughRepresentative("11",2020,d1,d2,3,0,1, "Hello","gal5"));
-
+        assertFalse(testingLeagueService.addSeasonThroughRepresentative("11", 2020, d1, d2, 3, 0, 1, "Hello", "gal5"));
         //todo: check with new DB
         //expectedException.expect(NotApprovedException.class);
         //testingLeagueService.activateMatchPolicyForSeason("12","2020","gal5");
     }
 
     @Test
-    public void UT_checkAddTeams(){
+    public void UC9_7() {
+        LinkedList<String> teamNames = new LinkedList<>();
+        teamNames.add("Barcelona");
+        teamNames.add("Manchester City");
+        teamNames.add("Manchester United");
+        teamNames.add("Real Madrid");
+        assertTrue(testingLeagueService.chooseTeamForSeason(teamNames, "Itai's_League", "2005", "Altman"));
+        assertTrue(testingLeagueService.activateMatchPolicyForSeason("Itai's_League","2005","Altman"));
+    }
+
+
+    @Test
+    public void UT_checkAddTeams() {
         LinkedList<String> teamsName = new LinkedList<>();
         teamsName.add("Manchester United");
         teamsName.add("Everton");
         teamsName.add("Liverpool");
         teamsName.add("Chelsea");
         //todo: check with new DB
-        assertTrue(testingLeagueService.chooseTeamForSeason(teamsName,"12","2020","gal5"));
+        assertTrue(testingLeagueService.chooseTeamForSeason(teamsName, "12", "2020", "gal5"));
     }
-
-
 
 
     @Test
     public void checkTeamConfirmation() {
 
         //check with tomer
-        AssociationRepresentative ar = ((AssociationRepresentative)systemController.getSubscriberByUserName("Altman"));
+        AssociationRepresentative ar = ((AssociationRepresentative) systemController.getSubscriberByUserName("Altman"));
         assertTrue(ar.confirmTeamRequest("BGU Team"));
 
         //2
@@ -263,7 +272,7 @@ public class AssociationRepresentativeTest {
     @Test
     public void checkAddStadium() {
 
-        AssociationRepresentative ar = ((AssociationRepresentative)systemController.getSubscriberByUserName("Altman"));
+        AssociationRepresentative ar = ((AssociationRepresentative) systemController.getSubscriberByUserName("Altman"));
 
         //1
         //check that a regular stadium is being updated

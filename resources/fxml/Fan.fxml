@@ -9,6 +9,11 @@
     <top>
         <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
             <children>
+                <Button minWidth="128.0" mnemonicParsing="false" onAction="#addNewTeam" prefHeight="30.0" prefWidth="128.0" text="Subscribe To Pages" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin>
+                </Button>
                 <Label id="userName" fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" minWidth="173.0" prefHeight="21.0" prefWidth="173.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
                     <HBox.margin>
                         <Insets left="650.0" />
@@ -47,7 +52,10 @@
                 </HBox>
             </top>
             <center>
-                <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                <Pane id="menuPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane id="menuPane" prefHeight="582.0" prefWidth="988.0" />
+               </children></Pane>
             </center>
          <left>
             <ScrollPane prefHeight="652.0" prefWidth="235.0">

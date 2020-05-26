@@ -268,8 +268,8 @@ public class DBHandlerTest {
             }
 
         }*/
-    }
 
+    }
     @Test
     public void selectAllRecords() {
         //retreive all referees

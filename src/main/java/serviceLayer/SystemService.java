@@ -17,11 +17,13 @@ public class SystemService extends Observable implements Observer {
     private LeagueController leagueController;
     private TeamController teamController;
     private MatchController matchController;
+    private ArrayList<String> onlineUsers;
 
     /**
      * initalizing system and controllers as singeltons
      */
     public SystemService() {
+        onlineUsers = new ArrayList<>();
         this.systemController = SystemController.SystemController();
         systemController.addServiceObservers(this);
     }
@@ -400,7 +402,7 @@ public class SystemService extends Observable implements Observer {
             String title = users.removeLast(); //title for the message in the interface
             String event = users.removeLast(); //holds the message to present to the user's interface
             for (String user : users) {
-                if (systemController.isUserOnline(user)) {
+                if (onlineUsers.contains(user)) {
                     LinkedList<String> notification = new LinkedList<>();
                     notification.add(title);
                     notification.add(event);
@@ -417,8 +419,19 @@ public class SystemService extends Observable implements Observer {
     /**
      * @param userName the user's username to add to the online users in DB (when logging in)
      */
-    public void addToUsersOnline(String userName){
-        systemController.addOnlineUser(userName);
+    public void addToUsersOnline(String userName) {
+        if (!onlineUsers.contains(userName))
+            onlineUsers.add(userName);
+    }
+
+    /**
+     * remove user from the online users DB (when logging out)
+     *
+     * @param userName the user's username to remove form the online users
+     */
+    public void removeFromUsersOnline(String userName) {
+        if (onlineUsers.contains(userName))
+            onlineUsers.remove(userName);
     }
 
     /**

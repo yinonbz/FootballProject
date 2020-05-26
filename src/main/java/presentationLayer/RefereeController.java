@@ -109,12 +109,8 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
     private ComboBox<Integer> matchSubstituteId;
     @FXML
     private ComboBox<Integer> matchRemoveId;
-    /*
     @FXML
-    private Spinner<Integer> timeRemove;
-    */
-    @FXML
-    private ComboBox<String> eventRemove;
+    private ComboBox<String>eventCombo;
     @FXML
     private TextField nameField;
     @FXML
@@ -498,7 +494,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             int matchId = matchRemoveId.getValue();
             //int time = timeRemove.getValue();
             //int time =0;
-            String eventId = eventRemove.getValue();
+            String eventId = eventCombo.getValue();
             String[] Arr = eventId.split("-");
             matchService.removeEventByMainReferee(Arr[1].substring(14), String.valueOf(matchId), userLabel.getText(), Arr[0].substring(9));
         } catch (NotApprovedException e) {
@@ -581,8 +577,8 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 String [] strArr = s.split("-");
                 detail.add("Event ID:"+strArr[0] + "-Time Of Event:"+strArr[1]+ "-Event Type:"+strArr[2]);
             }
-            eventRemove.getItems().addAll(detail);
-            eventRemove.setDisable(false);
+            eventCombo.getItems().addAll(detail);
+            eventCombo.setDisable(false);
         }else{
             noEventAlert();
         }
@@ -736,7 +732,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-            leagueService.removeFromUsersOnline(userName);
+            systemService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }

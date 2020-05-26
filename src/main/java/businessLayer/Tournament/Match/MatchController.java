@@ -330,7 +330,8 @@ public class MatchController {
                 Subscriber subscriber = systemController.getSubscriberByUserName(usernameRequested);
                 if (subscriber instanceof Referee) {
                     if (match.isMainReferee((Referee) subscriber)) {
-                        return match.getEventRecord().removeEvent(timeOfEvent, eventId);
+                        //return match.getEventRecord().removeEvent(timeOfEvent, eventId);
+                        systemController.removeEventFromMatch(matchID,timeOfEvent,eventId);
                     }
                     throw new NotApprovedException("This Referee is not a Main Referee.");
                 }
