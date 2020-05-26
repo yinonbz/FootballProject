@@ -689,7 +689,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         //import all unapproved team names to teamStringList from DB
         matchService = new MatchService();
         systemService = new SystemService();
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 121, 0);
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 120, 1);
         timeFoul.setValueFactory(valueFactory);
         timeGoal.setValueFactory(valueFactory);
         timeInjury.setValueFactory(valueFactory);
