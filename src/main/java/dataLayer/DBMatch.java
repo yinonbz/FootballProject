@@ -192,10 +192,24 @@ public class DBMatch implements DB_Inter {
             for (Record record : result) {
                 HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
                 ArrayList<String> temp = new ArrayList<>();
-                String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
+                String matchID = String.valueOf(record.get(MATCH.MATCHID));
                 temp.add(matchID);
                 seasonDetails.put(matchID, temp);
                 details.add(seasonDetails);
+            }
+            return details;
+        }
+        else if(e==MATCHENUM.ALLMATCHES){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(MATCH.MATCHID).from(MATCH).fetch();
+            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> hashMap = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
+                temp.add(matchID);
+                hashMap.put(matchID, temp);
+                details.add(hashMap);
             }
             return details;
         }

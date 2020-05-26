@@ -332,6 +332,9 @@ public class SystemService extends Observable implements Observer {
         return false;
     }
 
+    public ArrayList<String> getAllMatchesInDB(){
+        return systemController.getAllMatchesInDB();
+    }
 
     /**
      * The function receives a user's username and a match's identifier and passes them to the
@@ -344,7 +347,7 @@ public class SystemService extends Observable implements Observer {
     public boolean userRequestToFollowMatch(String username, String matchID) {
 
         if (username != null && matchID != null) {
-        //    systemController.allowUserToFollowMatch(username, matchID); todo need to check why we have compliation
+            systemController.allowUserToFollowMatch(username, matchID);
         }
         return false;
     }
@@ -436,6 +439,10 @@ public class SystemService extends Observable implements Observer {
     public void removeFromUsersOnline(String userName) {
         if (onlineUsers.contains(userName))
             onlineUsers.remove(userName);
+    }
+
+    public ArrayList<String> getAllPlayers(){
+        return systemController.getAllPlayers();
     }
 
     /**

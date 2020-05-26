@@ -336,6 +336,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
             listTeams.setAll(teamService.getActiveTeamOfTeamOwner(userName)); //get only the team owner's teams
             teamsViewL2.setItems(listTeams);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             showAlert("Warning", e.getMessage(), Alert.AlertType.WARNING);
         }
 
@@ -351,6 +352,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
             listTeams.setAll(teamService.getInactiveTeamOfTeamOwner(userName)); //get only the team owner's teams
             closedTeamsViewL.setItems(listTeams);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             showAlert("Warning", e.getMessage(), Alert.AlertType.WARNING);
         }
     }

@@ -1454,18 +1454,14 @@ public class SystemController extends Observable {
         Subscriber possibleTeamOwner = getSubscriberByUserName(userName);
         if (possibleTeamOwner instanceof TeamOwner) { //check if the user is a team owner
             TeamOwner teamOwner = ((TeamOwner) possibleTeamOwner);
-            if (teamOwner.getTeam(teamName) != null) { //check if the team owner owns the team
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.enableStatus(teamOwner.getTeam(teamName));
-            } else {
-                return false; //the team owner doesn't own the team
-            }
+                return teamOwner.enableStatus(getTeamByName(teamName));
         } else if (possibleTeamOwner instanceof OwnerEligible) {
             OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
             if (ownerEligible.isOwner()) {
                 TeamOwner teamOwner = ownerEligible.getTeamOwner();
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.enableStatus(teamOwner.getTeam(teamName));
+                return teamOwner.enableStatus(getTeamByName(teamName));
             } else
                 return false;
         } else {
@@ -1497,23 +1493,27 @@ public class SystemController extends Observable {
         Subscriber possibleTeamOwner = getSubscriberByUserName(userName);
         if (possibleTeamOwner instanceof TeamOwner) { //check if the user is a team owner
             TeamOwner teamOwner = ((TeamOwner) possibleTeamOwner);
-            if (teamOwner.getTeam(teamName) != null) { //check if the team owner owns the team
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.disableStatus(teamOwner.getTeam(teamName));
-            } else {
-                return false; //the team owner doesn't own the team
-            }
+                return teamOwner.disableStatus(getTeamByName(teamName));
         } else if (possibleTeamOwner instanceof OwnerEligible) {
             OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
             if (ownerEligible.isOwner()) {
                 TeamOwner teamOwner = ownerEligible.getTeamOwner();
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.disableStatus(teamOwner.getTeam(teamName));
+                return teamOwner.disableStatus(getTeamByName(teamName));
             } else
                 return false;
         } else {
             return false; //the user isn't a team owner
         }
+    }
+
+    public boolean changeTeamStatus(String teamID, boolean isActive){
+        HashMap <String, String> args = new HashMap<>();
+        args.put("teamID",teamID);
+        args.put("isActive",String.valueOf(isActive));
+        connectToTeamDB();
+        return DB.update(TEAMUPDATES.SETACTIVE,args);
     }
 
     /**
@@ -2582,7 +2582,7 @@ public class SystemController extends Observable {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
             arguments.put("followerID",username);
-            arguments.put("matchID",String.valueOf(match.getMatchId()));
+            arguments.put("matchID",matchID);
            return DB.update(NOTIFICATIONUPDATES.ADDMATCHFOLLOWER, arguments);
         }
         return false;
@@ -2620,7 +2620,8 @@ public class SystemController extends Observable {
         connectToPageDB();
         Map<String, ArrayList<String>> objDetails = DB.selectFromDB(subName, null, null);
 
-        Page page = new Page(objDetails.get("ownerID").get(0),
+        Page page = new Page(Integer.parseInt(objDetails.get("pageID").get(0))
+                ,objDetails.get("ownerID").get(0),
                 objDetails.get("name").get(0),
                 objDetails.get("birthDay").get(0),
                 (HasPage) selectUserFromDB(objDetails.get("ownerID").get(0)));
@@ -2840,9 +2841,10 @@ public class SystemController extends Observable {
             ArrayList<String> teamManagers;
             ArrayList<String> teamOwners;
 
-            connectToSubscriberDB();
+            //connectToSubscriberDB();
             Map<String, String> arguments = new HashMap<>();
             arguments.put("teamID", team.getTeamName());
+            connectToTeamDB();
             teamManagers = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_MANAGERS, arguments).get(0).get("teamManagers");
             teamOwners = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_OWNERES, arguments).get(0).get("teamOwners");
 
@@ -2960,9 +2962,10 @@ public class SystemController extends Observable {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
             arguments.put("SubscriberID",username);
-            return new LinkedList<>(
-                    DB.selectAllRecords(NOTIFICATIONENUMS.GETUSERNOTIFICATIONS,arguments)
+            LinkedList<String> notification = new LinkedList<>(DB.selectAllRecords(NOTIFICATIONENUMS.GETUSERNOTIFICATIONS,arguments)
                     .get(0).get("notifications"));
+            notification.add("title");
+            return notification;
         }
         return null; //todo: might need an exception here
     }
@@ -3262,6 +3265,20 @@ public class SystemController extends Observable {
             }
         }
         return finalList;
+    }
+
+    public ArrayList<String> getAllMatchesInDB(){
+        connectToMatchDB();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLMATCHES,null);
+        ArrayList<String> allMatches = new ArrayList<>();
+        //HashSet<String> unvalidTeams = new HashSet<>();
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                allMatches.add(temp.get(0));
+            }
+        }
+        return allMatches;
     }
 
     //todo javafx function

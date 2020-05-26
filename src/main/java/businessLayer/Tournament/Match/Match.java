@@ -7,6 +7,7 @@ import businessLayer.userTypes.Administration.Referee;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Match {
     private League league;
@@ -50,11 +51,11 @@ public class Match {
         this.time = time;
         this.date = date;
         this.isFinished = isFinished;
-        this.matchId=index;
+        this.matchId = ThreadLocalRandom.current().nextInt(0, 49999 + 1);
         this.stadium=stadium;
         this.numberOfFans=numberOfFans;
         this.eventRecord=eventRecord;
-        index++;
+
 
     }
 
@@ -68,11 +69,11 @@ public class Match {
         this.homeTeam=home;
         this.awayTeam=away;
         this.stadium=stadium;
-        this.matchId=index;
+        this.matchId=ThreadLocalRandom.current().nextInt(0, 49999 + 1);
         eventRecord = new EventRecord(this);
         this.isFinished=false;
         score = new int [] {0,0};
-        index++;
+
     }
 
     public Match (League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, int [] score,

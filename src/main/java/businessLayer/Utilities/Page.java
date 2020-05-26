@@ -36,6 +36,18 @@ static int pageCounter=0;
         pageCounter++;
     }
 
+    public Page(int pageID,String username, String name, String birthDate, HasPage pageOwner) {
+        posts = new LinkedList<>();
+        this.name = name;
+        this.bDate = birthDate;
+        owners = new ArrayList<>();
+        owners.add(username);
+        this.pageOwner = pageOwner;
+        systemController = SystemController.SystemController();
+        //systemController.addPageToDB(username, this);
+        this.pageID=pageID;
+    }
+
     /**
      * Constructor - contains HasPage element which holds the owner of the page
      * @param teamOwners

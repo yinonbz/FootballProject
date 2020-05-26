@@ -29,6 +29,10 @@ public class FanController implements Initializable,ControllerInterface, Observe
 
     private ObservableList<String> listCoaches;
 
+    private ObservableList<String> listPlayers;
+
+    private ObservableList<String> listMatches;
+
     private String userName;
 
     private ArrayList<TitledPane> notificationPanesCollection;
@@ -40,10 +44,25 @@ public class FanController implements Initializable,ControllerInterface, Observe
     private Label userLable;
 
     @FXML
-    private Pane subscribePane;
+    private Pane subscribePlayerPane;
 
     @FXML
-    private ListView itemsToSubscribe;
+    private Pane subscribeCoachPane;
+
+    @FXML
+    private Parent subscribeMatchhPane;
+
+    @FXML
+    private ListView playersToSubscribe;
+
+    @FXML
+    private ListView coachesToSubscribe;
+
+    @FXML
+    private ListView matchesToSubscribe;
+
+    @FXML
+    private Label titleL;
 
     @Override
     public void setUser(String usernameL) {
@@ -99,23 +118,74 @@ public class FanController implements Initializable,ControllerInterface, Observe
         }
     }
 
-    public void subscribeB(ActionEvent actionEvent) {
-        
-    }
 
-    public void subscribeToPages(ActionEvent actionEvent) {
-        subscribePane.setVisible(true);
-    }
 
     public void selectPlayer(ActionEvent actionEvent) {
-   /*     listPlayers = FXCollections.observableArrayList();
-        listPlayers.setAll(teamService.getActiveTeamOfTeamOwner(userName));
-        itemsToSubscribe.setItems(listPlayers);*/
+
+        listPlayers = FXCollections.observableArrayList();
+        listPlayers.setAll(systemService.getAllPlayers());
+        playersToSubscribe.setItems(listPlayers);
+
+        titleL.setText("Subscribe to Players");
+        subscribePlayerPane.setVisible(true);
+        subscribeCoachPane.setVisible(false);
+        subscribeMatchhPane.setVisible(false);
     }
 
     public void selectCoach(ActionEvent actionEvent) {
         listCoaches = FXCollections.observableArrayList();
         listCoaches.setAll(systemService.getAllCoachesNames());
-        itemsToSubscribe.setItems(listCoaches);
+        coachesToSubscribe.setItems(listCoaches);
+
+        titleL.setText("Subscribe to Coaches");
+        subscribePlayerPane.setVisible(false);
+        subscribeCoachPane.setVisible(true);
+        subscribeMatchhPane.setVisible(false);
+    }
+
+    public void subscribePlayersB(ActionEvent actionEvent) {
+        try {
+            systemService.userRequestToFollowPlayer(userName, playersToSubscribe.getSelectionModel().getSelectedItem().toString());
+            showAlert("Success","You have subscribed for the selected Player.", Alert.AlertType.INFORMATION);
+        } catch (NullPointerException e){
+            showAlert("Warning","Please select a Player to subscribe.", Alert.AlertType.WARNING);
+        }
+    }
+
+    private void showAlert(String title, String text, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    public void subscribeCoachesB(ActionEvent actionEvent) {
+        try {
+            systemService.userRequestToFollowCoach(userName, coachesToSubscribe.getSelectionModel().getSelectedItem().toString());
+            showAlert("Success","You have subscribed for the selected Coach.", Alert.AlertType.INFORMATION);
+        } catch (NullPointerException e){
+            showAlert("Warning","Please select a Coach to subscribe.", Alert.AlertType.WARNING);
+        }
+    }
+
+    public void subscribeMatchB(ActionEvent actionEvent) {
+        try {
+            systemService.userRequestToFollowMatch(userName, matchesToSubscribe.getSelectionModel().getSelectedItem().toString());
+            showAlert("Success","You have subscribed for the selected Match.", Alert.AlertType.INFORMATION);
+        } catch (NullPointerException e){
+            showAlert("Warning","Please select a Match to subscribe.", Alert.AlertType.WARNING);
+        }
+    }
+
+    public void selectMatch(ActionEvent actionEvent) {
+        listMatches = FXCollections.observableArrayList();
+        listMatches.setAll(systemService.getAllMatchesInDB());
+        matchesToSubscribe.setItems(listMatches);
+
+        titleL.setText("Subscribe to Matches");
+        subscribePlayerPane.setVisible(false);
+        subscribeCoachPane.setVisible(false);
+        subscribeMatchhPane.setVisible(true);
     }
 }

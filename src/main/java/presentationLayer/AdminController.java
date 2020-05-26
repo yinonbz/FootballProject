@@ -30,9 +30,6 @@ public class AdminController implements Initializable,ControllerInterface, Obser
 
     private ArrayList<TitledPane> notificationPanesCollection;
 
-    public AdminController(String userName) {
-        this.userName = userName;
-    }
 
     @FXML
     private Accordion notificationsPane;

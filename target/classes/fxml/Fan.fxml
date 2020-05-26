@@ -9,11 +9,13 @@
     <top>
         <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
             <children>
-                <Button minWidth="128.0" mnemonicParsing="false" onAction="#subscribeToPages" prefHeight="30.0" prefWidth="128.0" text="Subscribe To Pages" textAlignment="CENTER">
-                    <HBox.margin>
-                        <Insets left="5.0" />
-                    </HBox.margin>
-                </Button>
+            <MenuButton minWidth="140.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Subscribe To Pages">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#selectPlayer" text="Subscribe To Players" />
+                <MenuItem mnemonicParsing="false" onAction="#selectCoach" text="Subscribe To Coaches" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectMatch" text="Subscribe To Matches" />
+              </items>
+            </MenuButton>
                 <Label id="userName" fx:id="userLable" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" minWidth="173.0" prefHeight="21.0" prefWidth="173.0" text="Welcome &lt;username&gt;" textAlignment="CENTER">
                     <HBox.margin>
                         <Insets left="650.0" />
@@ -54,25 +56,42 @@
             <center>
                 <Pane id="menuPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane id="menuPane" fx:id="subscribePane" prefHeight="567.0" prefWidth="954.0" visible="false">
+                  <Pane id="menuPane" fx:id="subscribePlayerPane" prefHeight="567.0" prefWidth="954.0" visible="false">
                    <children>
-                       <ListView fx:id="itemsToSubscribe" layoutX="16.0" layoutY="104.0" prefHeight="116.0" prefWidth="359.0" />
-                       <Label layoutX="18.0" layoutY="13.0" text="Subscribe for: ">
+                       <ListView fx:id="playersToSubscribe" layoutX="16.0" layoutY="70.0" prefHeight="116.0" prefWidth="359.0" />
+                       <Label layoutX="18.0" layoutY="13.0" text="Select a Player to Subscribe to:">
                            <font>
                                <Font size="13.0" />
                            </font>
                        </Label>
-                       <TextField fx:id="search" layoutX="16.0" layoutY="79.0" prefHeight="25.0" prefWidth="359.0" />
-                       <Button layoutX="17.0" layoutY="234.0" minWidth="132.0" mnemonicParsing="false" onAction="#subscribeB" prefHeight="29.0" prefWidth="132.0" text="Subscribe Selected" />
-                        <MenuButton layoutX="17.0" layoutY="40.0" mnemonicParsing="false" text="Select User Type">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#selectPlayer" text="Players" />
-                            <MenuItem mnemonicParsing="false" onAction="#selectCoach" text="Coaches" />
-                              <MenuItem mnemonicParsing="false" text="Matches" />
-                          </items>
-                        </MenuButton>
+                       <TextField fx:id="searchPlayers" layoutX="16.0" layoutY="45.0" prefHeight="25.0" prefWidth="359.0" />
+                       <Button layoutX="17.0" layoutY="200.0" minWidth="132.0" mnemonicParsing="false" onAction="#subscribePlayersB" prefHeight="29.0" prefWidth="132.0" text="Subscribe" />
                    </children>
                   </Pane>
+                   <Pane id="menuPane" fx:id="subscribeCoachPane" prefHeight="567.0" prefWidth="954.0" visible="false">
+                       <children>
+                           <ListView fx:id="coachesToSubscribe" layoutX="16.0" layoutY="70.0" prefHeight="116.0" prefWidth="359.0" />
+                           <Label layoutX="18.0" layoutY="13.0" text="Select a Coach to Subscribe to:">
+                               <font>
+                                   <Font size="13.0" />
+                               </font>
+                           </Label>
+                           <TextField fx:id="coachPlayers" layoutX="16.0" layoutY="45.0" prefHeight="25.0" prefWidth="359.0" />
+                           <Button layoutX="17.0" layoutY="200.0" minWidth="132.0" mnemonicParsing="false" onAction="#subscribeCoachesB" prefHeight="29.0" prefWidth="132.0" text="Subscribe" />
+                       </children>
+                   </Pane>
+                   <Pane id="menuPane" fx:id="subscribeMatchhPane" prefHeight="567.0" prefWidth="954.0" visible="false">
+                       <children>
+                           <ListView fx:id="matchesToSubscribe" layoutX="16.0" layoutY="70.0" prefHeight="116.0" prefWidth="359.0" />
+                           <Label layoutX="18.0" layoutY="13.0" text="Select a Match to Subscribe to:">
+                               <font>
+                                   <Font size="13.0" />
+                               </font>
+                           </Label>
+                           <TextField fx:id="matchPlayers" layoutX="16.0" layoutY="45.0" prefHeight="25.0" prefWidth="359.0" />
+                           <Button layoutX="17.0" layoutY="200.0" minWidth="132.0" mnemonicParsing="false" onAction="#subscribeMatchB" prefHeight="29.0" prefWidth="132.0" text="Subscribe" />
+                       </children>
+                   </Pane>
                </children></Pane>
             </center>
          <left>

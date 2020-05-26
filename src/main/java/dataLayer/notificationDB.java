@@ -171,14 +171,14 @@ public class notificationDB implements DB_Inter {
                     MATCH_FOLLOWERS.MATCHID,
                     MATCH_FOLLOWERS.FOLLOWERID)
                     .values(Integer.parseInt(arguments.get("matchID")),
-                            arguments.get("followerID"));
+                            arguments.get("followerID")).execute();
         }
         if(e==NOTIFICATIONUPDATES.ADDPAGEFOLLOWER){
             create.insertInto(PAGE_FOLLOWERS,
                     PAGE_FOLLOWERS.PAGEID,
                     PAGE_FOLLOWERS.FOLLOWERID)
                     .values(Integer.parseInt(arguments.get("pageID")),
-                            arguments.get("followerID"));
+                            arguments.get("followerID")).execute();
         }
         return false;
     }

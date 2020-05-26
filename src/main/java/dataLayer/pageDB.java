@@ -60,7 +60,7 @@ public class pageDB implements DB_Inter{
     @Override
     public Map<String, ArrayList<String>> selectFromDB(String userName, String arg2, String arg3) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        if(containInDB(username,null,null)) {
+        if(containInDB(userName,null,null)) {
             Result<?> result = create.select().from(PAGE_OWNER).where(PAGE_OWNER.OWNERID.eq(userName)).fetch();
 
             String pageID = String.valueOf(result.get(0).get(PAGE_OWNER.PAGEID));
