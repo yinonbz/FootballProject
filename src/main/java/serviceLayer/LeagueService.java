@@ -226,8 +226,8 @@ public class LeagueService {
      * @return all of the referee names from the DB
      */
     public ArrayList<String> getAllRefereeNames(){
-        //return systemController.getAllRefereeNames();
-        return null;
+        return systemController.getAllRefereeAvailableSeason();
+        //return null;
     }
 
 
