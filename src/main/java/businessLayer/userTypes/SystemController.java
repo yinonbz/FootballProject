@@ -21,6 +21,9 @@ import dataLayer.*;
 import dataLayer.DemoDB;
 import serviceLayer.SystemService;
 
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -1207,19 +1210,22 @@ public class SystemController extends Observable {
                 sub = new TeamOwner(userName, subDetails.get("password").get(0)
                         , subDetails.get("name").get(0)
                         , this);
+                /*
                 for (String str : subDetails.get("teams")) {
-                    ((TeamOwner) sub).addTeam(/*getTeamByName(str)*/null);
+                    ((TeamOwner) sub).addTeam(/*getTeamByName(str)null);
                 }
+
                 for (int i = 0; i < subDetails.get("ownerAssigned").size(); i++) {
-                    Team team = /*getTeamByName(subDetails.get("ownerTeam").get(i));*/ null;
+                    Team team = /*getTeamByName(subDetails.get("ownerTeam").get(i)); null;
                     TeamOwner to = (TeamOwner) getSubscriberByUserName(subDetails.get("ownerAssigned").get(0));
                     ((TeamOwner) sub).addAssignedOwner(team, to);
                 }
                 for (int i = 0; i < subDetails.get("managersAssigned").size(); i++) {
-                    Team team = /*getTeamByName(subDetails.get("managerTeam").get(i));*/ null;
+                    Team team = /*getTeamByName(subDetails.get("managerTeam").get(i)); null;
                     TeamManager TM = (TeamManager) getSubscriberByUserName(subDetails.get("managersAssigned").get(0));
                     ((TeamOwner) sub).addAssignedManager(team, TM);
                 }
+                */
             }
             if (type.equalsIgnoreCase("admin")) {
                 sub = new Admin(userName, subDetails.get("password").get(0)
@@ -1281,6 +1287,7 @@ public class SystemController extends Observable {
                 seasons.add(selectSeasonFromDB(teamDetails.get("seasons").get(i),
                         teamDetails.get("leagues").get(i)));
             }*/
+            int K;
             Stadium stadium = findStadium(teamDetails.get("stadium").get(0));
             TeamManager TM = (TeamManager) getSubscriberByUserName(teamDetails.get("teamManagerID").get(0));
             return new Team(players, coaches, TM
@@ -1614,30 +1621,30 @@ public class SystemController extends Observable {
         String type = "";
         if (event instanceof Goal) {
             type = "goal";
-            details.put("playerG", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
-            details.put("playerA", new ArrayList<>(Arrays.asList(((Goal) event).getSecondPlayer().getName())));
+            details.put("playerG", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
+            details.put("playerA", new ArrayList<>(Arrays.asList(((Goal) event).getSecondPlayer().getUsername())));
             String isOwnGoal = String.valueOf(((Goal) event).isOwnGoal());
             details.put("isOwnGoal", new ArrayList<>(Arrays.asList(((isOwnGoal)))));
         } else if (event instanceof YellowCard) {
             type = "yellowcard";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof RedCard) {
             type = "redcard";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof Offside) {
             type = "offside";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof Injury) {
             type = "injury";
-            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
+            details.put("player", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
         } else if (event instanceof Foul) {
             type = "foul";
-            details.put("playerA", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
-            details.put("playerF", new ArrayList<>(Arrays.asList(((Foul) event).getSecondPlayer().getName())));
+            details.put("playerA", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
+            details.put("playerF", new ArrayList<>(Arrays.asList(((Foul) event).getSecondPlayer().getUsername())));
         } else if (event instanceof Substitute) {
             type = "sub";
-            details.put("playerIn", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getName())));
-            details.put("playerOut", new ArrayList<>(Arrays.asList(((Substitute) event).getSecondPlayer().getName())));
+            details.put("playerIn", new ArrayList<>(Arrays.asList(event.getFirstPlayer().getUsername())));
+            details.put("playerOut", new ArrayList<>(Arrays.asList(((Substitute) event).getSecondPlayer().getUsername())));
         }
         connectToEventDB();
         DB.addToDB(String.valueOf(matchID), time, String.valueOf(eventID), type, details);
@@ -1665,7 +1672,7 @@ public class SystemController extends Observable {
         //return null;
 
         String s = String.valueOf(password.hashCode());
-        if (subscriber.getPassword().equals(password)) {
+        if (subscriber.getPassword().equals(s)) {
             if (subscriber instanceof Admin) {
                 Admin userCheckIfApproved = ((Admin) subscriber);
                 if (userCheckIfApproved.isApproved() == false) {
@@ -2504,7 +2511,6 @@ public class SystemController extends Observable {
                 (HasPage) selectUserFromDB(objDetails.get("ownerID").get(0)));
 
         page.setPosts(new LinkedList<>(objDetails.get("posts")));
-
         return page;
     }
 
@@ -2555,7 +2561,8 @@ public class SystemController extends Observable {
         for (String str : page.getPosts()) {
             objDetails.get("posts").add(str);
         }
-        DB.addToDB(name, String.valueOf(page.getPageID()), page.getbDate(), page.getName(), objDetails);
+        //todo ido put it on comma
+        //DB.addToDB(name, String.valueOf(page.getPageID()), page.getbDate(), page.getName(), objDetails);
         return true;
     }
 
@@ -3015,6 +3022,40 @@ public class SystemController extends Observable {
              }
          }
          return seasons;
+    }
+
+    public ArrayList<String> getAllRefsGameID(String userID){
+        connectToMatchDB();
+        ArrayList<String> matchID = new ArrayList<>();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("refID",userID);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLGAMEREFEREE,args);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                matchID.add(temp.get(0));
+            }
+        }
+        return matchID;
+    }
+
+    public ArrayList<String> getPlayerInMatch(int matchID){
+        Match match = findMatch(matchID);
+        String home = match.getHomeTeam().getTeamName();
+        String away = match.getAwayTeam().getTeamName();
+        ArrayList<String> playersNames = new ArrayList<>();
+        for (Player p : match.getHomeTeam().getPlayers()){
+            playersNames.add(p.getUsername()+"-"+home);
+        }
+        for (Player p : match.getAwayTeam().getPlayers()){
+            playersNames.add(p.getUsername()+"-"+away);
+        }
+        return playersNames;
+    }
+
+    public String getDetailsOnMatch(int matchID){
+        Match match = findMatch(matchID);
+        return match.toString();
     }
 
     //todo javafx function

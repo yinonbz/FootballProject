@@ -333,7 +333,10 @@ public class Match {
         if(date!=null){
             dateS=date.toString();
         }
-        return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
+        if(stadium!=null){
+
+        }
+        return  "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
                 + awayTeam.getTeamName() + "\n" +
                 "Stadium: " + stadium.getName() + "\n" + "Date: " + dateS +"\n" + "Referee: "+ref;
     }
