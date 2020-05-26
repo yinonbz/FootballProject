@@ -326,7 +326,7 @@ public class MatchController {
     public boolean removeEventByMainReferee(int matchID, String usernameRequested, String timeOfEvent, int eventId){
         Match match = systemController.findMatch(matchID);
         if(match!=null) {
-            if (match.getFinished()) {
+            //if (match.getFinished()) {//todo ido put this to next iteration
                 Subscriber subscriber = systemController.getSubscriberByUserName(usernameRequested);
                 if (subscriber instanceof Referee) {
                     if (match.isMainReferee((Referee) subscriber)) {
@@ -335,7 +335,7 @@ public class MatchController {
                     }
                     throw new NotApprovedException("This Referee is not a Main Referee.");
                 }
-            }
+          //  }
         }
         return false;
     }
