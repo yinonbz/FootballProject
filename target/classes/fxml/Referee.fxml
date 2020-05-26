@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.RefereeController">
+    <top>
+        <HBox id="actions" prefHeight="52.0" prefWidth="1100.0" spacing="10.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#switchMatchPane" prefHeight="31.0" prefWidth="200.0" text="View Assigned games " textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin>
+                </Button>
+            <MenuButton mnemonicParsing="false" prefHeight="31.0" prefWidth="180.0" text="Game Management ">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#switchFoulPane" text="Report Foul" />
+                <MenuItem mnemonicParsing="false" onAction="#switchGoalPane" text="Report Goal" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchInjuryPane" text="Report Injury" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchOffsidePane" text="Report Offside" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchRedCardPane" text="Report Red Card" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchYellowCardPane" text="Report Yellow Card" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchSubstitutionPane" text="Report Substitution" />
+              </items>
+            </MenuButton>
+            <Button mnemonicParsing="false" onAction="#switchRemovePane" prefHeight="38.0" prefWidth="180.0" text="Remove Event" />
+            <MenuButton mnemonicParsing="false" prefHeight="250.0" prefWidth="135.0" text="Edit Details">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#switchNamePane" text="Edit Name:" />
+              </items>
+            </MenuButton>
+                <Label alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" prefHeight="21.0" prefWidth="364.0" text="                                                               Welcome" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets left="0" right="0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="System Italic" size="15.0" />
+                    </font>
+                </Label>
+            <Label id="userName" fx:id="userLabel" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="236.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font name="System Italic" size="15.0" />
+               </font>
+            </Label>
+                <Button minHeight="30.0" minWidth="65.0" mnemonicParsing="false" onAction="#logoutB" prefHeight="30.0" prefWidth="74.0" text="Logout">
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin></Button>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="20.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+    <center>
+        <BorderPane prefHeight="614.0" prefWidth="771.0" BorderPane.alignment="CENTER">
+            <top>
+                <HBox id="titlePane" prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label fx:id="titleL">
+                            <font>
+                                <Font size="25.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets left="50.0" top="10.0" />
+                    </padding>
+                </HBox>
+            </top>
+            <center>
+                <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane fx:id="matchPane" prefHeight="550.0" prefWidth="650.0" visible="false">
+                     <children>
+                        <ComboBox fx:id="matchDisplay" layoutX="70.0" layoutY="95.0" prefWidth="150.0" promptText="Choose Match:" />
+                        <Button layoutX="261.0" layoutY="95.0" mnemonicParsing="false" onAction="#getAllMatches" text="View Match Details" />
+                        <Label layoutX="106.0" layoutY="70.0" text="Choose Match:" />
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="foulPane" prefHeight="550.0" prefWidth="958.0" visible="false">
+                     <children>
+                        <Spinner fx:id="timeFoul" layoutX="46.0" layoutY="62.0" prefHeight="31.0" prefWidth="90.0" />
+                        <ComboBox fx:id="aFoulPlayer" disable="true" layoutX="187.0" layoutY="149.0" prefHeight="31.0" prefWidth="171.0" promptText="Attacker Player" />
+                        <ComboBox fx:id="iFoulPlayer" disable="true" layoutX="25.0" layoutY="149.0" prefHeight="31.0" prefWidth="147.0" promptText="Injured Player" />
+                        <ComboBox fx:id="matchFoul" layoutX="184.0" layoutY="62.0" onAction="#fillPlayerFoul" prefHeight="31.0" prefWidth="161.0" promptText="choose match" />
+                        <Button layoutX="46.0" layoutY="215.0" mnemonicParsing="false" onAction="#reportFoul" prefHeight="31.0" prefWidth="92.0" text="Submit" />
+                        <Label layoutX="74.0" layoutY="34.0" text="Time:" />
+                        <Label layoutX="197.0" layoutY="34.0" text="Match ID:" />
+                        <Label layoutX="52.0" layoutY="128.0" text="Injured Player:" />
+                        <Label layoutX="218.0" layoutY="128.0" text="Attacker Player:" />
+                     </children></Pane>
+                  <Pane id="menuPane" fx:id="goalPane" prefHeight="550.0" prefWidth="960.0" visible="false">
+                     <children>
+                        <Spinner fx:id="timeGoal" layoutX="45.0" layoutY="99.0" prefHeight="31.0" prefWidth="144.0" />
+                        <ComboBox fx:id="playerGoal" disable="true" layoutX="217.0" layoutY="99.0" prefHeight="31.0" prefWidth="186.0" promptText="choose player Goal" visible="true" />
+                        <ComboBox fx:id="playerAssisted" disable="true" layoutX="438.0" layoutY="99.0" prefHeight="31.0" prefWidth="180.0" promptText="choose player Assisted" visible="true" />
+                        <CheckBox fx:id="isOwnGoal" disable="true" layoutX="256.0" layoutY="178.0" mnemonicParsing="false" text="Is Own Goal" visible="true" />
+                        <Label layoutX="109.0" layoutY="78.0" text="Time:" />
+                        <ComboBox fx:id="matchGoalId" layoutX="44.0" layoutY="173.0" onAction="#fillPlayerGoal" prefHeight="31.0" prefWidth="149.0" promptText="choose match" />
+                        <Label layoutX="101.0" layoutY="152.0" text="Match ID" />
+                        <Button layoutX="85.0" layoutY="229.0" mnemonicParsing="false" onAction="#reportGoal" text="Submit" />
+                        <Label layoutX="286.0" layoutY="78.0" text="Player Goal:" />
+                        <Label layoutX="481.0" layoutY="68.0" text="Player Assisted" />
+                     </children></Pane>
+                  <Pane id="menuPane" fx:id="injuryPane" layoutY="-2.0" prefHeight="550.0" prefWidth="959.0" visible="false">
+                     <children>
+                        <Spinner fx:id="timeInjury" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
+                        <ComboBox fx:id="playerInjured" disable="true" layoutX="430.0" layoutY="131.0" prefHeight="31.0" prefWidth="145.0" promptText="Player Injured" visible="true" />
+                        <ComboBox fx:id="matchInjuryId" layoutX="197.0" layoutY="131.0" onAction="#fillPlayerInjury" prefHeight="31.0" prefWidth="169.0" promptText="Choose Match" />
+                        <Button layoutX="283.0" layoutY="203.0" mnemonicParsing="false" onAction="#reportInjury" text="Submit" />
+                        <Label layoutX="250.0" layoutY="100.0" text="Match ID:" />
+                        <Label layoutX="456.0" layoutY="100.0" text="Player Injured:" />
+                        <Label layoutX="67.0" layoutY="100.0" text="Time:" />
+                     </children></Pane>
+                  <Pane id="menuPane" fx:id="offsidePane" prefHeight="550.0" prefWidth="984.0" visible="false">
+                     <children>
+                        <Spinner fx:id="timeOffside" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
+                        <ComboBox fx:id="playerOffside" disable="true" layoutX="401.0" layoutY="131.0" prefHeight="31.0" prefWidth="174.0" promptText="Player Offsided" visible="true" />
+                        <ComboBox fx:id="matchOffsideId" layoutX="204.0" layoutY="131.0" onAction="#fillPlayerOffside" prefHeight="31.0" prefWidth="162.0" promptText="Choose Match" />
+                        <Button layoutX="249.0" layoutY="194.0" mnemonicParsing="false" onAction="#reportOffside" text="Submit" />
+                        <Label layoutX="251.0" layoutY="100.0" text="Match ID:" />
+                        <Label layoutX="441.0" layoutY="100.0" text="Player Offside:" />
+                        <Label layoutX="67.0" layoutY="100.0" text="Time:" />
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="redCardPane" layoutY="-2.0" prefHeight="562.0" prefWidth="930.0" visible="false">
+                     <children>
+                        <Spinner fx:id="timeRed" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
+                        <ComboBox fx:id="matchRedId" layoutX="204.0" layoutY="131.0" onAction="#fillPlayerRedCard" prefHeight="31.0" prefWidth="164.0" promptText="Choose Match" />
+                        <ComboBox fx:id="playerRed" disable="true" layoutX="419.0" layoutY="131.0" prefHeight="31.0" prefWidth="156.0" promptText="Choose Player" visible="true" />
+                        <Button layoutX="283.0" layoutY="203.0" mnemonicParsing="false" onAction="#reportRedCard" text="Submit" />
+                        <Label layoutX="251.0" layoutY="100.0" text="Match ID:" />
+                        <Label layoutX="433.0" layoutY="100.0" text="Red Card To Player:" />
+                        <Label layoutX="67.0" layoutY="100.0" text="Time:" />
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="yellowCardPane" layoutX="-2.0" layoutY="-2.0" prefHeight="572.0" prefWidth="942.0" visible="false">
+                     <children>
+                        <Spinner fx:id="timeYellow" layoutX="34.0" layoutY="131.0" prefHeight="31.0" prefWidth="101.0" />
+                        <ComboBox fx:id="playerYellow" disable="true" layoutX="415.0" layoutY="131.0" prefHeight="31.0" prefWidth="160.0" promptText="Choose Player" visible="true" />
+                        <ComboBox fx:id="matchYellowId" layoutX="218.0" layoutY="131.0" onAction="#fillPlayerYellowCard" prefHeight="31.0" prefWidth="157.0" promptText="Choose Match" />
+                        <Button layoutX="263.0" layoutY="201.0" mnemonicParsing="false" onAction="#reportYellowCard" text="Submit" />
+                        <Label layoutX="265.0" layoutY="100.0" text="Match ID:" />
+                        <Label layoutX="422.0" layoutY="100.0" text="Yellow Card To Player:" />
+                        <Label layoutX="67.0" layoutY="100.0" text="Time:" />
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="substitutionPane" prefHeight="550.0" prefWidth="1058.0" visible="false">
+                     <children>
+                         <Spinner fx:id="timeSubstitute" layoutX="45.0" layoutY="99.0" prefHeight="31.0" prefWidth="144.0" />
+                         <ComboBox fx:id="playerOn" disable="true" layoutX="217.0" layoutY="99.0" prefHeight="31.0" prefWidth="186.0" promptText="choose player Goal" visible="true" />
+                         <ComboBox fx:id="playerOff" disable="true" layoutX="438.0" layoutY="99.0" prefHeight="31.0" prefWidth="180.0" promptText="choose player Assisted" visible="true" />
+                         <Label layoutX="109.0" layoutY="78.0" text="Time:" />
+                         <ComboBox fx:id="matchSubstituteId" layoutX="44.0" layoutY="173.0" onAction="#fillPlayerSubstitute" prefHeight="31.0" prefWidth="149.0" promptText="choose match" />
+                         <Label layoutX="101.0" layoutY="152.0" text="Match ID" />
+                         <Button layoutX="85.0" layoutY="229.0" mnemonicParsing="false" onAction="#reportSubstitution" text="Submit" />
+                         <Label layoutX="286.0" layoutY="78.0" text="Player On:" />
+                         <Label layoutX="481.0" layoutY="68.0" text="Player Off" />
+                     </children></Pane>
+                  <Pane id="menuPane" fx:id="removeEventPane" layoutX="-2.0" layoutY="-2.0" prefHeight="550.0" prefWidth="650.0">
+                     <children>
+                        <Button layoutX="76.0" layoutY="141.0" mnemonicParsing="false" onAction="#removeCurrEvent" text="Submit" />
+                        <ComboBox fx:id="matchRemoveId" layoutX="50.0" layoutY="90.0" onAction="#fillRemove" prefHeight="25.0" prefWidth="100.0" promptText="Match ID:" />
+                        <Label layoutX="57.0" layoutY="69.0" prefHeight="17.0" prefWidth="89.0" text="Choose Match:" />
+                        <ComboBox fx:id="eventCombo" disable="true" layoutX="225.0" layoutY="90.0" prefWidth="150.0" promptText="Choose Event:" />
+                        <Label layoutX="262.0" layoutY="69.0" text="Choose Event" />
+                     </children></Pane>
+                   <Pane id="menuPane" fx:id="namePane" prefHeight="550.0" prefWidth="1018.0" visible="false">
+                       <children>
+                           <Label layoutX="87.0" layoutY="111.0" text="Change Name:" />
+                           <TextField fx:id="nameField" layoutX="50.0" layoutY="135.0" />
+                           <Button layoutX="240.0" layoutY="135.0" mnemonicParsing="false" onAction="#changeName" text="Submit" />
+                       </children>
+                   </Pane>
+               </children></Pane>
+            </center>
+            <left>
+                <ScrollPane prefHeight="652.0" prefWidth="235.0">
+                    <content>
+                        <Accordion fx:id="notificationsPane" prefHeight="259.0" prefWidth="236.0">
+                            <panes>
+                                <TitledPane animated="false" text="untitled 1">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    </content>
+                                </TitledPane>
+                                <TitledPane animated="false" text="untitled 2">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <Label layoutX="14.0" layoutY="6.0" text="Label" />
+                                            </children></AnchorPane>
+                                    </content>
+                                </TitledPane>
+                                <TitledPane animated="false" prefHeight="106.0" prefWidth="236.0" text="untitled 3">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    </content>
+                                </TitledPane>
+                            </panes>
+                        </Accordion>
+                    </content>
+                </ScrollPane>
+            </left>
+        </BorderPane>
+    </center>
+</BorderPane>
