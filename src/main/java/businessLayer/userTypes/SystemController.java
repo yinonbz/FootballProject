@@ -28,6 +28,7 @@ import serviceLayer.SystemService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.FileHandler;
 
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
@@ -45,7 +46,8 @@ public class SystemController extends Observable {
     private MatchController matchController;
     private static final Logger events = LogManager.getLogger("Events");
     private static final Logger errors = LogManager.getLogger("Errors");
-
+    private FileHandler fileHandlerEve;
+    private FileHandler fileHandlerErr;
 
     //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
     //private HashMap<String, Team> teams; //name of the team, the team object
@@ -65,6 +67,13 @@ public class SystemController extends Observable {
 
     private SystemController() {
         DB = new DBHandler();
+        try{
+            fileHandlerErr = new FileHandler("./resources/logs/errors.log");
+            //events.addHandler(fileHandlerErr);
+            fileHandlerEve = new FileHandler("./resources/logs/events.log");
+        }catch (Exception e){
+
+        }
     }
 
     /**
@@ -3008,6 +3017,49 @@ public class SystemController extends Observable {
     public String getDetailsOnMatch(int matchID){
         Match match = findMatch(matchID);
         return match.toString();
+    }
+
+    public ArrayList<String> getAllRefereesAvailable(int matchID){
+        LinkedList <String> notAvailableRefs = getAllRefsGameID(String.valueOf(matchID));
+        HashSet<String> refsOccupied = new HashSet<>();
+        ArrayList<String> finalList = new ArrayList<>();
+        for(String refID : notAvailableRefs){
+            refsOccupied.add(refID);
+        }
+        connectToSubscriberDB();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(UserTypes.REFEREE,null);
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                if(!refsOccupied.contains(temp.get(0))){
+                    finalList.add(temp.get(0));
+                }
+            }
+        }
+        return finalList;
+    }
+
+    public ArrayList<String> allTeamAvailable(String leagueID,int seasonID){
+        connectToTeamDB();
+        ArrayList<String> allTeams = getAllTeamsNames();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("leagueID",leagueID);
+        args.put("seasonID",String.valueOf(seasonID));
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(TEAMUPDATES.TEAMSOFSEASON,args);
+        HashSet<String> unvalidTeams = new HashSet<>();
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                unvalidTeams.add(temp.get(0));
+            }
+        }
+        ArrayList<String> finalList = new ArrayList<>();
+        for(String teamID : allTeams){
+            if(!unvalidTeams.contains(teamID)){
+                finalList.add(teamID);
+            }
+        }
+        return finalList;
     }
 
     //todo javafx function
