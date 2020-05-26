@@ -1,6 +1,7 @@
 package dataLayer;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static dataLayer.Tables.Tables.LEAGUE;
+import static dataLayer.Tables.Tables.MATCH_REFEREE;
 
 public class DBLeagues implements DB_Inter{
 
@@ -82,6 +84,20 @@ public class DBLeagues implements DB_Inter{
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
+        if(e==SEASONENUM.ALLLEAGUES){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(LEAGUE.LEAGUEID).from(LEAGUE).fetch();
+            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                String leagueID = record.get(LEAGUE.LEAGUEID);
+                temp.add(leagueID);
+                seasonDetails.put(leagueID, temp);
+                details.add(seasonDetails);
+            }
+            return details;
+        }
         return null;
     }
 
