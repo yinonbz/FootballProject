@@ -3094,7 +3094,7 @@ public class SystemController extends Observable {
         connectToEventRecordDB();
         HashMap<String,String> args = new HashMap<>();
         args.put("matchID",String.valueOf(matchID));
-        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLEVENTSFROMMATCH,null);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLEVENTSFROMMATCH,args);
         ArrayList<String>allEvents = new ArrayList<>();
         for(Map <String,ArrayList<String>> map : details) {
             for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
