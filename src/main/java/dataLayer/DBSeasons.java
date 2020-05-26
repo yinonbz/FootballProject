@@ -76,8 +76,29 @@ public class DBSeasons implements DB_Inter {
             if (e == SEASONENUM.ALLSEASON) {
                 return selectAllSeasonOfLeague(SEASONENUM.ALLSEASON,arguments);
             }
+            else if(e==SEASONENUM.REFSOFSEASON){
+                getAllRefsOfSeason(arguments.get("leagueID"),arguments.get("seasonID"));
+            }
             return null;
         }
+
+        private ArrayList<Map<String, ArrayList<String>>> getAllRefsOfSeason(String leagueID, String seasonID){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(SEASON_REFEREE.REFEREEID).from(SEASON_REFEREE).
+                    where(SEASON_REFEREE.LEAGUEID.eq(leagueID)).and(SEASON_REFEREE.SEASONID.eq(Integer.parseInt(seasonID))).
+                    fetch();
+            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                String refID = record.get(SEASON_REFEREE.LEAGUEID);
+                temp.add(refID);
+                seasonDetails.put(refID, temp);
+                details.add(seasonDetails);
+            }
+            return details;
+        }
+
 
         private ArrayList<Map<String, ArrayList<String>>> selectAllSeasonOfLeague (Enum < ? > e ,Map<String,String> arguments){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);

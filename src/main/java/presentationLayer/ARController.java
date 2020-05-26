@@ -185,8 +185,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
         createSeasonPane.setVisible(false);
         activatePolicyPane.setVisible(false);
 
-        leagueCombo2.getItems().setAll(
-                leagueService.getAllULeagues()
+        leagueCombo2.getItems().setAll(leagueService.getAllULeagues()
         );
 
         ObservableList<String> listTeams = FXCollections.observableArrayList();
@@ -342,8 +341,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
 
     public void leagueSelect2(ActionEvent actionEvent) {
         try{
-        seasonCombo2.getItems().setAll(
-                leagueService.getAllSeasonsFromLeague(leagueCombo2.getValue())
+        seasonCombo2.getItems().setAll(leagueService.getAllSeasonsFromLeague(leagueCombo2.getValue())
         );
         } catch (NullPointerException e) {
             seasonCombo2.setDisable(true);
@@ -360,7 +358,6 @@ public class ARController implements ControllerInterface, Initializable, Observe
             String teamToAdd = list.get(i);
             teamsNames.add(teamToAdd);
         }
-
         String leagueID = leagueCombo2.getValue();
         String seasonID = seasonCombo2.getValue();
         try {
