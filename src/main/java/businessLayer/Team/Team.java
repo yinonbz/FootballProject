@@ -66,7 +66,7 @@ public class Team implements HasPage {
         this.establishedYear = establishedYear;
         this.isActive = isActive;
         this.closedByAdmin = closedByAdmin;
-        teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+        //teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
 /*        SystemController systemController = SystemController.SystemController();
         for(TeamOwner teamOwner: teamOwners) {
             systemController.addPageToDB(teamOwner.getUsername(), teamPage);
@@ -97,6 +97,7 @@ public class Team implements HasPage {
         this.matches = new HashSet<>();
         this.teamManager = null;
         teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+        SystemController.SystemController().addPageToDB(teamName, teamPage);
 
 
     }
@@ -261,6 +262,7 @@ public class Team implements HasPage {
      */
     public void setActive(Boolean active) {
         isActive = active;
+
     }
 
     /**

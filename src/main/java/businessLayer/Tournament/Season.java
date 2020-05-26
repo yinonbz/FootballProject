@@ -54,6 +54,7 @@ public class Season {
         this.referees=referees;
         this.leagueTable=leagueTable;
         this.matchesOfTheSeason=matchesOfTheSeason;
+        teams = new HashMap<>();
         if (matchingPolicy.equals("ClassicMatchPolicy")) {
             this.matchingPolicy = new ClassicMatchPolicy(league, this);
         } else if (matchingPolicy.equals("SingleMatchPolicy")) {
