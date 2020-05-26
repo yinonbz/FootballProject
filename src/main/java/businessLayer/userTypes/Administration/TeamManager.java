@@ -34,6 +34,10 @@ public class TeamManager extends Subscriber implements OwnerEligible {
 
     }
 
+    @Override
+    public String getUserName() {
+        return this.getUsername();
+    }
 
     /**
      * @return

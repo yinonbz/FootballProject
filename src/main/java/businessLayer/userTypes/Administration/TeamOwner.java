@@ -389,6 +389,7 @@ public class TeamOwner extends Subscriber {
     public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
             team.setActive(true);
+
             systemController.updateTeamStatusToUsers(team, "The team '" + team.getTeamName() + "' is now active.");
             return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
@@ -705,10 +706,12 @@ public class TeamOwner extends Subscriber {
                             }
                             team.getTeamOwners().remove(teamOwnerToRemove);
                             teamOwnerToRemove.getTeams().remove(team);
+                            systemController.removeOwnerFromTeam(team.getTeamName(),teamOwnerToRemove.getUsername());
                         }
 
                         teamOwners.get(team).remove(teamOwnerToRemove);
-                    //    systemController.updateOwnerOfRemoval(team, teamOwnerToRemove); todo not implemented in the db
+                        systemController.deleteOwnerFromOwner(team.getTeamName(),this.getUsername(),teamOwnerToRemove.getUsername());
+//                            systemController.updateOwnerOfRemoval(team, teamOwnerToRemove); todo not implemented in the db
                         return true;
                     }
                 }
@@ -736,6 +739,7 @@ public class TeamOwner extends Subscriber {
                                             sub = (TeamManager)teamOwner.getOriginalObject();
                                         }
                                         teamOwnerToRemove.removeOwner(sub,teamName);
+
                                     }
                                     else{
                                         teamOwnerToRemove.removeOwner(teamOwner,teamName);
@@ -745,13 +749,16 @@ public class TeamOwner extends Subscriber {
                             }
                             team.getTeamOwners().remove(teamOwnerToRemove);
                             teamOwnerToRemove.getTeams().remove(team);
+                            systemController.removeOwnerFromTeam(team.getTeamName(),teamOwnerToRemove.getUsername());
                         }
 
                         if (teamOwnerToRemove.getTeams().size() == 0) {
+                            systemController.removeOwner(OEowner.getUserName(),null,teamOwnerToRemove.getUsername(),null,OEowner.getType());
                             OEowner.setTeamOwner(null);
                             teamOwnerToRemove.setOriginalObject(null);
                         }
                         teamOwners.get(team).remove(teamOwnerToRemove);
+                        systemController.deleteOwnerFromOwner(team.getTeamName(),this.getUsername(),teamOwnerToRemove.getUsername());
       //                  systemController.updateOwnerOfRemoval(team, teamOwnerToRemove); todo not implemented in the db
                         return true;
                         }
@@ -784,30 +791,35 @@ public class TeamOwner extends Subscriber {
             newUserName = newUserName + newTeamOwnerCounter++;
         }
         TeamOwner newTeamOwner = new TeamOwner(newUserName, subscriber.getPassword(), "fictive", subscriber.getSystemController());
+        systemController.addSubscriber(newTeamOwner);
         if (subscriber instanceof Player) {
             Player player = (Player) subscriber;
             player.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(player);
+            systemController.setPlayerEligible(newTeamOwner.getUsername(),player.getUsername(),player.getUsername(),newTeamOwner.getUsername());
         } else if (subscriber instanceof Coach) {
             Coach coach = (Coach) subscriber;
             coach.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(coach);
+            systemController.setCoachEligible(newTeamOwner.getUsername(),coach.getUsername(),coach.getUsername(),newTeamOwner.getUsername());
         } else if (subscriber instanceof TeamManager) {
             TeamManager teamManager = (TeamManager) subscriber;
             teamManager.setTeamOwner(newTeamOwner);
             newTeamOwner.setOriginalObject(teamManager);
+            systemController.setTMEligible(newTeamOwner.getUsername(),teamManager.getUsername(),teamManager.getUsername(),newTeamOwner.getUsername());
         }
 
         Team team = getSystemController().getTeamByName(teamName);
         team.getTeamOwners().add(newTeamOwner); //add the new team owner to the team's team owners list
-        newTeamOwner.getTeams().add(getSystemController().getTeamByName(teamName));
+        newTeamOwner.getTeams().add(team);
         if (teamOwners.containsKey(team) == false) {
             teamOwners.put(team, new LinkedList<>());
         }
         teamOwners.get(team).add(newTeamOwner);
-        newTeamOwner.getTeams().add(team);
-        team.getTeamOwners().add(newTeamOwner);
- //       systemController.addOwnerToTeam(newTeamOwner, team); todo not implemented in the db
+        //newTeamOwner.getTeams().add(team);
+        //team.getTeamOwners().add(newTeamOwner);
+        systemController.addTeamToOwner(newTeamOwner.getUsername(),team.getTeamName());
+        systemController.addOwnerToOwner(this.getUsername(),newTeamOwner.getUsername(),team.getTeamName()); // add owner to assigned owners in DB
         //todo - add complaints to newTeamOwner? if not, complaints needs to be added manually to the newTeamOwner from the original object
         //System.out.println("The user " + subscriber.getUsername() + " has been added to the Team '" + teamName + "' owners list successfully.");
     }

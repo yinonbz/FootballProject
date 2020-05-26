@@ -2314,6 +2314,103 @@ public class SystemController extends Observable {
         return localDate;
     }
 
+    public boolean removeOwnerFromTeam(String teamID,String teamOwner){
+        connectToTeamDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("teamID",teamID);
+        arguments.put("ownerID",teamOwner);
+
+        DB.update(TEAMUPDATES.DELETEOWNER,arguments);
+        return false;
+    }
+
+
+
+    public boolean removeOwner(String subscriberID,String setSubscriberID,String teamOwner,String setTeamOwner,String eligibleType){
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",teamOwner);
+        arguments.put("setOwnerID",setTeamOwner);
+        arguments.put("type",eligibleType);
+        if(eligibleType.equalsIgnoreCase("player")){
+            arguments.put("playerID",subscriberID);
+            arguments.put("setPlayerID",setSubscriberID);
+        }
+        if(eligibleType.equalsIgnoreCase("coach")){
+            arguments.put("coachID",subscriberID);
+            arguments.put("setCoachID",setSubscriberID);
+        }
+        if(eligibleType.equalsIgnoreCase("teamManager")){
+            arguments.put("managerID",subscriberID);
+            arguments.put("setManagerID",setSubscriberID);
+        }
+
+        DB.update(SUBSCRIBERSUPDATES.REMOVEOWNER,arguments);
+        return false;
+    }
+
+    public boolean deleteOwnerFromOwner(String teamID,String teamOwner,String assigneeID){
+
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("teamID",teamID);
+        arguments.put("ownerID",teamOwner);
+        arguments.put("assigneeID",assigneeID);
+
+        DB.update(SUBSCRIBERSUPDATES.DELETEOWNERFROMOWNER,arguments);
+        return false;
+    }
+
+    public boolean setPlayerEligible(String ownerID,String playerID,String setPlayerID,String setOwnerID){
+
+        connectToTeamDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",ownerID);
+        arguments.put("playerID",playerID);
+        arguments.put("setPlayerID",setPlayerID);
+        arguments.put("setOwnerID",setOwnerID);
+
+        DB.update(SUBSCRIBERSUPDATES.SETPLAYERELIGIBLE,arguments);
+        return false;
+    }
+
+    public boolean setCoachEligible(String ownerID,String coachID,String setCoachID,String setOwnerID){
+
+        connectToTeamDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",ownerID);
+        arguments.put("coachID",coachID);
+        arguments.put("setCoachID",setCoachID);
+        arguments.put("setOwnerID",setOwnerID);
+
+        DB.update(SUBSCRIBERSUPDATES.SETCOACHELIGIBLE,arguments);
+        return false;
+    }
+
+    public boolean setTMEligible(String ownerID,String managerID,String setManagerID,String setOwnerID){
+
+        connectToTeamDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",ownerID);
+        arguments.put("managerID",managerID);
+        arguments.put("setManagerID",setManagerID);
+        arguments.put("setOwnerID",setOwnerID);
+
+        DB.update(SUBSCRIBERSUPDATES.SETTMELIGIBLE,arguments);
+        return false;
+    }
+
+    public boolean addOwnerToOwner(String ownerID,String assigneeID,String teamID){
+
+        connectToSubscriberDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("ownerID",ownerID);
+        arguments.put("assigneeID",assigneeID);
+        arguments.put("teamID",teamID);
+
+        DB.update(SUBSCRIBERSUPDATES.ADDOWNERTOOWNER,arguments);
+        return false;
+    }
 
     /**
      * The function receives a user's username and a player's name, adds the user as a follower of the player's page and returns whether the operation was successful
@@ -2607,6 +2704,10 @@ public class SystemController extends Observable {
     public void updateTeamStatusToUsers(Team team, String event) {
 
         if (team != null && event != null) {
+
+            //update isActive column in DB
+            setTeamActive(team.getTeamName(),String.valueOf(team.getActive()));
+
             LinkedList<String> usersToNotify;
             ArrayList<String> teamManagers;
             ArrayList<String> teamOwners;
