@@ -3027,7 +3027,7 @@ public class SystemController extends Observable {
             refsOccupied.add(refID);
         }
         connectToSubscriberDB();
-        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(UserTypes.REFEREE,null);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SUBSCRIBERSUPDATES.ALLREFS,null);
         for(Map <String,ArrayList<String>> map : details){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
                 ArrayList<String> temp = entry.getValue();
@@ -3055,7 +3055,7 @@ public class SystemController extends Observable {
         }
         */
         ArrayList<String> finalList = new ArrayList<>();
-        ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(UserTypes.REFEREE,null);
+        ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(SUBSCRIBERSUPDATES.ALLREFS,null);
         for(Map <String,ArrayList<String>> map : allRefs){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
                 ArrayList<String> temp = entry.getValue();
