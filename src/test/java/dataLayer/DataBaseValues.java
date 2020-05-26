@@ -181,7 +181,7 @@ public class DataBaseValues {
         dor.setApproved(true);
         tali = new AssociationRepresentative("tali5", "1111", "Tali", new FinancialMonitoring("empty for now"), leagueController, systemController);
         tali.setApproved(true);
-        EliLuzon = new AssociationRepresentative("EliLuzon", "abcd", "Eli", systemController);
+        EliLuzon = new AssociationRepresentative("EliLuzon", "abcd", "Eli", systemController, leagueController);
         EliLuzon.setApproved(true);
 
 

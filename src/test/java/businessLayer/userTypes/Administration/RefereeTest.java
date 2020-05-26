@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 
 import org.junit.rules.ExpectedException;
 import serviceLayer.MatchService;
+import serviceLayer.SystemService;
 
 
 public class RefereeTest {
@@ -31,6 +32,7 @@ public class RefereeTest {
 
     @BeforeClass
     public static void defineValues(){
+        /*
         tDB = new DataBaseValues();
         DB = tDB.getDB();
         matchService = new MatchService();
@@ -38,7 +40,10 @@ public class RefereeTest {
         m1 = DB.selectMatchFromDB(1);
         m2 = DB.selectMatchFromDB(2);
 
-
+    */
+        SystemService testingSystemService = new SystemService();
+        testingSystemService.initializeSystem("admin");
+        matchService = new MatchService();
 
     }
 
@@ -115,7 +120,7 @@ public class RefereeTest {
         //1
         //checks that the referee can add an event to a game he is submitted to
         //todo: check with new DB
-        //assertTrue(matchService.reportFoulThroughReferee("3","Pickford","Scholes","3","Rayola"));
+        assertTrue(matchService.reportFoulThroughReferee("119","Fred","Cillessen","200003","Love"));
 
         //2
         //checks yellow card event
