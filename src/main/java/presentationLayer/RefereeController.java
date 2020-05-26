@@ -503,7 +503,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             missingAlert();
         }
     }
-    
+
     @FXML
     public void fillPlayerFoul() {
         int matchId = matchFoul.getValue();
