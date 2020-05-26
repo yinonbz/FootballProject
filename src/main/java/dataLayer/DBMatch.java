@@ -23,6 +23,7 @@ public class DBMatch implements DB_Inter {
     //String myUrl = "jdbc:mysql://132.72.65.33:3306/SoccerProject";
     String myUrl = "jdbc:mysql://132.72.65.33:3306/demodb";
     Connection connection = null;
+    HashMap<String, String> monthsForFormat;
 
 
 
@@ -37,6 +38,20 @@ public class DBMatch implements DB_Inter {
         } catch (ClassNotFoundException e) {
             System.out.println("error connecting to driver");
         }
+
+        monthsForFormat = new HashMap<>();
+        monthsForFormat.put("Jan", "01");
+        monthsForFormat.put("Feb", "02");
+        monthsForFormat.put("Mar", "03");
+        monthsForFormat.put("Apr", "04");
+        monthsForFormat.put("May", "05");
+        monthsForFormat.put("Jun", "06");
+        monthsForFormat.put("Jul", "07");
+        monthsForFormat.put("Aug", "08");
+        monthsForFormat.put("Sep", "09");
+        monthsForFormat.put("Oct", "10");
+        monthsForFormat.put("Nov", "11");
+        monthsForFormat.put("Dec", "12");
     }
 
 
@@ -172,7 +187,7 @@ public class DBMatch implements DB_Inter {
         else if(e==MATCHENUM.ALLGAMEREFEREE){
             String refID = arguments.get("refID");
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(MATCH_REFEREE.REFEREEID).from(MATCH_REFEREE).where(MATCH_REFEREE.REFEREEID.eq(refID)).fetch();
+            Result<?> result = create.select().from(MATCH_REFEREE).where(MATCH_REFEREE.REFEREEID.eq(refID)).fetch();
             ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
             for (Record record : result) {
                 HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
@@ -273,11 +288,13 @@ public class DBMatch implements DB_Inter {
         return false;
     }
 
-    private LocalDate convertToDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    private LocalDate convertToDate (String date){
+        String [] arr = date.split(" ");
+        String temp = arr[5]+"-"+monthsForFormat.get(arr[1])+"-"+arr[2] + " " + arr[3].substring(0,5);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         //convert String to LocalDate
-        LocalDate localDate = LocalDate.parse(date, formatter);
+        LocalDate localDate = LocalDate.parse(temp, formatter);
         return localDate;
     }
 

@@ -11,6 +11,7 @@ import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Administration.TeamManager;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.SystemController;
+import serviceLayer.SystemService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,7 +66,12 @@ public class Team implements HasPage {
         this.establishedYear = establishedYear;
         this.isActive = isActive;
         this.closedByAdmin = closedByAdmin;
-        teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+        //teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+/*        SystemController systemController = SystemController.SystemController();
+        for(TeamOwner teamOwner: teamOwners) {
+            systemController.addPageToDB(teamOwner.getUsername(), teamPage);
+        }*/
+
 
     }
     //todo need to add to this constructor the stadium, but the stadium needs to be moved or be edited
@@ -91,6 +97,7 @@ public class Team implements HasPage {
         this.matches = new HashSet<>();
         this.teamManager = null;
         teamPage = new Page(new ArrayList<>(teamOwners), teamName, establishedYear, this, teamName);
+        SystemController.SystemController().addPageToDB(teamName, teamPage);
 
 
     }
@@ -255,6 +262,7 @@ public class Team implements HasPage {
      */
     public void setActive(Boolean active) {
         isActive = active;
+
     }
 
     /**

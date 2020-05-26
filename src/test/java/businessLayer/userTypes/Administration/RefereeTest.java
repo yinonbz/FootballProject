@@ -119,39 +119,40 @@ public class RefereeTest {
     public void UC10_3_a(){
         //1
         //checks that the referee can add an event to a game he is submitted to
-        //todo: check with new DB
-        assertTrue(matchService.reportFoulThroughReferee("119","Fred","Cillessen","200003","Love"));
+        //todo: check with new DB Update: working need to check with page
 
+        assertTrue(matchService.reportFoulThroughReferee("4","Fred","Cillessen","200003","Love"));
+        /*
         //2
         //checks yellow card event
         //todo: check with new DB
-        //assertTrue(matchService.yellowCard("4","Salah","4","Alon"));
+        assertTrue(matchService.yellowCard("4","Cillessen","200003","Love"));
 
         //3
         //checks red card event
         //todo: check with new DB
-        //assertTrue(matchService.reportOnInjury("4","Salah","4","Alon"));
+        assertTrue(matchService.reportOnInjury("4","Cillessen","200003","Love"));
 
         //4
         //checks injury
         //todo: check with new DB
-        //assertTrue(matchService.reportOnRedCard("4","Mane","4","Alon"));
+        assertTrue(matchService.reportOnRedCard("4","Cillessen","200003","Love"));
 
         //5
         //checks goal
         //todo: check with new DB
-        //assertTrue(matchService.reportGoalThroughReferee("4","Mane","Salah", "true","4","Alon"));
+        assertTrue(matchService.reportGoalThroughReferee("4","Cillessen","Chumi", "true","200003","Love"));
 
         //6
         //check substitute
         //todo: check with new DB
-        //assertTrue(matchService.reportOnSubstitute("4","Firmino","Mane","4","Alon"));
+        assertTrue(matchService.reportOnSubstitute("4","Cillessen","Chumi","200003","Love"));
 
         //7
         //check offside
         //todo: check with new DB
-        //assertTrue(matchService.reportOffside("4","Firmino","4","Alon"));
-
+        assertTrue(matchService.reportOffside("4","Cillessen","200003","Love"));
+        */
     }
 
     @Test

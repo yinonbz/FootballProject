@@ -26,6 +26,7 @@ public class League {
         //scoreTable = new HashMap<>();
         seasons = new HashMap<>();
         //matches = new ArrayList<>();
+        systemController = SystemController.SystemController();
     }
 /*
     /**
@@ -137,11 +138,9 @@ public class League {
         if (matchingPolicy == null){
             return false;
         }
-        seasons.put(seasonID, new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy));
-        Season season = new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy);
-
-        systemController.addNewSeasonToDB(leagueName,seasonID,startingDate,endingDate,win,lose,tie,matchingPolicy,season);
-
+        Season seasonToAdd = new Season(seasonID, startingDate, endingDate, this, win, lose, tie, matchingPolicy);
+        seasons.put(seasonID, seasonToAdd);
+        systemController.addNewSeasonToDB(leagueName,seasonID,startingDate,endingDate,win,lose,tie,matchingPolicy,seasonToAdd);
         return true;
     }
 

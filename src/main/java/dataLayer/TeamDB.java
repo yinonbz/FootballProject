@@ -388,6 +388,13 @@ public class TeamDB implements DB_Inter {
                 .execute();
         return true;
         }
+        if(e==TEAMUPDATES.DELETEOWNER){
+            create.delete(OWNER_TEAMS)
+                    .where(OWNER_TEAMS.OWNERID.eq(arguments.get("ownerID")))
+                    .and(OWNER_TEAMS.TEAMID.eq(arguments.get("teamID")))
+                    .execute();
+            return true;
+        }
         return false;
     }
 

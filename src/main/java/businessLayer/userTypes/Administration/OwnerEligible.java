@@ -21,5 +21,7 @@ public interface OwnerEligible {
 
     String getType();
 
+    String getUserName();
+
 
 }

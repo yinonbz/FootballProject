@@ -22,7 +22,7 @@ public class DBSeasons implements DB_Inter {
     //String myUrl = "jdbc:mysql://132.72.65.33:3306/SoccerProject";
     String myUrl = "jdbc:mysql://132.72.65.33:3306/demodb";
     Connection connection = null;
-
+    HashMap<String, String> monthsForFormat;
 
     public DBSeasons() {
         //connect to DB and save to field in class.
@@ -35,6 +35,21 @@ public class DBSeasons implements DB_Inter {
         } catch (ClassNotFoundException e) {
             System.out.println("error connecting to driver");
         }
+        monthsForFormat = new HashMap<>();
+        monthsForFormat.put("Jan", "01");
+        monthsForFormat.put("Feb", "02");
+        monthsForFormat.put("Mar", "03");
+        monthsForFormat.put("Apr", "04");
+        monthsForFormat.put("May", "05");
+        monthsForFormat.put("Jun", "06");
+        monthsForFormat.put("Jul", "07");
+        monthsForFormat.put("Aug", "08");
+        monthsForFormat.put("Sep", "09");
+        monthsForFormat.put("Oct", "10");
+        monthsForFormat.put("Nov", "11");
+        monthsForFormat.put("Dec", "12");
+
+
     }
 
     @Override
@@ -138,7 +153,7 @@ public class DBSeasons implements DB_Inter {
             updateSeasonTable(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), args.get("teamID"), details);
             return true;
         } else if (e == SEASONENUM.TEAM) {
-            addTeamInSeason(args.get("matchID"), Integer.parseInt(args.get("seasonID")), args.get("teamID"));
+            addTeamInSeason(args.get("leagueID"),Integer.parseInt(args.get("seasonID")), args.get("teamID"));
             return true;
         }
         return false;
@@ -229,10 +244,14 @@ public class DBSeasons implements DB_Inter {
             end, Map<String, ArrayList<String>> details) {
         if (!containsInDB(leagueID, seasonID)) {
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.insertInto(SEASONS, SEASONS.LEAGUEID, SEASONS.SEASONID).values(leagueID, seasonID).execute();
+            create.insertInto(SEASONS, SEASONS.LEAGUEID, SEASONS.SEASONID,
+                        SEASONS.STARTDATE,
+                        SEASONS.ENDDATE).values(leagueID, seasonID,start,end).execute();
             //create.insertInto(SEASONS,SEASONS.SEASONID).values(seasonID).execute();
-            create.insertInto(SEASONS, SEASONS.STARTDATE).execute();
-            create.insertInto(SEASONS, SEASONS.ENDDATE).execute();
+            /*create.insertInto(SEASONS, SEASONS.STARTDATE)
+                        .values(start).execute();
+            create.insertInto(SEASONS, SEASONS.ENDDATE).values(end)
+                        .execute();*/
             ArrayList<String> teams = details.get("teams");
             if (teams != null) {
                 for (String team : teams) {
@@ -332,13 +351,15 @@ public class DBSeasons implements DB_Inter {
     }
 
 
-    private LocalDate convertToDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        private LocalDate convertToDate (String date){
+            String [] arr = date.split(" ");
+            String temp = arr[5]+"-"+monthsForFormat.get(arr[1])+"-"+arr[2] + " " + arr[3].substring(0,5);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        //convert String to LocalDate
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        return localDate;
-    }
+            //convert String to LocalDate
+            LocalDate localDate = LocalDate.parse(temp, formatter);
+            return localDate;
+        }
 
     protected boolean tryParseInt(String value) {
         try {

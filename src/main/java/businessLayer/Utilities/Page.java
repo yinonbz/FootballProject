@@ -31,7 +31,7 @@ static int pageCounter=0;
         owners.add(username);
         this.pageOwner = pageOwner;
         systemController = SystemController.SystemController();
-        systemController.addPageToDB(username, this);
+        //systemController.addPageToDB(username, this);
         pageID=pageCounter;
         pageCounter++;
     }
@@ -53,7 +53,7 @@ static int pageCounter=0;
         }
         systemController = SystemController.SystemController();
         this.pageOwner = pageOwner;
-        systemController.addPageToDB(ownerName, this);
+        //systemController.addPageToDB(ownerName, this);
     }
 
 

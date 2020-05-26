@@ -336,7 +336,7 @@ public class Match {
         if(stadium!=null){
 
         }
-        return "Match id: " + matchId + "\n" + "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
+        return  "Home: " + homeTeam.getTeamName() + "\n" + "Away: "
                 + awayTeam.getTeamName() + "\n" +
                 "Stadium: " + stadium.getName() + "\n" + "Date: " + dateS +"\n" + "Referee: "+ref;
     }
