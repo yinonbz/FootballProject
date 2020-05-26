@@ -9,7 +9,7 @@
     <top>
         <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
             <children>
-                <Button minWidth="128.0" mnemonicParsing="false" onAction="#addNewTeam" prefHeight="30.0" prefWidth="128.0" text="Subscribe To Pages" textAlignment="CENTER">
+                <Button minWidth="128.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="128.0" text="Subscribe To Pages" textAlignment="CENTER">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
