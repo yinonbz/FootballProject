@@ -56,7 +56,6 @@ public class TeamManagerController implements Initializable,ControllerInterface,
             }
         }
         notificationsPane.getPanes().setAll(notificationPanesCollection);
-
     }
 
     @Override
