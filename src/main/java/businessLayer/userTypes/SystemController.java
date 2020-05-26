@@ -3069,14 +3069,14 @@ public class SystemController extends Observable {
     public ArrayList<String> getAllLeaguesInDB() {
         connectToLeagueDB();
         ArrayList<String> leagues = new ArrayList<>();
-/*        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES, null);
+        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES, null);
         for (Map<String, ArrayList<String>> map : details) {
             for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
                 ArrayList<String> temp = entry.getValue();
                 leagues.add(temp.get(0));
             }
-        }*/
-        leagues.add("Champions");
+        }
+        //leagues.add("Champions");
         return leagues;
     }
 
@@ -3167,7 +3167,7 @@ public class SystemController extends Observable {
     }
 
     public ArrayList<String> getAllRefereesAvailable(int matchID){
-        LinkedList <String> notAvailableRefs = getAllRefsGameID(String.valueOf(matchID));
+        ArrayList <String> notAvailableRefs = getAllRefsGameID(String.valueOf(matchID));
         HashSet<String> refsOccupied = new HashSet<>();
         ArrayList<String> finalList = new ArrayList<>();
         for(String refID : notAvailableRefs){
