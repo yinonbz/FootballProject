@@ -7,9 +7,9 @@ import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedList;
 
 
 public class MatchController {
@@ -72,10 +72,12 @@ public class MatchController {
                 isOwnG=false;
             }
             if (playerG != null && playerA != null) {
-                if(checkSameTeam(playerG,playerA)) {
+               // todo ido put this because it is implemented in the gui layer
+                //if(checkSameTeam(playerG,playerA)) {
                     Goal goal = new Goal(playerG, playerA, isOwnG, this);
                     return handleEvent(goal, time, matchID);
-                }
+               // }
+
             }
             else if(playerG != null){
                 Goal goal = new Goal(playerG, isOwnG, this);
@@ -156,10 +158,10 @@ public class MatchController {
             Player playerO = getPlayerFromDB(playerOn);
             Player playerOf= getPlayerFromDB(playerOff);
             if (playerO != null && playerOf != null && !playerO.equals(playerOf)) {
-                if(checkSameTeam(playerO,playerOf)) {
+               // if(checkSameTeam(playerO,playerOf)) {//todo ido implemented this on the gui layer
                     Substitute sub = new Substitute(playerO, playerOf, this);
                     return handleEvent(sub, time, matchID);
-                }
+               // }
             }
         }
         return false;
@@ -387,11 +389,19 @@ public class MatchController {
     }
 
     //todo ido added this function need to connect to DB!!
-    public HashMap<Integer, Match> getRefereeMatch(String rUserName) {
+    public ArrayList<String> getRefereeMatch(String rUserName) {
         if (systemController.containsReferee(rUserName)) {
-            return systemController.getRefereeFromDB(rUserName).getRefMatches();
+            return systemController.getAllRefsGameID(rUserName);
         } else {
             return null;
         }
+    }
+
+    public String getDetailsOnMatch(int match) {
+        return systemController.getDetailsOnMatch(match);
+    }
+
+    public ArrayList<String> getAllPlayerOfMatch(int matchId) {
+        return systemController.getPlayerInMatch(matchId);
     }
 }
