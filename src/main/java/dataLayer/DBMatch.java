@@ -169,6 +169,21 @@ public class DBMatch implements DB_Inter {
             }
             return details;
         }
+        else if(e==MATCHENUM.ALLGAMEREFEREE){
+            String refID = arguments.get("refID");
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select().from(MATCH_REFEREE).where(MATCH_REFEREE.REFEREEID.eq(refID)).fetch();
+            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
+                temp.add(matchID);
+                seasonDetails.put(matchID, temp);
+                details.add(seasonDetails);
+            }
+            return details;
+        }
         return null;
     }
 
