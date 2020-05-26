@@ -617,6 +617,42 @@ public class DBHandler implements DB_Inter{
                     .execute();
             return true;
         }
+        if(e==SUBSCRIBERSUPDATES.SETPLAYERELIGIBLE){
+            create.update(TEAMOWNER_OWNERELIGIBLE)
+                    .set(TEAMOWNER_OWNERELIGIBLE.PLAYERID, arguments.get("setPlayerID"))
+                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
+                    .execute();
+
+            create.update(PLAYERS)
+                    .set(PLAYERS.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
+                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.SETCOACHELIGIBLE){
+            create.update(TEAMOWNER_OWNERELIGIBLE)
+                    .set(TEAMOWNER_OWNERELIGIBLE.COACHID, arguments.get("setCoachID"))
+                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
+                    .execute();
+
+            create.update(COACHES)
+                    .set(COACHES.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
+                    .where(COACHES.COACHID.eq(arguments.get("coachID")))
+                    .execute();
+            return true;
+        }
+        if(e==SUBSCRIBERSUPDATES.SETTMELIGIBLE){
+            create.update(TEAMOWNER_OWNERELIGIBLE)
+                    .set(TEAMOWNER_OWNERELIGIBLE.MANAGERID, arguments.get("setManagerID"))
+                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
+                    .execute();
+
+            create.update(TEAMMANAGERS)
+                    .set(TEAMMANAGERS.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
+                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                    .execute();
+            return true;
+        }
         if(e==SUBSCRIBERSUPDATES.ADDTEAMTOOWNER){
             create.insertInto(OWNER_TEAMS
                     ,OWNER_TEAMS.OWNERID
@@ -630,6 +666,22 @@ public class DBHandler implements DB_Inter{
             create.update(SUBSCRIBERS)
                     .set(SUBSCRIBERS.PASSWORD, arguments.get("password"))
                     .where(SUBSCRIBERS.SUBSCRIBERID.eq(arguments.get("subscriberID")))
+                    .execute();
+            return true;
+        }
+
+        if(e==SUBSCRIBERSUPDATES.REMOVEOWNER){
+            if(arguments.get("type").equalsIgnoreCase("player")){
+                update(SUBSCRIBERSUPDATES.SETPLAYERELIGIBLE,arguments);
+            }
+            if(arguments.get("type").equalsIgnoreCase("coach")){
+                update(SUBSCRIBERSUPDATES.SETCOACHELIGIBLE,arguments);
+            }
+            if(arguments.get("type").equalsIgnoreCase("teamManager")){
+                update(SUBSCRIBERSUPDATES.SETTMELIGIBLE,arguments);
+            }
+            create.delete(TEAMOWNER_OWNERELIGIBLE)
+                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
                     .execute();
             return true;
         }

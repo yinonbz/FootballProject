@@ -6,7 +6,6 @@ package dataLayer.Tables.tables;
 
 import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
-import dataLayer.Tables.Keys;
 import dataLayer.Tables.tables.records.PageOwnerRecord;
 
 import java.util.Arrays;
@@ -32,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PageOwner extends TableImpl<PageOwnerRecord> {
 
-    private static final long serialVersionUID = 685501258;
+    private static final long serialVersionUID = 1755516858;
 
     /**
      * The reference instance of <code>demodb.page_owner</code>
@@ -98,15 +97,6 @@ public class PageOwner extends TableImpl<PageOwnerRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.PAGE_OWNER_OWNERID, Indexes.PAGE_OWNER_PAGEID);
-    }
-
-    @Override
-    public List<ForeignKey<PageOwnerRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<PageOwnerRecord, ?>>asList(Keys.FK_PAGE_OWNER_PAGES);
-    }
-
-    public Pages pages() {
-        return new Pages(this, Keys.FK_PAGE_OWNER_PAGES);
     }
 
     @Override
