@@ -2096,6 +2096,7 @@ public class SystemController extends Observable {
         details.put("seasonID", String.valueOf(seasonID));
         details.put("refID", refereeID);
         events.info("The referee "+refereeID+" was added to a season");
+        connectToSeasonDB();
         return DB.update(SEASONENUM.REFEREE, details);
     }
 

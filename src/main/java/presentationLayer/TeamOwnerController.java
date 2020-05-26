@@ -185,7 +185,6 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         leagueService = new LeagueService();
         teamService = new TeamService();
         systemService = new SystemService();
-        leagueService = new LeagueService();
 
 
     }

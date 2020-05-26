@@ -396,6 +396,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
             try {
                 leagueService.assignRefereeThroughRepresentative(refereeToAdd, leagueID, Integer.parseInt(seasonID), userLable.getText());
             } catch (RuntimeException e) {
+                e.printStackTrace();
                 showAlert("Warning", "Please fill all the fields in this form.", Alert.AlertType.WARNING);
                 return;
             }

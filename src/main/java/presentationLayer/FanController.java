@@ -1,5 +1,7 @@
 package presentationLayer;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,13 +9,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import serviceLayer.LeagueService;
 import serviceLayer.SystemService;
+import serviceLayer.TeamService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,6 +27,8 @@ public class FanController implements Initializable,ControllerInterface, Observe
 
     private SystemService systemService;
 
+    private ObservableList<String> listCoaches;
+
     private String userName;
 
     private ArrayList<TitledPane> notificationPanesCollection;
@@ -34,6 +38,12 @@ public class FanController implements Initializable,ControllerInterface, Observe
 
     @FXML
     private Label userLable;
+
+    @FXML
+    private Pane subscribePane;
+
+    @FXML
+    private ListView itemsToSubscribe;
 
     @Override
     public void setUser(String usernameL) {
@@ -69,6 +79,7 @@ public class FanController implements Initializable,ControllerInterface, Observe
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         systemService = new SystemService();
+
     }
 
     public void logoutB(ActionEvent actionEvent) {
@@ -86,5 +97,25 @@ public class FanController implements Initializable,ControllerInterface, Observe
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void subscribeB(ActionEvent actionEvent) {
+        
+    }
+
+    public void subscribeToPages(ActionEvent actionEvent) {
+        subscribePane.setVisible(true);
+    }
+
+    public void selectPlayer(ActionEvent actionEvent) {
+   /*     listPlayers = FXCollections.observableArrayList();
+        listPlayers.setAll(teamService.getActiveTeamOfTeamOwner(userName));
+        itemsToSubscribe.setItems(listPlayers);*/
+    }
+
+    public void selectCoach(ActionEvent actionEvent) {
+        listCoaches = FXCollections.observableArrayList();
+        listCoaches.setAll(systemService.getAllCoachesNames());
+        itemsToSubscribe.setItems(listCoaches);
     }
 }

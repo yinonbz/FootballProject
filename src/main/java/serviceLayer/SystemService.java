@@ -416,6 +416,10 @@ public class SystemService extends Observable implements Observer {
         }
     }
 
+    public ArrayList<String> getAllCoachesNames(){
+        return systemController.getAllCoachesNames();
+    }
+
     /**
      * @param userName the user's username to add to the online users in DB (when logging in)
      */
@@ -467,6 +471,5 @@ public class SystemService extends Observable implements Observer {
     //todo ido add this function
     public void updateRefereeName(String name, String userName) {
         systemController.updateRefereeName(name,userName);
-
     }
 }

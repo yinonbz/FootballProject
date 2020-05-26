@@ -225,9 +225,9 @@ public class LeagueController {
         if (systemController.containsLeague(leagueName) && systemController.containsReferee(refUserName)) {
             League addingToLeague = systemController.getLeagueFromDB(leagueName);
             Referee refToAssign = systemController.getRefereeFromDB(refUserName);
-            if(addingToLeague.addRefereeToSeason(refToAssign, seasonID)){
+            //if(addingToLeague.addRefereeToSeason(refToAssign, seasonID)){
                 return systemController.addRefereeToSeason(leagueName,seasonID,refUserName);
-            }
+            //}
         }
         return false;
     }
