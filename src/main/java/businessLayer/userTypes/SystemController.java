@@ -1236,7 +1236,7 @@ public class SystemController extends Observable {
             if (type.equalsIgnoreCase("AR")) {
                 sub = new AssociationRepresentative(userName, subDetails.get("password").get(0)
                         , subDetails.get("name").get(0)
-                        , this);
+                        , this, leagueController);
             }
             if (type.equalsIgnoreCase("referee")) {
                 sub = new Referee(userName, subDetails.get("password").get(0)
@@ -1866,7 +1866,7 @@ public class SystemController extends Observable {
         }
         if (checkIfUserNameExistsInDB(userName)) //user name is already exists in the database
             return false;
-        Subscriber newAssociationRepresentative = new AssociationRepresentative(userName, password, name, this);
+        Subscriber newAssociationRepresentative = new AssociationRepresentative(userName,password,name,this, leagueController);
         addSubscriber(newAssociationRepresentative);
         addAdminApprovalRequest(userName, newAssociationRepresentative);
         return true;
