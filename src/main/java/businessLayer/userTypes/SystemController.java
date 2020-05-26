@@ -74,6 +74,7 @@ public class SystemController extends Observable {
         }
     }
 
+
     /**
      * The function receives a service and adds it as an observer of the system-controller
      *
@@ -924,7 +925,7 @@ public class SystemController extends Observable {
             events.info("The user "+username+" added a request for a team");
             return true;
         }
-        errors.info("The user "+username+" had an unvalid request");
+        errors.info("The user "+username+" had an invalid request");
         return false;
     }
 
@@ -2094,6 +2095,7 @@ public class SystemController extends Observable {
         details.put("seasonID", String.valueOf(seasonID));
         details.put("refID", refereeID);
         events.info("The referee "+refereeID+" was added to a season");
+        connectToSeasonDB();
         return DB.update(SEASONENUM.REFEREE, details);
     }
 
@@ -3083,6 +3085,13 @@ public class SystemController extends Observable {
         return teamManagers;
     }
 
+    public ArrayList<String> getAllPlayers() {
+        connectToSubscriberDB();
+        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(UserTypes.PLAYER, null);
+        ArrayList<String> players = details.get(0).get("players");
+        return players;
+    }
+
     /**
      * @return get all the league's names from the DB
      */
@@ -3193,7 +3202,7 @@ public class SystemController extends Observable {
             refsOccupied.add(refID);
         }
         connectToSubscriberDB();
-        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(UserTypes.REFEREE,null);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SUBSCRIBERSUPDATES.ALLREFS,null);
         for(Map <String,ArrayList<String>> map : details){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
                 ArrayList<String> temp = entry.getValue();
@@ -3221,7 +3230,7 @@ public class SystemController extends Observable {
         }
         */
         ArrayList<String> finalList = new ArrayList<>();
-        ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(UserTypes.REFEREE,null);
+        ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(SUBSCRIBERSUPDATES.ALLREFS,null);
         for(Map <String,ArrayList<String>> map : allRefs){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
                 ArrayList<String> temp = entry.getValue();
@@ -3254,6 +3263,31 @@ public class SystemController extends Observable {
             }
         }
         return finalList;
+    }
+
+    public ArrayList <String> allEventFromMatch (int matchID){
+        connectToEventRecordDB();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("matchID",String.valueOf(matchID));
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLEVENTSFROMMATCH,args);
+        ArrayList<String>allEvents = new ArrayList<>();
+        for(Map <String,ArrayList<String>> map : details) {
+            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+                ArrayList<String> temp = entry.getValue();
+                String eventID = entry.getValue().get(0);
+                String time = entry.getValue().get(1);
+                String type = entry.getValue().get(2);
+                String data = eventID+"-"+time+"-"+type;
+                allEvents.add(data);
+            }
+        }
+        return allEvents;
+    }
+
+    public boolean removeEventFromMatch(int matchID, String time, int eventID){
+        connectToEventDB();
+        HashMap<String,String> args = new HashMap<>();
+        return DB.removeFromDB(String.valueOf(matchID),time,String.valueOf(eventID));
     }
 
     //todo javafx function
@@ -3300,5 +3334,27 @@ public class SystemController extends Observable {
     //todo javafx function
     public void updateRefereeName(String name, String userName) {
         updateSubscriberName(name, userName);
+    }
+
+    //todo javafx function add to db ido added
+    public ArrayList<String> getAllRefereeNames() {
+        ArrayList<String> refNames = new ArrayList<>();
+        refNames.add("Love");
+        refNames.add("Mumba");
+        refNames.add("Nelson");
+        refNames.add("Robson");
+        return refNames;
+    }
+    //todo ido added
+    public ArrayList<String> getEventByMatch(String matchId) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("0");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        list.add("6");
+        return list;
     }
 }

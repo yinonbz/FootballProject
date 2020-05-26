@@ -472,6 +472,20 @@ public class DBHandler implements DB_Inter{
             }
             return allCoaches;
         }
+        if(userType ==UserTypes.PLAYER){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select(PLAYERS.PLAYERID).
+                    from(PLAYERS)
+                    .fetch();
+            ArrayList<Map<String,ArrayList<String>>> allPlayers = new ArrayList<>();
+            allPlayers.add(new HashMap<>());
+            allPlayers.get(0).put("players",new ArrayList<>());
+            for(Record r: result){
+                allPlayers.get(0).get("players").add(r.get(PLAYERS.PLAYERID));
+
+            }
+            return allPlayers;
+        }
         if(userType ==UserTypes.ADMIN){
             DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
             Result<?> result = create.select(ADMINS.ADMINID).
@@ -503,10 +517,29 @@ public class DBHandler implements DB_Inter{
         if(userType == UserTypes.TEAMMANAGER){
             return selectAllTeamManagers();
         }
+        if(userType == SUBSCRIBERSUPDATES.ALLREFS){
+            return selectAllRefs();
+        }
         else{
             System.out.println("invalid select from subscriberDB");
         }
         return null;
+    }
+
+    private ArrayList<Map<String, ArrayList<String>>> selectAllRefs(){
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Result<?> result = create.select(REFEREES.REFEREEID).from(REFEREES).fetch();
+        ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+        for (Record record : result) {
+            HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+            ArrayList<String> temp = new ArrayList<>();
+            String refID = record.get(REFEREES.REFEREEID);
+            //String leagueID = record.get(SEASONS.LEAGUEID);
+            temp.add(refID);
+            seasonDetails.put(refID, temp);
+            details.add(seasonDetails);
+        }
+        return details;
     }
 
     private ArrayList<Map<String, ArrayList<String>>> selectAllTeamManagers(){
@@ -703,6 +736,7 @@ public class DBHandler implements DB_Inter{
                     .execute();
             return true;
         }
+
         return false;
     }
 
