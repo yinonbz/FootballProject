@@ -1,0 +1,6 @@
+package dataLayer;
+
+public enum NOTIFICATIONUPDATES {
+    ADDMATCHFOLLOWER,
+    ADDPAGEFOLLOWER;
+}
