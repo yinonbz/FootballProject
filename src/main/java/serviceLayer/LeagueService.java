@@ -226,8 +226,8 @@ public class LeagueService {
      * @return all of the referee names from the DB
      */
     public ArrayList<String> getAllRefereeNames(){
-      //  return systemController.getAllRefereeNames(); todo not implemented in db
-        return null;
+        return systemController.getAllRefereeAvailableSeason();
+        //return null;
     }
 
 
@@ -237,13 +237,6 @@ public class LeagueService {
      */
     public ArrayList<String> getAllSeasonsFromLeague(String league){
         return systemController.getAllSeasonsFromLeague(league);
-    }
-
-    /** remove user from the online users DB (when logging out)
-     * @param userName the user's username to remove form the online users
-     */
-    public void removeFromUsersOnline(String userName) {
-        systemController.removeOnlineUser(userName);
     }
 
     /**

@@ -176,7 +176,7 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-            leagueService.removeFromUsersOnline(userName);
+            systemService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }
