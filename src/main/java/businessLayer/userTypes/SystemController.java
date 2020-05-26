@@ -3039,6 +3039,32 @@ public class SystemController extends Observable {
         return finalList;
     }
 
+    public ArrayList<String> getAllRefereeAvailableSeason(String leagueID, int seasonID){
+        connectToSeasonDB();
+        HashSet<String> occupied = new HashSet<>();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("leagueID",leagueID);
+        args.put("seasonID",String.valueOf(seasonID));
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.REFSOFSEASON,args);
+        for(Map <String,ArrayList<String>> map : details) {
+            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+                ArrayList<String> temp = entry.getValue();
+                occupied.add(temp.get(0));
+            }
+        }
+        ArrayList<String> finalList = new ArrayList<>();
+        ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(UserTypes.REFEREE,null);
+        for(Map <String,ArrayList<String>> map : allRefs){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                if(!occupied.contains(temp.get(0))){
+                    finalList.add(temp.get(0));
+                }
+            }
+        }
+        return finalList;
+    }
+
     public ArrayList<String> allTeamAvailable(String leagueID,int seasonID){
         connectToTeamDB();
         ArrayList<String> allTeams = getAllTeamsNames();
