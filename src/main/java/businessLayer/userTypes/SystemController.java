@@ -5,20 +5,18 @@ import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Team.TeamController;
-import businessLayer.Tournament.ARankingPolicy;
-import businessLayer.Tournament.League;
-import businessLayer.Tournament.LeagueController;
+import businessLayer.Tournament.*;
 import businessLayer.Tournament.Match.*;
 import businessLayer.Tournament.Season;
 import businessLayer.Utilities.Complaint;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.Utilities.HasPage;
 import businessLayer.Utilities.Page;
-import businessLayer.Utilities.alertSystem.AlertSystem;
+import businessLayer.Utilities.alertSystem.*;
 import businessLayer.Utilities.logSystem.LoggingSystem;
 import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
-import businessLayer.userTypes.viewers.Fan;
+import businessLayer.userTypes.viewers.*;
 import dataLayer.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -2414,6 +2412,11 @@ public class SystemController extends Observable {
         DB = new EventRecordDB();
     }
 
+    private void connectToNotificationsDB() {
+        DB.TerminateDB();
+        DB = new notificationDB();
+    }
+
 
     private LocalDate convertToDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -2532,12 +2535,7 @@ public class SystemController extends Observable {
 
         Subscriber user = selectUserFromDB(username);
         Page playerToFollow = getPlayerPageByName(playerName);
-        if (user == null || playerToFollow == null) {
-            return false;
-        }
-        events.info("The user "+username+" follows "+playerName);
-        //return DB.addFollowerToPage(playerToFollow, username); //todo add table to DB
-        return false;
+        return followePage(username, user, playerToFollow);
     }
 
     /**
@@ -2550,13 +2548,20 @@ public class SystemController extends Observable {
     public boolean allowUserToFollowCoach(String username, String coachName) {
 
         Subscriber user = selectUserFromDB(username);
-        Page playerToFollow = getCoachPageByName(coachName);
-        if (user == null || playerToFollow == null) {
+        Page coachToFollow = getCoachPageByName(coachName);
+        return followePage(username, user, coachToFollow);
+    }
+
+    private boolean followePage(String username, Subscriber user, Page coachToFollow) {
+        if (user == null || coachToFollow == null) {
             return false;
         }
-        events.info("The user "+username+" follows "+coachName);
-        //return DB.addFollowerToPage(playerToFollow, username); //todo add table to db
-        return false;
+        events.info("The user "+username+" follows "+username);
+        connectToNotificationsDB();
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("followerID",username);
+        arguments.put("pageID",String.valueOf(coachToFollow.getPageID()));
+        return DB.update(NOTIFICATIONUPDATES.ADDPAGEFOLLOWER, arguments);
     }
 
 
@@ -2574,8 +2579,11 @@ public class SystemController extends Observable {
         Match match = findMatch(id);
         if (user != null && match != null) {
             events.info("The user "+username+" follows "+matchID);
-
-            //       return DB.addFollowerToMatch(match, username); todo add to db
+            connectToNotificationsDB();
+            Map<String,String> arguments = new HashMap<>();
+            arguments.put("followerID",username);
+            arguments.put("matchID",String.valueOf(match.getMatchId()));
+           return DB.update(NOTIFICATIONUPDATES.ADDMATCHFOLLOWER, arguments);
         }
         return false;
     }
@@ -2591,6 +2599,7 @@ public class SystemController extends Observable {
             return null;
         }
         //  return DB.getTeamPageByName(teamName); todo add to db
+        System.out.println("stay tuned for next iteration ;)");
         return null;
     }
 
@@ -2637,9 +2646,12 @@ public class SystemController extends Observable {
      * @param page
      */
     public void updatePageFollowers(Page page, String event) {
-        /*
         if (page != null && event != null) {
-            LinkedList<String> followers = DB.getPageFollowers(page); todo db add to db
+            connectToNotificationsDB();
+            Map<String,String> arguments = new HashMap<>();
+            arguments.put("pageID",String.valueOf(page.getPageID()));
+            ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETPAGEFOLLOWES,arguments);
+            LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
             if (followers != null) {
                 followers.add(event);
                 followers.add("Page update");
@@ -2647,7 +2659,6 @@ public class SystemController extends Observable {
                 notifyObservers(followers);
             }
         }
-        */
     }
 
 
@@ -2681,9 +2692,12 @@ public class SystemController extends Observable {
      * @param event
      */
     public void updateMatchToFollowers(Match match, String event) {
-        /*
         if (match != null && event != null) {
-            LinkedList<String> followers = DB.getMatchFollowers(match); todo add the db
+            connectToNotificationsDB();
+            Map<String,String> arguments = new HashMap<>();
+            arguments.put("pageID",String.valueOf(match.getMatchId()));
+            ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETMATCHFOLLOWERS,arguments);
+            LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
             if (followers != null) {
                 followers.add(event);
                 followers.add("Match update");
@@ -2691,7 +2705,6 @@ public class SystemController extends Observable {
                 notifyObservers(followers);
             }
         }
-        */
     }
 
     /**
@@ -2859,21 +2872,25 @@ public class SystemController extends Observable {
      * @param team
      * @param owner
      */
-  /*  public void updateOwnerOfRemoval(Team team, TeamOwner owner) { //todo not implemented in the db
+    public void updateOwnerOfRemoval(Team team, TeamOwner owner) {
 
         if (team != null && owner != null) {
             LinkedList<String> adminToUpdate = new LinkedList<>();
-            String name = DB.removeOwnerFromTeam(team, owner);
+            connectToTeamDB();
+            Map<String,String> arguments = new HashMap<>();
+            arguments.put("ownerID",owner.getUsername());
+            arguments.put("teamID",team.getTeamName());
+            DB.update(TEAMUPDATES.DELETEOWNER, arguments);
+            String name = owner.getUsername();
             if (name != null) {
-               adminToUpdate.add(name);
+                adminToUpdate.add(name);
                 adminToUpdate.add("You have lost your rights as an owner for the team '" + team.getTeamName() + "'.");
                 adminToUpdate.add("Owner privileges removal");
                 setChanged();
                 notifyObservers(adminToUpdate);
-                //todo add notification to db?
             }
         }
-    }*/
+    }
 
     /**
      * The function receives a username and sends it to the DB to be added into the online users data structure
@@ -2925,7 +2942,8 @@ public class SystemController extends Observable {
     public void saveUserMessage(String username, String message, String title) {
 
         if (username != null && message != null && title != null) {
-            //    DB.saveUserMessage(username, message, title); todo build a notification table
+            connectToNotificationsDB();
+            DB.addToDB(username, message, String.valueOf(false),null,null);
         }
     }
 
@@ -2938,13 +2956,15 @@ public class SystemController extends Observable {
      * @return
      */
     public LinkedList<String> getOfflineUsersNotifications(String username) {
-        /*
         if(username != null) {
-            return DB.getOfflineUsersNotifications(username); //todo need to build a db
+            connectToNotificationsDB();
+            Map<String,String> arguments = new HashMap<>();
+            arguments.put("SubscriberID",username);
+            return new LinkedList<>(
+                    DB.selectAllRecords(NOTIFICATIONENUMS.GETUSERNOTIFICATIONS,arguments)
+                    .get(0).get("notifications"));
         }
         return null; //todo: might need an exception here
-        */
-        return null;
     }
 
     /**
@@ -3064,6 +3084,13 @@ public class SystemController extends Observable {
         return teamManagers;
     }
 
+    public ArrayList<String> getAllPlayers() {
+        connectToSubscriberDB();
+        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(UserTypes.PLAYER, null);
+        ArrayList<String> players = details.get(0).get("players");
+        return players;
+    }
+
     /**
      * @return get all the league's names from the DB
      */
@@ -3077,7 +3104,6 @@ public class SystemController extends Observable {
                 leagues.add(temp.get(0));
             }
         }
-        //leagues.add("Champions");
         return leagues;
     }
 
