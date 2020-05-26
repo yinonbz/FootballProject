@@ -3029,8 +3029,6 @@ public class SystemController extends Observable {
     public ArrayList<String> getAllLeaguesInDB() {
         connectToLeagueDB();
         ArrayList<String> leagues = new ArrayList<>();
-        leagues.add("Champions");
-        /*
         ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES,null);
         for(Map <String,ArrayList<String>> map : details){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
@@ -3038,7 +3036,6 @@ public class SystemController extends Observable {
                 leagues.add(temp.get(0));
             }
         }
-        */
         return leagues;
     }
 
