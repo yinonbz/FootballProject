@@ -1270,8 +1270,11 @@ public class SystemController extends Observable {
                 for (String str : subDetails.get("matches")) {
                     ((Referee) sub).addMatch(findMatch(Integer.parseInt(str)));
                 }
-
             }
+            if(type.equalsIgnoreCase("fan")){
+                sub = new Fan(userName, subDetails.get("password").get(0),subDetails.get("name").get(0),this);
+            }
+
             return sub;
         }
         return null;
@@ -3000,13 +3003,14 @@ public class SystemController extends Observable {
     public ArrayList<String> getAllLeaguesInDB() {
         connectToLeagueDB();
         ArrayList<String> leagues = new ArrayList<>();
-        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES, null);
+/*        ArrayList<Map<String, ArrayList<String>>> details = DB.selectAllRecords(SEASONENUM.ALLLEAGUES, null);
         for (Map<String, ArrayList<String>> map : details) {
             for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
                 ArrayList<String> temp = entry.getValue();
                 leagues.add(temp.get(0));
             }
-        }
+        }*/
+        leagues.add("Champions");
         return leagues;
     }
 

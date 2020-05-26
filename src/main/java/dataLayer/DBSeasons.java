@@ -224,10 +224,18 @@ public class DBSeasons implements DB_Inter {
         end, Map < String, ArrayList < String >> details){
             if (!containsInDB(leagueID, seasonID)) {
                 DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-                create.insertInto(SEASONS, SEASONS.LEAGUEID, SEASONS.SEASONID).values(leagueID, seasonID).execute();
+                create.insertInto(SEASONS,
+                        SEASONS.LEAGUEID,
+                        SEASONS.SEASONID,
+                        SEASONS.STARTDATE,
+                        SEASONS.ENDDATE).values(leagueID, seasonID,start,end).execute();
                 //create.insertInto(SEASONS,SEASONS.SEASONID).values(seasonID).execute();
-                create.insertInto(SEASONS, SEASONS.STARTDATE).execute();
-                create.insertInto(SEASONS, SEASONS.ENDDATE).execute();
+                /*create.insertInto(SEASONS, SEASONS.STARTDATE)
+                        .values(start)
+                        .execute();
+                create.insertInto(SEASONS, SEASONS.ENDDATE)
+                        .values(end)
+                        .execute();*/
                 ArrayList<String> teams = details.get("teams");
                 if (teams != null) {
                     for (String team : teams) {
