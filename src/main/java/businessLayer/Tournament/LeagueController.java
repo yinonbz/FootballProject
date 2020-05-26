@@ -223,11 +223,11 @@ public class LeagueController {
             return false;
         }
         if (systemController.containsLeague(leagueName) && systemController.containsReferee(refUserName)) {
-            League addingToLeague = systemController.getLeagueFromDB(leagueName);
-            Referee refToAssign = systemController.getRefereeFromDB(refUserName);
+            //League addingToLeague = systemController.getLeagueFromDB(leagueName);
+            //Referee refToAssign = systemController.getRefereeFromDB(refUserName);
             //if(addingToLeague.addRefereeToSeason(refToAssign, seasonID)){
                 return systemController.addRefereeToSeason(leagueName,seasonID,refUserName);
-            //}
+           // } todo check if it is ok with Tomer ido added this
         }
         return false;
     }

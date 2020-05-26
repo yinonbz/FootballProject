@@ -69,7 +69,6 @@ static int pageCounter=0;
     }
 
 
-
     /**
      * The function receives a new event, updates it within the page and causes the page to update its followers about the new event
      * @param post

@@ -924,7 +924,7 @@ public class SystemController extends Observable {
             events.info("The user "+username+" added a request for a team");
             return true;
         }
-        errors.info("The user "+username+" had an unvalid request");
+        errors.info("The user "+username+" had an invalid request");
         return false;
     }
 
@@ -1629,7 +1629,7 @@ public class SystemController extends Observable {
             connectToEventRecordDB();
             EventRecord eventRecord = selectEventRecord(matchID);
             boolean isFinished = Boolean.valueOf(details.get("isFinished").get(0));
-            Match match = new Match(league, null, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee);
+            Match match = new Match(league, null, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee, matchID);
             return match;
         }
         return null;
@@ -2696,10 +2696,10 @@ public class SystemController extends Observable {
         if (match != null && event != null) {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
-            arguments.put("pageID",String.valueOf(match.getMatchId()));
+            arguments.put("matchID",String.valueOf(match.getMatchId()));
             ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETMATCHFOLLOWERS,arguments);
             LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
-            if (followers != null) {
+            if (!followers.isEmpty()) {
                 followers.add(event);
                 followers.add("Match update");
                 setChanged();
@@ -3281,6 +3281,31 @@ public class SystemController extends Observable {
         return allMatches;
     }
 
+    public ArrayList <String> allEventFromMatch (int matchID){
+        connectToEventRecordDB();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("matchID",String.valueOf(matchID));
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLEVENTSFROMMATCH,args);
+        ArrayList<String>allEvents = new ArrayList<>();
+        for(Map <String,ArrayList<String>> map : details) {
+            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+                ArrayList<String> temp = entry.getValue();
+                String eventID = entry.getValue().get(0);
+                String time = entry.getValue().get(1);
+                String type = entry.getValue().get(2);
+                String data = eventID+"-"+time+"-"+type;
+                allEvents.add(data);
+            }
+        }
+        return allEvents;
+    }
+
+    public boolean removeEventFromMatch(int matchID, String time, int eventID){
+        connectToEventDB();
+        HashMap<String,String> args = new HashMap<>();
+        return DB.removeFromDB(String.valueOf(matchID),time,String.valueOf(eventID));
+    }
+
     //todo javafx function
     public void updatePlayerBDate(String date, String user) {
         SetPlayerBirthdate(user, date);
@@ -3325,5 +3350,27 @@ public class SystemController extends Observable {
     //todo javafx function
     public void updateRefereeName(String name, String userName) {
         updateSubscriberName(name, userName);
+    }
+
+    //todo javafx function add to db ido added
+    public ArrayList<String> getAllRefereeNames() {
+        ArrayList<String> refNames = new ArrayList<>();
+        refNames.add("Love");
+        refNames.add("Mumba");
+        refNames.add("Nelson");
+        refNames.add("Robson");
+        return refNames;
+    }
+    //todo ido added
+    public ArrayList<String> getEventByMatch(String matchId) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("0");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        list.add("6");
+        return list;
     }
 }

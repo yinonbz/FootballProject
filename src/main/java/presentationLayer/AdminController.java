@@ -22,6 +22,10 @@ import java.util.*;
 
 public class AdminController implements Initializable,ControllerInterface, Observer {
 
+
+    @FXML
+    private javafx.scene.control.Label userLable;
+
     private LeagueService leagueService;
 
     private SystemService systemService;
@@ -33,9 +37,6 @@ public class AdminController implements Initializable,ControllerInterface, Obser
 
     @FXML
     private Accordion notificationsPane;
-
-    @FXML
-    private Label userLable;
 
     @Override
     public void setUser(String usernameL) {
@@ -57,7 +58,6 @@ public class AdminController implements Initializable,ControllerInterface, Obser
         systemService = new SystemService();
         leagueService = new LeagueService();
         notificationPanesCollection= new ArrayList<>();
-
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if(messages != null) {
             for (String msg : messages) {
@@ -87,5 +87,7 @@ public class AdminController implements Initializable,ControllerInterface, Obser
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+
 }
