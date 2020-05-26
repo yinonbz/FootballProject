@@ -13,6 +13,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import serviceLayer.LeagueService;
+import serviceLayer.SystemService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +22,8 @@ import java.util.*;
 public class TeamManagerController implements Initializable,ControllerInterface, Observer {
 
     private LeagueService leagueService;
+
+    private SystemService systemService;
 
     private String userName;
 
@@ -68,7 +71,7 @@ public class TeamManagerController implements Initializable,ControllerInterface,
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        systemService = new SystemService();
     }
 
     public void logoutB(ActionEvent actionEvent) {
@@ -82,7 +85,7 @@ public class TeamManagerController implements Initializable,ControllerInterface,
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-            leagueService.removeFromUsersOnline(userName);
+            systemService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -348,9 +348,10 @@ public class TestSystemController {
     @Test
     public void UC_2_3_a() {
 
+/*
         SystemController systemController = SystemController.SystemController();
         systemController.getTeamByName("Manchester United");
-
+*/
 
         //check Admin
         assertEquals(systemService.enterLoginDetails("adminA", "adminA1"), "Admin");
@@ -371,7 +372,7 @@ public class TestSystemController {
         assertEquals(systemService.enterLoginDetails("Zavaleta", "Zavaleta1"), "TeamManager");
 
         //check Team Owner
-        assertEquals(systemService.enterLoginDetails("PiqueTO", "Pique1"), "TeamOwner");
+        assertEquals(systemService.enterLoginDetails("Bradley", "Bradley1"), "TeamOwner");
 
     }
 

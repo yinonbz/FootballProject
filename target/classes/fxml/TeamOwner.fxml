@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="666.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.TeamOwnerController">
+   <top>
+      <HBox id="actions" prefHeight="52.0" prefWidth="1088.0" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#addNewTeam" prefHeight="30.0" prefWidth="100.0" text="Add New Team" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+            <MenuButton minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#reopenTeam" text="Manage Teams">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#addTeamManager" text="Add Team Manager" />
+                  <MenuItem mnemonicParsing="false" onAction="#closeTeam" text="Close Team" />
+                  <MenuItem mnemonicParsing="false" onAction="#reopenTeam" text="Reopen Team" />
+               </items>
+            </MenuButton>
+            <Label id="userName" fx:id="userLabel" alignment="TOP_CENTER" centerShape="false" contentDisplay="RIGHT" focusTraversable="false" prefHeight="21.0" prefWidth="173.0" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets left="650.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Italic" size="15.0" />
+               </font>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#logoutB" prefHeight="30.0" prefWidth="60.0" text="Logout" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="20.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
+   <center>
+      <BorderPane prefHeight="614.0" prefWidth="771.0" BorderPane.alignment="CENTER">
+         <top>
+            <HBox id="titlePane" prefHeight="61.0" prefWidth="922.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="titleL">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="50.0" top="10.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane id="menuPane" fx:id="newTeamPane" prefHeight="557.0" prefWidth="957.0" visible="false">
+                     <children>
+                        <Label layoutX="30.0" layoutY="18.0" text="Team Name:">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Label>
+                        <TextField fx:id="teamNameL" layoutX="149.0" layoutY="16.0" />
+                        <Label layoutX="30.0" layoutY="62.0" text="Year Established:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Spinner fx:id="yearSpinner" editable="true" layoutX="149.0" layoutY="60.0" prefHeight="25.0" prefWidth="81.0" />
+                        <Button layoutX="30.0" layoutY="107.0" mnemonicParsing="false" onAction="#submitNewTeam" text="Submit" />
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="addManagerPane" prefHeight="553.0" prefWidth="947.0" visible="false">
+                     <children>
+                        <ListView fx:id="teamsViewL" layoutX="13.0" layoutY="66.0" prefHeight="116.0" prefWidth="359.0" />
+                        <Label layoutX="18.0" layoutY="13.0" text="Select a Team:">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="searchTeam" layoutX="13.0" layoutY="41.0" prefHeight="25.0" prefWidth="359.0" />
+
+                        <Button layoutX="19.0" layoutY="374.0" mnemonicParsing="false" onAction="#addTeamManagerB" prefHeight="31.0" prefWidth="176.0" text="Add Team Team Manager" />
+                        <ListView fx:id="teamManagersViewL" layoutX="408.0" layoutY="67.0" prefHeight="116.0" prefWidth="359.0" />
+                        <Label layoutX="415.0" layoutY="14.0" text="Select a Team Manager:">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="searchTeamManagers" layoutX="408.0" layoutY="42.0" prefHeight="25.0" prefWidth="359.0" />
+                        <ComboBox fx:id="permissionCombo" layoutX="13.0" layoutY="199.0" prefWidth="150.0" promptText="Permission" />
+                        <Spinner fx:id="salarySpinner" editable="true" layoutX="16.0" layoutY="270.0" />
+                        <Label layoutX="20.0" layoutY="247.0" text="Salary">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="closeTeamPane" prefHeight="564.0" prefWidth="939.0" visible="false">
+                     <children>
+                        <ListView fx:id="teamsViewL2" layoutX="13.0" layoutY="66.0" prefHeight="116.0" prefWidth="359.0" />
+                        <Label layoutX="18.0" layoutY="13.0" text="Select a Team to Close:">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="searchTeam2" layoutX="13.0" layoutY="41.0" prefHeight="25.0" prefWidth="359.0" />
+
+                        <Button layoutX="14.0" layoutY="196.0" mnemonicParsing="false" onAction="#closeTeamB" prefHeight="29.0" prefWidth="95.0" text="Close Team" />
+
+                     </children>
+                  </Pane>
+                  <Pane id="menuPane" fx:id="reopenTeamPane" prefHeight="637.0" prefWidth="1026.0" visible="false">
+                  <children>
+                     <ListView fx:id="closedTeamsViewL" layoutX="13.0" layoutY="66.0" prefHeight="116.0" prefWidth="359.0" />
+                     <Label layoutX="18.0" layoutY="13.0" text="Select a Team to Reopen:">
+                        <font>
+                           <Font size="13.0" />
+                        </font>
+                     </Label>
+                     <TextField fx:id="searchTeam3" layoutX="13.0" layoutY="41.0" prefHeight="25.0" prefWidth="359.0" />
+                     <Button layoutX="14.0" layoutY="196.0" mnemonicParsing="false" onAction="#reopenTeamB" prefHeight="29.0" prefWidth="95.0" text="Reopen Team" />
+                  </children>
+                  </Pane>
+               </children>
+            </Pane>
+         </center>
+         <left>
+            <ScrollPane prefHeight="524.0" prefWidth="235.0">
+               <content>
+                  <Accordion fx:id="notificationsPane" prefHeight="259.0" prefWidth="236.0">
+                     <panes>
+                        <TitledPane animated="false" text="untitled 1">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="untitled 2">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="6.0" text="Label" />
+                                 </children></AnchorPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" prefHeight="106.0" prefWidth="236.0" text="untitled 3">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                     </panes>
+                  </Accordion>
+               </content>
+            </ScrollPane>
+         </left>
+      </BorderPane>
+   </center>
+</BorderPane>

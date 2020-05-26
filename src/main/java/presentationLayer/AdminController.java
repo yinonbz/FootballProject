@@ -12,7 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.jooq.meta.derby.sys.Sys;
 import serviceLayer.LeagueService;
+import serviceLayer.SystemService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +23,8 @@ import java.util.*;
 public class AdminController implements Initializable,ControllerInterface, Observer {
 
     private LeagueService leagueService;
+
+    private SystemService systemService;
 
     private String userName;
 
@@ -53,6 +57,7 @@ public class AdminController implements Initializable,ControllerInterface, Obser
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        systemService = new SystemService();
         leagueService = new LeagueService();
         notificationPanesCollection= new ArrayList<>();
 
@@ -81,7 +86,7 @@ public class AdminController implements Initializable,ControllerInterface, Obser
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-            leagueService.removeFromUsersOnline(userName);
+            systemService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }

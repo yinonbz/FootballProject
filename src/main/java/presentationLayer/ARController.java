@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import serviceLayer.LeagueService;
+import serviceLayer.SystemService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +22,8 @@ import java.util.*;
 public class ARController implements ControllerInterface, Initializable, Observer {
 
     private LeagueService leagueService;
+
+    private SystemService systemService;
 
     private String userName;
 
@@ -274,7 +277,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        systemService = new SystemService();
         SpinnerValueFactory<Integer> valueFactoryWin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
         SpinnerValueFactory<Integer> valueFactoryLose = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
         SpinnerValueFactory<Integer> valueFactoryTie = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
@@ -314,7 +317,7 @@ public class ARController implements ControllerInterface, Initializable, Observe
             stage.setScene(scene);
             stage.show();
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-            leagueService.removeFromUsersOnline(userName);
+            systemService.removeFromUsersOnline(userName);
         } catch (IOException e) {
             e.printStackTrace();
         }
