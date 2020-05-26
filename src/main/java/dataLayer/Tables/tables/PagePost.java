@@ -6,7 +6,6 @@ package dataLayer.Tables.tables;
 
 import dataLayer.Tables.Demodb;
 import dataLayer.Tables.Indexes;
-import dataLayer.Tables.Keys;
 import dataLayer.Tables.tables.records.PagePostRecord;
 
 import java.util.Arrays;
@@ -32,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PagePost extends TableImpl<PagePostRecord> {
 
-    private static final long serialVersionUID = -1815713712;
+    private static final long serialVersionUID = 207679532;
 
     /**
      * The reference instance of <code>demodb.page_post</code>
@@ -98,15 +97,6 @@ public class PagePost extends TableImpl<PagePostRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.PAGE_POST_USERNAMEID);
-    }
-
-    @Override
-    public List<ForeignKey<PagePostRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<PagePostRecord, ?>>asList(Keys.FK_PAGE_POST_PAGES);
-    }
-
-    public Pages pages() {
-        return new Pages(this, Keys.FK_PAGE_POST_PAGES);
     }
 
     @Override

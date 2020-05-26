@@ -87,6 +87,11 @@ public class Coach extends Subscriber implements OwnerEligible, HasPage {
         return "Coach";
     }
 
+    @Override
+    public String getUserName() {
+        return this.getUsername();
+    }
+
     /**
      *
      * @return

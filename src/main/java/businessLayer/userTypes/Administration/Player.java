@@ -46,6 +46,10 @@ public class Player extends Subscriber implements OwnerEligible, HasPage {
         this.salary = salary;
     }
 
+    @Override
+    public String getUserName() {
+        return this.getUsername();
+    }
     /**
      * @param name
      */
