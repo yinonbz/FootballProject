@@ -1579,8 +1579,10 @@ public class SystemController extends Observable {
             String mainReferee = details.get("mainRef").get(0);
             ArrayList<String> refID = details.get("allRefs");
             LinkedList<String> refs = new LinkedList<>();
-            for (String allRefID : refID) {
-                refs.add(allRefID);
+            if(refID != null) {
+                for (String allRefID : refID) {
+                    refs.add(allRefID);
+                }
             }
             int numOfFans = Integer.parseInt(details.get("numberOFFans").get(0));
             connectToEventRecordDB();
@@ -1992,7 +1994,7 @@ public class SystemController extends Observable {
         //public Season(int seasonId, Date startDate, Date endDate, League league, int win, int lose, int tie, String matchingPolicy)
         connectToLeagueDB();
         League league = getLeagueFromDB(leagueID);
-        Season season = new Season(league, Integer.parseInt(seasonID), start, end, rankingPolicy, leagueTable, matches, referees, matchingPolicy);
+        Season season = new Season(league, Integer.parseInt(seasonID), start, end, rankingPolicy, leagueTable, matches, referees, matchingPolicy,teams);
         return season;
     }
 
@@ -2147,6 +2149,11 @@ public class SystemController extends Observable {
         }
         connectToSeasonDB();
         HashMap<String, String> args = new HashMap<>();
+        for(int i=0;i<matchID.size();i++){
+            args.put(String.valueOf(matchID.get(i)),String.valueOf(matchID.get(i)));
+        }
+        args.put("leagueID",leagueID);
+        args.put("seasonID",String.valueOf(seasonID));
         DB.update(SEASONENUM.MATCHESTABLE, args);
         return addMatchTableToSeason(leagueID, seasonID, matchID);
     }

@@ -233,6 +233,7 @@ public class AssociationRepresentativeTest {
         teamNames.add("Manchester United");
         teamNames.add("Real Madrid");
         assertTrue(testingLeagueService.chooseTeamForSeason(teamNames, "Itai's_League", "2005", "Altman"));
+        assertTrue(testingLeagueService.activateMatchPolicyForSeason("Itai's_League","2005","Altman"));
     }
 
 

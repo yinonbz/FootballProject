@@ -39,6 +39,7 @@ public class Season {
         referees = new HashMap<>();
         teams = new HashMap<>();
         this.matchesOfTheSeason=matchesOfTheSeason;
+
         //matches = new ArrayList<>();
         initializeTable(); // here we initialize the table
     }
@@ -55,6 +56,25 @@ public class Season {
         this.leagueTable=leagueTable;
         this.matchesOfTheSeason=matchesOfTheSeason;
         teams = new HashMap<>();
+        if (matchingPolicy.equals("ClassicMatchPolicy")) {
+            this.matchingPolicy = new ClassicMatchPolicy(league, this);
+        } else if (matchingPolicy.equals("SingleMatchPolicy")) {
+            this.matchingPolicy = new SingleMatchPolicy(league, this);
+        }
+    }
+
+    public Season (League league, int seasonID, Date startDate, Date endDate, ARankingPolicy aRankingPolicy, HashMap<Team, LinkedList<Integer>> leagueTable,
+                   HashMap<Integer,Match> matchesOfTheSeason, HashMap<String,Referee> referees, String matchingPolicy, HashMap<String, Team> teams) {
+        this.league=league;
+        this.seasonId=seasonID;
+        this.teams = new HashMap<>();
+        this.startDate=startDate;
+        this.endDate=endDate;
+        this.rankingPolicy=aRankingPolicy;
+        this.referees=referees;
+        this.leagueTable=leagueTable;
+        this.matchesOfTheSeason=matchesOfTheSeason;
+        this.teams = teams;
         if (matchingPolicy.equals("ClassicMatchPolicy")) {
             this.matchingPolicy = new ClassicMatchPolicy(league, this);
         } else if (matchingPolicy.equals("SingleMatchPolicy")) {
@@ -282,12 +302,12 @@ public class Season {
      */
     public boolean activateMatchPolicy(LeagueController leagueController){
         //in order to use the match policy only once
-        if(matchesOfTheSeason==null) {
+        if(matchesOfTheSeason==null || matchesOfTheSeason.size() == 0) {
             this.matchesOfTheSeason = matchingPolicy.activatePolicy(teams, leagueController);
             leagueController.updateMatchTableInDB(matchesOfTheSeason,league.getLeagueName(),seasonId);
-            if (matchesOfTheSeason != null) {
-                return true;
-            }
+        }
+        if (matchesOfTheSeason != null && matchesOfTheSeason.size() > 0) {
+            return true;
         }
         return false;
     }
