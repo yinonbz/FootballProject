@@ -109,12 +109,13 @@ public class notificationDB implements DB_Inter {
                 Result<?> result = create.select().
                         from(NOTIFICATIONS)
                         .where(NOTIFICATIONS.SUBSCRIBERID.eq(arguments.get("SubscriberID")))
-                        .and(NOTIFICATIONS.SEEN.eq(Boolean.valueOf("true")))
+                        .and(NOTIFICATIONS.SEEN.eq(Boolean.valueOf("false")))
                         .fetch();
                 allNotifications.add(new HashMap<>());
                 allNotifications.get(0).put("notifications",new ArrayList<>());
                 for(Record r: result){
                     allNotifications.get(0).get("notifications").add(r.get(NOTIFICATIONS.NOTIFICATION));
+
                 }
                 return allNotifications;
             }catch (Exception exception){
@@ -164,6 +165,21 @@ public class notificationDB implements DB_Inter {
 
     @Override
     public boolean update(Enum<?> e, Map<String, String> arguments) {
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        if(e==NOTIFICATIONUPDATES.ADDMATCHFOLLOWER){
+            create.insertInto(MATCH_FOLLOWERS,
+                    MATCH_FOLLOWERS.MATCHID,
+                    MATCH_FOLLOWERS.FOLLOWERID)
+                    .values(Integer.parseInt(arguments.get("matchID")),
+                            arguments.get("followerID"));
+        }
+        if(e==NOTIFICATIONUPDATES.ADDPAGEFOLLOWER){
+            create.insertInto(PAGE_FOLLOWERS,
+                    PAGE_FOLLOWERS.PAGEID,
+                    PAGE_FOLLOWERS.FOLLOWERID)
+                    .values(Integer.parseInt(arguments.get("pageID")),
+                            arguments.get("followerID"));
+        }
         return false;
     }
 
