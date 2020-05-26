@@ -3039,8 +3039,9 @@ public class SystemController extends Observable {
         return finalList;
     }
 
-    public ArrayList<String> getAllRefereeAvailableSeason(String leagueID, int seasonID){
-        connectToSeasonDB();
+    public ArrayList<String> getAllRefereeAvailableSeason(){
+        connectToSubscriberDB();
+        /*
         HashSet<String> occupied = new HashSet<>();
         HashMap<String,String> args = new HashMap<>();
         args.put("leagueID",leagueID);
@@ -3052,14 +3053,15 @@ public class SystemController extends Observable {
                 occupied.add(temp.get(0));
             }
         }
+        */
         ArrayList<String> finalList = new ArrayList<>();
         ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(UserTypes.REFEREE,null);
         for(Map <String,ArrayList<String>> map : allRefs){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
                 ArrayList<String> temp = entry.getValue();
-                if(!occupied.contains(temp.get(0))){
+                //if(!occupied.contains(temp.get(0))){
                     finalList.add(temp.get(0));
-                }
+                //}
             }
         }
         return finalList;
