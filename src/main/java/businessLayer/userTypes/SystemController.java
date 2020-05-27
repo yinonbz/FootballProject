@@ -2665,7 +2665,7 @@ public class SystemController extends Observable {
             arguments.put("pageID",String.valueOf(page.getPageID()));
             ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETPAGEFOLLOWES,arguments);
             LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
-            if (followers != null) {
+            if (!followers.isEmpty()) {
                 followers.add(event);
                 followers.add("Page update");
                 setChanged();
