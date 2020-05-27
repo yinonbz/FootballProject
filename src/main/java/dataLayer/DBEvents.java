@@ -61,6 +61,7 @@ public class DBEvents implements DB_Inter {
         try {
             return selectEventFromDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID));
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("error selecting event from DB");
             return new HashMap<>();
         }
@@ -70,6 +71,7 @@ public class DBEvents implements DB_Inter {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result <?> result = create.select().from(EVENTSRECORDER_EVENTS).where(EVENTSRECORDER_EVENTS.MATCHID.eq(matchID)).
                 and(EVENTSRECORDER_EVENTS.TIME.eq(time).and(EVENTSRECORDER_EVENTS.EVENTID.eq(eventID))).fetch();
+        System.out.println(String.valueOf(result));
         String type = result.get(0).get(EVENTSRECORDER_EVENTS.TYPE);
         HashMap <String,ArrayList<String>> details = new HashMap<>();
         ArrayList<String> typeA = new ArrayList<>();
