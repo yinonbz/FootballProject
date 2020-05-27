@@ -2,8 +2,6 @@ package presentationLayer;
 
 import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Exceptions.NotFoundInDbException;
-import businessLayer.userTypes.SystemController;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -30,7 +28,6 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 

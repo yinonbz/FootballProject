@@ -1,8 +1,5 @@
 package businessLayer.Utilities;
 
-import businessLayer.userTypes.Administration.Admin;
-import businessLayer.userTypes.Subscriber;
-
 public class Complaint {
 
     private int id;

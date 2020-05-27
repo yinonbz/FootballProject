@@ -1,7 +1,6 @@
 package presentationLayer;
 
 import businessLayer.Exceptions.NotApprovedException;
-import businessLayer.Tournament.Match.Match;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

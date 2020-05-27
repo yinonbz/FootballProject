@@ -1,7 +1,6 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Team.Team;
-//import businessLayer.Utilities.Page;
 import businessLayer.Utilities.Page;
 import businessLayer.Utilities.HasPage;
 import businessLayer.userTypes.Subscriber;

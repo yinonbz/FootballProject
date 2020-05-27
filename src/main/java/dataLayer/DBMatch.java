@@ -3,6 +3,7 @@ package dataLayer;
 import org.jooq.DSLContext;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -57,108 +58,150 @@ public class DBMatch implements DB_Inter {
 
     @Override
     public boolean containInDB(String objectName,String empty1,String empty2) {
-        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(Integer.parseInt(objectName))).fetch();
-        return (!result.isEmpty());
+        try {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(Integer.parseInt(objectName))).fetch();
+            return (!result.isEmpty());
+        } catch (DataAccessException e) {
+            System.out.println("error searching match in DB");
+            return false;
+        } catch (NumberFormatException e) {
+            System.out.println("error searching match in DB and converting matchID");
+            return false;
+        }
     }
 
 
     @Override
     public Map<String, ArrayList<String>> selectFromDB(String matchID,String arg2,String arg3) {
-        return selectMatchFromDB(Integer.parseInt(matchID));
+        try {
+            return selectMatchFromDB(Integer.parseInt(matchID));
+        } catch (NumberFormatException e) {
+            System.out.println("error selecting match from DB");
+            return new HashMap<>();
+        }
     }
     private HashMap <String,ArrayList<String>> selectMatchFromDB(int matchID){
         if(containInDB(String.valueOf(matchID),null,null)) {
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(matchID)).fetch();
-            String id = result.get(0).get(MATCH.MATCHID).toString();
-            String home = result.get(0).get(MATCH.TEAMHOMEID);
-            String away = result.get(0).get(MATCH.TEAMAWAYID);
-            String leagueID = result.get(0).get(MATCH.LEAGUEID);
-            String seasonID = result.get(0).get(MATCH.SEASONID).toString();
-            String score = result.get(0).get(MATCH.SCORE);
-            String numberOFFans = result.get(0).get(MATCH.NUMBEROFFANS).toString();
-            String stadium = result.get(0).get(MATCH.STADIUMID);
-            String date = result.get(0).get(MATCH.DATE).toString();
-            String referee = result.get(0).get(MATCH.MAINREFEREEID);
-            String isFinished = result.get(0).get(MATCH.ISFINISHED).toString();
-            ArrayList<String> allReferees = getRefsOfMatch(matchID);
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(matchID)).fetch();
+                String id = result.get(0).get(MATCH.MATCHID).toString();
+                String home = result.get(0).get(MATCH.TEAMHOMEID);
+                String away = result.get(0).get(MATCH.TEAMAWAYID);
+                String leagueID = result.get(0).get(MATCH.LEAGUEID);
+                String seasonID = result.get(0).get(MATCH.SEASONID).toString();
+                String score = result.get(0).get(MATCH.SCORE);
+                String numberOFFans = result.get(0).get(MATCH.NUMBEROFFANS).toString();
+                String stadium = result.get(0).get(MATCH.STADIUMID);
+                String date = result.get(0).get(MATCH.DATE).toString();
+                String referee = result.get(0).get(MATCH.MAINREFEREEID);
+                String isFinished = result.get(0).get(MATCH.ISFINISHED).toString();
+                ArrayList<String> allReferees = getRefsOfMatch(matchID);
 
-            HashMap<String, ArrayList<String>> details = new HashMap<>();
+                HashMap<String, ArrayList<String>> details = new HashMap<>();
 
-            ArrayList<String> matchIDs = new ArrayList<>();
-            matchIDs.add(id);
-            ArrayList<String> homeTeam = new ArrayList<>();
-            homeTeam.add(home);
-            ArrayList<String> awayTeam = new ArrayList<>();
-            awayTeam.add(away);
-            ArrayList<String> leagueIDS = new ArrayList<>();
-            leagueIDS.add(leagueID);
-            ArrayList<String> seasonIDs = new ArrayList<>();
-            seasonIDs.add(seasonID);
-            ArrayList<String> scores = new ArrayList<>();
-            scores.add(score);
-            ArrayList<String> numberOFFansA = new ArrayList<>();
-            numberOFFansA.add(numberOFFans);
-            ArrayList<String> stadiumA = new ArrayList<>();
-            stadiumA.add(stadium);
-            ArrayList<String> dateA = new ArrayList<>();
-            dateA.add(date);
-            ArrayList<String> referees = new ArrayList<>();
-            referees.add(referee);
-            ArrayList<String> isFinishedA = new ArrayList<>();
-            isFinishedA.add(isFinished);
+                ArrayList<String> matchIDs = new ArrayList<>();
+                matchIDs.add(id);
+                ArrayList<String> homeTeam = new ArrayList<>();
+                homeTeam.add(home);
+                ArrayList<String> awayTeam = new ArrayList<>();
+                awayTeam.add(away);
+                ArrayList<String> leagueIDS = new ArrayList<>();
+                leagueIDS.add(leagueID);
+                ArrayList<String> seasonIDs = new ArrayList<>();
+                seasonIDs.add(seasonID);
+                ArrayList<String> scores = new ArrayList<>();
+                scores.add(score);
+                ArrayList<String> numberOFFansA = new ArrayList<>();
+                numberOFFansA.add(numberOFFans);
+                ArrayList<String> stadiumA = new ArrayList<>();
+                stadiumA.add(stadium);
+                ArrayList<String> dateA = new ArrayList<>();
+                dateA.add(date);
+                ArrayList<String> referees = new ArrayList<>();
+                referees.add(referee);
+                ArrayList<String> isFinishedA = new ArrayList<>();
+                isFinishedA.add(isFinished);
 
-            details.put("matchID", matchIDs);
-            details.put("homeTeam", homeTeam);
-            details.put("awayTeam", awayTeam);
-            details.put("leagueID", leagueIDS);
-            details.put("seasonID", seasonIDs);
-            details.put("score", scores);
-            details.put("numberOFFans", numberOFFansA);
-            details.put("stadium", stadiumA);
-            details.put("date", dateA);
-            details.put("mainRef", referees);
-            details.put("isFinished", isFinishedA);
-            details.put("allRefs",allReferees);
+                details.put("matchID", matchIDs);
+                details.put("homeTeam", homeTeam);
+                details.put("awayTeam", awayTeam);
+                details.put("leagueID", leagueIDS);
+                details.put("seasonID", seasonIDs);
+                details.put("score", scores);
+                details.put("numberOFFans", numberOFFansA);
+                details.put("stadium", stadiumA);
+                details.put("date", dateA);
+                details.put("mainRef", referees);
+                details.put("isFinished", isFinishedA);
+                details.put("allRefs",allReferees);
 
-            return details;
+                return details;
+            } catch (DataAccessException e) {
+                System.out.println("error selecting match from DB");
+                return new HashMap<>();
+            } catch (IllegalArgumentException e) {
+                System.out.println("error selecting match from DB");
+                return new HashMap<>();
+            }
         }
         return null;
     }
 
     public ArrayList<String> getRefsOfMatch(int matchID){
-        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        ArrayList<String> refNames = new ArrayList<>();
-        Result <?> result = create.select().from(MATCH_REFEREE).where(MATCH_REFEREE.MATCHID.eq(matchID)).fetch();
-        if(result.isEmpty()){
-            return null;
-        }
-        else{
-            for(Record r : result){
-                refNames.add(r.get(MATCH_REFEREE.REFEREEID));
+        try {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            ArrayList<String> refNames = new ArrayList<>();
+            Result <?> result = create.select().from(MATCH_REFEREE).where(MATCH_REFEREE.MATCHID.eq(matchID)).fetch();
+            if(result.isEmpty()){
+                return null;
             }
+            else{
+                for(Record r : result){
+                    refNames.add(r.get(MATCH_REFEREE.REFEREEID));
+                }
+            }
+            return refNames;
+        } catch (DataAccessException e) {
+            System.out.println("error getting referees of match from DB");
+            return new ArrayList<>();
+        } catch (IllegalArgumentException e) {
+            System.out.println("error getting referees of match from DB");
+            return new ArrayList<>();
         }
-        return refNames;
     }
 
 
     @Override
     public boolean removeFromDB(String objectName,String arg2,String arg3) {
-        if(containInDB(objectName,null,null)){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.delete(MATCH).where(MATCH.MATCHID.eq(Integer.parseInt(objectName))).execute();
-            create.delete(REFEREE_MATCHES).where(MATCH_REFEREE.MATCHID.eq(Integer.parseInt(objectName))).execute();
-            return true;
+        try {
+            if(containInDB(objectName,null,null)){
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                create.delete(MATCH).where(MATCH.MATCHID.eq(Integer.parseInt(objectName))).execute();
+                create.delete(REFEREE_MATCHES).where(MATCH_REFEREE.MATCHID.eq(Integer.parseInt(objectName))).execute();
+                return true;
+            }
+            return false;
+        } catch (DataAccessException e) {
+            System.out.println("error removing match from DB");
+            return false;
+        } catch (NumberFormatException e) {
+            System.out.println("error removing match from DB");
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean addToDB(String leagueID, String seasonID, String matchID, String stadium, Map<String, ArrayList<String>> objDetails) {
-        return addMatchToDB(leagueID,Integer.parseInt(seasonID),matchID,stadium,
-                objDetails.get("teamHome").get(0),objDetails.get("teamAway").get(0)
-                ,objDetails.get("score").get(0),convertToDate(objDetails.get("date").get(0)));
+        try {
+            return addMatchToDB(leagueID,Integer.parseInt(seasonID),matchID,stadium,
+                    objDetails.get("teamHome").get(0),objDetails.get("teamAway").get(0)
+                    ,objDetails.get("score").get(0),convertToDate(objDetails.get("date").get(0)));
+        } catch (NumberFormatException e) {
+            System.out.println("error match adding match DB");
+            return false;
+        }
     }
 
     @Override
@@ -169,35 +212,51 @@ public class DBMatch implements DB_Inter {
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         if(e == MATCHENUM.ALLREFEREEOFGAME){
-            String match = arguments.get("matchID");
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            //String leagueID = arguments.get("matchID");
-            Result<?> result = create.select(MATCH_REFEREE.REFEREEID).from(MATCH_REFEREE).where(MATCH_REFEREE.MATCHID.eq(Integer.parseInt(match))).fetch();
-            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
-            for (Record record : result) {
-                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
-                ArrayList<String> temp = new ArrayList<>();
-                String refID = record.get(MATCH_REFEREE.REFEREEID);
-                temp.add(refID);
-                seasonDetails.put(refID, temp);
-                details.add(seasonDetails);
+            try {
+                String match = arguments.get("matchID");
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                //String leagueID = arguments.get("matchID");
+                Result<?> result = create.select(MATCH_REFEREE.REFEREEID).from(MATCH_REFEREE).where(MATCH_REFEREE.MATCHID.eq(Integer.parseInt(match))).fetch();
+                ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+                for (Record record : result) {
+                    HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                    ArrayList<String> temp = new ArrayList<>();
+                    String refID = record.get(MATCH_REFEREE.REFEREEID);
+                    temp.add(refID);
+                    seasonDetails.put(refID, temp);
+                    details.add(seasonDetails);
+                }
+                return details;
+            } catch (DataAccessException e1) {
+                System.out.println("error getting all referees of the game");
+                return new ArrayList<>();
+            } catch (IllegalArgumentException e1) {
+                System.out.println("error getting all referees of the game");
+                return new ArrayList<>();
             }
-            return details;
         }
         else if(e==MATCHENUM.ALLGAMEREFEREE){
-            String refID = arguments.get("refID");
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select().from(MATCH_REFEREE).where(MATCH_REFEREE.REFEREEID.eq(refID)).fetch();
-            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
-            for (Record record : result) {
-                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
-                ArrayList<String> temp = new ArrayList<>();
-                String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
-                temp.add(matchID);
-                seasonDetails.put(matchID, temp);
-                details.add(seasonDetails);
+            try {
+                String refID = arguments.get("refID");
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select().from(MATCH_REFEREE).where(MATCH_REFEREE.REFEREEID.eq(refID)).fetch();
+                ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+                for (Record record : result) {
+                    HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                    ArrayList<String> temp = new ArrayList<>();
+                    String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
+                    temp.add(matchID);
+                    seasonDetails.put(matchID, temp);
+                    details.add(seasonDetails);
+                }
+                return details;
+            } catch (DataAccessException e1) {
+                System.out.println("error getting all games of referee");
+                return new ArrayList<>();
+            } catch (IllegalArgumentException e1) {
+                System.out.println("error getting all games of referee");
+                return new ArrayList<>();
             }
-            return details;
         }
         return null;
     }
@@ -206,20 +265,40 @@ public class DBMatch implements DB_Inter {
     @Override
     public boolean update(Enum<?> e,Map<String,String> args) {
         if(e == MATCHENUM.ADDREFEREE){
-            addRefereeToMatch(args.get("matchID"),args.get("refID"));
-            return true;
+            try {
+                addRefereeToMatch(args.get("matchID"),args.get("refID"));
+                return true;
+            } catch (Exception e1) {
+                System.out.println("add referee to match");
+                return false;
+            }
         }
         else if(e==MATCHENUM.SCORE){
-            updateScore(args.get("matchID"),args.get("score"));
-            return true;
+            try {
+                updateScore(args.get("matchID"),args.get("score"));
+                return true;
+            } catch (Exception e1) {
+                System.out.println("error updating score");
+                return false;
+            }
         }
         else if(e==MATCHENUM.MAINREFEREE){
-            updateMainRefereeToMatch(args.get("matchID"),args.get("refID"));
-            return true;
+            try {
+                updateMainRefereeToMatch(args.get("matchID"),args.get("refID"));
+                return true;
+            } catch (Exception e1) {
+                System.out.println("error updating main referee");
+                return false;
+            }
         }
         else if(e==MATCHENUM.NUMBEROFFANS){
-            updateNumOfFans(args.get("matchID"),Integer.parseInt(args.get("numOfFans")));
-            return true;
+            try {
+                updateNumOfFans(args.get("matchID"),Integer.parseInt(args.get("numOfFans")));
+                return true;
+            } catch (NumberFormatException e1) {
+                System.out.println("error updating number of fans");
+                return false;
+            }
         }
         return false;
     }
@@ -228,7 +307,7 @@ public class DBMatch implements DB_Inter {
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }

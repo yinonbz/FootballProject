@@ -1,7 +1,6 @@
 package businessLayer.userTypes.Administration;
 
 import businessLayer.Exceptions.AlreadyExistException;
-import businessLayer.Tournament.League;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Utilities.Financial.FinancialMonitoring;
 import businessLayer.userTypes.Subscriber;

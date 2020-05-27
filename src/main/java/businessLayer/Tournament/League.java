@@ -1,8 +1,6 @@
 package businessLayer.Tournament;
 
 import businessLayer.Exceptions.AlreadyExistException;
-import businessLayer.Team.Team;
-import businessLayer.Tournament.Match.Match;
 import businessLayer.userTypes.Administration.Referee;
 import businessLayer.userTypes.SystemController;
 

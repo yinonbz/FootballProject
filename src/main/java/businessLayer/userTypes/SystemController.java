@@ -18,28 +18,16 @@ import businessLayer.Utilities.recommendationSystem.RecommendationSystem;
 import businessLayer.userTypes.Administration.*;
 import businessLayer.userTypes.viewers.*;
 import dataLayer.*;
-import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.log4j.xml.XmlConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 
-import org.apache.logging.log4j.core.config.ConfigurationSource;
 import serviceLayer.SystemService;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
-import java.util.logging.*;
-
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
 
 public class SystemController extends Observable {
 
@@ -2721,7 +2709,7 @@ public class SystemController extends Observable {
         if (match != null && event != null) {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
-            arguments.put("pageID",String.valueOf(match.getMatchId()));
+            arguments.put("matchID",String.valueOf(match.getMatchId()));
             ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETMATCHFOLLOWERS,arguments);
             LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
             if (followers != null) {

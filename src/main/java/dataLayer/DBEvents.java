@@ -41,7 +41,12 @@ public class DBEvents implements DB_Inter {
 
     @Override
     public boolean containInDB(String objectName,String time,String eventID) {
-        return eventInDB(Integer.parseInt(objectName),time,Integer.parseInt(eventID));
+        try {
+            return eventInDB(Integer.parseInt(objectName),time,Integer.parseInt(eventID));
+        } catch (Exception e) {
+            System.out.println("error searching for event in DB");
+            return false;
+        }
     }
 
     public boolean eventInDB(int matchID, String time, int eventID){
@@ -53,13 +58,20 @@ public class DBEvents implements DB_Inter {
 
     @Override
     public Map<String, ArrayList<String>> selectFromDB(String matchID,String time,String eventID) {
-        return selectEventFromDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID));
+        try {
+            return selectEventFromDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID));
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("error selecting event from DB");
+            return new HashMap<>();
+        }
     }
 
     public HashMap <String,ArrayList<String>> selectEventFromDB(int matchID, String time, int eventID){
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result <?> result = create.select().from(EVENTSRECORDER_EVENTS).where(EVENTSRECORDER_EVENTS.MATCHID.eq(matchID)).
                 and(EVENTSRECORDER_EVENTS.TIME.eq(time).and(EVENTSRECORDER_EVENTS.EVENTID.eq(eventID))).fetch();
+        System.out.println(String.valueOf(result));
         String type = result.get(0).get(EVENTSRECORDER_EVENTS.TYPE);
         HashMap <String,ArrayList<String>> details = new HashMap<>();
         ArrayList<String> typeA = new ArrayList<>();
@@ -144,12 +156,22 @@ public class DBEvents implements DB_Inter {
 
     @Override
     public boolean removeFromDB(String matchID, String time,String eventID) {
-        return removeEventFromDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID));
+        try {
+            return removeEventFromDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID));
+        } catch (Exception e) {
+            System.out.println("error removing event from DB");
+            return false;
+        }
     }
 
     @Override
     public boolean addToDB(String matchID, String time, String eventID, String type, Map<String, ArrayList<String>> objDetails) {
-        return addEventToDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID),type,objDetails);
+        try {
+            return addEventToDB(Integer.parseInt(matchID),time,Integer.parseInt(eventID),type,objDetails);
+        } catch (Exception e) {
+            System.out.println("error adding event from DB");
+            return false;
+        }
     }
 
     @Override
@@ -176,7 +198,7 @@ public class DBEvents implements DB_Inter {
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }
