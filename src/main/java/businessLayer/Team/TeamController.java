@@ -7,8 +7,6 @@ import businessLayer.userTypes.Administration.Permissions;
 import businessLayer.userTypes.Administration.TeamOwner;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
-import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
 
 public class TeamController {
     private SystemController systemController;

@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 
 import static dataLayer.Tables.Tables.*;
 import static dataLayer.Tables.tables.Subscribers.SUBSCRIBERS;
-import static dataLayer.Tables.tables.Teams.TEAMS;
 
 public class DBHandler implements DB_Inter{
 
@@ -582,10 +581,29 @@ public class DBHandler implements DB_Inter{
                 return null;
             }
         }
+        if(userType == SUBSCRIBERSUPDATES.ALLREFS){
+            return selectAllRefs();
+        }
         else{
             System.out.println("invalid select from subscriberDB");
         }
         return null;
+    }
+
+    private ArrayList<Map<String, ArrayList<String>>> selectAllRefs(){
+        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+        Result<?> result = create.select(REFEREES.REFEREEID).from(REFEREES).fetch();
+        ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+        for (Record record : result) {
+            HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+            ArrayList<String> temp = new ArrayList<>();
+            String refID = record.get(REFEREES.REFEREEID);
+            //String leagueID = record.get(SEASONS.LEAGUEID);
+            temp.add(refID);
+            seasonDetails.put(refID, temp);
+            details.add(seasonDetails);
+        }
+        return details;
     }
 
     private ArrayList<Map<String, ArrayList<String>>> selectAllTeamManagers(){
@@ -901,13 +919,14 @@ public class DBHandler implements DB_Inter{
                 return false;
             }
         }
+
         return false;
     }
 
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }

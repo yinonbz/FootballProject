@@ -1,12 +1,10 @@
 package serviceLayer;
 
-import businessLayer.Team.Team;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
-import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
@@ -468,5 +466,13 @@ public class SystemService extends Observable implements Observer {
     public void updateRefereeName(String name, String userName) {
         systemController.updateRefereeName(name,userName);
 
+    }
+    //todo ido add this function
+    public ArrayList<String> getEventByMatch(String matchId) {
+        return systemController.getEventByMatch(matchId);
+    }
+
+    public ArrayList<String> allEventFromMatch(Integer matchId) {
+        return systemController.allEventFromMatch(matchId);
     }
 }

@@ -1,7 +1,5 @@
 package businessLayer.Tournament.Match;
 
-import businessLayer.Tournament.Match.Event;
-import businessLayer.Tournament.Match.MatchController;
 import businessLayer.userTypes.Administration.Player;
 
 public class RedCard extends Event {

@@ -55,9 +55,9 @@ public class DBSeasons implements DB_Inter {
     }
 
     @Override
-    public boolean containInDB(String leagueID,String seasonID,String empty1) {
+    public boolean containInDB(String leagueID, String seasonID, String empty1) {
         try {
-            return containsInDB(leagueID,Integer.parseInt(seasonID));
+            return containsInDB(leagueID, Integer.parseInt(seasonID));
         } catch (Exception e) {
             System.out.println("error searching season in DB");
             return false;
@@ -65,16 +65,16 @@ public class DBSeasons implements DB_Inter {
     }
 
     @Override
-    public Map<String, ArrayList<String>> selectFromDB(String leagueID,String seasonID,String arg3) {
+    public Map<String, ArrayList<String>> selectFromDB(String leagueID, String seasonID, String arg3) {
         try {
-            return selectFromDB(leagueID,Integer.parseInt(seasonID));
+            return selectFromDB(leagueID, Integer.parseInt(seasonID));
         } catch (Exception e) {
             System.out.println("error selecting season in DB");
             return new HashMap<>();
         }
     }
 
-    public boolean containsInDB(String leagueID, int seasonID){
+    public boolean containsInDB(String leagueID, int seasonID) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         Result<?> result = create.select().from(SEASONS).where(SEASONS.LEAGUEID.eq(leagueID).
                 and(SEASONS.SEASONID.eq(seasonID))).fetch();
@@ -83,9 +83,9 @@ public class DBSeasons implements DB_Inter {
 
 
     @Override
-    public boolean removeFromDB(String leagueID,String seasonID,String arg3) {
+    public boolean removeFromDB(String leagueID, String seasonID, String arg3) {
         try {
-            return removeFromDB(leagueID,Integer.parseInt(seasonID));
+            return removeFromDB(leagueID, Integer.parseInt(seasonID));
         } catch (Exception e) {
             System.out.println("error removing season in DB");
             return false;
@@ -95,7 +95,7 @@ public class DBSeasons implements DB_Inter {
     @Override
     public boolean addToDB(String leagueID, String seasonID, String startDate, String endDate, Map<String, ArrayList<String>> objDetails) {
         try {
-            return addSeasonToDB(leagueID,Integer.parseInt(seasonID),convertToDate(startDate),convertToDate(endDate),objDetails);
+            return addSeasonToDB(leagueID, Integer.parseInt(seasonID), convertToDate(startDate), convertToDate(endDate), objDetails);
         } catch (Exception e) {
             System.out.println("error adding season in DB");
             return false;
@@ -108,9 +108,9 @@ public class DBSeasons implements DB_Inter {
     }
 
     @Override
-    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
-            if (e == SEASONENUM.ALLSEASON) {
-                try {
+    public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e, Map<String, String> arguments) {
+        if (e == SEASONENUM.ALLSEASON) {
+            try {
                     return selectAllSeasonOfLeague(SEASONENUM.ALLSEASON,arguments);
                 } catch (Exception e1) {
                     System.out.println("error getting all seasons in DB");
@@ -124,12 +124,12 @@ public class DBSeasons implements DB_Inter {
                     System.out.println("error getting all referees of seasons in DB");
                     return new ArrayList<>();
                 }
-            }
-            return null;
         }
+        return null;
+    }
 
-        private ArrayList<Map<String, ArrayList<String>>> getAllRefsOfSeason(String leagueID, String seasonID){
-            try {
+    private ArrayList<Map<String, ArrayList<String>>> getAllRefsOfSeason(String leagueID, String seasonID) {
+        try {
                 DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
                 Result<?> result = create.select(SEASON_REFEREE.REFEREEID).from(SEASON_REFEREE).
                         where(SEASON_REFEREE.LEAGUEID.eq(leagueID)).and(SEASON_REFEREE.SEASONID.eq(Integer.parseInt(seasonID))).
@@ -171,10 +171,10 @@ public class DBSeasons implements DB_Inter {
             return details;
         }
 
-        @Override
-        public boolean update (Enum < ? > e, Map < String, String > args){
-            if (e == SEASONENUM.REFEREE) {
-                try {
+    @Override
+    public boolean update(Enum<?> e, Map<String, String> args) {
+        if (e == SEASONENUM.REFEREE) {
+            try {
                     addRefereeInSeason(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), args.get("refID"));
                     return true;
                 } catch (Exception e1) {
@@ -216,20 +216,21 @@ public class DBSeasons implements DB_Inter {
                     System.out.println("error adding team to season");
                     return false;
                 }
-            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean TerminateDB() {
+        try {
+            connection.close();
+        } catch (Exception e) {
+            System.out.println("error closing connection of DB");
             return false;
         }
-        @Override
-        public boolean TerminateDB () {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                System.out.println("error closing connection of DB");
-                return false;
-            }
 
-            return true;
-        }
+        return true;
+    }
 
         public HashMap<String, ArrayList<String>> selectFromDB (String leagueID,int seasonID){
             HashMap<String, ArrayList<String>> allDetails = new HashMap<>();
@@ -316,123 +317,122 @@ public class DBSeasons implements DB_Inter {
                 create.insertInto(SEASONS, SEASONS.ENDDATE)
                         .values(end)
                         .execute();*/
-                ArrayList<String> teams = details.get("teams");
-                if (teams != null) {
-                    for (String team : teams) {
-                        create.insertInto(SEASON_TEAMS, SEASON_TEAMS.LEAGUEID, SEASON_TEAMS.SEASONID, SEASON_TEAMS.TEAMID).values(leagueID, seasonID, team).execute();
-                    }
+            ArrayList<String> teams = details.get("teams");
+            if (teams != null) {
+                for (String team : teams) {
+                    create.insertInto(SEASON_TEAMS, SEASON_TEAMS.LEAGUEID, SEASON_TEAMS.SEASONID, SEASON_TEAMS.TEAMID).values(leagueID, seasonID, team).execute();
                 }
-                ArrayList<String> referees = details.get("referees");
-                if (referees != null) {
-                    for (String referee : referees) {
-                        create.insertInto(SEASON_REFEREE, SEASON_REFEREE.LEAGUEID, SEASON_REFEREE.SEASONID, SEASON_REFEREE.REFEREEID).values(leagueID, seasonID, referee).execute();
-                    }
+            }
+            ArrayList<String> referees = details.get("referees");
+            if (referees != null) {
+                for (String referee : referees) {
+                    create.insertInto(SEASON_REFEREE, SEASON_REFEREE.LEAGUEID, SEASON_REFEREE.SEASONID, SEASON_REFEREE.REFEREEID).values(leagueID, seasonID, referee).execute();
                 }
-                ArrayList<String> matches = details.get("matches");
-                if (matches != null) {
-                    for (String match : matches) {
-                        int matchInt = Integer.parseInt(match);
-                        create.insertInto(SEASON_MATCHES, SEASON_MATCHES.LEAGUEID, SEASON_MATCHES.SEASONID, SEASON_MATCHES.MATCHID).values(leagueID, seasonID, matchInt).execute();
-                    }
+            }
+            ArrayList<String> matches = details.get("matches");
+            if (matches != null) {
+                for (String match : matches) {
+                    int matchInt = Integer.parseInt(match);
+                    create.insertInto(SEASON_MATCHES, SEASON_MATCHES.LEAGUEID, SEASON_MATCHES.SEASONID, SEASON_MATCHES.MATCHID).values(leagueID, seasonID, matchInt).execute();
                 }
-                ArrayList<String> tables = details.get("table");
-                if (tables != null) {
-                    for (int i = 0; i < tables.size(); i = i + 5) {
-                        String team = tables.get(i);
-                        int numOFGames = Integer.parseInt(tables.get(i + 1));
-                        int goalsFor = Integer.parseInt(tables.get(i + 2));
-                        int goalsAgainst = Integer.parseInt(tables.get(i + 3));
-                        int points = Integer.parseInt(tables.get(i + 4));
-                        create.insertInto(SEASON_TABLELEAGUE, SEASON_TABLELEAGUE.LEAGUEID, SEASON_TABLELEAGUE.SEASONID, SEASON_TABLELEAGUE.TEAMID,
-                                SEASON_TABLELEAGUE.NUMOFGAMES, SEASON_TABLELEAGUE.GOALSFOR, SEASON_TABLELEAGUE.GOALSAGAINST, SEASON_TABLELEAGUE.POINTS)
-                                .values(leagueID, seasonID, team, numOFGames, goalsFor, goalsAgainst, points).execute();
-                    }
+            }
+            ArrayList<String> tables = details.get("table");
+            if (tables != null) {
+                for (int i = 0; i < tables.size(); i = i + 5) {
+                    String team = tables.get(i);
+                    int numOFGames = Integer.parseInt(tables.get(i + 1));
+                    int goalsFor = Integer.parseInt(tables.get(i + 2));
+                    int goalsAgainst = Integer.parseInt(tables.get(i + 3));
+                    int points = Integer.parseInt(tables.get(i + 4));
+                    create.insertInto(SEASON_TABLELEAGUE, SEASON_TABLELEAGUE.LEAGUEID, SEASON_TABLELEAGUE.SEASONID, SEASON_TABLELEAGUE.TEAMID,
+                            SEASON_TABLELEAGUE.NUMOFGAMES, SEASON_TABLELEAGUE.GOALSFOR, SEASON_TABLELEAGUE.GOALSAGAINST, SEASON_TABLELEAGUE.POINTS)
+                            .values(leagueID, seasonID, team, numOFGames, goalsFor, goalsAgainst, points).execute();
                 }
-                ArrayList<String> rankingPolicy = details.get("rankingPolicy");
-                int win = Integer.parseInt(rankingPolicy.get(0));
-                int lose = Integer.parseInt(rankingPolicy.get(1));
-                int tie = Integer.parseInt(rankingPolicy.get(2));
-                create.insertInto(RANKINGPOLICY, RANKINGPOLICY.LEAGUEID, RANKINGPOLICY.SEASONID, RANKINGPOLICY.WIN,
-                        RANKINGPOLICY.LOSE, RANKINGPOLICY.TIE).values(leagueID, seasonID, win, lose, tie).execute();
+            }
+            ArrayList<String> rankingPolicy = details.get("rankingPolicy");
+            int win = Integer.parseInt(rankingPolicy.get(0));
+            int lose = Integer.parseInt(rankingPolicy.get(1));
+            int tie = Integer.parseInt(rankingPolicy.get(2));
+            create.insertInto(RANKINGPOLICY, RANKINGPOLICY.LEAGUEID, RANKINGPOLICY.SEASONID, RANKINGPOLICY.WIN,
+                    RANKINGPOLICY.LOSE, RANKINGPOLICY.TIE).values(leagueID, seasonID, win, lose, tie).execute();
 
-                ArrayList<String> matchingPolicy = details.get("matchingPolicy");
-                if (matchingPolicy != null) {
-                    String type = matchingPolicy.get(0);
-                    create.insertInto(MATCHING_POLICY, MATCHING_POLICY.LEAGUEID, MATCHING_POLICY.SEASONID, MATCHING_POLICY.TYPE).values(leagueID, seasonID, type).execute();
+            ArrayList<String> matchingPolicy = details.get("matchingPolicy");
+            if (matchingPolicy != null) {
+                String type = matchingPolicy.get(0);
+                create.insertInto(MATCHING_POLICY, MATCHING_POLICY.LEAGUEID, MATCHING_POLICY.SEASONID, MATCHING_POLICY.TYPE).values(leagueID, seasonID, type).execute();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addRefereeInSeason(String leagueID, int seasonID, String referee) {
+        if (containsInDB(leagueID, seasonID)) {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            create.insertInto(SEASON_REFEREE, SEASON_REFEREE.LEAGUEID, SEASON_REFEREE.SEASONID,
+                    SEASON_REFEREE.REFEREEID).values(leagueID, seasonID, referee).execute();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addTeamInSeason(String leagueID, int seasonID, String teamID) {
+        if (containsInDB(leagueID, seasonID)) {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            create.insertInto(SEASON_TEAMS, SEASON_TEAMS.LEAGUEID, SEASON_TEAMS.SEASONID,
+                    SEASON_TEAMS.TEAMID).values(leagueID, seasonID, teamID).execute();
+            create.insertInto(SEASON_TABLELEAGUE, SEASON_TABLELEAGUE.LEAGUEID, SEASON_TABLELEAGUE.SEASONID, SEASON_TABLELEAGUE.TEAMID, SEASON_TABLELEAGUE.NUMOFGAMES,
+                    SEASON_TABLELEAGUE.GOALSFOR, SEASON_TABLELEAGUE.GOALSAGAINST, SEASON_TABLELEAGUE.POINTS).values(leagueID, seasonID, teamID, 0, 0, 0, 0).execute();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addMatchTableToSeason(String leagueID, int seasonID, LinkedList<Integer> matchNum) {
+        if (containsInDB(leagueID, seasonID)) {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            if (matchNum != null) {
+                for (int i = 0; i < matchNum.size(); i++) {
+                    create.insertInto(SEASON_MATCHES, SEASON_MATCHES.LEAGUEID, SEASON_MATCHES.SEASONID,
+                            SEASON_MATCHES.MATCHID).values(leagueID, seasonID, matchNum.get(i)).execute();
                 }
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean updateSeasonTable(String leagueID, int seasonID, String teamID, LinkedList<Integer> info) {
+        if (containsInDB(leagueID, seasonID)) {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            create.update(SEASON_TABLELEAGUE).set(SEASON_TABLELEAGUE.NUMOFGAMES, info.get(0)).
+                    set(SEASON_TABLELEAGUE.GOALSFOR, info.get(1))
+                    .set(SEASON_TABLELEAGUE.GOALSAGAINST, info.get(2)).set(SEASON_TABLELEAGUE.POINTS, info.get(3))
+                    .where(SEASON_TABLELEAGUE.LEAGUEID.eq(leagueID).and(SEASON_TABLELEAGUE.SEASONID.eq(seasonID).and
+                            (SEASON_TABLELEAGUE.TEAMID.eq(teamID)))).execute();
+            return true;
+        }
+        return false;
+    }
+
+
+    private LocalDate convertToDate (String date){
+        String [] arr = date.split(" ");
+        String temp = arr[5]+"-"+monthsForFormat.get(arr[1])+"-"+arr[2] + " " + arr[3].substring(0,5);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        //convert String to LocalDate
+        LocalDate localDate = LocalDate.parse(temp, formatter);
+        return localDate;
+    }
+
+    protected boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
             return false;
-        }
-
-        public boolean addRefereeInSeason (String leagueID,int seasonID, String referee){
-            if (containsInDB(leagueID, seasonID)) {
-                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-                create.insertInto(SEASON_REFEREE, SEASON_REFEREE.LEAGUEID, SEASON_REFEREE.SEASONID,
-                        SEASON_REFEREE.REFEREEID).values(leagueID, seasonID, referee).execute();
-                return true;
-            }
-            return false;
-        }
-
-        public boolean addTeamInSeason (String leagueID ,int seasonID, String teamID){
-            if (containsInDB(leagueID, seasonID)) {
-
-                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-                create.insertInto(SEASON_TEAMS, SEASON_TEAMS.LEAGUEID, SEASON_TEAMS.SEASONID,
-                        SEASON_TEAMS.TEAMID).values(leagueID, seasonID, teamID).execute();
-                create.insertInto(SEASON_TABLELEAGUE, SEASON_TABLELEAGUE.LEAGUEID, SEASON_TABLELEAGUE.SEASONID, SEASON_TABLELEAGUE.TEAMID, SEASON_TABLELEAGUE.NUMOFGAMES,
-                        SEASON_TABLELEAGUE.GOALSFOR, SEASON_TABLELEAGUE.GOALSAGAINST, SEASON_TABLELEAGUE.POINTS).values(leagueID, seasonID, teamID, 0, 0, 0, 0).execute();
-                return true;
-            }
-            return false;
-        }
-
-        public boolean addMatchTableToSeason (String leagueID,int seasonID, LinkedList <Integer > matchNum){
-            if (containsInDB(leagueID, seasonID)) {
-                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-                if (matchNum != null) {
-                    for (int i = 0; i < matchNum.size(); i++) {
-                        create.insertInto(SEASON_MATCHES, SEASON_MATCHES.LEAGUEID, SEASON_MATCHES.SEASONID,
-                                SEASON_MATCHES.MATCHID).values(leagueID, seasonID, matchNum.get(i)).execute();
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public boolean updateSeasonTable (String leagueID,int seasonID, String teamID, LinkedList < Integer > info){
-            if (containsInDB(leagueID, seasonID)) {
-                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-                create.update(SEASON_TABLELEAGUE).set(SEASON_TABLELEAGUE.NUMOFGAMES, info.get(0)).
-                        set(SEASON_TABLELEAGUE.GOALSFOR, info.get(1))
-                        .set(SEASON_TABLELEAGUE.GOALSAGAINST, info.get(2)).set(SEASON_TABLELEAGUE.POINTS, info.get(3))
-                        .where(SEASON_TABLELEAGUE.LEAGUEID.eq(leagueID).and(SEASON_TABLELEAGUE.SEASONID.eq(seasonID).and
-                                (SEASON_TABLELEAGUE.TEAMID.eq(teamID)))).execute();
-                return true;
-            }
-            return false;
-        }
-
-
-        private LocalDate convertToDate (String date){
-            String [] arr = date.split(" ");
-            String temp = arr[5]+"-"+monthsForFormat.get(arr[1])+"-"+arr[2] + " " + arr[3].substring(0,5);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-            //convert String to LocalDate
-            LocalDate localDate = LocalDate.parse(temp, formatter);
-            return localDate;
-        }
-
-        protected boolean tryParseInt (String value){
-            try {
-                Integer.parseInt(value);
-                return true;
-            } catch (NumberFormatException e) {
-                return false;
-            }
         }
     }
+}
 

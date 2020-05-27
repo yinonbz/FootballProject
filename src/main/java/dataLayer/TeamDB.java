@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static dataLayer.Tables.Tables.SEASONS;
 import static dataLayer.Tables.tables.CoachTeam.COACH_TEAM;
 import static dataLayer.Tables.tables.Match.MATCH;
 import static dataLayer.Tables.tables.OwnerTeams.OWNER_TEAMS;
@@ -515,7 +514,7 @@ public class TeamDB implements DB_Inter {
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }

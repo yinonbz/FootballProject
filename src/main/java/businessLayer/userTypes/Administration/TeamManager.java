@@ -4,9 +4,6 @@ import businessLayer.Team.Team;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class TeamManager extends Subscriber implements OwnerEligible {
 
     private TeamOwner teamOwner; //fictive account for team owner permission via team manager account

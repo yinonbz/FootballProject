@@ -20,16 +20,14 @@ import businessLayer.userTypes.viewers.*;
 import dataLayer.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mariadb.jdbc.internal.logging.LoggerFactory;
+import org.apache.logging.log4j.core.LoggerContext;
+
+
 import serviceLayer.SystemService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.FileHandler;
-
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
 
 public class SystemController extends Observable {
 
@@ -44,8 +42,10 @@ public class SystemController extends Observable {
     private MatchController matchController;
     private static final Logger events = LogManager.getLogger("Events");
     private static final Logger errors = LogManager.getLogger("Errors");
-    private FileHandler fileHandlerEve;
-    private FileHandler fileHandlerErr;
+    LoggerContext context = (LoggerContext) LogManager.getContext(false);
+
+    //private FileHandler fileHandlerEve;
+    //private FileHandler fileHandlerErr;
 
     //----------------OLD DATA STRUCTURES THAT ARE LOCATED IN THE DB-----------------------//
     //private HashMap<String, Team> teams; //name of the team, the team object
@@ -65,14 +65,20 @@ public class SystemController extends Observable {
 
     private SystemController() {
         DB = new DBHandler();
+        /*
         try{
+            ConsoleHandler handler
+                    = new ConsoleHandler();
             fileHandlerErr = new FileHandler("./resources/logs/errors.log");
-            //events.addHandler(fileHandlerErr);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fileHandlerErr.setFormatter(formatter);
             fileHandlerEve = new FileHandler("./resources/logs/events.log");
         }catch (Exception e){
 
         }
+        */
     }
+
 
     /**
      * The function receives a service and adds it as an observer of the system-controller
@@ -204,7 +210,7 @@ public class SystemController extends Observable {
             events.info("The user"+" "+"logged in");
             return true;
         }
-        errors.info("The user"+" "+"didn't insert the right password");
+        errors.error("The user"+" "+"didn't insert the right password");
         return false;
     }
 
@@ -233,7 +239,7 @@ public class SystemController extends Observable {
             events.info("system is up");
             return true;
         }
-        errors.info("The system could not get initialize");
+        errors.error("The system could not get initialize");
         return false;
     }
 
@@ -502,18 +508,18 @@ public class SystemController extends Observable {
                 }
                 //team is already closed by admin
                 else {
-                    errors.info("Team is already closed");
+                    errors.error("Team is already closed");
                     return false;
                 }
             }
             //team doesn't exist
             else {
-                errors.info("The user "+userType+" "+"tried to close a team that doesn't exist");
+                errors.error("The user "+userType+" "+"tried to close a team that doesn't exist");
                 return false;
             }
         }
         //not an admin
-        errors.info("The user "+userType+" "+"doesn't have permissions to close a team");
+        errors.error("The user "+userType+" "+"doesn't have permissions to close a team");
         return false;
     }
 
@@ -539,7 +545,7 @@ public class SystemController extends Observable {
                 return true;
             }
         }
-        errors.info("The complaint of "+username+" "+"is not valid");
+        errors.error("The complaint of "+username+" "+"is not valid");
         return false;
     }
 
@@ -575,8 +581,10 @@ public class SystemController extends Observable {
                     /*if (DB.containsInNotificationDB(tempSubscriber.getUsername())) {
                         DB.removeNotificationFromDB(tempSubscriber.getUsername());
                     }*/ //fixme take out of comment
+                    events.info("The User" + subscriberName + " was removed");
                     return "The User " + subscriberName + " was removed";
                 }
+                errors.error("The admin "+userType+" could not delete the user because it doesn't exist");
                 return "User doesn't exist in the system";
             }
         }
@@ -924,7 +932,7 @@ public class SystemController extends Observable {
             events.info("The user "+username+" added a request for a team");
             return true;
         }
-        errors.info("The user "+username+" had an unvalid request");
+        errors.error("The user "+username+" had an invalid request");
         return false;
     }
 
@@ -1118,6 +1126,7 @@ public class SystemController extends Observable {
      */
     public boolean addLeagueToDB(String leagueID) {
         connectToLeagueDB();
+        events.info("The league "+leagueID+" was added to the system");
         return DB.addToDB(leagueID, null, null, null, null);
     }
 
@@ -1501,6 +1510,7 @@ public class SystemController extends Observable {
                 events.info("The user "+userName+"changed the status of the team "+teamName);
                 return teamOwner.disableStatus(teamOwner.getTeam(teamName));
             } else {
+                errors.error("The user "+userName+"could not change the status of the team "+teamName);
                 return false; //the team owner doesn't own the team
             }
         } else if (possibleTeamOwner instanceof OwnerEligible) {
@@ -1510,8 +1520,11 @@ public class SystemController extends Observable {
                 events.info("The user "+userName+"changed the status of the team "+teamName);
                 return teamOwner.disableStatus(teamOwner.getTeam(teamName));
             } else
-                return false;
+                errors.error("The user "+userName+"could not change the status of the team "+teamName);
+            return false;
+
         } else {
+            errors.error("The user "+userName+"could not change the status of the team "+teamName);
             return false; //the user isn't a team owner
         }
     }
@@ -1552,7 +1565,8 @@ public class SystemController extends Observable {
                 events.info("The user "+userName+"added the team owner "+newUserName);
                 return teamOwner.appointToOwner(teamOwner.enterMember(newUserName), teamName);
             } else
-                return false;
+                errors.error("The user "+userName+"could not change the status of the team "+teamName);
+            return false;
         } else {
             return false; //the user isn't a team owner
         }
@@ -1715,8 +1729,8 @@ public class SystemController extends Observable {
         }
         connectToEventDB();
         events.info("An event was added to the match "+matchID);
-        DB.addToDB(String.valueOf(matchID), time, String.valueOf(eventID), type, details);
-        return false;
+        return DB.addToDB(String.valueOf(matchID), time, String.valueOf(eventID), type, details);
+        //return false;
     }
 
     /**
@@ -1758,7 +1772,7 @@ public class SystemController extends Observable {
             events.info("The user "+userName+" logged in");
             return subscriber.toString();
         }
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         throw new NotApprovedException("Wrong password. Please try to login again.");
         //return null;
     }
@@ -1797,7 +1811,7 @@ public class SystemController extends Observable {
             return false;
         }
         Subscriber newPlayer = new Player(userName, password, name, birthDate, FIELDJOB.valueOf(fieldJob), 0, team, this);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         addSubscriber(newPlayer);
         return true;
     }
@@ -1828,7 +1842,7 @@ public class SystemController extends Observable {
             return false;
         Subscriber newCoach = new Coach(userName, password, name, RoleInTeam.valueOf(roleInTeam), TRAINING.valueOf(training), teamJob, 0, this);
         addSubscriber(newCoach);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1856,7 +1870,7 @@ public class SystemController extends Observable {
             return false;
         Subscriber newTeamOwner = new TeamOwner(userName, password, name, this);
         addSubscriber(newTeamOwner);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1889,7 +1903,7 @@ public class SystemController extends Observable {
         }
         Subscriber newTeamManager = new TeamManager(userName, password, name, team, 0, this);
         addSubscriber(newTeamManager);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1918,7 +1932,7 @@ public class SystemController extends Observable {
         Subscriber newAdmin = new Admin(userName, password, name, this);
         addSubscriber(newAdmin);
         addAdminApprovalRequest(userName, newAdmin);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
         return true;
     }
 
@@ -1948,7 +1962,7 @@ public class SystemController extends Observable {
         Subscriber newAssociationRepresentative = new AssociationRepresentative(userName, password, name, this, leagueController);
         addSubscriber(newAssociationRepresentative);
         addAdminApprovalRequest(userName, newAssociationRepresentative);
-        errors.info("The user "+userName+" tried to log in");
+        errors.error("The user "+userName+" tried to log in");
 
         return true;
     }
@@ -2094,6 +2108,7 @@ public class SystemController extends Observable {
         details.put("seasonID", String.valueOf(seasonID));
         details.put("refID", refereeID);
         events.info("The referee "+refereeID+" was added to a season");
+        connectToSeasonDB();
         return DB.update(SEASONENUM.REFEREE, details);
     }
 
@@ -3200,7 +3215,7 @@ public class SystemController extends Observable {
             refsOccupied.add(refID);
         }
         connectToSubscriberDB();
-        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(UserTypes.REFEREE,null);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(SUBSCRIBERSUPDATES.ALLREFS,null);
         for(Map <String,ArrayList<String>> map : details){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
                 ArrayList<String> temp = entry.getValue();
@@ -3228,7 +3243,7 @@ public class SystemController extends Observable {
         }
         */
         ArrayList<String> finalList = new ArrayList<>();
-        ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(UserTypes.REFEREE,null);
+        ArrayList<Map<String,ArrayList<String>>> allRefs = DB.selectAllRecords(SUBSCRIBERSUPDATES.ALLREFS,null);
         for(Map <String,ArrayList<String>> map : allRefs){
             for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
                 ArrayList<String> temp = entry.getValue();
@@ -3261,6 +3276,31 @@ public class SystemController extends Observable {
             }
         }
         return finalList;
+    }
+
+    public ArrayList <String> allEventFromMatch (int matchID){
+        connectToEventRecordDB();
+        HashMap<String,String> args = new HashMap<>();
+        args.put("matchID",String.valueOf(matchID));
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLEVENTSFROMMATCH,args);
+        ArrayList<String>allEvents = new ArrayList<>();
+        for(Map <String,ArrayList<String>> map : details) {
+            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+                ArrayList<String> temp = entry.getValue();
+                String eventID = entry.getValue().get(0);
+                String time = entry.getValue().get(1);
+                String type = entry.getValue().get(2);
+                String data = eventID+"-"+time+"-"+type;
+                allEvents.add(data);
+            }
+        }
+        return allEvents;
+    }
+
+    public boolean removeEventFromMatch(int matchID, String time, int eventID){
+        connectToEventDB();
+        HashMap<String,String> args = new HashMap<>();
+        return DB.removeFromDB(String.valueOf(matchID),time,String.valueOf(eventID));
     }
 
     //todo javafx function
@@ -3307,5 +3347,27 @@ public class SystemController extends Observable {
     //todo javafx function
     public void updateRefereeName(String name, String userName) {
         updateSubscriberName(name, userName);
+    }
+
+    //todo javafx function add to db ido added
+    public ArrayList<String> getAllRefereeNames() {
+        ArrayList<String> refNames = new ArrayList<>();
+        refNames.add("Love");
+        refNames.add("Mumba");
+        refNames.add("Nelson");
+        refNames.add("Robson");
+        return refNames;
+    }
+    //todo ido added
+    public ArrayList<String> getEventByMatch(String matchId) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("0");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        list.add("6");
+        return list;
     }
 }

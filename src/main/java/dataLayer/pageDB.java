@@ -198,7 +198,7 @@ public class pageDB implements DB_Inter{
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }

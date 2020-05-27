@@ -2,7 +2,6 @@ package businessLayer.Tournament;
 
 import businessLayer.Exceptions.MissingInputException;
 import businessLayer.Exceptions.NotApprovedException;
-import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;
@@ -223,11 +222,11 @@ public class LeagueController {
             return false;
         }
         if (systemController.containsLeague(leagueName) && systemController.containsReferee(refUserName)) {
-            League addingToLeague = systemController.getLeagueFromDB(leagueName);
-            Referee refToAssign = systemController.getRefereeFromDB(refUserName);
-            if(addingToLeague.addRefereeToSeason(refToAssign, seasonID)){
+            //League addingToLeague = systemController.getLeagueFromDB(leagueName);
+            //Referee refToAssign = systemController.getRefereeFromDB(refUserName);
+            //if(addingToLeague.addRefereeToSeason(refToAssign, seasonID)){
                 return systemController.addRefereeToSeason(leagueName,seasonID,refUserName);
-            }
+           // } todo check if it is ok with Tomer ido added this
         }
         return false;
     }

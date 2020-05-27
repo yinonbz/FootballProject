@@ -5,7 +5,6 @@ import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class Page {
 private ArrayList<String> owners;
@@ -55,7 +54,6 @@ static int pageCounter=0;
         this.pageOwner = pageOwner;
         //systemController.addPageToDB(ownerName, this);
     }
-
 
 
     /**

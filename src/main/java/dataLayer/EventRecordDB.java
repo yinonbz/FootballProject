@@ -14,8 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.jooq.Record;
 
-import static dataLayer.Tables.Tables.EVENTSRECORDER_EVENTS;
-import static dataLayer.Tables.Tables.SEASON_MATCHES;
+import static dataLayer.Tables.Tables.*;
 
 public class EventRecordDB implements DB_Inter {
     String username = "root";
@@ -85,6 +84,25 @@ public class EventRecordDB implements DB_Inter {
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
+        if(e == MATCHENUM.ALLEVENTSFROMMATCH){
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select().from(EVENTSRECORDER_EVENTS).
+                    where(EVENTSRECORDER_EVENTS.MATCHID.eq(Integer.parseInt(arguments.get("matchID")))).fetch();
+            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                int eventID = record.get(EVENTSRECORDER_EVENTS.EVENTID);
+                String time = record.get(EVENTSRECORDER_EVENTS.TIME);
+                String type = record.get(EVENTSRECORDER_EVENTS.TYPE);
+                temp.add(String.valueOf(eventID));
+                temp.add(time);
+                temp.add(type);
+                seasonDetails.put("matchData", temp);
+                details.add(seasonDetails);
+            }
+            return details;
+        }
         return null;
     }
 
@@ -95,6 +113,13 @@ public class EventRecordDB implements DB_Inter {
 
     @Override
     public boolean TerminateDB() {
-        return false;
+        try {
+            connection.close();
+        } catch (Exception e) {
+            System.out.println("error closing connection of DB");
+            return false;
+        }
+
+        return true;
     }
 }

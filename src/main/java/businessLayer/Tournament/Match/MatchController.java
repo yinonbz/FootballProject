@@ -9,7 +9,6 @@ import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 
 
 public class MatchController {
@@ -326,15 +325,16 @@ public class MatchController {
     public boolean removeEventByMainReferee(int matchID, String usernameRequested, String timeOfEvent, int eventId){
         Match match = systemController.findMatch(matchID);
         if(match!=null) {
-            if (match.getFinished()) {
+            //if (match.getFinished()) {//todo ido put this to next iteration
                 Subscriber subscriber = systemController.getSubscriberByUserName(usernameRequested);
                 if (subscriber instanceof Referee) {
                     if (match.isMainReferee((Referee) subscriber)) {
-                        return match.getEventRecord().removeEvent(timeOfEvent, eventId);
+                        //return match.getEventRecord().removeEvent(timeOfEvent, eventId);
+                        systemController.removeEventFromMatch(matchID,timeOfEvent,eventId);
                     }
                     throw new NotApprovedException("This Referee is not a Main Referee.");
                 }
-            }
+          //  }
         }
         return false;
     }

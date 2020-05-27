@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static dataLayer.Tables.Tables.LEAGUE;
 import static dataLayer.Tables.Tables.UNCONFIRMED_TEAMS;
-import static dataLayer.Tables.tables.Teams.TEAMS;
 
 public class DBUnconfirmedTeams implements DB_Inter {
 
@@ -153,7 +151,7 @@ public class DBUnconfirmedTeams implements DB_Inter {
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }

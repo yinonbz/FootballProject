@@ -12,11 +12,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import static dataLayer.Tables.Tables.LEAGUE;
-import static dataLayer.Tables.Tables.MATCH_REFEREE;
 
 public class DBLeagues implements DB_Inter{
 
@@ -143,7 +141,7 @@ public class DBLeagues implements DB_Inter{
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }
