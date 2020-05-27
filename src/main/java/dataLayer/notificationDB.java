@@ -120,7 +120,7 @@ public class notificationDB implements DB_Inter {
                 for(Record r: result){
                     allNotifications.get(0).get("notifications").add(r.get(NOTIFICATIONS.NOTIFICATION));
                 }
-                create.delete(NOTIFICATIONS).where(NOTIFICATIONS.SUBSCRIBERID.eq(arguments.get("SubscriberID")));
+                create.delete(NOTIFICATIONS).where(NOTIFICATIONS.SUBSCRIBERID.eq(arguments.get("SubscriberID"))).execute();
                 return allNotifications;
             }catch (Exception exception){
                 System.out.println("cannot get notifications of user from DB");
@@ -176,7 +176,7 @@ public class notificationDB implements DB_Inter {
                         MATCH_FOLLOWERS.MATCHID,
                         MATCH_FOLLOWERS.FOLLOWERID)
                         .values(Integer.parseInt(arguments.get("matchID")),
-                                arguments.get("followerID"));
+                                arguments.get("followerID")).execute();
             } catch (NumberFormatException e1) {
                 System.out.println("error adding match follower");
                 return false;
@@ -188,7 +188,7 @@ public class notificationDB implements DB_Inter {
                         PAGE_FOLLOWERS.PAGEID,
                         PAGE_FOLLOWERS.FOLLOWERID)
                         .values(Integer.parseInt(arguments.get("pageID")),
-                                arguments.get("followerID"));
+                                arguments.get("followerID")).execute();
             } catch (NumberFormatException e1) {
                 e1.printStackTrace();
             }

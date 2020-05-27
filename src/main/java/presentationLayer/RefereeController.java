@@ -128,11 +128,13 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         leagueService = new LeagueService();
         notificationPanesCollection = new ArrayList<>();
 
+        userName = usernameL;
+        notificationPanesCollection = new ArrayList<>();
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if (messages != null) {
             for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
+                String title = msg.substring(0,10) + "...";
+                String event = msg;
                 AnchorPane newPanelContent = new AnchorPane();
                 newPanelContent.getChildren().add(new Label(event));
                 TitledPane pane = new TitledPane(title, newPanelContent);
@@ -696,6 +698,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         timeRed.setValueFactory(valueFactory);
         timeYellow.setValueFactory(valueFactory);
         timeSubstitute.setValueFactory(valueFactory);
+        systemService.addObserverForService(this);
         //timeRemove.setValueFactory(valueFactory);
         //SpinnerValueFactory<Integer> valueFactoryEvent = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
        // eventRemove.setValueFactory(valueFactoryEvent);

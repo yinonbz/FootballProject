@@ -7,6 +7,7 @@ import businessLayer.userTypes.Administration.Referee;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Match {
     private League league;
@@ -50,11 +51,11 @@ public class Match {
         this.time = time;
         this.date = date;
         this.isFinished = isFinished;
-        this.matchId=index;
+        this.matchId = ThreadLocalRandom.current().nextInt(0, 49999 + 1);
         this.stadium=stadium;
         this.numberOfFans=numberOfFans;
         this.eventRecord=eventRecord;
-        index++;
+
 
     }
 
@@ -68,11 +69,11 @@ public class Match {
         this.homeTeam=home;
         this.awayTeam=away;
         this.stadium=stadium;
-        this.matchId=index;
+        this.matchId=ThreadLocalRandom.current().nextInt(0, 49999 + 1);
         eventRecord = new EventRecord(this);
         this.isFinished=false;
         score = new int [] {0,0};
-        index++;
+
     }
 
     public Match (League league, Season season, Team homeTeam, Team awayTeam, List<Referee> referees, int [] score,
@@ -103,6 +104,23 @@ public class Match {
         this.eventRecord=eventRecord;
         this.mainRefereeStr=mainReferee;
         this.refereesStr = referees;
+    }
+
+    public Match (League league, Season season, Team homeTeam, Team awayTeam, List<String> referees, int [] score,
+                  Date date, Boolean isFinished, Stadium stadium, int numberOfFans, EventRecord eventRecord, String mainReferee, int matchID){
+        this.league=league;
+        this.season=season;
+        this.homeTeam=homeTeam;
+        this.awayTeam=awayTeam;
+        this.score=score;
+        this.date=date;
+        this.isFinished=isFinished;
+        this.stadium=stadium;
+        this.numberOfFans=numberOfFans;
+        this.eventRecord=eventRecord;
+        this.mainRefereeStr=mainReferee;
+        this.refereesStr = referees;
+        this.matchId = matchID;
     }
     /**
      * function that let to choose a main referee to a game
