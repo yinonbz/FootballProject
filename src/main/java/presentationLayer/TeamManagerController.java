@@ -74,7 +74,8 @@ public class TeamManagerController implements Initializable,ControllerInterface,
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         systemService = new SystemService();
-        systemService.addObserverForService(this);
+        systemService.addObserverForService();
+        //systemService.addObserverForService(this);
     }
 
     public void logoutB(ActionEvent actionEvent) {

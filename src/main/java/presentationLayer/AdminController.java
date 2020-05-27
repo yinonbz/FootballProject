@@ -71,7 +71,8 @@ public class AdminController implements Initializable,ControllerInterface, Obser
         systemService = new SystemService();
         leagueService = new LeagueService();
         notificationPanesCollection= new ArrayList<>();
-        systemService.addObserverForService(this);
+        systemService.addObserverForService();
+        //systemService.addObserverForService(this);
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if(messages != null) {
             for (String msg : messages) {
