@@ -121,8 +121,8 @@ public class notificationDB implements DB_Inter {
                 allNotifications.get(0).put("notifications",new ArrayList<>());
                 for(Record r: result){
                     allNotifications.get(0).get("notifications").add(r.get(NOTIFICATIONS.NOTIFICATION));
-
                 }
+                create.delete(NOTIFICATIONS).where(NOTIFICATIONS.SUBSCRIBERID.eq(arguments.get("SubscriberID")));
                 return allNotifications;
             }catch (Exception exception){
                 System.out.println("cannot get notifications of user from DB");
