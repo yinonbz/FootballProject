@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ResourceBundle;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
@@ -340,7 +343,6 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
             listTeams.setAll(teamService.getActiveTeamOfTeamOwner(userName)); //get only the team owner's teams
             teamsViewL2.setItems(listTeams);
         } catch (RuntimeException e) {
-            e.printStackTrace();
             showAlert("Warning", e.getMessage(), Alert.AlertType.WARNING);
         }
 
@@ -356,7 +358,6 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
             listTeams.setAll(teamService.getInactiveTeamOfTeamOwner(userName)); //get only the team owner's teams
             closedTeamsViewL.setItems(listTeams);
         } catch (RuntimeException e) {
-            e.printStackTrace();
             showAlert("Warning", e.getMessage(), Alert.AlertType.WARNING);
         }
     }

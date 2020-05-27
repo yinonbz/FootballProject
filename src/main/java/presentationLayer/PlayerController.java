@@ -1,6 +1,5 @@
 package presentationLayer;
 
-import businessLayer.userTypes.Administration.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

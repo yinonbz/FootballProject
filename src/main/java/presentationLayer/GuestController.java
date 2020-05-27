@@ -1,8 +1,6 @@
 package presentationLayer;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import java.awt.*;
@@ -28,5 +26,8 @@ public class GuestController{
         removeTeamP.setVisible(true);
     }
 
+    @Override
+    public void setUser(String usernameL) {
 
+    }
 }

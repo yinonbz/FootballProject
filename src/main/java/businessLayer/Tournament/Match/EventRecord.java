@@ -1,8 +1,5 @@
 package businessLayer.Tournament.Match;
 
-import businessLayer.Team.Team;
-import businessLayer.userTypes.SystemController;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 

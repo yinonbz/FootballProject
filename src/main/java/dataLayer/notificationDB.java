@@ -1,13 +1,12 @@
 package dataLayer;
 
-import dataLayer.Tables.tables.Notifications;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
-import javax.swing.text.StyledEditorKit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -54,13 +53,18 @@ public class notificationDB implements DB_Inter {
     @Override
     public boolean containInDB(String objectName, String arg2, String arg3) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select().
-                from(NOTIFICATIONS)
-                .where(NOTIFICATIONS.SUBSCRIBERID.eq(objectName)).fetch();
-        if (result.isEmpty()) {
+        try {
+            Result<?> result = create.select().
+                    from(NOTIFICATIONS)
+                    .where(NOTIFICATIONS.SUBSCRIBERID.eq(objectName)).fetch();
+            if (result.isEmpty()) {
+                return false;
+            }
+            return true;
+        } catch (DataAccessException e) {
+            System.out.println("error searching users' notifications");
             return false;
         }
-        return true;
     }
 
     @Override
@@ -115,8 +119,8 @@ public class notificationDB implements DB_Inter {
                 allNotifications.get(0).put("notifications",new ArrayList<>());
                 for(Record r: result){
                     allNotifications.get(0).get("notifications").add(r.get(NOTIFICATIONS.NOTIFICATION));
-
                 }
+                create.delete(NOTIFICATIONS).where(NOTIFICATIONS.SUBSCRIBERID.eq(arguments.get("SubscriberID")));
                 return allNotifications;
             }catch (Exception exception){
                 System.out.println("cannot get notifications of user from DB");
@@ -167,18 +171,27 @@ public class notificationDB implements DB_Inter {
     public boolean update(Enum<?> e, Map<String, String> arguments) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         if(e==NOTIFICATIONUPDATES.ADDMATCHFOLLOWER){
-            create.insertInto(MATCH_FOLLOWERS,
-                    MATCH_FOLLOWERS.MATCHID,
-                    MATCH_FOLLOWERS.FOLLOWERID)
-                    .values(Integer.parseInt(arguments.get("matchID")),
-                            arguments.get("followerID")).execute();
+            try {
+                create.insertInto(MATCH_FOLLOWERS,
+                        MATCH_FOLLOWERS.MATCHID,
+                        MATCH_FOLLOWERS.FOLLOWERID)
+                        .values(Integer.parseInt(arguments.get("matchID")),
+                                arguments.get("followerID")).execute();
+            } catch (NumberFormatException e1) {
+                System.out.println("error adding match follower");
+                return false;
+            }
         }
         if(e==NOTIFICATIONUPDATES.ADDPAGEFOLLOWER){
-            create.insertInto(PAGE_FOLLOWERS,
-                    PAGE_FOLLOWERS.PAGEID,
-                    PAGE_FOLLOWERS.FOLLOWERID)
-                    .values(Integer.parseInt(arguments.get("pageID")),
-                            arguments.get("followerID")).execute();
+            try {
+                create.insertInto(PAGE_FOLLOWERS,
+                        PAGE_FOLLOWERS.PAGEID,
+                        PAGE_FOLLOWERS.FOLLOWERID)
+                        .values(Integer.parseInt(arguments.get("pageID")),
+                                arguments.get("followerID")).execute();
+            } catch (NumberFormatException e1) {
+                e1.printStackTrace();
+            }
         }
         return false;
     }
@@ -187,7 +200,7 @@ public class notificationDB implements DB_Inter {
     public boolean TerminateDB() {
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("error closing connection of DB");
             return false;
         }

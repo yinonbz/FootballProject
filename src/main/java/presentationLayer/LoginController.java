@@ -3,7 +3,6 @@ package presentationLayer;
 import businessLayer.Exceptions.MissingInputException;
 import businessLayer.Exceptions.NotApprovedException;
 import businessLayer.Exceptions.NotFoundInDbException;
-import businessLayer.userTypes.SystemController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,18 +1,13 @@
 package presentationLayer;
 
-import businessLayer.userTypes.SystemController;
-import dataLayer.DataBaseValues2;
-import dataLayer.DemoDB;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import serviceLayer.LeagueService;
 import serviceLayer.SystemService;
 
 import java.net.URL;
-import java.util.LinkedList;
 
 public class Main extends Application {
 
