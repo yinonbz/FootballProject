@@ -160,7 +160,7 @@
                          <Label layoutX="286.0" layoutY="78.0" text="Player On:" />
                          <Label layoutX="481.0" layoutY="68.0" text="Player Off" />
                      </children></Pane>
-                  <Pane id="menuPane" fx:id="removeEventPane" layoutX="-2.0" layoutY="-2.0" prefHeight="550.0" prefWidth="650.0">
+                  <Pane id="menuPane" fx:id="removeEventPane" layoutX="-2.0" layoutY="-2.0" prefHeight="550.0" prefWidth="650.0" visible="false">
                      <children>
                         <Button layoutX="76.0" layoutY="141.0" mnemonicParsing="false" onAction="#removeCurrEvent" text="Submit" />
                         <ComboBox fx:id="matchRemoveId" layoutX="50.0" layoutY="90.0" onAction="#fillRemove" prefHeight="25.0" prefWidth="100.0" promptText="Match ID:" />

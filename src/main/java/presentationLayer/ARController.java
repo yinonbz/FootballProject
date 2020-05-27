@@ -252,16 +252,15 @@ public class ARController implements ControllerInterface, Initializable, Observe
 
     @Override
     public void setUser(String usernameL) {
-        userLable.setText(usernameL);
-        userName = usernameL;
         leagueService = new LeagueService();
-        notificationPanesCollection= new ArrayList<>();
-
+        userName = usernameL;
+        userLable.setText(usernameL);
+        notificationPanesCollection = new ArrayList<>();
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
-        if(messages != null) {
+        if (messages != null) {
             for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
+                String title = msg.substring(0,10) + "...";
+                String event = msg;
                 AnchorPane newPanelContent = new AnchorPane();
                 newPanelContent.getChildren().add(new Label(event));
                 TitledPane pane = new TitledPane(title, newPanelContent);

@@ -420,7 +420,6 @@ public class SystemService extends Observable implements Observer {
                     systemController.saveUserMessage(user, event, title);
                 }
             }
-            throw new NotFoundInDbException("");
         }
     }
 

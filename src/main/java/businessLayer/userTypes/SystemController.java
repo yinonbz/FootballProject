@@ -2988,7 +2988,6 @@ public class SystemController extends Observable {
             arguments.put("SubscriberID",username);
             LinkedList<String> notification = new LinkedList<>(DB.selectAllRecords(NOTIFICATIONENUMS.GETUSERNOTIFICATIONS,arguments)
                     .get(0).get("notifications"));
-            notification.add("title");
             return notification;
         }
         return null; //todo: might need an exception here
