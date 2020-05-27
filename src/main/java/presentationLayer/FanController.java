@@ -1,5 +1,7 @@
 package presentationLayer;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,7 +17,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import serviceLayer.LeagueService;
 import serviceLayer.SystemService;
-import serviceLayer.TeamService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,6 +64,15 @@ public class FanController implements Initializable,ControllerInterface, Observe
 
     @FXML
     private Label titleL;
+
+    @FXML
+    private TextField searchPlayers;
+
+    @FXML
+    private TextField seachCoaches;
+
+    @FXML
+    private TextField seachMatches;
 
     @Override
     public void setUser(String usernameL) {
@@ -124,6 +134,14 @@ public class FanController implements Initializable,ControllerInterface, Observe
         listPlayers = FXCollections.observableArrayList();
         listPlayers.setAll(systemService.getAllPlayers());
         playersToSubscribe.setItems(listPlayers);
+        searchPlayers.setPromptText("Search");
+
+        searchPlayers.textProperty().addListener(new ChangeListener() {
+            public void changed(ObservableValue observable, Object oldVal,
+                                Object newVal) {
+                search((String) oldVal, (String) newVal, playersToSubscribe,listPlayers);
+            }
+        });
 
         titleL.setText("Subscribe to Players");
         subscribePlayerPane.setVisible(true);
@@ -135,6 +153,14 @@ public class FanController implements Initializable,ControllerInterface, Observe
         listCoaches = FXCollections.observableArrayList();
         listCoaches.setAll(systemService.getAllCoachesNames());
         coachesToSubscribe.setItems(listCoaches);
+        seachCoaches.setPromptText("Search");
+
+        seachCoaches.textProperty().addListener(new ChangeListener() {
+            public void changed(ObservableValue observable, Object oldVal,
+                                Object newVal) {
+                search((String) oldVal, (String) newVal, coachesToSubscribe,listCoaches);
+            }
+        });
 
         titleL.setText("Subscribe to Coaches");
         subscribePlayerPane.setVisible(false);
@@ -181,10 +207,38 @@ public class FanController implements Initializable,ControllerInterface, Observe
         listMatches = FXCollections.observableArrayList();
         listMatches.setAll(systemService.getAllMatchesInDB());
         matchesToSubscribe.setItems(listMatches);
+        seachMatches.setPromptText("Search");
+
+        seachMatches.textProperty().addListener(new ChangeListener() {
+            public void changed(ObservableValue observable, Object oldVal,
+                                Object newVal) {
+                search((String) oldVal, (String) newVal, matchesToSubscribe,listMatches);
+            }
+        });
 
         titleL.setText("Subscribe to Matches");
         subscribePlayerPane.setVisible(false);
         subscribeCoachPane.setVisible(false);
         subscribeMatchhPane.setVisible(true);
+    }
+
+    public void search(String oldVal, String newVal, ListView<String> listView, ObservableList<String> list) {
+
+        if (oldVal != null && (newVal.length() < oldVal.length())) {
+            listView.setItems(list);
+        }
+        String value = newVal.toUpperCase();
+        ObservableList<String> subentries = FXCollections.observableArrayList();
+        for (String entry : listView.getItems()) {
+            boolean match = true;
+            String entryText = (String) entry;
+            if (!entryText.toUpperCase().contains(value)) {
+                match = false;
+            }
+            if (match) {
+                subentries.add(entryText);
+            }
+        }
+        listView.setItems(subentries);
     }
 }

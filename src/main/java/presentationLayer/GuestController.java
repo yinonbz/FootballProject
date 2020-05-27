@@ -26,8 +26,4 @@ public class GuestController{
         removeTeamP.setVisible(true);
     }
 
-    @Override
-    public void setUser(String usernameL) {
-
-    }
 }

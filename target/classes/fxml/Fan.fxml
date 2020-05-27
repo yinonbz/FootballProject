@@ -76,7 +76,7 @@
                                    <Font size="13.0" />
                                </font>
                            </Label>
-                           <TextField fx:id="coachPlayers" layoutX="16.0" layoutY="45.0" prefHeight="25.0" prefWidth="359.0" />
+                           <TextField fx:id="seachCoaches" layoutX="16.0" layoutY="45.0" prefHeight="25.0" prefWidth="359.0" />
                            <Button layoutX="17.0" layoutY="200.0" minWidth="132.0" mnemonicParsing="false" onAction="#subscribeCoachesB" prefHeight="29.0" prefWidth="132.0" text="Subscribe" />
                        </children>
                    </Pane>
@@ -88,7 +88,7 @@
                                    <Font size="13.0" />
                                </font>
                            </Label>
-                           <TextField fx:id="matchPlayers" layoutX="16.0" layoutY="45.0" prefHeight="25.0" prefWidth="359.0" />
+                           <TextField fx:id="seachMatches" layoutX="16.0" layoutY="45.0" prefHeight="25.0" prefWidth="359.0" />
                            <Button layoutX="17.0" layoutY="200.0" minWidth="132.0" mnemonicParsing="false" onAction="#subscribeMatchB" prefHeight="29.0" prefWidth="132.0" text="Subscribe" />
                        </children>
                    </Pane>

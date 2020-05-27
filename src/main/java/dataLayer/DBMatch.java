@@ -259,18 +259,26 @@ public class DBMatch implements DB_Inter {
             }
         }
         else if(e==MATCHENUM.ALLMATCHES) {
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(MATCH.MATCHID).from(MATCH).fetch();
-            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
-            for (Record record : result) {
-                HashMap<String, ArrayList<String>> hashMap = new HashMap<>();
-                ArrayList<String> temp = new ArrayList<>();
-                String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
-                temp.add(matchID);
-                hashMap.put(matchID, temp);
-                details.add(hashMap);
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(MATCH.MATCHID).from(MATCH).fetch();
+                ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+                for (Record record : result) {
+                    HashMap<String, ArrayList<String>> hashMap = new HashMap<>();
+                    ArrayList<String> temp = new ArrayList<>();
+                    String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
+                    temp.add(matchID);
+                    hashMap.put(matchID, temp);
+                    details.add(hashMap);
+                }
+                return details;
+            } catch (DataAccessException ex) {
+                System.out.println("error getting all matches");
+                return new ArrayList<>();
+            } catch (IllegalArgumentException ex) {
+                System.out.println("error getting all matches");
+                return new ArrayList<>();
             }
-            return details;
         }
         return null;
     }
