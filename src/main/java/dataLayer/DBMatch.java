@@ -86,7 +86,7 @@ public class DBMatch implements DB_Inter {
             try {
                 DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
                 Result<?> result = create.select().from(MATCH).where(MATCH.MATCHID.eq(matchID)).fetch();
-                String id = result.get(0).get(MATCH.MATCHID).toString();
+                String id = String.valueOf(result.get(0).get(MATCH.MATCHID));
                 String home = result.get(0).get(MATCH.TEAMHOMEID);
                 String away = result.get(0).get(MATCH.TEAMAWAYID);
                 String leagueID = result.get(0).get(MATCH.LEAGUEID);
@@ -244,7 +244,7 @@ public class DBMatch implements DB_Inter {
                 for (Record record : result) {
                     HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
                     ArrayList<String> temp = new ArrayList<>();
-                    String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
+                    String matchID = String.valueOf(record.get(MATCH.MATCHID));
                     temp.add(matchID);
                     seasonDetails.put(matchID, temp);
                     details.add(seasonDetails);
@@ -255,6 +255,28 @@ public class DBMatch implements DB_Inter {
                 return new ArrayList<>();
             } catch (IllegalArgumentException e1) {
                 System.out.println("error getting all games of referee");
+                return new ArrayList<>();
+            }
+        }
+        else if(e==MATCHENUM.ALLMATCHES) {
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(MATCH.MATCHID).from(MATCH).fetch();
+                ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+                for (Record record : result) {
+                    HashMap<String, ArrayList<String>> hashMap = new HashMap<>();
+                    ArrayList<String> temp = new ArrayList<>();
+                    String matchID = String.valueOf(record.get(MATCH_REFEREE.MATCHID));
+                    temp.add(matchID);
+                    hashMap.put(matchID, temp);
+                    details.add(hashMap);
+                }
+                return details;
+            } catch (DataAccessException ex) {
+                System.out.println("error getting all matches");
+                return new ArrayList<>();
+            } catch (IllegalArgumentException ex) {
+                System.out.println("error getting all matches");
                 return new ArrayList<>();
             }
         }

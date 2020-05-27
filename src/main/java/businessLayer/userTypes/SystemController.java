@@ -79,7 +79,6 @@ public class SystemController extends Observable {
         */
     }
 
-
     /**
      * The function receives a service and adds it as an observer of the system-controller
      *
@@ -1463,18 +1462,14 @@ public class SystemController extends Observable {
         Subscriber possibleTeamOwner = getSubscriberByUserName(userName);
         if (possibleTeamOwner instanceof TeamOwner) { //check if the user is a team owner
             TeamOwner teamOwner = ((TeamOwner) possibleTeamOwner);
-            if (teamOwner.getTeam(teamName) != null) { //check if the team owner owns the team
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.enableStatus(teamOwner.getTeam(teamName));
-            } else {
-                return false; //the team owner doesn't own the team
-            }
+                return teamOwner.enableStatus(getTeamByName(teamName));
         } else if (possibleTeamOwner instanceof OwnerEligible) {
             OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
             if (ownerEligible.isOwner()) {
                 TeamOwner teamOwner = ownerEligible.getTeamOwner();
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.enableStatus(teamOwner.getTeam(teamName));
+                return teamOwner.enableStatus(getTeamByName(teamName));
             } else
                 return false;
         } else {
@@ -1506,19 +1501,14 @@ public class SystemController extends Observable {
         Subscriber possibleTeamOwner = getSubscriberByUserName(userName);
         if (possibleTeamOwner instanceof TeamOwner) { //check if the user is a team owner
             TeamOwner teamOwner = ((TeamOwner) possibleTeamOwner);
-            if (teamOwner.getTeam(teamName) != null) { //check if the team owner owns the team
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.disableStatus(teamOwner.getTeam(teamName));
-            } else {
-                errors.error("The user "+userName+"could not change the status of the team "+teamName);
-                return false; //the team owner doesn't own the team
-            }
+                return teamOwner.disableStatus(getTeamByName(teamName));
         } else if (possibleTeamOwner instanceof OwnerEligible) {
             OwnerEligible ownerEligible = (OwnerEligible) possibleTeamOwner;
             if (ownerEligible.isOwner()) {
                 TeamOwner teamOwner = ownerEligible.getTeamOwner();
                 events.info("The user "+userName+"changed the status of the team "+teamName);
-                return teamOwner.disableStatus(teamOwner.getTeam(teamName));
+                return teamOwner.disableStatus(getTeamByName(teamName));
             } else
                 errors.error("The user "+userName+"could not change the status of the team "+teamName);
             return false;
@@ -1527,6 +1517,14 @@ public class SystemController extends Observable {
             errors.error("The user "+userName+"could not change the status of the team "+teamName);
             return false; //the user isn't a team owner
         }
+    }
+
+    public boolean changeTeamStatus(String teamID, boolean isActive){
+        HashMap <String, String> args = new HashMap<>();
+        args.put("teamID",teamID);
+        args.put("isActive",String.valueOf(isActive));
+        connectToTeamDB();
+        return DB.update(TEAMUPDATES.SETACTIVE,args);
     }
 
     /**
@@ -1643,7 +1641,7 @@ public class SystemController extends Observable {
             connectToEventRecordDB();
             EventRecord eventRecord = selectEventRecord(matchID);
             boolean isFinished = Boolean.valueOf(details.get("isFinished").get(0));
-            Match match = new Match(league, null, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee);
+            Match match = new Match(league, null, home, away, refs, score, null, isFinished, stadium, numOfFans, eventRecord, mainReferee, matchID);
             return match;
         }
         return null;
@@ -2596,7 +2594,7 @@ public class SystemController extends Observable {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
             arguments.put("followerID",username);
-            arguments.put("matchID",String.valueOf(match.getMatchId()));
+            arguments.put("matchID",matchID);
            return DB.update(NOTIFICATIONUPDATES.ADDMATCHFOLLOWER, arguments);
         }
         return false;
@@ -2634,7 +2632,8 @@ public class SystemController extends Observable {
         connectToPageDB();
         Map<String, ArrayList<String>> objDetails = DB.selectFromDB(subName, null, null);
 
-        Page page = new Page(objDetails.get("ownerID").get(0),
+        Page page = new Page(Integer.parseInt(objDetails.get("pageID").get(0))
+                ,objDetails.get("ownerID").get(0),
                 objDetails.get("name").get(0),
                 objDetails.get("birthDay").get(0),
                 (HasPage) selectUserFromDB(objDetails.get("ownerID").get(0)));
@@ -2666,7 +2665,7 @@ public class SystemController extends Observable {
             arguments.put("pageID",String.valueOf(page.getPageID()));
             ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETPAGEFOLLOWES,arguments);
             LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
-            if (followers != null) {
+            if (!followers.isEmpty()) {
                 followers.add(event);
                 followers.add("Page update");
                 setChanged();
@@ -2712,7 +2711,7 @@ public class SystemController extends Observable {
             arguments.put("matchID",String.valueOf(match.getMatchId()));
             ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETMATCHFOLLOWERS,arguments);
             LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
-            if (followers != null) {
+            if (!followers.isEmpty()) {
                 followers.add(event);
                 followers.add("Match update");
                 setChanged();
@@ -2854,9 +2853,10 @@ public class SystemController extends Observable {
             ArrayList<String> teamManagers;
             ArrayList<String> teamOwners;
 
-            connectToSubscriberDB();
+            //connectToSubscriberDB();
             Map<String, String> arguments = new HashMap<>();
             arguments.put("teamID", team.getTeamName());
+            connectToTeamDB();
             teamManagers = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_MANAGERS, arguments).get(0).get("teamManagers");
             teamOwners = DB.selectAllRecords(TEAMOBJECTS.TEAM_TEAM_OWNERES, arguments).get(0).get("teamOwners");
 
@@ -2974,9 +2974,9 @@ public class SystemController extends Observable {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
             arguments.put("SubscriberID",username);
-            return new LinkedList<>(
-                    DB.selectAllRecords(NOTIFICATIONENUMS.GETUSERNOTIFICATIONS,arguments)
+            LinkedList<String> notification = new LinkedList<>(DB.selectAllRecords(NOTIFICATIONENUMS.GETUSERNOTIFICATIONS,arguments)
                     .get(0).get("notifications"));
+            return notification;
         }
         return null; //todo: might need an exception here
     }
@@ -3278,11 +3278,25 @@ public class SystemController extends Observable {
         return finalList;
     }
 
+    public ArrayList<String> getAllMatchesInDB(){
+        connectToMatchDB();
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLMATCHES,null);
+        ArrayList<String> allMatches = new ArrayList<>();
+        //HashSet<String> unvalidTeams = new HashSet<>();
+        for(Map <String,ArrayList<String>> map : details){
+            for(Map.Entry <String,ArrayList<String>> entry : map.entrySet()){
+                ArrayList<String> temp = entry.getValue();
+                allMatches.add(temp.get(0));
+            }
+        }
+        return allMatches;
+    }
+
     public ArrayList <String> allEventFromMatch (int matchID){
         connectToEventRecordDB();
         HashMap<String,String> args = new HashMap<>();
         args.put("matchID",String.valueOf(matchID));
-        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLEVENTSFROMMATCH,args);
+        ArrayList<Map<String,ArrayList<String>>> details = DB.selectAllRecords(MATCHENUM.ALLMATCHES,args);
         ArrayList<String>allEvents = new ArrayList<>();
         for(Map <String,ArrayList<String>> map : details) {
             for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {

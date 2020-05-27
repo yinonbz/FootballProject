@@ -1,5 +1,9 @@
 package presentationLayer;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import serviceLayer.LeagueService;
 import serviceLayer.SystemService;
@@ -25,6 +28,12 @@ public class FanController implements Initializable,ControllerInterface, Observe
 
     private SystemService systemService;
 
+    private ObservableList<String> listCoaches;
+
+    private ObservableList<String> listPlayers;
+
+    private ObservableList<String> listMatches;
+
     private String userName;
 
     private ArrayList<TitledPane> notificationPanesCollection;
@@ -35,18 +44,47 @@ public class FanController implements Initializable,ControllerInterface, Observe
     @FXML
     private Label userLable;
 
+    @FXML
+    private Pane subscribePlayerPane;
+
+    @FXML
+    private Pane subscribeCoachPane;
+
+    @FXML
+    private Parent subscribeMatchhPane;
+
+    @FXML
+    private ListView playersToSubscribe;
+
+    @FXML
+    private ListView coachesToSubscribe;
+
+    @FXML
+    private ListView matchesToSubscribe;
+
+    @FXML
+    private Label titleL;
+
+    @FXML
+    private TextField searchPlayers;
+
+    @FXML
+    private TextField seachCoaches;
+
+    @FXML
+    private TextField seachMatches;
+
     @Override
     public void setUser(String usernameL) {
-        userLable.setText(usernameL);
-        userName = usernameL;
         leagueService = new LeagueService();
-        notificationPanesCollection= new ArrayList<>();
-
+        userName = usernameL;
+        userLable.setText(usernameL);
+        notificationPanesCollection = new ArrayList<>();
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
-        if(messages != null) {
+        if (messages != null) {
             for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
+                String title = msg.substring(0,10) + "...";
+                String event = msg;
                 AnchorPane newPanelContent = new AnchorPane();
                 newPanelContent.getChildren().add(new Label(event));
                 TitledPane pane = new TitledPane(title, newPanelContent);
@@ -69,6 +107,7 @@ public class FanController implements Initializable,ControllerInterface, Observe
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         systemService = new SystemService();
+        systemService.addObserverForService(this);
     }
 
     public void logoutB(ActionEvent actionEvent) {
@@ -86,5 +125,120 @@ public class FanController implements Initializable,ControllerInterface, Observe
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public void selectPlayer(ActionEvent actionEvent) {
+
+        listPlayers = FXCollections.observableArrayList();
+        listPlayers.setAll(systemService.getAllPlayers());
+        playersToSubscribe.setItems(listPlayers);
+        searchPlayers.setPromptText("Search");
+
+        searchPlayers.textProperty().addListener(new ChangeListener() {
+            public void changed(ObservableValue observable, Object oldVal,
+                                Object newVal) {
+                search((String) oldVal, (String) newVal, playersToSubscribe,listPlayers);
+            }
+        });
+
+        titleL.setText("Subscribe to Players");
+        subscribePlayerPane.setVisible(true);
+        subscribeCoachPane.setVisible(false);
+        subscribeMatchhPane.setVisible(false);
+    }
+
+    public void selectCoach(ActionEvent actionEvent) {
+        listCoaches = FXCollections.observableArrayList();
+        listCoaches.setAll(systemService.getAllCoachesNames());
+        coachesToSubscribe.setItems(listCoaches);
+        seachCoaches.setPromptText("Search");
+
+        seachCoaches.textProperty().addListener(new ChangeListener() {
+            public void changed(ObservableValue observable, Object oldVal,
+                                Object newVal) {
+                search((String) oldVal, (String) newVal, coachesToSubscribe,listCoaches);
+            }
+        });
+
+        titleL.setText("Subscribe to Coaches");
+        subscribePlayerPane.setVisible(false);
+        subscribeCoachPane.setVisible(true);
+        subscribeMatchhPane.setVisible(false);
+    }
+
+    public void subscribePlayersB(ActionEvent actionEvent) {
+        try {
+            systemService.userRequestToFollowPlayer(userName, playersToSubscribe.getSelectionModel().getSelectedItem().toString());
+            showAlert("Success","You have subscribed for the selected Player.", Alert.AlertType.INFORMATION);
+        } catch (NullPointerException e){
+            showAlert("Warning","Please select a Player to subscribe.", Alert.AlertType.WARNING);
+        }
+    }
+
+    private void showAlert(String title, String text, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    public void subscribeCoachesB(ActionEvent actionEvent) {
+        try {
+            systemService.userRequestToFollowCoach(userName, coachesToSubscribe.getSelectionModel().getSelectedItem().toString());
+            showAlert("Success","You have subscribed for the selected Coach.", Alert.AlertType.INFORMATION);
+        } catch (NullPointerException e){
+            showAlert("Warning","Please select a Coach to subscribe.", Alert.AlertType.WARNING);
+        }
+    }
+
+    public void subscribeMatchB(ActionEvent actionEvent) {
+        try {
+            systemService.userRequestToFollowMatch(userName, matchesToSubscribe.getSelectionModel().getSelectedItem().toString());
+            showAlert("Success","You have subscribed for the selected Match.", Alert.AlertType.INFORMATION);
+        } catch (NullPointerException e){
+            showAlert("Warning","Please select a Match to subscribe.", Alert.AlertType.WARNING);
+        }
+    }
+
+    public void selectMatch(ActionEvent actionEvent) {
+        listMatches = FXCollections.observableArrayList();
+        listMatches.setAll(systemService.getAllMatchesInDB());
+        matchesToSubscribe.setItems(listMatches);
+        seachMatches.setPromptText("Search");
+
+        seachMatches.textProperty().addListener(new ChangeListener() {
+            public void changed(ObservableValue observable, Object oldVal,
+                                Object newVal) {
+                search((String) oldVal, (String) newVal, matchesToSubscribe,listMatches);
+            }
+        });
+
+        titleL.setText("Subscribe to Matches");
+        subscribePlayerPane.setVisible(false);
+        subscribeCoachPane.setVisible(false);
+        subscribeMatchhPane.setVisible(true);
+    }
+
+    public void search(String oldVal, String newVal, ListView<String> listView, ObservableList<String> list) {
+
+        if (oldVal != null && (newVal.length() < oldVal.length())) {
+            listView.setItems(list);
+        }
+        String value = newVal.toUpperCase();
+        ObservableList<String> subentries = FXCollections.observableArrayList();
+        for (String entry : listView.getItems()) {
+            boolean match = true;
+            String entryText = (String) entry;
+            if (!entryText.toUpperCase().contains(value)) {
+                match = false;
+            }
+            if (match) {
+                subentries.add(entryText);
+            }
+        }
+        listView.setItems(subentries);
     }
 }

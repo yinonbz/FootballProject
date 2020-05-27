@@ -7,6 +7,7 @@ import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
+import presentationLayer.ControllerInterface;
 
 import java.util.*;
 
@@ -24,6 +25,10 @@ public class SystemService extends Observable implements Observer {
         onlineUsers = new ArrayList<>();
         this.systemController = SystemController.SystemController();
         systemController.addServiceObservers(this);
+    }
+
+    public void addObserverForService(ControllerInterface controller){
+        addObserver(controller);
     }
 
     /**
@@ -330,6 +335,9 @@ public class SystemService extends Observable implements Observer {
         return false;
     }
 
+    public ArrayList<String> getAllMatchesInDB(){
+        return systemController.getAllMatchesInDB();
+    }
 
     /**
      * The function receives a user's username and a match's identifier and passes them to the
@@ -342,7 +350,7 @@ public class SystemService extends Observable implements Observer {
     public boolean userRequestToFollowMatch(String username, String matchID) {
 
         if (username != null && matchID != null) {
-        //    systemController.allowUserToFollowMatch(username, matchID); todo need to check why we have compliation
+            systemController.allowUserToFollowMatch(username, matchID);
         }
         return false;
     }
@@ -410,8 +418,11 @@ public class SystemService extends Observable implements Observer {
                     systemController.saveUserMessage(user, event, title);
                 }
             }
-            throw new NotFoundInDbException("");
         }
+    }
+
+    public ArrayList<String> getAllCoachesNames(){
+        return systemController.getAllCoachesNames();
     }
 
     /**
@@ -430,6 +441,10 @@ public class SystemService extends Observable implements Observer {
     public void removeFromUsersOnline(String userName) {
         if (onlineUsers.contains(userName))
             onlineUsers.remove(userName);
+    }
+
+    public ArrayList<String> getAllPlayers(){
+        return systemController.getAllPlayers();
     }
 
     /**
@@ -465,7 +480,6 @@ public class SystemService extends Observable implements Observer {
     //todo ido add this function
     public void updateRefereeName(String name, String userName) {
         systemController.updateRefereeName(name,userName);
-
     }
     //todo ido add this function
     public ArrayList<String> getEventByMatch(String matchId) {
