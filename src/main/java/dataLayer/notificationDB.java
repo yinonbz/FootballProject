@@ -5,6 +5,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import javax.swing.text.StyledEditorKit;
@@ -54,13 +55,18 @@ public class notificationDB implements DB_Inter {
     @Override
     public boolean containInDB(String objectName, String arg2, String arg3) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select().
-                from(NOTIFICATIONS)
-                .where(NOTIFICATIONS.SUBSCRIBERID.eq(objectName)).fetch();
-        if (result.isEmpty()) {
+        try {
+            Result<?> result = create.select().
+                    from(NOTIFICATIONS)
+                    .where(NOTIFICATIONS.SUBSCRIBERID.eq(objectName)).fetch();
+            if (result.isEmpty()) {
+                return false;
+            }
+            return true;
+        } catch (DataAccessException e) {
+            System.out.println("error searching users' notifications");
             return false;
         }
-        return true;
     }
 
     @Override
@@ -167,18 +173,27 @@ public class notificationDB implements DB_Inter {
     public boolean update(Enum<?> e, Map<String, String> arguments) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         if(e==NOTIFICATIONUPDATES.ADDMATCHFOLLOWER){
-            create.insertInto(MATCH_FOLLOWERS,
-                    MATCH_FOLLOWERS.MATCHID,
-                    MATCH_FOLLOWERS.FOLLOWERID)
-                    .values(Integer.parseInt(arguments.get("matchID")),
-                            arguments.get("followerID"));
+            try {
+                create.insertInto(MATCH_FOLLOWERS,
+                        MATCH_FOLLOWERS.MATCHID,
+                        MATCH_FOLLOWERS.FOLLOWERID)
+                        .values(Integer.parseInt(arguments.get("matchID")),
+                                arguments.get("followerID"));
+            } catch (NumberFormatException e1) {
+                System.out.println("error adding match follower");
+                return false;
+            }
         }
         if(e==NOTIFICATIONUPDATES.ADDPAGEFOLLOWER){
-            create.insertInto(PAGE_FOLLOWERS,
-                    PAGE_FOLLOWERS.PAGEID,
-                    PAGE_FOLLOWERS.FOLLOWERID)
-                    .values(Integer.parseInt(arguments.get("pageID")),
-                            arguments.get("followerID"));
+            try {
+                create.insertInto(PAGE_FOLLOWERS,
+                        PAGE_FOLLOWERS.PAGEID,
+                        PAGE_FOLLOWERS.FOLLOWERID)
+                        .values(Integer.parseInt(arguments.get("pageID")),
+                                arguments.get("followerID"));
+            } catch (NumberFormatException e1) {
+                e1.printStackTrace();
+            }
         }
         return false;
     }

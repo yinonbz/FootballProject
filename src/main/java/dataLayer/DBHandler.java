@@ -3,6 +3,7 @@ package dataLayer;
 import dataLayer.Tables.enums.*;
 import org.jooq.*;
 import org.jooq.Record;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.*;
 
 import java.sql.*;
@@ -56,14 +57,19 @@ public class DBHandler implements DB_Inter{
     public boolean containInDB(String objectName,String empty1,String empty2) {
         //create sql query to search record in db using ObjectName
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select().
-                from(SUBSCRIBERS)
-                .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName)).fetch();
-        if (result.isEmpty()) {
+        try {
+            Result<?> result = create.select().
+                    from(SUBSCRIBERS)
+                    .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName)).fetch();
+            if (result.isEmpty()) {
+                return false;
+            }
+            return true;
+        }
+        catch(Exception e){
+            System.out.println("syntax error in handler contain function");
             return false;
         }
-        return true;
-
     }
 
     /**
@@ -262,13 +268,19 @@ public class DBHandler implements DB_Inter{
      */
     @Override
     public boolean removeFromDB(String objectName,String arg2,String arg3) {
-        if(containInDB(objectName,null,null)){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.delete(SUBSCRIBERS)
-                    .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName)).execute();
-            return true;
+        try {
+            if (containInDB(objectName, null, null)) {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                create.delete(SUBSCRIBERS)
+                        .where(SUBSCRIBERS.SUBSCRIBERID.eq(objectName)).execute();
+                return true;
+            }
+            return false;
         }
-        return false;
+        catch(Exception e){
+            System.out.println("error removing subscriber from DB");
+            return false;
+        }
     }
 
     /**
@@ -283,158 +295,175 @@ public class DBHandler implements DB_Inter{
     @Override
     public boolean addToDB(String username,String password,String name,String type, Map<String,ArrayList<String>> objDetails) {
         //check if user in db already
-        if(!containInDB(username,null,null)){
-            //get subscriber from db
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.insertInto(SUBSCRIBERS
-                    ,SUBSCRIBERS.SUBSCRIBERID
-                    ,SUBSCRIBERS.PASSWORD
-                    ,SUBSCRIBERS.NAME
-                    ,SUBSCRIBERS.TYPE)
-                    .values(username
-                            ,String.valueOf(password.hashCode())
-                            ,name
-                            ,type)
-                    .execute();
-            //get player from db
-            if (type.equalsIgnoreCase("player")) {
-
-                create.insertInto(PLAYERS
-                        ,PLAYERS.PLAYERID
-                        ,PLAYERS.TEAMID
-                        ,PLAYERS.FIELDJOB
-                        ,PLAYERS.BIRTHDATE
-                        ,PLAYERS.SALARY
-                        ,PLAYERS.TEAMOWNERID_FICTIVE)
-                        .values(username
-                                ,objDetails.get("teamID").get(0)
-                                ,PlayersFieldjob.valueOf(objDetails.get("fieldJob").get(0))
-                                ,convertToDate(objDetails.get("birthDate").get(0))
-                                ,Integer.parseInt(objDetails.get("salary").get(0))
-                                ,objDetails.get("ownerFictive").isEmpty()?
-                                        null :  objDetails.get("ownerFictive").get(0))
-                        .execute();
-                return true;
-            }
-            if (type.equalsIgnoreCase("coach")) {
-                create.insertInto(COACHES
-                        ,COACHES.COACHID
-                        ,COACHES.ROLEINTEAM
-                        ,COACHES.TRAINING
-                        ,COACHES.SALARY
-                        ,COACHES.TEAMOWNERID_FICTIVE)
-                        .values(username
-                                ,CoachesRoleinteam.valueOf(objDetails.get("roleInTeam").get(0))
-                                ,CoachesTraining.valueOf(objDetails.get("training").get(0))
-                                ,Integer.parseInt(objDetails.get("salary").get(0))
-                                ,objDetails.get("ownerFictive").isEmpty()?
-                                        null : objDetails.get("ownerFictive").get(0))
-                        .execute();
-
-                for (String str : objDetails.get("teams")) {
-                    create.insertInto(COACH_TEAM
-                                    ,COACH_TEAM.COACHID
-                                    ,COACH_TEAM.TEAMID)
-                    .values(username,str)
-                    .execute();
-                }
-                return true;
-            }
-            if (type.equalsIgnoreCase("teammanager")) {
-                create.insertInto(TEAMMANAGERS
-                        ,TEAMMANAGERS.MANAGERID
-                        ,TEAMMANAGERS.TEAMID
-                        ,TEAMMANAGERS.PERMISSIONS
-                        ,TEAMMANAGERS.SALARY
-                        ,TEAMMANAGERS.TEAMOWNERID_FICTIVE)
-                        .values(username
-                                ,objDetails.get("teamID").get(0)
-                                ,TeammanagersPermissions.valueOf(objDetails.get("permissions").get(0))
-                                ,Integer.parseInt(objDetails.get("salary").get(0))
-                                ,objDetails.get("ownerFictive").isEmpty()?
-                                        null : objDetails.get("ownerFictive").get(0))
-                        .execute();
-                return true;
-            }
-            if (type.equalsIgnoreCase("teamowner")) {
-                create.insertInto(TEAMOWNER_OWNERELIGIBLE
-                        ,TEAMOWNER_OWNERELIGIBLE.OWNERID
-                        ,TEAMOWNER_OWNERELIGIBLE.PLAYERID
-                        ,TEAMOWNER_OWNERELIGIBLE.COACHID
-                        ,TEAMOWNER_OWNERELIGIBLE.MANAGERID)
-                        .values(username
-                                ,objDetails.get("playerID").isEmpty()?
-                                        null : objDetails.get("playerID").get(0)
-                                ,objDetails.get("coachID").isEmpty()?
-                                        null : objDetails.get("coachID").get(0)
-                                ,objDetails.get("managerID").isEmpty()?
-                                        null : objDetails.get("managerID").get(0))
-                        .execute();
-
-                for (String str : objDetails.get("teams")) {
-                    create.insertInto(OWNER_TEAMS
-                            ,OWNER_TEAMS.OWNERID
-                            ,OWNER_TEAMS.TEAMID)
-                            .values(username,str)
-                    .execute();
-                }
-                for (int i=0;i<objDetails.get("ownersAssigned").size();i++) {
-                    create.insertInto(OWNER_OWNER_ASSIGNINGS
-                            ,OWNER_OWNER_ASSIGNINGS.OWNERID
-                            ,OWNER_OWNER_ASSIGNINGS.ASSIGNEEID
-                            ,OWNER_OWNER_ASSIGNINGS.TEAMID)
+        try {
+            if (!containInDB(username, null, null)) {
+                //get subscriber from db
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                try {
+                    create.insertInto(SUBSCRIBERS
+                            , SUBSCRIBERS.SUBSCRIBERID
+                            , SUBSCRIBERS.PASSWORD
+                            , SUBSCRIBERS.NAME
+                            , SUBSCRIBERS.TYPE)
                             .values(username
-                                    ,objDetails.get("ownersAssigned").get(i)
-                                    ,objDetails.get("ownerTeam").get(i))
-                    .execute();
+                                    , String.valueOf(password.hashCode())
+                                    , name
+                                    , type)
+                            .execute();
                 }
+                catch(Exception e){
+                    System.out.println("error adding subscriber type to DB");
+                }
+                try {
+                    //get player from db
+                    if (type.equalsIgnoreCase("player")) {
 
-                for (int i=0;i<objDetails.get("managersAssigned").size();i++) {
-                    create.insertInto(OWNER_MANAGER_ASSIGNINGS
-                            ,OWNER_MANAGER_ASSIGNINGS.OWNERID
-                            ,OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID
-                            ,OWNER_MANAGER_ASSIGNINGS.TEAMID)
-                            .values(username
-                                    ,objDetails.get("managersAssigned").get(i)
-                                    ,objDetails.get("managerTeam").get(i))
-                    .execute();
+                        create.insertInto(PLAYERS
+                                , PLAYERS.PLAYERID
+                                , PLAYERS.TEAMID
+                                , PLAYERS.FIELDJOB
+                                , PLAYERS.BIRTHDATE
+                                , PLAYERS.SALARY
+                                , PLAYERS.TEAMOWNERID_FICTIVE)
+                                .values(username
+                                        , objDetails.get("teamID").get(0)
+                                        , PlayersFieldjob.valueOf(objDetails.get("fieldJob").get(0))
+                                        , convertToDate(objDetails.get("birthDate").get(0))
+                                        , Integer.parseInt(objDetails.get("salary").get(0))
+                                        , objDetails.get("ownerFictive").isEmpty() ?
+                                                null : objDetails.get("ownerFictive").get(0))
+                                .execute();
+                        return true;
+                    }
+                    if (type.equalsIgnoreCase("coach")) {
+                        create.insertInto(COACHES
+                                , COACHES.COACHID
+                                , COACHES.ROLEINTEAM
+                                , COACHES.TRAINING
+                                , COACHES.SALARY
+                                , COACHES.TEAMOWNERID_FICTIVE)
+                                .values(username
+                                        , CoachesRoleinteam.valueOf(objDetails.get("roleInTeam").get(0))
+                                        , CoachesTraining.valueOf(objDetails.get("training").get(0))
+                                        , Integer.parseInt(objDetails.get("salary").get(0))
+                                        , objDetails.get("ownerFictive").isEmpty() ?
+                                                null : objDetails.get("ownerFictive").get(0))
+                                .execute();
+
+                        for (String str : objDetails.get("teams")) {
+                            create.insertInto(COACH_TEAM
+                                    , COACH_TEAM.COACHID
+                                    , COACH_TEAM.TEAMID)
+                                    .values(username, str)
+                                    .execute();
+                        }
+                        return true;
+                    }
+                    if (type.equalsIgnoreCase("teammanager")) {
+                        create.insertInto(TEAMMANAGERS
+                                , TEAMMANAGERS.MANAGERID
+                                , TEAMMANAGERS.TEAMID
+                                , TEAMMANAGERS.PERMISSIONS
+                                , TEAMMANAGERS.SALARY
+                                , TEAMMANAGERS.TEAMOWNERID_FICTIVE)
+                                .values(username
+                                        , objDetails.get("teamID").get(0)
+                                        , TeammanagersPermissions.valueOf(objDetails.get("permissions").get(0))
+                                        , Integer.parseInt(objDetails.get("salary").get(0))
+                                        , objDetails.get("ownerFictive").isEmpty() ?
+                                                null : objDetails.get("ownerFictive").get(0))
+                                .execute();
+                        return true;
+                    }
+                    if (type.equalsIgnoreCase("teamowner")) {
+                        create.insertInto(TEAMOWNER_OWNERELIGIBLE
+                                , TEAMOWNER_OWNERELIGIBLE.OWNERID
+                                , TEAMOWNER_OWNERELIGIBLE.PLAYERID
+                                , TEAMOWNER_OWNERELIGIBLE.COACHID
+                                , TEAMOWNER_OWNERELIGIBLE.MANAGERID)
+                                .values(username
+                                        , objDetails.get("playerID").isEmpty() ?
+                                                null : objDetails.get("playerID").get(0)
+                                        , objDetails.get("coachID").isEmpty() ?
+                                                null : objDetails.get("coachID").get(0)
+                                        , objDetails.get("managerID").isEmpty() ?
+                                                null : objDetails.get("managerID").get(0))
+                                .execute();
+
+                        for (String str : objDetails.get("teams")) {
+                            create.insertInto(OWNER_TEAMS
+                                    , OWNER_TEAMS.OWNERID
+                                    , OWNER_TEAMS.TEAMID)
+                                    .values(username, str)
+                                    .execute();
+                        }
+                        for (int i = 0; i < objDetails.get("ownersAssigned").size(); i++) {
+                            create.insertInto(OWNER_OWNER_ASSIGNINGS
+                                    , OWNER_OWNER_ASSIGNINGS.OWNERID
+                                    , OWNER_OWNER_ASSIGNINGS.ASSIGNEEID
+                                    , OWNER_OWNER_ASSIGNINGS.TEAMID)
+                                    .values(username
+                                            , objDetails.get("ownersAssigned").get(i)
+                                            , objDetails.get("ownerTeam").get(i))
+                                    .execute();
+                        }
+
+                        for (int i = 0; i < objDetails.get("managersAssigned").size(); i++) {
+                            create.insertInto(OWNER_MANAGER_ASSIGNINGS
+                                    , OWNER_MANAGER_ASSIGNINGS.OWNERID
+                                    , OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID
+                                    , OWNER_MANAGER_ASSIGNINGS.TEAMID)
+                                    .values(username
+                                            , objDetails.get("managersAssigned").get(i)
+                                            , objDetails.get("managerTeam").get(i))
+                                    .execute();
+                        }
+                    }
+                    if (type.equalsIgnoreCase("admin")) {
+                        create.insertInto(ADMINS
+                                , ADMINS.ADMINID
+                                , ADMINS.APPROVED)
+                                .values(username,
+                                        Boolean.valueOf(objDetails.get("approved").get(0)))
+                                .execute();
+                    }
+                    if (type.equalsIgnoreCase("ar")) {
+                        create.insertInto(ARS
+                                , ARS.AR_ID
+                                , ARS.APPROVED)
+                                .values(username,
+                                        Boolean.valueOf(objDetails.get("approved").get(0)))
+                                .execute();
+
+                    }
+                    if (type.equalsIgnoreCase("referee")) {
+                        create.insertInto(REFEREES
+                                , REFEREES.REFEREEID
+                                , REFEREES.ROLEREF).
+                                values(username, RefereesRoleref.valueOf(objDetails.get("roleRef").get(0)))
+                                .execute();
+
+                        for (String str : objDetails.get("matches")) {
+                            create.insertInto(REFEREE_MATCHES
+                                    , REFEREE_MATCHES.REFEREEID
+                                    , REFEREE_MATCHES.MATCHID).
+                                    values(username, Integer.parseInt(str))
+                                    .execute();
+                        }
+                    }
+                    return true;
+                }
+                catch(Exception e){
+                    System.out.println("error adding additional type to subscriber in DB");
+                    return true;
                 }
             }
-            if (type.equalsIgnoreCase("admin")) {
-                create.insertInto(ADMINS
-                        ,ADMINS.ADMINID
-                        ,ADMINS.APPROVED)
-                        .values(username,
-                                Boolean.valueOf(objDetails.get("approved").get(0)))
-                .execute();
-            }
-            if (type.equalsIgnoreCase("ar")) {
-                create.insertInto(ARS
-                        ,ARS.AR_ID
-                        ,ARS.APPROVED)
-                        .values(username,
-                                Boolean.valueOf(objDetails.get("approved").get(0)))
-                        .execute();
-
-            }
-            if (type.equalsIgnoreCase("referee")) {
-                create.insertInto(REFEREES
-                        ,REFEREES.REFEREEID
-                        ,REFEREES.ROLEREF).
-                        values(username, RefereesRoleref.valueOf(objDetails.get("roleRef").get(0)))
-                .execute();
-
-                for(String str: objDetails.get("matches")){
-                    create.insertInto(REFEREE_MATCHES
-                            ,REFEREE_MATCHES.REFEREEID
-                            ,REFEREE_MATCHES.MATCHID).
-                            values(username, Integer.parseInt(str))
-                    .execute();
-                }
-            }
-            return true;
+            return false;
         }
-        return false;
+        catch(Exception e){
+            System.out.println("error adding subscriber to DB");
+            return false;
+        }
     }
 
     @Override
@@ -444,78 +473,114 @@ public class DBHandler implements DB_Inter{
 
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> userType,Map<String,String> arguments) {
-        if(userType == UserTypes.SUBSCRIBER){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(SUBSCRIBERS.SUBSCRIBERID).
-                    from(SUBSCRIBERS)
-                    .fetch();
-            ArrayList<Map<String,ArrayList<String>>> allSubscribers = new ArrayList<>();
-            allSubscribers.add(new HashMap<>());
-            allSubscribers.get(0).put("subscribers",new ArrayList<>());
-            for(Record r: result){
-                allSubscribers.get(0).get("subscribers").add(r.get(SUBSCRIBERS.SUBSCRIBERID));
+        if (userType == UserTypes.SUBSCRIBER) {
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(SUBSCRIBERS.SUBSCRIBERID).
+                        from(SUBSCRIBERS)
+                        .fetch();
+                ArrayList<Map<String, ArrayList<String>>> allSubscribers = new ArrayList<>();
+                allSubscribers.add(new HashMap<>());
+                allSubscribers.get(0).put("subscribers", new ArrayList<>());
+                for (Record r : result) {
+                    allSubscribers.get(0).get("subscribers").add(r.get(SUBSCRIBERS.SUBSCRIBERID));
 
+                }
+                return allSubscribers;
             }
-            return allSubscribers;
+            catch(Exception e){
+                System.out.println("error selecting all subscribers");
+                return null;
+            }
         }
-        if(userType ==UserTypes.COACH){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(COACHES.COACHID).
-                    from(COACHES)
-                    .fetch();
-            ArrayList<Map<String,ArrayList<String>>> allCoaches = new ArrayList<>();
-            allCoaches.add(new HashMap<>());
-            allCoaches.get(0).put("coaches",new ArrayList<>());
-            for(Record r: result){
-                allCoaches.get(0).get("coaches").add(r.get(COACHES.COACHID));
+        if (userType == UserTypes.COACH) {
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(COACHES.COACHID).
+                        from(COACHES)
+                        .fetch();
+                ArrayList<Map<String, ArrayList<String>>> allCoaches = new ArrayList<>();
+                allCoaches.add(new HashMap<>());
+                allCoaches.get(0).put("coaches", new ArrayList<>());
+                for (Record r : result) {
+                    allCoaches.get(0).get("coaches").add(r.get(COACHES.COACHID));
 
+                }
+                return allCoaches;
             }
-            return allCoaches;
+            catch(Exception e){
+                System.out.println("error selecting all coaches");
+                return null;
+            }
         }
-        if(userType ==UserTypes.PLAYER){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(PLAYERS.PLAYERID).
-                    from(PLAYERS)
-                    .fetch();
-            ArrayList<Map<String,ArrayList<String>>> allPlayers = new ArrayList<>();
-            allPlayers.add(new HashMap<>());
-            allPlayers.get(0).put("players",new ArrayList<>());
-            for(Record r: result){
-                allPlayers.get(0).get("players").add(r.get(PLAYERS.PLAYERID));
+        if (userType == UserTypes.PLAYER) {
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(PLAYERS.PLAYERID).
+                        from(PLAYERS)
+                        .fetch();
+                ArrayList<Map<String, ArrayList<String>>> allPlayers = new ArrayList<>();
+                allPlayers.add(new HashMap<>());
+                allPlayers.get(0).put("players", new ArrayList<>());
+                for (Record r : result) {
+                    allPlayers.get(0).get("players").add(r.get(PLAYERS.PLAYERID));
 
+                }
+                return allPlayers;
             }
-            return allPlayers;
+            catch(Exception e){
+                System.out.println("error selecting all players");
+                return null;
+            }
         }
-        if(userType ==UserTypes.ADMIN){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(ADMINS.ADMINID).
-                    from(ADMINS)
-                    .fetch();
-            ArrayList<Map<String,ArrayList<String>>> allAdmins = new ArrayList<>();
-            allAdmins.add(new HashMap<>());
-            allAdmins.get(0).put("admins",new ArrayList<>());
-            for(Record r: result){
-                allAdmins.get(0).get("admins").add(r.get(COACHES.COACHID));
+        if (userType == UserTypes.ADMIN) {
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(ADMINS.ADMINID).
+                        from(ADMINS)
+                        .fetch();
+                ArrayList<Map<String, ArrayList<String>>> allAdmins = new ArrayList<>();
+                allAdmins.add(new HashMap<>());
+                allAdmins.get(0).put("admins", new ArrayList<>());
+                for (Record r : result) {
+                    allAdmins.get(0).get("admins").add(r.get(COACHES.COACHID));
 
+                }
+                return allAdmins;
             }
-            return allAdmins;
+            catch(Exception e){
+                System.out.println("error selecting all admins");
+                return null;
+            }
         }
-        if(userType ==UserTypes.REFEREE){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(REFEREES.REFEREEID).
-                    from(REFEREES)
-                    .fetch();
-            ArrayList<Map<String,ArrayList<String>>> allReferees = new ArrayList<>();
-            allReferees.add(new HashMap<>());
-            allReferees.get(0).put("referees",new ArrayList<>());
-            for(Record r: result){
-                allReferees.get(0).get("referees").add(r.get(REFEREES.REFEREEID));
+        if (userType == UserTypes.REFEREE) {
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(REFEREES.REFEREEID).
+                        from(REFEREES)
+                        .fetch();
+                ArrayList<Map<String, ArrayList<String>>> allReferees = new ArrayList<>();
+                allReferees.add(new HashMap<>());
+                allReferees.get(0).put("referees", new ArrayList<>());
+                for (Record r : result) {
+                    allReferees.get(0).get("referees").add(r.get(REFEREES.REFEREEID));
 
+                }
+                return allReferees;
             }
-            return allReferees;
+            catch(Exception e){
+                System.out.println("error selecting all referees");
+                return null;
+            }
         }
         if(userType == UserTypes.TEAMMANAGER){
-            return selectAllTeamManagers();
+            try {
+                return selectAllTeamManagers();
+            }
+            catch(Exception e){
+                System.out.println("error selecting all team managers");
+                return null;
+            }
         }
         else{
             System.out.println("invalid select from subscriberDB");
@@ -525,16 +590,22 @@ public class DBHandler implements DB_Inter{
 
     private ArrayList<Map<String, ArrayList<String>>> selectAllTeamManagers(){
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select(TEAMMANAGERS.MANAGERID).from(TEAMMANAGERS).fetch();
-        ArrayList<Map<String,ArrayList<String>>> details = new ArrayList<>();
-        for (Record record : result){
-            HashMap<String,ArrayList<String>> seasonDetails = new HashMap <>();
-            ArrayList<String> temp = new ArrayList<>();
-            temp.add(record.get(TEAMMANAGERS.MANAGERID));
-            seasonDetails.put("managerID",temp);
-            details.add(seasonDetails);
+        try {
+            Result<?> result = create.select(TEAMMANAGERS.MANAGERID).from(TEAMMANAGERS).fetch();
+            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+            for (Record record : result) {
+                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(record.get(TEAMMANAGERS.MANAGERID));
+                seasonDetails.put("managerID", temp);
+                details.add(seasonDetails);
+            }
+            return details;
         }
-        return details;
+        catch(Exception e){
+            System.out.println("error selecting all team managers");
+            return null;
+        }
     }
 
     @Override
@@ -542,180 +613,293 @@ public class DBHandler implements DB_Inter{
 
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         if(e == SUBSCRIBERSUPDATES.ADMINSETAPPROVED){
-            create.update(ADMINS)
-                    .set(ADMINS.APPROVED, Boolean.valueOf(arguments.get("setApproved")))
-                    .where(ADMINS.ADMINID.eq(arguments.get("adminID")))
-                    .execute();
-            return true;
+            try {
+                create.update(ADMINS)
+                        .set(ADMINS.APPROVED, Boolean.valueOf(arguments.get("setApproved")))
+                        .where(ADMINS.ADMINID.eq(arguments.get("adminID")))
+                        .execute();
+                return true;
+            }
+            catch(Exception exptn){
+                System.out.println("error updating admin set approved");
+                return false;
+            }
         }
         if(e == SUBSCRIBERSUPDATES.ARSETAPPROVED){
-            create.update(ARS)
-                    .set(ARS.APPROVED, Boolean.valueOf(arguments.get("setApproved")))
-                    .where(ARS.AR_ID.eq(arguments.get("ARID")))
-                    .execute();
-            return true;
+            try {
+                create.update(ARS)
+                        .set(ARS.APPROVED, Boolean.valueOf(arguments.get("setApproved")))
+                        .where(ARS.AR_ID.eq(arguments.get("ARID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error updating AR set approved");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETTEAMTOPLAYER){
-            create.update(PLAYERS)
-                    .set(PLAYERS.TEAMID, arguments.get("teamID"))
-                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
-                    .execute();
-            return true;
+            try {
+                create.update(PLAYERS)
+                        .set(PLAYERS.TEAMID, arguments.get("teamID"))
+                        .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting team to player");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETTEAMTOTM){
-            create.update(TEAMMANAGERS)
-                    .set(TEAMMANAGERS.TEAMID, arguments.get("teamID"))
-                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
-                    .execute();
-            return true;
+            try {
+                create.update(TEAMMANAGERS)
+                        .set(TEAMMANAGERS.TEAMID, arguments.get("teamID"))
+                        .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting team to team manaager");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETPLAYERBIRTHDATE){
-            create.update(PLAYERS)
-                    .set(PLAYERS.BIRTHDATE, convertToDate(arguments.get("birthDate")))
-                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
-                    .execute();
-            return true;
+            try {
+                create.update(PLAYERS)
+                        .set(PLAYERS.BIRTHDATE, convertToDate(arguments.get("birthDate")))
+                        .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting birth date to player");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETSUBSCRIBERNAME){
-            create.update(SUBSCRIBERS)
-                    .set(SUBSCRIBERS.NAME, arguments.get("name"))
-                    .where(SUBSCRIBERS.SUBSCRIBERID.eq(arguments.get("subscriberID")))
-                    .execute();
-            return true;
+            try {
+                create.update(SUBSCRIBERS)
+                        .set(SUBSCRIBERS.NAME, arguments.get("name"))
+                        .where(SUBSCRIBERS.SUBSCRIBERID.eq(arguments.get("subscriberID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting name to subscriber");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETPLAYERFIELDJOB){
-            create.update(PLAYERS)
-                    .set(PLAYERS.FIELDJOB, PlayersFieldjob.valueOf(arguments.get("fieldJob")))
-                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
-                    .execute();
-            return true;
+            try {
+                create.update(PLAYERS)
+                        .set(PLAYERS.FIELDJOB, PlayersFieldjob.valueOf(arguments.get("fieldJob")))
+                        .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting fieldjob to player");
+                return false;
+            } catch (IllegalArgumentException e1) {
+                System.out.println("error setting fieldjob to player. bad enum expression");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETPLAYERSALARY){
-            create.update(PLAYERS)
-                    .set(PLAYERS.SALARY, Integer.parseInt(arguments.get("salary")))
-                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
-                    .execute();
-            return true;
+            try {
+                create.update(PLAYERS)
+                        .set(PLAYERS.SALARY, Integer.parseInt(arguments.get("salary")))
+                        .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting salary to player");
+                return false;
+            } catch (NumberFormatException e1) {
+                System.out.println("error setting salary to player. bad salary value.");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETTMPERMISSIONS){
-            create.update(TEAMMANAGERS)
-                    .set(TEAMMANAGERS.PERMISSIONS, TeammanagersPermissions.valueOf(arguments.get("permissions")))
-                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
-                    .execute();
-            return true;
+            try {
+                create.update(TEAMMANAGERS)
+                        .set(TEAMMANAGERS.PERMISSIONS, TeammanagersPermissions.valueOf(arguments.get("permissions")))
+                        .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting permissions to team manager");
+                return false;
+            } catch (IllegalArgumentException e1) {
+                System.out.println("error setting permissions to team manager. bad enum expression.");
+                return false;
+            }
         }
         if(e== SUBSCRIBERSUPDATES.SETTMSALARY){
-            create.update(TEAMMANAGERS)
-                    .set(TEAMMANAGERS.SALARY, Integer.parseInt(arguments.get("salary")))
-                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
-                    .execute();
-            return true;
+            try {
+                create.update(TEAMMANAGERS)
+                        .set(TEAMMANAGERS.SALARY, Integer.parseInt(arguments.get("salary")))
+                        .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting salary to team manager");
+                return false;
+            } catch (NumberFormatException e1) {
+                System.out.println("error setting salary to team manager. bad salary argument");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.ADDMANAGERTOOWNER){
-            create.insertInto(OWNER_MANAGER_ASSIGNINGS
-                    ,OWNER_MANAGER_ASSIGNINGS.OWNERID
-                    ,OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID
-                    ,OWNER_MANAGER_ASSIGNINGS.TEAMID)
-                    .values(arguments.get("ownerID")
-                            ,arguments.get("managersAssigned")
-                            ,arguments.get("teamID"))
-                    .execute();
-            return true;
+            try {
+                create.insertInto(OWNER_MANAGER_ASSIGNINGS
+                        ,OWNER_MANAGER_ASSIGNINGS.OWNERID
+                        ,OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID
+                        ,OWNER_MANAGER_ASSIGNINGS.TEAMID)
+                        .values(arguments.get("ownerID")
+                                ,arguments.get("managersAssigned")
+                                ,arguments.get("teamID"))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error adding manager to owner");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.ADDOWNERTOOWNER){
-            create.insertInto(OWNER_OWNER_ASSIGNINGS
-                    ,OWNER_OWNER_ASSIGNINGS.OWNERID
-                    ,OWNER_OWNER_ASSIGNINGS.ASSIGNEEID
-                    ,OWNER_OWNER_ASSIGNINGS.TEAMID)
-                    .values(arguments.get("ownerID")
-                            ,arguments.get("assigneeID")
-                            ,arguments.get("teamID"))
-                    .execute();
-            return true;
+            try {
+                create.insertInto(OWNER_OWNER_ASSIGNINGS
+                        ,OWNER_OWNER_ASSIGNINGS.OWNERID
+                        ,OWNER_OWNER_ASSIGNINGS.ASSIGNEEID
+                        ,OWNER_OWNER_ASSIGNINGS.TEAMID)
+                        .values(arguments.get("ownerID")
+                                ,arguments.get("assigneeID")
+                                ,arguments.get("teamID"))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error adding owner to owner");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.DELETEMANAGERFROMOWNER){
-            create.delete(OWNER_MANAGER_ASSIGNINGS)
-                    .where(OWNER_MANAGER_ASSIGNINGS.OWNERID.eq(arguments.get("ownerID"))
-                            .and(OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID.eq(arguments.get("managerID")))
-                                    .and(OWNER_MANAGER_ASSIGNINGS.TEAMID.eq(arguments.get("teamID"))))
-                    .execute();
-            return true;
+            try {
+                create.delete(OWNER_MANAGER_ASSIGNINGS)
+                        .where(OWNER_MANAGER_ASSIGNINGS.OWNERID.eq(arguments.get("ownerID"))
+                                .and(OWNER_MANAGER_ASSIGNINGS.TEAMMANAGERID.eq(arguments.get("managerID")))
+                                        .and(OWNER_MANAGER_ASSIGNINGS.TEAMID.eq(arguments.get("teamID"))))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error delete manager from owner");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.DELETEOWNERFROMOWNER){
-            create.delete(OWNER_OWNER_ASSIGNINGS)
-                    .where(OWNER_OWNER_ASSIGNINGS.OWNERID.eq(arguments.get("ownerID"))
-                    .and(OWNER_OWNER_ASSIGNINGS.ASSIGNEEID.eq(arguments.get("assigneeID")))
-                    .and(OWNER_OWNER_ASSIGNINGS.TEAMID.eq(arguments.get("teamID"))))
-                    .execute();
-            return true;
+            try {
+                create.delete(OWNER_OWNER_ASSIGNINGS)
+                        .where(OWNER_OWNER_ASSIGNINGS.OWNERID.eq(arguments.get("ownerID"))
+                        .and(OWNER_OWNER_ASSIGNINGS.ASSIGNEEID.eq(arguments.get("assigneeID")))
+                        .and(OWNER_OWNER_ASSIGNINGS.TEAMID.eq(arguments.get("teamID"))))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error delete owner from owner");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.SETPLAYERELIGIBLE){
-            create.update(TEAMOWNER_OWNERELIGIBLE)
-                    .set(TEAMOWNER_OWNERELIGIBLE.PLAYERID, arguments.get("setPlayerID"))
-                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
-                    .execute();
+            try {
+                create.update(TEAMOWNER_OWNERELIGIBLE)
+                        .set(TEAMOWNER_OWNERELIGIBLE.PLAYERID, arguments.get("setPlayerID"))
+                        .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
+                        .execute();
 
-            create.update(PLAYERS)
-                    .set(PLAYERS.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
-                    .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
-                    .execute();
-            return true;
+                create.update(PLAYERS)
+                        .set(PLAYERS.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
+                        .where(PLAYERS.PLAYERID.eq(arguments.get("playerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting player eligible");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.SETCOACHELIGIBLE){
-            create.update(TEAMOWNER_OWNERELIGIBLE)
-                    .set(TEAMOWNER_OWNERELIGIBLE.COACHID, arguments.get("setCoachID"))
-                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
-                    .execute();
+            try {
+                create.update(TEAMOWNER_OWNERELIGIBLE)
+                        .set(TEAMOWNER_OWNERELIGIBLE.COACHID, arguments.get("setCoachID"))
+                        .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
+                        .execute();
 
-            create.update(COACHES)
-                    .set(COACHES.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
-                    .where(COACHES.COACHID.eq(arguments.get("coachID")))
-                    .execute();
-            return true;
+                create.update(COACHES)
+                        .set(COACHES.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
+                        .where(COACHES.COACHID.eq(arguments.get("coachID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting coach eligible");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.SETTMELIGIBLE){
-            create.update(TEAMOWNER_OWNERELIGIBLE)
-                    .set(TEAMOWNER_OWNERELIGIBLE.MANAGERID, arguments.get("setManagerID"))
-                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
-                    .execute();
+            try {
+                create.update(TEAMOWNER_OWNERELIGIBLE)
+                        .set(TEAMOWNER_OWNERELIGIBLE.MANAGERID, arguments.get("setManagerID"))
+                        .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
+                        .execute();
 
-            create.update(TEAMMANAGERS)
-                    .set(TEAMMANAGERS.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
-                    .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
-                    .execute();
-            return true;
+                create.update(TEAMMANAGERS)
+                        .set(TEAMMANAGERS.TEAMOWNERID_FICTIVE, arguments.get("setOwnerID"))
+                        .where(TEAMMANAGERS.MANAGERID.eq(arguments.get("managerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting TM eligible");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.ADDTEAMTOOWNER){
-            create.insertInto(OWNER_TEAMS
-                    ,OWNER_TEAMS.OWNERID
-                    ,OWNER_TEAMS.TEAMID)
-                    .values(arguments.get("ownerID")
-                            ,arguments.get("teamID"))
-                    .execute();
-            return true;
+            try {
+                create.insertInto(OWNER_TEAMS
+                        ,OWNER_TEAMS.OWNERID
+                        ,OWNER_TEAMS.TEAMID)
+                        .values(arguments.get("ownerID")
+                                ,arguments.get("teamID"))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error adding team to owner");
+                return false;
+            }
         }
         if(e==SUBSCRIBERSUPDATES.SETSUBSCRIBERPASSWORD){
-            create.update(SUBSCRIBERS)
-                    .set(SUBSCRIBERS.PASSWORD, arguments.get("password"))
-                    .where(SUBSCRIBERS.SUBSCRIBERID.eq(arguments.get("subscriberID")))
-                    .execute();
-            return true;
+            try {
+                create.update(SUBSCRIBERS)
+                        .set(SUBSCRIBERS.PASSWORD, arguments.get("password"))
+                        .where(SUBSCRIBERS.SUBSCRIBERID.eq(arguments.get("subscriberID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error setting subscriber password");
+                return false;
+            }
         }
 
         if(e==SUBSCRIBERSUPDATES.REMOVEOWNER){
-            if(arguments.get("type").equalsIgnoreCase("player")){
-                update(SUBSCRIBERSUPDATES.SETPLAYERELIGIBLE,arguments);
+            try {
+                if(arguments.get("type").equalsIgnoreCase("player")){
+                    update(SUBSCRIBERSUPDATES.SETPLAYERELIGIBLE,arguments);
+                }
+                if(arguments.get("type").equalsIgnoreCase("coach")){
+                    update(SUBSCRIBERSUPDATES.SETCOACHELIGIBLE,arguments);
+                }
+                if(arguments.get("type").equalsIgnoreCase("teamManager")){
+                    update(SUBSCRIBERSUPDATES.SETTMELIGIBLE,arguments);
+                }
+                create.delete(TEAMOWNER_OWNERELIGIBLE)
+                        .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
+                        .execute();
+                return true;
+            } catch (DataAccessException e1) {
+                System.out.println("error removing owner");
+                return false;
             }
-            if(arguments.get("type").equalsIgnoreCase("coach")){
-                update(SUBSCRIBERSUPDATES.SETCOACHELIGIBLE,arguments);
-            }
-            if(arguments.get("type").equalsIgnoreCase("teamManager")){
-                update(SUBSCRIBERSUPDATES.SETTMELIGIBLE,arguments);
-            }
-            create.delete(TEAMOWNER_OWNERELIGIBLE)
-                    .where(TEAMOWNER_OWNERELIGIBLE.OWNERID.eq(arguments.get("ownerID")))
-                    .execute();
-            return true;
         }
         return false;
     }
@@ -732,10 +916,15 @@ public class DBHandler implements DB_Inter{
     }
 
     private LocalDate convertToDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
-        //convert String to LocalDate
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        return localDate;
+            //convert String to LocalDate
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            return localDate;
+        } catch (Exception e) {
+            System.out.println("error converting date");
+            return null;
+        }
     }
 }

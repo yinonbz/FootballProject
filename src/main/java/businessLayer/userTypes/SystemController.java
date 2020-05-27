@@ -2694,7 +2694,7 @@ public class SystemController extends Observable {
         if (match != null && event != null) {
             connectToNotificationsDB();
             Map<String,String> arguments = new HashMap<>();
-            arguments.put("pageID",String.valueOf(match.getMatchId()));
+            arguments.put("matchID",String.valueOf(match.getMatchId()));
             ArrayList<Map<String, ArrayList<String>>> followersList = DB.selectAllRecords(NOTIFICATIONENUMS.GETMATCHFOLLOWERS,arguments);
             LinkedList<String> followers = new LinkedList<>(followersList.get(0).get("followers"));
             if (followers != null) {

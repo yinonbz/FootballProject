@@ -3,6 +3,7 @@ package dataLayer;
 import org.jooq.DSLContext;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -44,19 +45,27 @@ public class EventRecordDB implements DB_Inter {
 
     @Override
     public Map<String, ArrayList<String>> selectFromDB(String matchID, String arg2, String arg3) {
-        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select().from(EVENTSRECORDER_EVENTS).where(EVENTSRECORDER_EVENTS.MATCHID.eq(Integer.parseInt(matchID))).fetch();
-        HashMap<String,ArrayList<String>> details = new HashMap<>();
-        int counter=0;
-        for (Record r :result){
-            ArrayList<String> eventDetails = new ArrayList<>();
-            eventDetails.add(r.get(EVENTSRECORDER_EVENTS.MATCHID).toString());
-            eventDetails.add(r.get(EVENTSRECORDER_EVENTS.TIME));
-            eventDetails.add(r.get(EVENTSRECORDER_EVENTS.EVENTID).toString());
-            details.put(String.valueOf(counter),eventDetails);
-            counter++;
+        try {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select().from(EVENTSRECORDER_EVENTS).where(EVENTSRECORDER_EVENTS.MATCHID.eq(Integer.parseInt(matchID))).fetch();
+            HashMap<String,ArrayList<String>> details = new HashMap<>();
+            int counter=0;
+            for (Record r :result){
+                ArrayList<String> eventDetails = new ArrayList<>();
+                eventDetails.add(r.get(EVENTSRECORDER_EVENTS.MATCHID).toString());
+                eventDetails.add(r.get(EVENTSRECORDER_EVENTS.TIME));
+                eventDetails.add(r.get(EVENTSRECORDER_EVENTS.EVENTID).toString());
+                details.put(String.valueOf(counter),eventDetails);
+                counter++;
+            }
+            return details;
+        } catch (DataAccessException e) {
+            System.out.println("error selecting event record from DB");
+            return new HashMap<>();
+        } catch (IllegalArgumentException e) {
+            System.out.println("error selecting event record from DB");
+            return new HashMap<>();
         }
-        return details;
     }
 
     @Override

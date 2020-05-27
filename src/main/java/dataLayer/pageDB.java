@@ -4,6 +4,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -52,39 +53,52 @@ public class pageDB implements DB_Inter{
 
     @Override
     public boolean containInDB(String userName, String arg2, String arg3) {
-        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select().from(PAGE_OWNER).where(PAGE_OWNER.OWNERID.eq(userName)).fetch();
-        return (!result.isEmpty());
+        try {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select().from(PAGE_OWNER).where(PAGE_OWNER.OWNERID.eq(userName)).fetch();
+            return (!result.isEmpty());
+        } catch (DataAccessException e) {
+            System.out.println("error searching page of user");
+            return false;
+        }
     }
 
     @Override
     public Map<String, ArrayList<String>> selectFromDB(String userName, String arg2, String arg3) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
         if(containInDB(username,null,null)) {
-            Result<?> result = create.select().from(PAGE_OWNER).where(PAGE_OWNER.OWNERID.eq(userName)).fetch();
+            try {
+                Result<?> result = create.select().from(PAGE_OWNER).where(PAGE_OWNER.OWNERID.eq(userName)).fetch();
 
-            String pageID = String.valueOf(result.get(0).get(PAGE_OWNER.PAGEID));
+                String pageID = String.valueOf(result.get(0).get(PAGE_OWNER.PAGEID));
 
-            Map<String, ArrayList<String>> objDetails = new HashMap<>();
-            objDetails.put("pageID", new ArrayList<>());
-            objDetails.get("pageID").add(pageID);
-            objDetails.put("ownerID", new ArrayList<>());
-            objDetails.get("ownerID").add(userName);
+                Map<String, ArrayList<String>> objDetails = new HashMap<>();
+                objDetails.put("pageID", new ArrayList<>());
+                objDetails.get("pageID").add(pageID);
+                objDetails.put("ownerID", new ArrayList<>());
+                objDetails.get("ownerID").add(userName);
 
-            result = create.select().from(PAGES).where(PAGES.PAGEID.eq(Integer.parseInt(pageID))).fetch();
-            objDetails.put("name", new ArrayList<>());
-            objDetails.get("name").add(result.get(0).get(PAGES.NAME));
-            objDetails.put("birthDay", new ArrayList<>());
-            objDetails.get("birthDay").add(result.get(0).get(PAGES.BIRTHDAY).toString());
+                result = create.select().from(PAGES).where(PAGES.PAGEID.eq(Integer.parseInt(pageID))).fetch();
+                objDetails.put("name", new ArrayList<>());
+                objDetails.get("name").add(result.get(0).get(PAGES.NAME));
+                objDetails.put("birthDay", new ArrayList<>());
+                objDetails.get("birthDay").add(result.get(0).get(PAGES.BIRTHDAY).toString());
 
-            result = create.select().from(PAGE_POST).where(PAGE_POST.PAGEID.eq(Integer.parseInt(pageID))).fetch();
-            objDetails.put("posts", new ArrayList<>());
+                result = create.select().from(PAGE_POST).where(PAGE_POST.PAGEID.eq(Integer.parseInt(pageID))).fetch();
+                objDetails.put("posts", new ArrayList<>());
 
-            for(Record r:result){
-                objDetails.get("posts").add(r.get(PAGE_POST.POST));
+                for(Record r:result){
+                    objDetails.get("posts").add(r.get(PAGE_POST.POST));
+                }
+
+                return objDetails;
+            } catch (DataAccessException e) {
+                System.out.println("error searching page of user");
+                return new HashMap<>();
+            } catch (IllegalArgumentException e) {
+                System.out.println("error searching page of user");
+                return new HashMap<>();
             }
-
-            return objDetails;
         }
 
         return null;
@@ -92,42 +106,56 @@ public class pageDB implements DB_Inter{
 
     @Override
     public boolean removeFromDB(String objectName, String arg2, String arg3) {
-        if(containInDB(objectName,null,null)){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.delete(PAGE_OWNER)
-                    .where(PAGE_OWNER.OWNERID.eq(objectName)).execute();
-            return true;
+        try {
+            if(containInDB(objectName,null,null)){
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                create.delete(PAGE_OWNER)
+                        .where(PAGE_OWNER.OWNERID.eq(objectName)).execute();
+                return true;
+            }
+            return false;
+        } catch (DataAccessException e) {
+            System.out.println("error removing page from DB");
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean addToDB(String userName, String pageID, String birthDay, String name, Map<String, ArrayList<String>> objDetails) {
         if (!containInDB(userName, null, null)) {
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.insertInto(PAGE_OWNER
-                    ,PAGE_OWNER.PAGEID
-                    ,PAGE_OWNER.OWNERID)
-                    .values(Integer.parseInt(pageID)
-                            ,userName)
-                    .execute();
-
-            create.insertInto(PAGES
-                    ,PAGES.PAGEID
-                    ,PAGES.BIRTHDAY
-                    ,PAGES.NAME)
-                    .values(Integer.parseInt(pageID)
-                            ,convertToDate(birthDay)
-                            ,name)
-                    .execute();
-
-            for(String str: objDetails.get("posts")){
-                create.insertInto(PAGE_POST
-                        ,PAGE_POST.PAGEID
-                        ,PAGE_POST.POST)
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                create.insertInto(PAGE_OWNER
+                        ,PAGE_OWNER.PAGEID
+                        ,PAGE_OWNER.OWNERID)
                         .values(Integer.parseInt(pageID)
-                                ,str)
+                                ,userName)
                         .execute();
+
+                create.insertInto(PAGES
+                        ,PAGES.PAGEID
+                        ,PAGES.BIRTHDAY
+                        ,PAGES.NAME)
+                        .values(Integer.parseInt(pageID)
+                                ,convertToDate(birthDay)
+                                ,name)
+                        .execute();
+
+                for(String str: objDetails.get("posts")){
+                    create.insertInto(PAGE_POST
+                            ,PAGE_POST.PAGEID
+                            ,PAGE_POST.POST)
+                            .values(Integer.parseInt(pageID)
+                                    ,str)
+                            .execute();
+                }
+                return true;
+            } catch (DataAccessException e) {
+                System.out.println("error adding page to DB");
+                return false;
+            } catch (NumberFormatException e) {
+                System.out.println("error adding page to DB due to birthday bad format");
+                return false;
             }
         }
         return false;
@@ -146,15 +174,22 @@ public class pageDB implements DB_Inter{
     @Override
     public boolean update(Enum<?> e, Map<String, String> arguments) {
         DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Map<String, ArrayList<String>> str = selectFromDB(arguments.get("userName"),null,null);
-        int pageID = Integer.parseInt(str.get("pageID").get(0));
-        if(e==PAGEUPDATES.SUMBIT){
-            create.insertInto(PAGE_POST
-                    ,PAGE_POST.PAGEID
-                    ,PAGE_POST.POST)
-                    .values(pageID
-                            ,arguments.get("post"))
-                    .execute();
+        if(containInDB(arguments.get("userName"),null,null)) {
+            Map<String, ArrayList<String>> str = selectFromDB(arguments.get("userName"), null, null);
+            int pageID = Integer.parseInt(str.get("pageID").get(0));
+            if (e == PAGEUPDATES.SUMBIT) {
+                try {
+                    create.insertInto(PAGE_POST
+                            , PAGE_POST.PAGEID
+                            , PAGE_POST.POST)
+                            .values(pageID
+                                    , arguments.get("post"))
+                            .execute();
+                    return true;
+                } catch (DataAccessException e1) {
+                    System.out.println("error submiting post to page");
+                }
+            }
         }
         return false;
     }
@@ -172,11 +207,16 @@ public class pageDB implements DB_Inter{
     }
 
     private LocalDate convertToDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
-        //convert String to LocalDate
-        date = date.replace("-","/");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        return localDate;
+            //convert String to LocalDate
+            date = date.replace("-","/");
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            return localDate;
+        } catch (Exception e) {
+            System.out.println("error converting date in page DB");
+            return null;
+        }
     }
 }

@@ -4,6 +4,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -55,12 +56,22 @@ public class DBSeasons implements DB_Inter {
 
     @Override
     public boolean containInDB(String leagueID,String seasonID,String empty1) {
-        return containsInDB(leagueID,Integer.parseInt(seasonID));
+        try {
+            return containsInDB(leagueID,Integer.parseInt(seasonID));
+        } catch (Exception e) {
+            System.out.println("error searching season in DB");
+            return false;
+        }
     }
 
     @Override
     public Map<String, ArrayList<String>> selectFromDB(String leagueID,String seasonID,String arg3) {
-        return selectFromDB(leagueID,Integer.parseInt(seasonID));
+        try {
+            return selectFromDB(leagueID,Integer.parseInt(seasonID));
+        } catch (Exception e) {
+            System.out.println("error selecting season in DB");
+            return new HashMap<>();
+        }
     }
 
     public boolean containsInDB(String leagueID, int seasonID){
@@ -73,12 +84,22 @@ public class DBSeasons implements DB_Inter {
 
     @Override
     public boolean removeFromDB(String leagueID,String seasonID,String arg3) {
-        return removeFromDB(leagueID,Integer.parseInt(seasonID));
+        try {
+            return removeFromDB(leagueID,Integer.parseInt(seasonID));
+        } catch (Exception e) {
+            System.out.println("error removing season in DB");
+            return false;
+        }
     }
 
     @Override
     public boolean addToDB(String leagueID, String seasonID, String startDate, String endDate, Map<String, ArrayList<String>> objDetails) {
-        return addSeasonToDB(leagueID,Integer.parseInt(seasonID),convertToDate(startDate),convertToDate(endDate),objDetails);
+        try {
+            return addSeasonToDB(leagueID,Integer.parseInt(seasonID),convertToDate(startDate),convertToDate(endDate),objDetails);
+        } catch (Exception e) {
+            System.out.println("error adding season in DB");
+            return false;
+        }
     }
 
     @Override
@@ -89,29 +110,47 @@ public class DBSeasons implements DB_Inter {
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
             if (e == SEASONENUM.ALLSEASON) {
-                return selectAllSeasonOfLeague(SEASONENUM.ALLSEASON,arguments);
+                try {
+                    return selectAllSeasonOfLeague(SEASONENUM.ALLSEASON,arguments);
+                } catch (Exception e1) {
+                    System.out.println("error getting all seasons in DB");
+                    return new ArrayList<>();
+                }
             }
             else if(e==SEASONENUM.REFSOFSEASON){
-                getAllRefsOfSeason(arguments.get("leagueID"),arguments.get("seasonID"));
+                try {
+                    getAllRefsOfSeason(arguments.get("leagueID"),arguments.get("seasonID"));
+                } catch (Exception e1) {
+                    System.out.println("error getting all referees of seasons in DB");
+                    return new ArrayList<>();
+                }
             }
             return null;
         }
 
         private ArrayList<Map<String, ArrayList<String>>> getAllRefsOfSeason(String leagueID, String seasonID){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(SEASON_REFEREE.REFEREEID).from(SEASON_REFEREE).
-                    where(SEASON_REFEREE.LEAGUEID.eq(leagueID)).and(SEASON_REFEREE.SEASONID.eq(Integer.parseInt(seasonID))).
-                    fetch();
-            ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
-            for (Record record : result) {
-                HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
-                ArrayList<String> temp = new ArrayList<>();
-                String refID = record.get(SEASON_REFEREE.LEAGUEID);
-                temp.add(refID);
-                seasonDetails.put(refID, temp);
-                details.add(seasonDetails);
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(SEASON_REFEREE.REFEREEID).from(SEASON_REFEREE).
+                        where(SEASON_REFEREE.LEAGUEID.eq(leagueID)).and(SEASON_REFEREE.SEASONID.eq(Integer.parseInt(seasonID))).
+                        fetch();
+                ArrayList<Map<String, ArrayList<String>>> details = new ArrayList<>();
+                for (Record record : result) {
+                    HashMap<String, ArrayList<String>> seasonDetails = new HashMap<>();
+                    ArrayList<String> temp = new ArrayList<>();
+                    String refID = record.get(SEASON_REFEREE.LEAGUEID);
+                    temp.add(refID);
+                    seasonDetails.put(refID, temp);
+                    details.add(seasonDetails);
+                }
+                return details;
+            } catch (DataAccessException e) {
+                System.out.println("error getting all referees of seasons in DB");
+                return new ArrayList<>();
+            } catch (IllegalArgumentException e) {
+                System.out.println("error getting all referees of seasons in DB");
+                return new ArrayList<>();
             }
-            return details;
         }
 
 
@@ -135,28 +174,48 @@ public class DBSeasons implements DB_Inter {
         @Override
         public boolean update (Enum < ? > e, Map < String, String > args){
             if (e == SEASONENUM.REFEREE) {
-                addRefereeInSeason(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), args.get("refID"));
-                return true;
-            } else if (e == SEASONENUM.MATCHESTABLE) {
-                LinkedList<Integer> matchID = new LinkedList<>();
-                for (String key : args.keySet()) {
-                    if (tryParseInt(key)) {
-                        matchID.add(Integer.parseInt(key));
-                    }
+                try {
+                    addRefereeInSeason(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), args.get("refID"));
+                    return true;
+                } catch (Exception e1) {
+                    System.out.println("error adding referees to season");
+                    return false;
                 }
-                addMatchTableToSeason(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), matchID);
-                return true;
+            } else if (e == SEASONENUM.MATCHESTABLE) {
+                try {
+                    LinkedList<Integer> matchID = new LinkedList<>();
+                    for (String key : args.keySet()) {
+                        if (tryParseInt(key)) {
+                            matchID.add(Integer.parseInt(key));
+                        }
+                    }
+                    addMatchTableToSeason(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), matchID);
+                    return true;
+                } catch (Exception e1) {
+                    System.out.println("error adding match table to season");
+                    return false;
+                }
             } else if (e == SEASONENUM.SEASONUPDATED) {
-                LinkedList<Integer> details = new LinkedList<>();
-                details.add(Integer.parseInt(args.get("numOfGames")));
-                details.add(Integer.parseInt(args.get("goalsFor")));
-                details.add(Integer.parseInt(args.get("goalAgainst")));
-                details.add(Integer.parseInt(args.get("points")));
-                updateSeasonTable(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), args.get("teamID"), details);
-                return true;
+                try {
+                    LinkedList<Integer> details = new LinkedList<>();
+                    details.add(Integer.parseInt(args.get("numOfGames")));
+                    details.add(Integer.parseInt(args.get("goalsFor")));
+                    details.add(Integer.parseInt(args.get("goalAgainst")));
+                    details.add(Integer.parseInt(args.get("points")));
+                    updateSeasonTable(args.get("leagueID"), Integer.parseInt(args.get("seasonID")), args.get("teamID"), details);
+                    return true;
+                } catch (Exception e1) {
+                    System.out.println("error update season table");
+                    return false;
+                }
             } else if (e == SEASONENUM.TEAM) {
-                addTeamInSeason(args.get("leagueID"),Integer.parseInt(args.get("seasonID")), args.get("teamID"));
-                return true;
+                try {
+                    addTeamInSeason(args.get("leagueID"),Integer.parseInt(args.get("seasonID")), args.get("teamID"));
+                    return true;
+                } catch (Exception e1) {
+                    System.out.println("error adding team to season");
+                    return false;
+                }
             }
             return false;
         }
