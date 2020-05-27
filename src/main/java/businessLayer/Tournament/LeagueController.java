@@ -2,7 +2,6 @@ package businessLayer.Tournament;
 
 import businessLayer.Exceptions.MissingInputException;
 import businessLayer.Exceptions.NotApprovedException;
-import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.Team;
 import businessLayer.Tournament.Match.Match;
 import businessLayer.Tournament.Match.Stadium;

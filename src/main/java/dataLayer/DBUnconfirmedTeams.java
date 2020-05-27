@@ -4,6 +4,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -13,9 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static dataLayer.Tables.Tables.LEAGUE;
 import static dataLayer.Tables.Tables.UNCONFIRMED_TEAMS;
-import static dataLayer.Tables.tables.Teams.TEAMS;
 
 public class DBUnconfirmedTeams implements DB_Inter {
 
@@ -43,14 +42,24 @@ public class DBUnconfirmedTeams implements DB_Inter {
 
     @Override
     public boolean containInDB(String objectName,String arg2,String arg3) {
-        DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-        Result<?> result = create.select().from(UNCONFIRMED_TEAMS).where(UNCONFIRMED_TEAMS.TEAMID.eq(objectName)).fetch();
-        return (!result.isEmpty());
+        try {
+            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+            Result<?> result = create.select().from(UNCONFIRMED_TEAMS).where(UNCONFIRMED_TEAMS.TEAMID.eq(objectName)).fetch();
+            return (!result.isEmpty());
+        } catch (DataAccessException e) {
+            System.out.println("error searching unconfirmed team in DB");
+            return false;
+        }
     }
 
     @Override
     public Map<String, ArrayList<String>> selectFromDB(String objectName,String arg2,String arg3) {
-        return selectUnconfirmedTeamFromDB(objectName);
+        try {
+            return selectUnconfirmedTeamFromDB(objectName);
+        } catch (Exception e) {
+            System.out.println("error selecting unconfirmed teams from DB");
+            return new HashMap<>();
+        }
     }
 
     public HashMap<String,ArrayList<String>> selectUnconfirmedTeamFromDB(String teamID){
@@ -79,17 +88,27 @@ public class DBUnconfirmedTeams implements DB_Inter {
 
     @Override
     public boolean removeFromDB(String objectName,String arg2,String arg3) {
-        if(containInDB(objectName,null,null)) {
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            create.delete(UNCONFIRMED_TEAMS).where(UNCONFIRMED_TEAMS.TEAMID.eq(objectName)).execute();
-            return true;
+        try {
+            if(containInDB(objectName,null,null)) {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                create.delete(UNCONFIRMED_TEAMS).where(UNCONFIRMED_TEAMS.TEAMID.eq(objectName)).execute();
+                return true;
+            }
+            return false;
+        } catch (DataAccessException e) {
+            System.out.println("error removing unconfirmed teams from DB");
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean addToDB(String teamID, String establishedYear, String ownerName, String str4, Map<String, ArrayList<String>> objDetails) {
-        return addRequestForTeam(teamID,Integer.parseInt(establishedYear),ownerName);
+        try {
+            return addRequestForTeam(teamID,Integer.parseInt(establishedYear),ownerName);
+        } catch (Exception e) {
+            System.out.println("error adding unconfirmed teams from DB");
+            return false;
+        }
     }
 
     @Override
@@ -100,17 +119,25 @@ public class DBUnconfirmedTeams implements DB_Inter {
     @Override
     public ArrayList<Map<String, ArrayList<String>>> selectAllRecords(Enum<?> e,Map<String,String> arguments) {
         if(e==TEAMUPDATES.UNCONONFIRMED){
-            DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
-            Result<?> result = create.select(UNCONFIRMED_TEAMS.TEAMID).from(UNCONFIRMED_TEAMS).fetch();
-            ArrayList<Map<String,ArrayList<String>>> details = new ArrayList<>();
-            for (Record record : result){
-                HashMap<String,ArrayList<String>> seasonDetails = new HashMap <>();
-                ArrayList<String> temp = new ArrayList<>();
-                temp.add(record.get(UNCONFIRMED_TEAMS.TEAMID));
-                seasonDetails.put("unconfirmedID",temp);
-                details.add(seasonDetails);
+            try {
+                DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
+                Result<?> result = create.select(UNCONFIRMED_TEAMS.TEAMID).from(UNCONFIRMED_TEAMS).fetch();
+                ArrayList<Map<String,ArrayList<String>>> details = new ArrayList<>();
+                for (Record record : result){
+                    HashMap<String,ArrayList<String>> seasonDetails = new HashMap <>();
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(record.get(UNCONFIRMED_TEAMS.TEAMID));
+                    seasonDetails.put("unconfirmedID",temp);
+                    details.add(seasonDetails);
+                }
+                return details;
+            } catch (DataAccessException e1) {
+                System.out.println("error selecting all unconfirmed teams ID from DB");
+                return new ArrayList<>();
+            } catch (IllegalArgumentException e1) {
+                System.out.println("error selecting all unconfirmed teams ID from DB");
+                return new ArrayList<>();
             }
-            return details;
         }
         return null;
     }
@@ -122,7 +149,14 @@ public class DBUnconfirmedTeams implements DB_Inter {
 
     @Override
     public boolean TerminateDB() {
-        return false;
+        try {
+            connection.close();
+        } catch (Exception e) {
+            System.out.println("error closing connection of DB");
+            return false;
+        }
+
+        return true;
     }
 
     public boolean addRequestForTeam(String teamID, int establishedYear, String ownerName) {
