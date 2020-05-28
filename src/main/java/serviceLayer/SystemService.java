@@ -24,11 +24,14 @@ public class SystemService extends Observable implements Observer {
     public SystemService() {
         onlineUsers = new ArrayList<>();
         this.systemController = SystemController.SystemController();
-        systemController.addServiceObservers(this);
+        //systemController.addServiceObservers(this);
     }
 
-    public void addObserverForService(ControllerInterface controller){
-        addObserver(controller);
+    /**
+     * The function adds Service as an observer for SystemController
+     */
+    public void addObserverForService(){
+        systemController.addObserver(this);
     }
 
     /**

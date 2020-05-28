@@ -3,3 +3,6 @@
 2020.05.26 22:42:58.721 ERROR Errors - The user Pogba tried to log in
 2020.05.27 14:18:07.713 ERROR Errors - The user Bradley tried to log in
 2020.05.27 16:08:25.355 ERROR Errors - The user Turgeman tried to log in
+2020.05.27 21:27:36.516 ERROR Errors - The event doesn't exist in the DB
+2020.05.27 21:28:19.595 ERROR Errors - The event doesn't exist in the DB
+2020.05.27 21:31:19.117 ERROR Errors - could not find the followers of the page in the DB
