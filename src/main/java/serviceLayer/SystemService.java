@@ -34,6 +34,7 @@ public class SystemService extends Observable implements Observer {
         systemController.addObserver(this);
     }
 
+
     /**
      * this function gets request from admin to watch complaint from the presentation layer
      * and generate the arguments needed in the business layer to operate.
@@ -406,7 +407,7 @@ public class SystemService extends Observable implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof SystemController && arg instanceof LinkedList) {
+        if (o instanceof SystemController && arg instanceof LinkedList ) {
             LinkedList<String> users = (LinkedList) arg;
             String title = users.removeLast(); //title for the message in the interface
             String event = users.removeLast(); //holds the message to present to the user's interface

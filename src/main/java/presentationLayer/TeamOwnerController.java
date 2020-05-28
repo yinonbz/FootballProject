@@ -193,7 +193,8 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         leagueService = new LeagueService();
         teamService = new TeamService();
         systemService = new SystemService();
-        systemService.addObserverForService(this);
+        systemService.addObserverForService();
+        //systemService.addObserverForService(this);
     }
 
     public void logoutB(ActionEvent actionEvent) {
@@ -336,7 +337,6 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
     public void closeTeamB(ActionEvent actionEvent) {
         try {
             teamService.disableTeamStatus(teamsViewL2.getSelectionModel().getSelectedItem().toString(), userName);
-        } catch (NotFoundInDbException e) {
             showAlert("Success", "The Team was closed successfully. You are able to reopen it in the Reopen Team menu.", Alert.AlertType.INFORMATION);
 
             listTeams = FXCollections.observableArrayList();
@@ -351,7 +351,6 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
     public void reopenTeamB(ActionEvent actionEvent) {
         try {
             teamService.enableTeamStatus(closedTeamsViewL.getSelectionModel().getSelectedItem().toString(), userName);
-        } catch (NotFoundInDbException e) {
             showAlert("Success", "The Team was reopened successfully.", Alert.AlertType.INFORMATION);
 
             listTeams = FXCollections.observableArrayList();

@@ -99,6 +99,7 @@ public class LoginController implements Initializable {
 
                 //Controller = fxmlLoader.getController();
                 ControllerInterface Controller = fxmlLoader.getController();
+                systemService.addObserver(Controller);
                 Controller.setUser(usernameL.getText());
                 //IDO ADD
 
