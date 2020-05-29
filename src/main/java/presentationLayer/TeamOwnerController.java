@@ -3,7 +3,6 @@ package presentationLayer;
 import businessLayer.Exceptions.AlreadyExistException;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.userTypes.SystemController;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -30,8 +29,8 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 
@@ -60,12 +59,11 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         userName = usernameL;
         userLabel.setText(usernameL);
         notificationPanesCollection = new ArrayList<>();
-
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if (messages != null) {
             for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
+                String title = msg.substring(0,10) + "...";
+                String event = msg;
                 AnchorPane newPanelContent = new AnchorPane();
                 newPanelContent.getChildren().add(new Label(event));
                 TitledPane pane = new TitledPane(title, newPanelContent);
@@ -130,6 +128,16 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
     private Pane reopenTeamPane;
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+        LinkedList<String> message = ((LinkedList<String>)arg);
+        notificationPanesCollection= new ArrayList<>();
+        AnchorPane newPanelContent = new AnchorPane();
+        newPanelContent.getChildren().add(new Label(message.get(1)));
+        TitledPane pane = new TitledPane(message.get(0), newPanelContent);
+        notificationsPane.getPanes().add(pane);
+    }
+
 
 
     public void addNewTeam(ActionEvent actionEvent) {
@@ -185,9 +193,7 @@ public class TeamOwnerController implements ControllerInterface, Initializable {
         leagueService = new LeagueService();
         teamService = new TeamService();
         systemService = new SystemService();
-        leagueService = new LeagueService();
-
-
+        systemService.addObserverForService(this);
     }
 
     public void logoutB(ActionEvent actionEvent) {

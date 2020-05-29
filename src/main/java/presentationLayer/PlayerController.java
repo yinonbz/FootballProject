@@ -1,6 +1,5 @@
 package presentationLayer;
 
-import businessLayer.userTypes.Administration.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -116,16 +115,14 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
     }
     @Override
     public void setUser(String usernameL) {
-        userLable.setText(usernameL);
         userName = usernameL;
-        leagueService = new LeagueService();
-        notificationPanesCollection= new ArrayList<>();
-
+        userLable.setText(usernameL);
+        notificationPanesCollection = new ArrayList<>();
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
-        if(messages != null) {
+        if (messages != null) {
             for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
+                String title = msg.substring(0,10) + "...";
+                String event = msg;
                 AnchorPane newPanelContent = new AnchorPane();
                 newPanelContent.getChildren().add(new Label(event));
                 TitledPane pane = new TitledPane(title, newPanelContent);
@@ -150,7 +147,7 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
         leagueService = new LeagueService();
         systemService = new SystemService();
         notificationPanesCollection= new ArrayList<>();
-
+        systemService.addObserverForService(this);
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if(messages != null) {
             for (String msg : messages) {

@@ -6,7 +6,6 @@ import businessLayer.Tournament.Match.Stadium;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class SingleMatchPolicy extends AMatchPolicy {

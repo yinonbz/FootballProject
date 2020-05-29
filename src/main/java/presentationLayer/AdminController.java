@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.jooq.meta.derby.sys.Sys;
 import serviceLayer.LeagueService;
 import serviceLayer.SystemService;
 
@@ -34,13 +33,26 @@ public class AdminController implements Initializable,ControllerInterface, Obser
 
     private ArrayList<TitledPane> notificationPanesCollection;
 
-
     @FXML
     private Accordion notificationsPane;
 
     @Override
     public void setUser(String usernameL) {
         userName = usernameL;
+        userLable.setText(usernameL);
+        notificationPanesCollection = new ArrayList<>();
+        LinkedList<String> messages = leagueService.getOfflineMessages(userName);
+        if (messages != null) {
+            for (String msg : messages) {
+                String title = msg.substring(0,10) + "...";
+                String event = msg;
+                AnchorPane newPanelContent = new AnchorPane();
+                newPanelContent.getChildren().add(new Label(event));
+                TitledPane pane = new TitledPane(title, newPanelContent);
+                notificationPanesCollection.add(pane);
+            }
+        }
+        notificationsPane.getPanes().setAll(notificationPanesCollection);
     }
 
     @Override
@@ -55,9 +67,11 @@ public class AdminController implements Initializable,ControllerInterface, Obser
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         systemService = new SystemService();
         leagueService = new LeagueService();
         notificationPanesCollection= new ArrayList<>();
+        systemService.addObserverForService(this);
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if(messages != null) {
             for (String msg : messages) {

@@ -1,7 +1,6 @@
 package presentationLayer;
 
 import businessLayer.Exceptions.NotApprovedException;
-import businessLayer.Tournament.Match.Match;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -129,11 +128,13 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         leagueService = new LeagueService();
         notificationPanesCollection = new ArrayList<>();
 
+        userName = usernameL;
+        notificationPanesCollection = new ArrayList<>();
         LinkedList<String> messages = leagueService.getOfflineMessages(userName);
         if (messages != null) {
             for (String msg : messages) {
-                String title = msg.split(",")[0];
-                String event = msg.split(",")[1];
+                String title = msg.substring(0,10) + "...";
+                String event = msg;
                 AnchorPane newPanelContent = new AnchorPane();
                 newPanelContent.getChildren().add(new Label(event));
                 TitledPane pane = new TitledPane(title, newPanelContent);
@@ -443,7 +444,11 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 success("report red card to: " + player);
             }
         } catch (Exception e) {
-            missingAlert();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Alert");
+            alert.setHeaderText("Alert");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
         }
     }
 
@@ -497,10 +502,16 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             String eventId = eventCombo.getValue();
             String[] Arr = eventId.split("-");
             matchService.removeEventByMainReferee(Arr[1].substring(14), String.valueOf(matchId), userLabel.getText(), Arr[0].substring(9));
+            eventCombo.getItems().remove(eventId);
+            success("the event" +eventId + "removal" );
         } catch (NotApprovedException e) {
             showAlert("Access Denied", e.getMessage(), Alert.AlertType.WARNING);
         } catch (Exception e) {
-            missingAlert();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Alert");
+            alert.setHeaderText("Alert");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
         }
     }
 
@@ -577,6 +588,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 String [] strArr = s.split("-");
                 detail.add("Event ID:"+strArr[0] + "-Time Of Event:"+strArr[1]+ "-Event Type:"+strArr[2]);
             }
+            eventCombo.getItems().clear();
             eventCombo.getItems().addAll(detail);
             eventCombo.setDisable(false);
         }else{
@@ -697,6 +709,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         timeRed.setValueFactory(valueFactory);
         timeYellow.setValueFactory(valueFactory);
         timeSubstitute.setValueFactory(valueFactory);
+        systemService.addObserverForService(this);
         //timeRemove.setValueFactory(valueFactory);
         //SpinnerValueFactory<Integer> valueFactoryEvent = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
        // eventRemove.setValueFactory(valueFactoryEvent);

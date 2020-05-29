@@ -1,14 +1,13 @@
 package serviceLayer;
 
-import businessLayer.Team.Team;
 import businessLayer.Exceptions.NotFoundInDbException;
 import businessLayer.Team.TeamController;
 import businessLayer.Tournament.LeagueController;
 import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
-import businessLayer.userTypes.Administration.Player;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
+import presentationLayer.ControllerInterface;
 
 import java.util.*;
 
@@ -28,12 +27,16 @@ public class SystemService extends Observable implements Observer {
         systemController.addServiceObservers(this);
     }
 
+    public void addObserverForService(ControllerInterface controller){
+        addObserver(controller);
+    }
+
     /**
      * this function gets request from admin to watch complaint from the presentation layer
      * and generate the arguments needed in the business layer to operate.
-     *
      * @param username
-     * @return UC 8.3.1
+     * @return
+     * UC 8.3.1
      */
     public HashMap<Integer, Complaint> displayComplaints(String username) {
         return systemController.displayComplaints(username);
@@ -61,7 +64,7 @@ public class SystemService extends Observable implements Observer {
      *
      * @param password the password of the temporary admin
      * @return true if the system has initialized successfully
-     * false else
+     *          false else
      */
     public Boolean initializeSystem(String password) {
         return systemController.initializeSystem(password);
@@ -90,12 +93,13 @@ public class SystemService extends Observable implements Observer {
     }
 
 
+
     /**
      * the function lets the subscriber to upload a complaint via the presentation layer, and execute the command.
      *
      * @param content  the content of the complaint
      * @param username the subscriber who wants to complain
-     *                 UC 3.4
+     * UC 3.4
      */
 
     public boolean addComplaint(String content, String username) {
@@ -131,6 +135,7 @@ public class SystemService extends Observable implements Observer {
     }
 
 
+
     /**
      * The function adds a referee to the system and returns whether the referee was successfully added or not
      *
@@ -159,7 +164,7 @@ public class SystemService extends Observable implements Observer {
      * the function takes a request for opening a new team and puts it in the data structure
      *
      * @param details of the new team
-     *                Not a UC - A function of TEAM OWNER
+     *Not a UC - A function of TEAM OWNER
      */
     public boolean requestForNewTeam(LinkedList<String> details, String username) {
         return systemController.addToTeamConfirmList(details, username);
@@ -195,7 +200,7 @@ public class SystemService extends Observable implements Observer {
      *
      * @param userName
      * @param password
-     * @param name     the real name of the new admin
+     * @param name the real name of the new admin
      * @return true if the admin was successfully created in the DB
      */
     public boolean enterRegisterDetails_Admin(String userName, String password, String name) {
@@ -252,7 +257,7 @@ public class SystemService extends Observable implements Observer {
      *
      * @param userName
      * @param password
-     * @param name     the real name of the Team Owner
+     * @param name the real name of the Team Owner
      * @return true if the Team Owner was successfully created in the DB
      * false else
      */
@@ -265,7 +270,7 @@ public class SystemService extends Observable implements Observer {
      *
      * @param userName
      * @param password
-     * @param name     the real name of the Team Owner
+     * @param name the real name of the Team Owner
      * @param teamName the name of the team which the team-manager manages
      * @returntrue if the Team Manager was successfully created in the DB
      * false else
@@ -343,6 +348,9 @@ public class SystemService extends Observable implements Observer {
         return false;
     }
 
+    public ArrayList<String> getAllMatchesInDB(){
+        return systemController.getAllMatchesInDB();
+    }
 
     /**
      * The function receives a user's username and a match's identifier and passes them to the
@@ -355,7 +363,7 @@ public class SystemService extends Observable implements Observer {
     public boolean userRequestToFollowMatch(String username, String matchID) {
 
         if (username != null && matchID != null) {
-            //    systemController.allowUserToFollowMatch(username, matchID); todo need to check why we have compliation
+            systemController.allowUserToFollowMatch(username, matchID);
         }
         return false;
     }
@@ -401,7 +409,6 @@ public class SystemService extends Observable implements Observer {
         }
     }
     */
-
     /**
      * @param o
      * @param arg the notifications
@@ -424,8 +431,11 @@ public class SystemService extends Observable implements Observer {
                     systemController.saveUserMessage(user, event, title);
                 }
             }
-            throw new NotFoundInDbException("");
         }
+    }
+
+    public ArrayList<String> getAllCoachesNames(){
+        return systemController.getAllCoachesNames();
     }
 
     /**
@@ -444,6 +454,10 @@ public class SystemService extends Observable implements Observer {
     public void removeFromUsersOnline(String userName) {
         if (onlineUsers.contains(userName))
             onlineUsers.remove(userName);
+    }
+
+    public ArrayList<String> getAllPlayers(){
+        return systemController.getAllPlayers();
     }
 
     /**
@@ -504,7 +518,6 @@ public class SystemService extends Observable implements Observer {
      */
     public void updateRefereeName(String name, String userName) {
         systemController.updateRefereeName(name, userName);
-
     }
 
     //todo ido add this function

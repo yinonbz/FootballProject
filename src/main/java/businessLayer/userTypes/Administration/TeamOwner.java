@@ -388,8 +388,7 @@ public class TeamOwner extends Subscriber {
      */
     public Boolean enableStatus(Team team) {
         if (!team.getActive()) {
-            team.setActive(true);
-
+            systemController.changeTeamStatus(team.getTeamName(),true);
             systemController.updateTeamStatusToUsers(team, "The team '" + team.getTeamName() + "' is now active.");
             return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been enabled and is now active.");
@@ -406,7 +405,7 @@ public class TeamOwner extends Subscriber {
      */
     public Boolean disableStatus(Team team) {
         if (team.getActive()) {
-            team.setActive(false);
+            systemController.changeTeamStatus(team.getTeamName(),false);
             systemController.updateTeamStatusToUsers(team, "The team '" + team.getTeamName() + "' is now inactive.");
             return true;
             //System.out.println("The team '" + team.getTeamName() + "' has been disabled and is now not-active.");

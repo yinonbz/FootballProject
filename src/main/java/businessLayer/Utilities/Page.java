@@ -5,7 +5,6 @@ import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class Page {
 private ArrayList<String> owners;
@@ -34,6 +33,18 @@ static int pageCounter=0;
         //systemController.addPageToDB(username, this);
         pageID=pageCounter;
         pageCounter++;
+    }
+
+    public Page(int pageID,String username, String name, String birthDate, HasPage pageOwner) {
+        posts = new LinkedList<>();
+        this.name = name;
+        this.bDate = birthDate;
+        owners = new ArrayList<>();
+        owners.add(username);
+        this.pageOwner = pageOwner;
+        systemController = SystemController.SystemController();
+        //systemController.addPageToDB(username, this);
+        this.pageID=pageID;
     }
 
     /**

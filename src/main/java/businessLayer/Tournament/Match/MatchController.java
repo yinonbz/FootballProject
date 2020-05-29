@@ -9,7 +9,6 @@ import businessLayer.userTypes.SystemController;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 
 
 public class MatchController {
@@ -65,7 +64,7 @@ public class MatchController {
             Player playerG = getPlayerFromDB(PlayerGoal);
             Player playerA= getPlayerFromDB(playerAssist);
             boolean isOwnG;
-            if(isOwnGoal.equals("T")){
+            if(isOwnGoal.equals("true")){
                 isOwnG = true;
             }
             else{
@@ -332,8 +331,9 @@ public class MatchController {
                     if (match.isMainReferee((Referee) subscriber)) {
                         //return match.getEventRecord().removeEvent(timeOfEvent, eventId);
                         systemController.removeEventFromMatch(matchID,timeOfEvent,eventId);
+                    }else {
+                        throw new NotApprovedException("This Referee is not a Main Referee.");
                     }
-                    throw new NotApprovedException("This Referee is not a Main Referee.");
                 }
           //  }
         }
