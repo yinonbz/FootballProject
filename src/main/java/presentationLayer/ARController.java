@@ -284,7 +284,8 @@ public class ARController implements ControllerInterface, Initializable, Observe
         loseSpinner.setValueFactory(valueFactoryLose);
         tieSpinner.setValueFactory(valueFactoryTie);
         seasonSpinner.setValueFactory(valueFactorySeason);
-        systemService.addObserverForService(this);
+        systemService.addObserverForService();
+        //systemService.addObserverForService(this);
         policyCombo.getItems().setAll(
                 "SingleMatchPolicy",
                 "ClassicMatchPolicy"

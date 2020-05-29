@@ -3879,6 +3879,8 @@ public class SystemController extends Observable {
         arguments.put("userName", userName);
         arguments.put("post", post);
         DB.update(PAGEUPDATES.SUMBIT, arguments);
+        Page page = getSubscriberPage(userName);
+        updatePageFollowers(page,post);
     }
 
     //todo javafx function

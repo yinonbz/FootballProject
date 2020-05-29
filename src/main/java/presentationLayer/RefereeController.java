@@ -709,7 +709,8 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         timeRed.setValueFactory(valueFactory);
         timeYellow.setValueFactory(valueFactory);
         timeSubstitute.setValueFactory(valueFactory);
-        systemService.addObserverForService(this);
+        systemService.addObserverForService();
+        //systemService.addObserverForService(this);
         //timeRemove.setValueFactory(valueFactory);
         //SpinnerValueFactory<Integer> valueFactoryEvent = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
        // eventRemove.setValueFactory(valueFactoryEvent);

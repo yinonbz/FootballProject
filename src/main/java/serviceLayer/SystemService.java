@@ -24,12 +24,16 @@ public class SystemService extends Observable implements Observer {
     public SystemService() {
         onlineUsers = new ArrayList<>();
         this.systemController = SystemController.SystemController();
-        systemController.addServiceObservers(this);
+        //systemController.addServiceObservers(this);
     }
 
-    public void addObserverForService(ControllerInterface controller){
-        addObserver(controller);
+    /**
+     * The function adds Service as an observer for SystemController
+     */
+    public void addObserverForService(){
+        systemController.addObserver(this);
     }
+
 
     /**
      * this function gets request from admin to watch complaint from the presentation layer
@@ -416,7 +420,7 @@ public class SystemService extends Observable implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof SystemController && arg instanceof LinkedList) {
+        if (o instanceof SystemController && arg instanceof LinkedList ) {
             LinkedList<String> users = (LinkedList) arg;
             String title = users.removeLast(); //title for the message in the interface
             String event = users.removeLast(); //holds the message to present to the user's interface
