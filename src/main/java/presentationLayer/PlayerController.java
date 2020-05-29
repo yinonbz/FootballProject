@@ -105,7 +105,7 @@ public class PlayerController implements Initializable,ControllerInterface, Obse
             String post = postPlayer.getText();
             if(post!=null &&!post.equals("")) {
                 systemService.updatePlayerPost(userName,post);
-                success("next iteration");
+                success("the post " + post);
             }else{
                 missingAlert();
             }
