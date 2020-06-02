@@ -7,6 +7,7 @@ import businessLayer.Tournament.Match.MatchController;
 import businessLayer.Utilities.Complaint;
 import businessLayer.userTypes.Subscriber;
 import businessLayer.userTypes.SystemController;
+import presentationLayer.ControllerInterface;
 
 import java.util.*;
 
@@ -23,8 +24,16 @@ public class SystemService extends Observable implements Observer {
     public SystemService() {
         onlineUsers = new ArrayList<>();
         this.systemController = SystemController.SystemController();
-        systemController.addServiceObservers(this);
+        //systemController.addServiceObservers(this);
     }
+
+    /**
+     * The function adds Service as an observer for SystemController
+     */
+    public void addObserverForService(){
+        systemController.addObserver(this);
+    }
+
 
     /**
      * this function gets request from admin to watch complaint from the presentation layer
@@ -330,6 +339,9 @@ public class SystemService extends Observable implements Observer {
         return false;
     }
 
+    public ArrayList<String> getAllMatchesInDB(){
+        return systemController.getAllMatchesInDB();
+    }
 
     /**
      * The function receives a user's username and a match's identifier and passes them to the
@@ -342,7 +354,7 @@ public class SystemService extends Observable implements Observer {
     public boolean userRequestToFollowMatch(String username, String matchID) {
 
         if (username != null && matchID != null) {
-        //    systemController.allowUserToFollowMatch(username, matchID); todo need to check why we have compliation
+            systemController.allowUserToFollowMatch(username, matchID);
         }
         return false;
     }
@@ -395,7 +407,7 @@ public class SystemService extends Observable implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof SystemController && arg instanceof LinkedList) {
+        if (o instanceof SystemController && arg instanceof LinkedList ) {
             LinkedList<String> users = (LinkedList) arg;
             String title = users.removeLast(); //title for the message in the interface
             String event = users.removeLast(); //holds the message to present to the user's interface
@@ -410,8 +422,11 @@ public class SystemService extends Observable implements Observer {
                     systemController.saveUserMessage(user, event, title);
                 }
             }
-            throw new NotFoundInDbException("");
         }
+    }
+
+    public ArrayList<String> getAllCoachesNames(){
+        return systemController.getAllCoachesNames();
     }
 
     /**
@@ -430,6 +445,10 @@ public class SystemService extends Observable implements Observer {
     public void removeFromUsersOnline(String userName) {
         if (onlineUsers.contains(userName))
             onlineUsers.remove(userName);
+    }
+
+    public ArrayList<String> getAllPlayers(){
+        return systemController.getAllPlayers();
     }
 
     /**
@@ -465,7 +484,6 @@ public class SystemService extends Observable implements Observer {
     //todo ido add this function
     public void updateRefereeName(String name, String userName) {
         systemController.updateRefereeName(name,userName);
-
     }
     //todo ido add this function
     public ArrayList<String> getEventByMatch(String matchId) {

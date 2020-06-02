@@ -542,7 +542,7 @@ public class DBHandler implements DB_Inter{
                 allAdmins.add(new HashMap<>());
                 allAdmins.get(0).put("admins", new ArrayList<>());
                 for (Record r : result) {
-                    allAdmins.get(0).get("admins").add(r.get(COACHES.COACHID));
+                    allAdmins.get(0).get("admins").add(r.get(ADMINS.ADMINID));
 
                 }
                 return allAdmins;

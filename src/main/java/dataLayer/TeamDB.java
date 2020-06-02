@@ -279,6 +279,7 @@ public class TeamDB implements DB_Inter {
                 return null;
             }
         }
+
         if(teamObject==TEAMOBJECTS.TEAM_TEAM_OWNERES){
             try {
                 DSLContext create = DSL.using(connection, SQLDialect.MARIADB);
@@ -290,7 +291,7 @@ public class TeamDB implements DB_Inter {
                 allOwner.add(new HashMap<>());
                 allOwner.get(0).put("teamOwners",new ArrayList<>());
                 for(Record r: result){
-                    allOwner.get(0).get("teamOwners").add(r.get(TEAMS.TEAMMANAGERID));
+                    allOwner.get(0).get("teamOwners").add(r.get(OWNER_TEAMS.OWNERID));
                 }
                 return allOwner;
             } catch (DataAccessException e) {

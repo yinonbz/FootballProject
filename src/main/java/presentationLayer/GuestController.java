@@ -3,7 +3,10 @@ package presentationLayer;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
-public class GuestController implements ControllerInterface{
+import java.awt.*;
+import java.io.IOException;
+
+public class GuestController{
 
 
     @FXML
@@ -23,8 +26,4 @@ public class GuestController implements ControllerInterface{
         removeTeamP.setVisible(true);
     }
 
-    @Override
-    public void setUser(String usernameL) {
-
-    }
 }

@@ -7,7 +7,7 @@
 
 <BorderPane fx:id="rootTest" prefHeight="693.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.LoginController">
    <center>
-      <Pane prefHeight="693.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="552.0" prefWidth="358.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="usernameL" layoutX="93.0" layoutY="288.0" prefHeight="25.0" prefWidth="170.0">
                <effect>
