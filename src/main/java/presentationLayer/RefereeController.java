@@ -444,8 +444,11 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 success("report red card to: " + player);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            missingAlert();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Alert");
+            alert.setHeaderText("Alert");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
         }
     }
 
@@ -499,10 +502,16 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
             String eventId = eventCombo.getValue();
             String[] Arr = eventId.split("-");
             matchService.removeEventByMainReferee(Arr[1].substring(14), String.valueOf(matchId), userLabel.getText(), Arr[0].substring(9));
+            eventCombo.getItems().remove(eventId);
+            success("the event" +eventId + "removal" );
         } catch (NotApprovedException e) {
             showAlert("Access Denied", e.getMessage(), Alert.AlertType.WARNING);
         } catch (Exception e) {
-            missingAlert();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Alert");
+            alert.setHeaderText("Alert");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
         }
     }
 
@@ -579,6 +588,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
                 String [] strArr = s.split("-");
                 detail.add("Event ID:"+strArr[0] + "-Time Of Event:"+strArr[1]+ "-Event Type:"+strArr[2]);
             }
+            eventCombo.getItems().clear();
             eventCombo.getItems().addAll(detail);
             eventCombo.setDisable(false);
         }else{
@@ -691,7 +701,7 @@ public class RefereeController implements ControllerInterface, Initializable, Ob
         //import all unapproved team names to teamStringList from DB
         matchService = new MatchService();
         systemService = new SystemService();
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 121, 0);
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 120, 1);
         timeFoul.setValueFactory(valueFactory);
         timeGoal.setValueFactory(valueFactory);
         timeInjury.setValueFactory(valueFactory);
